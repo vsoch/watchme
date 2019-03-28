@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.main.github import create_watcher
+from watchme.main.command import create_watcher
 
 def main(args, extra):
     '''create means creating one or more watchers.

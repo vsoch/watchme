@@ -41,6 +41,7 @@ def create_watcher(name=None):
         # Add the watcher configuration file
         generate_config(repo)
 
+
 def create_watcher_base(name=None):
     '''create a watch base and default repo, if it doesn't already exist.
 
