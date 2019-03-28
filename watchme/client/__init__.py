@@ -11,7 +11,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
-from watchme.defaults import WATCHME_WATCHME
+from watchme.defaults import ( 
+    WATCHME_WATCHER, 
+    WATCHME_TYPES, 
+    WATCHME_DEFAULT_TYPE
+)
 import watchme
 import argparse
 import sys
@@ -64,9 +68,13 @@ def get_parser():
     create = subparsers.add_parser("create",
                                    help="create a new watcher")
 
+
+    create.add_argument('--type', dest="watcher_type"
+                        choices=WATCHME_TYPES, 
+                        default=WATCHME_DEFAULT_TYPE)
+
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
-
 
     return parser
 

@@ -53,3 +53,8 @@ USERHOME = get_userhome()
 WATCHME_WATCHER = getenv('WATCHME_WATCHER', 'watcher')
 _config = os.path.join(USERHOME, ".watchme")
 WATCHME_BASE_DIR = getenv('WATCHME_BASE_DIR', _config)
+
+# The types of valid watchers (currently only urls). Corresponds with
+# a folder under "main/watchers"
+WATCHME_TYPES = ['urls', 'url']
+WATCHME_DEFAULT_TYPE = "urls"
