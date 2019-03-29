@@ -1,5 +1,7 @@
 # WatchMe
 
+![docs/assets/img/logo.gif](docs/assets/img/logo.gif)
+
 Reproducible watching of web changes. Good for:
 
  1. Waiting for job postings to change or appear
