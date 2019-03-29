@@ -1,6 +1,6 @@
 # WatchMe
 
-![docs/assets/img/logo.gif](docs/assets/img/logo.gif)
+![docs/assets/img/logo_small.gif](docs/assets/img/logo_small.gif)
 
 Reproducible watching of web changes. Good for:
 
