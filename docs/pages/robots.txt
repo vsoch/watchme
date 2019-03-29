@@ -1,0 +1,8 @@
+---
+layout: null
+sitemap: false
+permalink: /robots.txt
+---
+User-agent: *
+Sitemap: {{ site.url }}/sitemap.xml
+Disallow: /search/

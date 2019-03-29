@@ -1,0 +1,28 @@
+			<nav {% if site.show_full_navigation %}class="full-navigation"{% endif %}>
+				<ul>
+					<li class="nav-item top-level {% if page.url == '/' %}current{% endif %}">
+						{% assign home = site.html_pages | where: 'url', '/' | first %}
+						<a href="{{ site.baseurl }}/">{{ home.title }}</a>
+					</li>
+				</ul>
+
+				<ul>{% for navitem in site.data.links.navigation %}{% assign grouped = site.docs | group_by: 'category' %}{% for group in grouped %}{% if group.name == navitem.name %}<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">{% assign items = group.items | sort: 'order' %}<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
+							<ul>{% for item in items %}
+							    <li class="nav-item {% if item.url == page.url %}current{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></li>{% endfor %}
+						</ul>
+						</li>{% endif %}{% else %}{{ group.name }}|{{ navitem.name }}{% endfor %}{% endfor %}
+
+				</ul>
+
+				<ul>
+                                        {% for link in site.data.links.footer %}
+
+				<ul>
+					<li class="nav-item top-level {% if page.url == link.url %}current{% endif %}">
+						<a href="{{ site.baseurl }}/{{ link.url }}/">{{ link.name }}</a>
+					</li>
+				</ul>
+					{% endfor %}
+				</ul>
+
+			</nav>

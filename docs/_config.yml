@@ -1,0 +1,84 @@
+#----
+# Site
+
+title: watchme
+url: "https://vsoch.github.io/watchme"
+baseurl: "/watchme"
+show_full_navigation: false
+
+logo: assets/img/logo.gif
+description: Documentation for WatchMe Client
+author:
+  name:
+  email: vsochat@stanford.edu
+  twitter: # twitter username without the @ symbol
+social:
+  name: vsoch
+  links:
+    - https://github.com/vsoch
+
+# The current hosting location of the docs
+repo: vsoch/watchme
+reponame: watchme
+
+# The current Docker container
+docker: vanessa/watchme
+
+# -----
+# Build
+
+timezone: Etc/UTC
+
+permalink: pretty
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+
+collections:
+  docs:
+    title: Documentation
+    permalink: /:path/
+    output: true
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: default
+  -
+    scope:
+      path: ""
+      type: "docs"
+    values:
+      seo:
+        type: Article
+      _comments:
+        category: Group navigation links with this field
+        order: Used to sort links in the navigation
+      _options:
+        content:
+          width: 800
+          height: 2000
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      _comments:
+        type: Marks the impact of this release
+
+# ---------
+# ChangeLog
+
+types:
+  - minor
+  - major

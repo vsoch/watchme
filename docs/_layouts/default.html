@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+        {% include head.html %}
+
+	<body>
+		<header>
+			<h1>
+				<a href="{{ site.baseurl }}/" id="name">{{ site.title | downcase }}
+                                   <img src="/watchme/assets/img/logo.gif">
+                                </a>
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="{{ site.baseurl }}/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+                {% include navigation.html %}
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>{% if page.category %}{{ page.category }}{% else %}{{ site.title }}{% endif %}</h2>
+				<h3>{{ page.title }}</h3>
+			</div>
+			<article class="content">
+				{{ content }}
+			</article>
+		</section>
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

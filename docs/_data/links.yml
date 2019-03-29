@@ -1,0 +1,10 @@
+footer:
+- name: ChangeLog
+  url: changelog
+navigation:
+- name: Installation
+  url: install/
+- name: Getting Started
+  url: getting-started/
+- name: Contributing
+  url: contributing/
