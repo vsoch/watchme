@@ -38,8 +38,8 @@ def create_watcher(name=None):
         mkdir_p(repo)
 
         # Ensure no gpg signing happens
-        run_command("git --git-dir=%s init" % repo)
-        run_command("git --git-dir=%s config commit.gpgsign false" % repo)
+        run_command("git --git-dir=%s/.git init" % repo)
+        run_command("git --git-dir=%s/.git config commit.gpgsign false" % repo)
     
         # Add the watcher configuration file
         generate_watcher_config(repo)

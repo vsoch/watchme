@@ -30,11 +30,6 @@ def get_configfile_template():
     '''
     return _get_config('watchme.cfg')
 
-def get_watcherfile_template():
-    '''return a watcher template to store variables for a specific watcher.
-    '''
-    return _get_config('watcher.cfg')
-
 def _get_config(name):
     '''shared function to return a file in the config directory
     '''
@@ -43,24 +38,13 @@ def _get_config(name):
 
 # ACTIVE CONFIG FILES ##########################################################
 
-def get_configfile(base=None):
-    '''return the full path to the default configuration file
-    '''
-    if base == None:
-        base = WATCHME_BASE_DIR
-
-    configfile = os.path.join(base, 'watchme.cfg')
-    check_exists(filename)
-    return configfile
-
-
-def get_watcherfile(name):
+def get_configfile(name, base=None):
     '''return the full path to a specific watcher configuration
     '''
     if base == None:
         base = WATCHME_BASE_DIR
 
-    configfile = os.path.join(base, 'watchme.cfg')
+    configfile = os.path.join(base, name, 'watchme.cfg')
     check_exists(filename)
     return configfile
     
@@ -78,6 +62,7 @@ def write_config(filename, config, mode="w"):
 def read_config(filename):
     '''use configparser to write a config object to filename
     '''
+    check_exists(filename)
     config = configparser.ConfigParser()
     config.read(filename)
     return config
@@ -95,7 +80,7 @@ def generate_watcher_config(path):
     '''
     check_exists(path)
     configfile = get_watcherfile_template()
-    watcher_config = os.path.join(path, 'watcher.cfg')
+    watcher_config = os.path.join(path, 'watchme.cfg')
     if not os.path.exists(watcher_config):
         bot.info('Generating watcher config %s' % watcher_config)
         shutil.copyfile(configfile, watcher_config)
@@ -103,37 +88,6 @@ def generate_watcher_config(path):
 
 
 # MASTER CONFIG ###############################################################
-
-
-def update_master_config(configfile):
-    '''update the master configuration file, meaning adding subfolders for
-       watchers that might already exist (and having them disabled by default)
-       this function should only be used to generate an initial config 
-       if a folder already exists.
-
-       Parameters
-       ==========
-       configfile: the path to the configuration file to update, assumed to be
-                   in the watchme base with watcher folders.
-    '''
-    if not os.path.exists(configfile):
-        bot.exit('%s does not exist.' % configfile)
-
-    base = os.path.dirname(configfile)
-
-    # Look for folders, and if found, update the config
-    config = read_config(configfile)    
-
-    # Get list of existing watchers
-    watchers = [x for x in os.listdir(base) if os.isdir(x)]
-    for watcher in watchers:
-        if watcher not in config.sections():
-            config.add_section(watcher)
-            config[watcher]['active'] = "false"
-
-    # Write the config to file
-    write_config(configfile, config)
-
 
 def init_config(path):
     '''generate the master configuration file in path using the 

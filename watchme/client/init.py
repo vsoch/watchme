@@ -22,7 +22,7 @@ def main(args, extra):
     create_watcher_base(args.watcher, args.base)
 
     # Create the first default watcher
-    if not args.empty:
+    if not args.create_empty:
         create_watcher(args.watcher)
 
     

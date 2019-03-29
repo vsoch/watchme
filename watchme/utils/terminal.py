@@ -17,6 +17,7 @@ from subprocess import (
 )
 import os
 import re
+import shlex
 
 
 # User Prompts
@@ -113,8 +114,10 @@ def run_command(cmd, sudo=False):
     if sudo is True:
         cmd = ['sudo'] + cmd
 
+    cmd = shlex.split(cmd)
+
     try:
-        output = Popen(cmd,stderr=STDOUT,stdout=PIPE)
+        output = Popen(cmd, stderr=STDOUT, stdout=PIPE)
 
     except FileNotFoundError:
         cmd.pop(0)
