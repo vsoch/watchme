@@ -9,8 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import ( bot, RobotNamer )
-from watchme.utils import ( confirm_prompt, regexp_prompt )
-from watchme.action import record_asciinema
 from watchme.version import __version__
 from watchme.defaults import WATCHME_BASE_DIR
 
@@ -33,7 +31,7 @@ from .schedule import (
     get_crontab,
     update_schedule,
     clear_schedule,
-    new_schedule
+    schedule
 )
 
 from watchme.config import (
@@ -89,7 +87,7 @@ class WatcherBase(object):
         self.configfile = os.path.join(self.repo, 'watchme.cfg')
 
         # If the watcher doesn't exist and we need to create:
-        if not os.path.exists(path) or not os.path.exists(self.configfile):
+        if not os.path.exists(self.repo) or not os.path.exists(self.configfile):
             if create is True:
                 create_watcher(self.name)   
             else:
@@ -271,4 +269,4 @@ WatcherBase.remove_schedule = remove_schedule
 WatcherBase.get_crontab = get_crontab
 WatcherBase.update_schedule = update_schedule
 WatcherBase.clear_schedule = clear_schedule
-WatcherBase.new_schedule = new_schedule
+WatcherBase.schedule = schedule

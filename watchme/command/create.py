@@ -14,10 +14,7 @@ from watchme.defaults import (
     WATCHME_BASE_DIR
 )
 from watchme.logger import bot
-from watchme.config import (
-    init_config,
-    generate_watcher_config
-)
+from watchme.config import generate_watcher_config
 import os
 
 

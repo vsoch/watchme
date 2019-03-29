@@ -48,7 +48,7 @@ def get_watcher(name="watcher",
         types = ','.join(WATCHME_TYPES)
         bot.exit('%s is not a valid watcher. Choices are %s' %(watcher_type,
                                                                types))
-    Watcher.name = watcher.lower()
+    Watcher.name = name.lower()
     Watcher.quiet = quiet
     Watcher.base = base
 
