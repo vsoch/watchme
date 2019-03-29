@@ -39,7 +39,15 @@ def get_parser():
                         help="suppress additional output.", 
                         default=False, action='store_true')
 
-    description = 'actions for HelpMe Command Line Tool'
+    parser.add_argument('--watcher', dest="watcher", 
+                        help="the watcher to create (defaults to watcher)", 
+                        default=None, type=str)
+
+    parser.add_argument('--base', dest="base", 
+                        help="the watcher base (defaults to $HOME/.watchme)", 
+                        default=None, type=str)
+
+    description = 'actions for WatchMe Command Line Tool'
 
     subparsers = parser.add_subparsers(help='watchme actions',
                                        title='actions',
@@ -55,26 +63,35 @@ def get_parser():
                       help="don't create the default watcher folder", 
                       default=False, action='store_true')
 
-    init.add_argument('--watcher', dest="watcher", 
-                      help="the watcher to create (defaults to watcher)", 
-                      default=None, type=str)
-
-    init.add_argument('--base', dest="base", 
-                      help="the watcher base (defaults to $HOME/.watchme)", 
-                      default=None, type=str)
-
     # create
 
     create = subparsers.add_parser("create",
                                    help="create a new watcher")
 
 
-    create.add_argument('--type', dest="watcher_type"
+    create.add_argument('--type', dest="watcher_type",
                         choices=WATCHME_TYPES, 
                         default=WATCHME_DEFAULT_TYPE)
 
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
+
+
+    # activate
+
+    activate = subparsers.add_parser("activate",
+                                     help="activate a new watcher")
+
+    activate.add_argument('watchers', nargs="*",
+                          help='watchers to activate')
+
+    # deactivate
+
+    deactivate = subparsers.add_parser("deactivate",
+                                       help="deactivate a watcher")
+
+    deactivate.add_argument('watchers', nargs="*",
+                            help='watchers to deactivate')
 
     return parser
 
@@ -143,6 +160,8 @@ def main():
 
     if args.command == "init": from .init import main
     if args.command == "create": from .create import main
+    if args.command == "activate": from .activate import main
+    if args.command == "deactivate": from .deactivate import main
 
     # Pass on to the correct parser
     return_code = 0

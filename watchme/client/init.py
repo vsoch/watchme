@@ -8,7 +8,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.main.github import ( create_watcher_base, create_watcher )
+from watchme.command.create import ( 
+    create_watcher_base, 
+    create_watcher
+)
 
 
 def main(args, extra):
@@ -16,7 +19,7 @@ def main(args, extra):
     '''    
 
     # Create the base
-    create_watcher_base(args.base)
+    create_watcher_base(args.watcher, args.base)
 
     # Create the first default watcher
     if not args.empty:

@@ -341,4 +341,4 @@ def convert2boolean(arg):
 
 
 WatchMeMessage.spinner = Spinner()
-bot = HelpMeMessage()
+bot = WatchMeMessage()

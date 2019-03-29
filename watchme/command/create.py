@@ -11,7 +11,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from watchme.utils import ( run_command, mkdir_p )
 from watchme.defaults import ( WATCHME_WATCHER, WATCHME_BASE_DIR )
 from watchme.logger import bot
-from watcher.config import generate_config
+from watchme.config import (
+    init_config,
+    generate_watcher_config
+)
 import os
 
 
@@ -39,19 +42,25 @@ def create_watcher(name=None):
         run_command("git --git-dir=%s config commit.gpgsign false" % repo)
     
         # Add the watcher configuration file
-        generate_config(repo)
+        generate_watcher_config(repo)
 
 
-def create_watcher_base(name=None):
+def create_watcher_base(name=None, base=None):
     '''create a watch base and default repo, if it doesn't already exist.
 
        Parameters
        ==========
        name: the watcher to create, uses default or WATCHME_WATCHER
     '''
-    if not os.path.exists(WATCHME_BASE_DIR):
-        bot.info('Creating %s...' % WATCHME_BASE_DIR)
-        mkdir_p(WATCHME_BASE_DIR)
+    if base == None:
+        base = WATCHME_BASE_DIR
 
-    # Create the first (default) repo.
-    create_watcher(name)
+    if name == None:
+        name = WATCHME_WATCHER
+
+    if not os.path.exists(base):
+        bot.info('Creating %s...' % base)
+        mkdir_p(base)
+
+    # Add the default config there
+    init_config(base)

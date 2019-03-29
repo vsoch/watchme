@@ -8,16 +8,17 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.command import create_watcher
+from watchme import get_watcher
+from watchme.logger import bot
 
 def main(args, extra):
-    '''create means creating one or more watchers.
+    '''activate one or more watchers
     '''    
 
     watchers = args.watchers
     if len(watchers) == 0:
-        watchers = ['watchers']
+        bot.exit('You must provide one or more watchers to activate.')
 
-    for watcher in watchers:
-        create_watcher(watcher, watcher_type=args.watcher_type)
-    
+    for name in watchers:
+        watcher = get_watcher(name, base=args.base)
+        watcher.activate()    

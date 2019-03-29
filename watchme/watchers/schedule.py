@@ -106,15 +106,15 @@ def new_schedule(self,
         bot.exit('minute must be in [0..59] or equal to *')
 
     # Hour must be between 0 through 23, or *
-    if hour not in ['*'] + list(range(24))
+    if hour not in ['*'] + list(range(24)):
         bot.exit('hour must be in [0..23] or equal to *')
   
     # Day must be in range 1 through 31, or *
-    if day not in ['*'] + list(range(1,32))
+    if day not in ['*'] + list(range(1,32)):
         bot.exit('day must be in [1..31] or equal to *')
 
     # Day must be in range 1 through 31, or *
-    if month not in ['*'] + list(range(1,13))
+    if month not in ['*'] + list(range(1,13)):
         bot.exit('month must be in [1..12] or equal to *')
 
     # The command will run the watcher, watcher.cfg controls what happens
