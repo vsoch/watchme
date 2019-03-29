@@ -93,6 +93,19 @@ def get_parser():
     deactivate.add_argument('watchers', nargs="*",
                             help='watchers to deactivate')
 
+
+    # schedule
+
+    schedule = subparsers.add_parser("schedule",
+                                     help="schedule your watcher.")
+ 
+    schedule.add_argument('watcher', nargs=1,
+                           help='the watcher to schedule')
+
+    schedule.add_argument('--force', dest="force", 
+                           help="force overwrite of a schedule, if exists.", 
+                           default=False, action='store_true')
+
     return parser
 
 
@@ -160,6 +173,7 @@ def main():
 
     if args.command == "init": from .init import main
     if args.command == "create": from .create import main
+    if args.command == "schedule": from .schedule import main
     if args.command == "activate": from .activate import main
     if args.command == "deactivate": from .deactivate import main
 
