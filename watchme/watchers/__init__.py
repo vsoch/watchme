@@ -132,7 +132,7 @@ class WatcherBase(object):
         if not hasattr(self, 'config'):
             self.load_config()
         self.config['watcher']['active'] = "true"
-            
+        bot.info('[watcher|%s] is active.' % self.name)            
    
     def deactivate(self):
         '''turn the active status of a watcher to false
@@ -140,6 +140,7 @@ class WatcherBase(object):
         if not hasattr(self, 'config'):
             self.load_config()
         self.config['watcher']['active'] = "false"
+        bot.info('[watcher|%s] deactivated' % self.name)            
 
     def is_active(self):
         '''determine if the watcher is active by reading from the config directly
