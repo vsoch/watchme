@@ -18,4 +18,3 @@ to reproduce your watching protocol.
 ## Licenses
 
 This code is licensed under the MPL 2.0 [LICENSE](LICENSE).
-

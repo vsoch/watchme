@@ -47,7 +47,7 @@ def get_job(self):
     # Find the job based on a standard of comment
     cron = self.get_crontab(user)
     comment = 'watchme-%s' % self.name
-    job = list(cron.find_comment(comment) or [None]
+    job = list(cron.find_comment(comment)) or [None]
     job = job[0]
 
     # Return None, or the actual cron job

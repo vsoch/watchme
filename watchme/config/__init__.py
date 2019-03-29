@@ -11,7 +11,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from watchme.logger import bot
 from watchme.defaults import ( 
     WATCHME_WATCHER, 
-    WATCHME_BASE_DIR
+    WATCHME_BASE_DIR,
+    WATCHME_DEFAULT_TYPE
 )
 from watchme.utils import ( 
     get_installdir, 
@@ -70,7 +71,7 @@ def read_config(filename):
 
 # WATCHER CONFIG ###############################################################
 
-def generate_watcher_config(path):
+def generate_watcher_config(path, watcher_type=None):
     '''generate a watcher config, meaning a watcher folder in the watchme
        base folder.
 
@@ -85,34 +86,18 @@ def generate_watcher_config(path):
         bot.info('Generating watcher config %s' % watcher_config)
         shutil.copyfile(configfile, watcher_config)
 
+    # Complete generation includes the watcher type
+    if watcher_type == None:
+        watcher_type = WATCHME_DEFAULT_TYPE
+    
+    # The template config has the section, but just in case
+    config = read_config(configfile)
+    if 'watcher' not in config.get_sections():
+        config.add_section('watcher')
+    config['watcher']['type'] = watcher_type
 
-
-# MASTER CONFIG ###############################################################
-
-def init_config(path):
-    '''generate the master configuration file in path using the 
-       default configuration "watchme.cfg" as template. This is a master
-       configuration file that will list the watchers, and the user
-       specific settings. Since this config is outside of the repos with
-       watcher data, it only holds user-specific variables like the names
-       of the watchers, and if each is active (true / false)
-
-       Parameters
-       ==========
-       path: the path to the folder (watchme base) to put the config file
-    '''
-    template = get_configfile_template()
-    configfile = os.path.join(path, template)
-
-    # Exit if path doesn't exist
-    if not os.path.exists(path):
-        bot.exit('%s does not exist.' % path)
-
-    # Finally, copy the master template there, if not already there
-    if not os.path.exists(configfile):
-        configfile = shutil.copyfile(template, configfile) 
-    return configfile
-
+    # Save to file
+    write_config(configfile, config)
 
 # CONFIG HELPERS ###############################################################
 

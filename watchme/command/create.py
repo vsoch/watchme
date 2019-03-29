@@ -9,7 +9,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.utils import ( run_command, mkdir_p )
-from watchme.defaults import ( WATCHME_WATCHER, WATCHME_BASE_DIR )
+from watchme.defaults import ( 
+    WATCHME_WATCHER, 
+    WATCHME_BASE_DIR
+)
 from watchme.logger import bot
 from watchme.config import (
     init_config,
@@ -18,13 +21,15 @@ from watchme.config import (
 import os
 
 
-def create_watcher(name=None):
+def create_watcher(name=None, watcher_type=None):
     '''create a watcher, meaning a folder with a configuration and
        initialized git repo.
 
        Parameters
        ==========
        name: the watcher to create, uses default or WATCHME_WATCHER
+       watcher_type: the type of watcher to create. defaults to 
+                     WATCHER_DEFAULT_TYPE
     '''
     if name == None:
         name = WATCHME_WATCHER
@@ -42,7 +47,7 @@ def create_watcher(name=None):
         run_command("git --git-dir=%s/.git config commit.gpgsign false" % repo)
     
         # Add the watcher configuration file
-        generate_watcher_config(repo)
+        generate_watcher_config(repo, watcher_type)
 
 
 def create_watcher_base(name=None, base=None):
@@ -51,6 +56,7 @@ def create_watcher_base(name=None, base=None):
        Parameters
        ==========
        name: the watcher to create, uses default or WATCHME_WATCHER
+       base: the watcher base, defaults to WATCHME_BASE_DIR
     '''
     if base == None:
         base = WATCHME_BASE_DIR
@@ -61,6 +67,3 @@ def create_watcher_base(name=None, base=None):
     if not os.path.exists(base):
         bot.info('Creating %s...' % base)
         mkdir_p(base)
-
-    # Add the default config there
-    init_config(base)
