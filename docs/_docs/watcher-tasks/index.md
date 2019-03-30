@@ -1,6 +1,6 @@
 ---
 title: Watcher Tasks
-category: Watchers
+category: Watcher Tasks
 permalink: /watchers/index.html
 order: 1
 ---

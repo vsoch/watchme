@@ -96,6 +96,15 @@ def get_parser():
                      default=False, action='store_true')
 
 
+    # inspect
+
+    inspect = subparsers.add_parser("inspect",
+                                    help="inspect a task or watcher")
+
+    inspect.add_argument('watcher', nargs=1,
+                         help='the watcher to inspect')
+
+
     # protect and freeze
 
     protect = subparsers.add_parser("protect",
@@ -219,6 +228,7 @@ def main():
     elif args.command == "create": from .create import main
     elif args.command == "deactivate": from .deactivate import main
     elif args.command == "init": from .init import main
+    elif args.command == "inspect": from .inspect import main
     elif args.command == "protect": from .protect import main
     elif args.command == "remove": from .remove import main
     elif args.command == "schedule": from .schedule import main

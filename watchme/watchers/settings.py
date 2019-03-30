@@ -73,7 +73,8 @@ def print_section(self, section):
         for key in self.config[section]:
             value = self.config[section][key]
             bot.custom(prefix=key, message=" = %s" % value, color="CYAN")
-
+    else:
+        bot.exit('%s is not a valid section.' % section)
 
 def get_setting(self, section, name, default=None):
     '''return a setting from the environment (first priority) and then

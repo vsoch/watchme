@@ -12,15 +12,15 @@ from watchme.utils import run_command
 from watchme.logger import bot
 import os
 
-def github_commit(name, base=None):
-    '''Commit to the Github repo in folder. If folder isn't defined, assume
-       present working directory
-    '''
-    if base == None:
-        base = os.getcwd()
-    
-    #TODO: define nice datestring here
+def git_commit(repo, task, message):
+    '''Commit to the git repo with a particular message. folder.
 
+       Parameters
+       ==========
+       repo: the repository to commit to.
+       task: the name of the task to add to the commit message
+       message: the message for the commit, passed from the client
+    '''
     # Commit with the watch group and date string
-    message = 'watchme %s %s' %(name, date)
-    run_command('git commit -a -m "%s"' % message)
+    message = 'watchme %s %s' %(task, message)
+    run_command('git commit -C %s -a -m "%s"' % (repo, message))

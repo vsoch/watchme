@@ -15,7 +15,11 @@ from watchme.defaults import (
     WATCHME_TASK_TYPES
 )
 
-from watchme.command.create import create_watcher
+from watchme.command import (
+    create_watcher,
+    git_commit
+)
+
 from configparser import NoOptionError
 
 from .settings import (
@@ -101,6 +105,7 @@ class Watcher(object):
     def save(self):
         '''save the configuration to file.'''
         write_config(self.configfile, self.config)
+
 
     def load_config(self):
         '''load a configuration file, and set the active setting for the watcher
@@ -188,8 +193,9 @@ class Watcher(object):
         self.config[task.name] = task.export_params(active=active)
         self.print_section(task.name)
         self.save()
+        git_commit(self.repo, self.name, "ADD task %s" % task.name)
 
-# Remove and Delete
+# Delete
 
     def delete(self):
         '''delete the entire watcher, only if not protected. Cannot be undone.
@@ -212,6 +218,52 @@ class Watcher(object):
             bot.exit("%s:%s doesn't exist" %(self.name, repo))
 
 
+    def remove_task(self, task):
+        '''remove a task from the watcher repo, if it exists, and the
+           watcher is not frozen.
+
+           Parameters
+           ==========
+           task: the name of the task to remove
+        '''
+        if self.get_section(task) != None:
+            if self.is_frozen():
+                bot.exit('watcher is frozen, unfreeze first.')
+            watcher.remove_section(task)
+
+            # If the task has a folder, remove the entire thing
+            repo = os.path.join(self.base, task)
+            if os.path.exists(repo):
+                shutil.rmtree(repo)
+
+            bot.info('%s removed successfully.' % task)
+            git_commit(self.repo, self.name, "REMOVE task %s" % task)
+
+        else:
+            bot.warning('%s does not exist.' % task)
+
+
+# Inspect
+    
+    def inspect(self, tasks=None):
+        '''inspect a watcher, or one or more tasks belonging to it. This means
+           printing the configuration for the entire watcher (if tasks is None)
+           or just for one or more tasks.
+ 
+           Parameters
+           ==========
+           tasks: one or more tasks to inspect (None will show entire file)
+        '''
+        self.load_config()
+        if tasks == None:
+            tasks = self.config.sections()
+
+        # Show all sections
+        for task in tasks:
+            self.print_section(task)
+            bot.newline()
+ 
+
 # Protection
 
     def protect(self, status="on"):
@@ -220,6 +272,7 @@ class Watcher(object):
            use the freeze() function.
         '''        
         self._set_status('watcher', 'protected', status)
+        git_commit(self.repo, self.name, "PROTECT %s" % status)
         self.print_section('watcher')
 
 
@@ -228,6 +281,7 @@ class Watcher(object):
            deleted. This does not prevent the user from manual editing.
         '''
         self._set_status('watcher', 'frozen', 'on')
+        git_commit(self.repo, self.name, "FREEZE")
         self.print_section('watcher')
 
     def unfreeze(self):
@@ -235,6 +289,7 @@ class Watcher(object):
            deleted. This does not prevent the user from manual editing.
         '''
         self._set_status('watcher', 'frozen', 'off')
+        git_commit(self.repo, self.name, "UNFREEZE")
         self.print_section('watcher')
 
     def _set_status(self, section, setting, value):
@@ -300,11 +355,13 @@ class Watcher(object):
         '''turn the active status of a watcher to True
         '''
         self._active_status('true')
+        git_commit(self.repo, self.name, "ACTIVATE")
    
     def deactivate(self):
         '''turn the active status of a watcher to false
         '''
         self._active_status('false')
+        git_commit(self.repo, self.name, "DEACTIVATE")
 
 
     def is_active(self):

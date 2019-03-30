@@ -166,6 +166,40 @@ take a look at the [watchers]({{ site.baseurl }}/watchers/) page to choose a
 task type that you want to configure.
 
 
+### How do I inspect my watcher?
+
+If you don't want to directly inspect the watcher configuration file, there
+are some easy functions you can run to show them on the screen. First, to
+inspect an entire watcher:
+
+```bash
+$ watchme inspect watcher
+[watcher]
+active  = false
+
+[task-reddit-hpc]
+url  = https://www.reddit.com/r/hpc
+active  = true
+type  = urls
+```
+
+You can also inspect a particular task alone:
+
+```bash
+$ watchme inspect watcher task-reddit-hpc
+[task-reddit-hpc]
+url  = https://www.reddit.com/r/hpc
+active  = true
+type  = urls
+```
+
+If the task doesn't exist, it will tell you:
+
+```bash
+task-doesnt-exist
+ERROR task-doesnt-exist is not a valid section.
+```
+
 ### How do I protect or freeze my watcher?
 
 If you want to prevent deletion of your folder, you can protect it.

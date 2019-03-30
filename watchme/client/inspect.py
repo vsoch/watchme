@@ -18,18 +18,5 @@ def main(args, extra):
     name = args.watcher[0]
     watcher = get_watcher(name, base=args.base, create=False)
 
-    # If delete is true, remove entire watcher, only if not protected or frozen
-    if args.delete:
-        watcher.delete()    
-
-    else:
-
-        # Exit if the user doesn't provide any tasks to remove
-        if extra == None:
-            bot.exit('Provide tasks to remove, or --delete for entire watcher.')
-    
-        for task in extra:
-     
-            # Remove the task, if it exists
-            watcher.remove_task(task)
-
+    # If extra is None (no tasks provided) will show entire watcher
+    watcher.inspect(extra)

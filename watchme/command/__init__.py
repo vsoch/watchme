@@ -14,4 +14,4 @@ from .create import (
     create_watcher
 )
 
-from .commit import github_commit
+from .commit import git_commit
