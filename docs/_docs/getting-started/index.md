@@ -15,10 +15,11 @@ watcher below:
  - [Setup](#setup-watchme): Watchme on your computer, meaning setting a base with a default watcher
  - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
  - [Add tasks](#how-do-i-add-tasks): to your watcher, such as monitoring a url or a data endpoint.
- - [Task Parameters](what-are-the-parameters-for-each-task) to customize your tasks.
- - [Inspect](#how-do-I-inspect-my-watcher) your watcher configuration easily.
+ - [Task Parameters](#what-are-the-parameters-for-each-task) to customize your tasks.
+ - [Inspect](#how-do-i-inspect-my-watcher) your watcher configuration easily.
+ - [List](#how-do-i-list-watchers) your watchers
  - [Protect](#how-do-i-protect-or-freeze-my-watcher) or freeze your watcher against accidental deletion.
- - [Schedule](#how-do-schedule-my-watcher) your watcher to run at some frequency using cron.
+ - [Schedule](#how-do-i-schedule-my-watcher) your watcher to run at some frequency using cron.
  - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
  - [Delete](#how-do-i-delete-a-watcher): a watcher repository
 
@@ -213,6 +214,18 @@ If the task doesn't exist, it will tell you:
 task-doesnt-exist
 ERROR task-doesnt-exist is not a valid section.
 ```
+
+### How do I list my watchers?
+
+You can quickly see the watchers installed to your watcher home with:
+
+```bash
+$ watchme list
+watcher
+purpleair
+```
+
+And logically, you can then inspect further with [inspect](#how-do-i-inspect-my-watchers)
 
 ### How do I protect or freeze my watcher?
 

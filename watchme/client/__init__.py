@@ -105,6 +105,11 @@ def get_parser():
                          help='the watcher to inspect')
 
 
+    # list
+
+    ls = subparsers.add_parser("list",
+                               help="list all watchers at a base")
+
     # protect and freeze
 
     protect = subparsers.add_parser("protect",
@@ -229,6 +234,7 @@ def main():
     elif args.command == "deactivate": from .deactivate import main
     elif args.command == "init": from .init import main
     elif args.command == "inspect": from .inspect import main
+    elif args.command == "list": from .ls import main
     elif args.command == "protect": from .protect import main
     elif args.command == "remove": from .remove import main
     elif args.command == "schedule": from .schedule import main
