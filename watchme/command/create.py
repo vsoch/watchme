@@ -45,7 +45,10 @@ def create_watcher(name=None, watcher_type=None):
     
         # Add the watcher configuration file
         generate_watcher_config(repo, watcher_type)
+        run_command("git -C %s add watchme.cfg" % repo)  
 
+    else:
+        bot.info('%s already exists: %s' % (name, repo))
 
 def create_watcher_base(name=None, base=None):
     '''create a watch base and default repo, if it doesn't already exist.

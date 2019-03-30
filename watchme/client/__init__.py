@@ -13,7 +13,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from watchme.logger import bot
 from watchme.defaults import ( 
     WATCHME_WATCHER, 
-    WATCHME_TYPES, 
+    WATCHME_TASK_TYPES, 
     WATCHME_DEFAULT_TYPE
 )
 import watchme
@@ -68,14 +68,57 @@ def get_parser():
     create = subparsers.add_parser("create",
                                    help="create a new watcher")
 
-
-    create.add_argument('--type', dest="watcher_type",
-                        choices=WATCHME_TYPES, 
-                        default=WATCHME_DEFAULT_TYPE)
-
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
 
+
+    # add
+
+    add = subparsers.add_parser("add",
+                                 help="add a task to a watcher.")
+
+    add.add_argument('watcher', nargs=1,
+                     help='the watcher to add to')
+
+    add.add_argument('task', nargs=1,
+                     help='the name of the task to add. Must start with task')
+
+    add.add_argument('--type', dest="watcher_type",
+                     choices=WATCHME_TASK_TYPES, 
+                     default=WATCHME_DEFAULT_TYPE)
+
+    add.add_argument('--active', dest="active",
+                     choices=["true", "false"], 
+                     default="true")
+
+    add.add_argument('--force', dest="force", 
+                     help="force overwrite a task, if already exists.", 
+                     default=False, action='store_true')
+
+
+    # protect and freeze
+
+    protect = subparsers.add_parser("protect",
+                                    help="protect or freeze a watcher.")
+
+    protect.add_argument('watcher', nargs=1,
+                          help='the watcher to protect or freeze')
+
+    protect.add_argument('action',
+                         default="on",
+                         choices=['on', 'off', 'freeze', 'unfreeze'])
+
+    # remove
+
+    remove = subparsers.add_parser("remove",
+                                   help="remove a task or entire watcher.")
+
+    remove.add_argument('watcher', nargs=1,
+                        help='the watcher to remove tasks from')
+
+    remove.add_argument('--delete', dest="delete", 
+                        help="delete the entire watch repository", 
+                        default=False, action='store_true')
 
     # activate
 
@@ -171,11 +214,15 @@ def main():
         print(watchme.__version__)
         sys.exit(0)
 
-    if args.command == "init": from .init import main
-    if args.command == "create": from .create import main
-    if args.command == "schedule": from .schedule import main
     if args.command == "activate": from .activate import main
-    if args.command == "deactivate": from .deactivate import main
+    elif args.command == "add": from .add import main
+    elif args.command == "create": from .create import main
+    elif args.command == "deactivate": from .deactivate import main
+    elif args.command == "init": from .init import main
+    elif args.command == "protect": from .protect import main
+    elif args.command == "remove": from .remove import main
+    elif args.command == "schedule": from .schedule import main
+    else: help()
 
     # Pass on to the correct parser
     return_code = 0

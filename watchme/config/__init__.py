@@ -80,7 +80,7 @@ def generate_watcher_config(path, watcher_type=None):
        path: the path to the watcher repository
     '''
     check_exists(path)
-    configfile = get_watcherfile_template()
+    configfile = get_configfile_template()
     watcher_config = os.path.join(path, 'watchme.cfg')
     if not os.path.exists(watcher_config):
         bot.info('Generating watcher config %s' % watcher_config)
@@ -92,7 +92,7 @@ def generate_watcher_config(path, watcher_type=None):
     
     # The template config has the section, but just in case
     config = read_config(configfile)
-    if 'watcher' not in config.get_sections():
+    if 'watcher' not in config.sections():
         config.add_section('watcher')
     config['watcher']['type'] = watcher_type
 

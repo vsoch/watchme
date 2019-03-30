@@ -10,20 +10,21 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.logger import ( bot, RobotNamer )
 from watchme.version import __version__
-from watchme.defaults import WATCHME_BASE_DIR
+from watchme.defaults import (
+    WATCHME_BASE_DIR,
+    WATCHME_TASK_TYPES
+)
 
 from watchme.command.create import create_watcher
 from configparser import NoOptionError
 
 from .settings import (
     get_setting,
-    get_settings,
-    get_and_update_setting,
-    load_config,
-    load_config_user,
-    load_envars,
+    set_setting,
+    get_section,
+    print_section,
     remove_setting,
-    update_settings
+    remove_section
 )
 
 from .schedule import (
@@ -41,18 +42,18 @@ from watchme.config import (
 
 import os
 import re
+import shutil
 import sys
 
 
-class WatcherBase(object):
+class Watcher(object):
 
     repo = None
     configfile = None
 
     def __init__(self, name=None, 
                        base=None, 
-                       create=False, 
-                       watcher_type = None, **kwargs):
+                       create=False, **kwargs):
         '''the watcher base loads configuration files for the user (in $HOME)
            and module, and then stores any arguments given from the caller
 
@@ -61,7 +62,6 @@ class WatcherBase(object):
            name: the watcher name, defaults to github
            base: the watcher base, will default to $HOME/.watchme
            create: boolean to create the watcher if doesn't exist (default False)
-           watcher_type: defaults to "urls" (only option at the moment)
            kwargs: should include command line arguments from the client.
 
         '''
@@ -69,15 +69,17 @@ class WatcherBase(object):
         self._set_base(base, create)
         self._version = __version__
 
-        # If the watcher needs to load secrets from the environment, etc.
-        self.load_secrets()
-
         # Load the configuration
-        self.load_config(watcher_type)
+        self.load_config()
 
 
     def _set_base(self, base=None, create=False):
         ''' set the base for the watcher, ensuring that it exists.
+
+            Parameters
+            ==========
+            base: the base folder of watcher repos. Uses $HOME/.watchme default
+            create: create the watcher if it doesn't exist (default is False)
         '''
         if base == None:
             base = WATCHME_BASE_DIR
@@ -94,83 +96,237 @@ class WatcherBase(object):
                 bot.exit('%s does not exist. Use watchme create.' % self.name)
 
 
-    def load_secrets(self):
-        '''the subclass helper should implement this function to load 
-           environment variables, etc. from the user.
-        '''
-        pass
+# Config
 
+    def save(self):
+        '''save the configuration to file.'''
+        write_config(self.configfile, self.config)
 
-    def load_config(self, watcher_type=None):
+    def load_config(self):
         '''load a configuration file, and set the active setting for the watcher
            if the file doesn't exist, the function will exit and prompt the user 
            to create the watcher first. If the watcher section isn't yet defined,
            it will be written with a default active status set to false.
         '''
-        # Load the configuration file if it exists (will exit if not found)
-        if self.configfile != None:
-            self.config = read_config(self.configfile)
+        if not hasattr(self, 'config'):
+           
+            # Load the configuration file if it exists (will exit if not found)
+            if self.configfile != None:
+                self.config = read_config(self.configfile)
 
-        # The watcher section is added by default, args for the watcher
-        if 'watcher' not in self.config.sections():
-            self.config.add_section('watcher')
-            self.config['watcher']['active'] = "false"
+            # The watcher section is added by default, args for the watcher
+            if 'watcher' not in self.config.sections():
+                self.config.add_section('watcher')
+                self.set_setting('watcher', 'active', 'false')
 
-            # Does the watcher type not exist?
-            if 'type' not in self.config['watcher']:
-                self.config['watcher']['type'] = watcher_type or WATCHME_DEFAULT_TYPE
+                # Only update the config if we've changed it
+                self.save()
 
-            # Only update the config if we've changed it
-            write_config(self.configfile, self.config)
 
+# Add Tasks
+
+    def add_task(self, task, task_type, params, force=False, active="true"):
+        '''add a task, meaning ensuring that the type is valid, and that
+           the parameters are valid for the task.
+
+           Parameters
+           ==========
+           task: the Task object to add, should have a name and params and
+                 be child of watchme.tasks.TaskBase
+           task_type: must be in WATCHME_TASK_TYPES, meaning a client exists
+           params: list of parameters to be validated (key@value)
+           force: if task already exists, overwrite
+           active: add the task as active (default "true")
+           
+        '''
+        # Check again, in case user calling from client
+        if not task.startswith('task'):
+            bot.exit('Task name must start with "task" (e.g., task-reddit)')
+       
+        # Ensure it's a valid type
+        if task_type not in WATCHME_TASK_TYPES:
+            bot.exit('%s is not a valid type: %s' % WATCHME_TASK_TYPES)
+
+        # Validate variables provided for task
+        if task_type.startswith('url'):
+            from .urls import Task
+
+        # Creating the task will validate parameters and exit if not valid
+        newtask = Task(task, params=params)
+
+        # Write to file (all tasks get active = True added, and type)
+        self._add_task(newtask, force, active)
+
+
+    def _add_task(self, task, force=False, active='true'):
+        '''add a new task to the watcher, meaning we:
+
+           1. Check first that the task doesn't already exist (if the task
+              exists, we only add if force is set to true)
+           2. Validate the task (depends on the task)
+           3. write the task to the helper config file, if valid.
+
+           Parameters
+           ==========
+           task: the Task object to add, should have a name and params and
+                 be child of watchme.tasks.TaskBase
+           force: if task already exists, overwrite
+           active: add the task as active (default "true")
+        '''
+        self.load_config()
+
+        if active not in ["true", "false"]:
+            bot.exit('Active must be "true" or "false"')
+
+        # Don't overwrite a section that already exists
+        if task.name in self.config.sections():
+            if not force:
+                bot.exit('%s exists, use --force to overwrite.' % task.name)
+            self.remove_section(task.name, save=False)
+
+        # Add the new section
+        self.config[task.name] = task.export_params(active=active)
+        self.print_section(task.name)
+        self.save()
+
+# Remove and Delete
+
+    def delete(self):
+        '''delete the entire watcher, only if not protected. Cannot be undone.
+        '''
+        self.load_config()
+
+        # Check for protection
+        if self.is_frozen():
+            bot.exit('watcher %s is frozen, unfreeze to delete.' % self.name)
+        elif self.is_protected():
+            bot.exit('watcher %s is protected, turn off protection to delete.' % self.name)
+
+        repo = os.path.dirname(self.configfile)
+
+        # Ensure repository exists before delete
+        if os.path.exists(repo):
+            bot.info('Removing watcher %s' % self.name)
+            shutil.rmtree(repo)
+        else:
+            bot.exit("%s:%s doesn't exist" %(self.name, repo))
+
+
+# Protection
+
+    def protect(self, status="on"):
+        '''protect a watcher, meaning that it cannot be deleted. This does
+           not influence removing a task. To freeze the entire watcher,
+           use the freeze() function.
+        '''        
+        self._set_status('watcher', 'protected', status)
+        self.print_section('watcher')
+
+
+    def freeze(self):
+        '''freeze a watcher, meaning that it along with its tasks cannot be 
+           deleted. This does not prevent the user from manual editing.
+        '''
+        self._set_status('watcher', 'frozen', 'on')
+        self.print_section('watcher')
+
+    def unfreeze(self):
+        '''freeze a watcher, meaning that it along with its tasks cannot be 
+           deleted. This does not prevent the user from manual editing.
+        '''
+        self._set_status('watcher', 'frozen', 'off')
+        self.print_section('watcher')
+
+    def _set_status(self, section, setting, value):
+        '''a helper function to set a status, ensuring that status value
+           is in "on" or "off"
+
+           Parameters
+           ==========
+           status: one of "on" or "off"
+           name: a value to set status for.
+        '''
+        if value not in ['on', 'off']:
+            bot.exit('Status must be "on" or "off"')
+        self.set_setting(section, setting, value)
+        self.save()
+        
+
+    def is_protected(self):
+        '''return a boolean to indicate if the watcher is protected or frozen.
+           protected indicates no delete to the watcher, but allowed delete
+           to tasks, frozen indicates no change of anything.
+        '''
+        protected = False
+        for status in ['protected', 'frozen']:
+            if self.get_setting('watcher', status) == "on":
+                protected = True
+        return protected
+        
+
+    def is_frozen(self):
+        '''return a boolean to indicate if the watcher is frozen.
+           protected indicates no delete to the watcher, but allowed delete
+           to tasks, frozen indicates no change of anything.
+        '''
+        if self.get_setting('watcher', 'frozen') == "on":
+            return True
+        return False
 
 # Status
+
+    def _active_status(self, status='true'):
+        '''a general function to change the status, used by activate and
+           deactivate.
+ 
+           Parameters
+           ==========
+           status: must be one of true, false
+        '''
+        if status not in ['true', 'false']:
+            bot.exit('status must be true or false.')
+
+        # Load the configuration, if not loaded
+        self.load_config()
+
+        # Update the status and alert the user
+        self.set_setting('watcher','active', status)
+        self.save()
+
+        bot.info('[watcher|%s] active: %s' % (self.name, status)) 
+
 
     def activate(self):
         '''turn the active status of a watcher to True
         '''
-        if not hasattr(self, 'config'):
-            self.load_config()
-        self.config['watcher']['active'] = "true"
-        bot.info('[watcher|%s] is active.' % self.name)            
+        self._active_status('true')
    
     def deactivate(self):
         '''turn the active status of a watcher to false
         '''
-        if not hasattr(self, 'config'):
-            self.load_config()
-        self.config['watcher']['active'] = "false"
-        bot.info('[watcher|%s] deactivated' % self.name)            
+        self._active_status('false')
+
 
     def is_active(self):
         '''determine if the watcher is active by reading from the config directly
         '''
-        if not hasattr(self, 'config'):
-            self.load_config()
-        if self.config['watcher']['active'] == "true":
+        if self.get_setting('watcher', 'active', 'true'):
             return True
         return False
-
-    def get_type(self):
-        '''get the watcher type.
-        '''
-        if not hasattr(self, 'config'):
-            self.load_config()
-        return self.config['watcher']['type']
 
 # Actions
 
     def get_tasks(self, regexp=None):
         '''get the tasks for a watcher, possibly matching a regular expression.
         '''
-        if not hasattr(self, 'config'):
-            self.load_config()
+        self.load_config()
 
         tasks = []
         for section in config._sections:
 
             task = config._sections[section]
 
+            #TODO: init task object based on what find in config for it
             # A task must start with task-
             if not section.startswith('task-'):
                 continue
@@ -185,18 +341,37 @@ class WatcherBase(object):
         return tasks       
    
 
-    def _run_tasks(self, task):
-        '''this run_task function should be implemented by the Watcher, as
-           tasks for different watchers will be different
+    def check_tasks(self, contenders):
+        '''check that tasks are of valid types, and active. The Task object
+           for each will ensure that further variables are okay.
         '''
-        pass
+        # Keep set of tasks
+        tasks = set()
+
+        for task in contenders:
+
+            # A URL task looks for changes in a web page
+            if task.startswith("url"):
+                from .urls import Task
+                tasks.append(Task(task))
+
+            # Not a valid watcher
+            else:
+                bot.warning('%s is not a valid watcher task type.' % task)
+
+        return tasks             
+
 
     def run_tasks(self, tasks, parallel):
         '''this run_task function should be implemented by the Watcher, as
            tasks for different watchers will be different
         ''' 
-        self.start()        
-        self._run_tasks()
+        self.start()
+
+        # Parse sections into dict lookups
+
+        # Ensure that each is a valid type, skip over invalids
+        self.check_tasks()
         # TODO: need to figure out multiprocessing here.
 
     def run(self, parallel=True):
@@ -248,26 +423,25 @@ class WatcherBase(object):
 # identification
 
     def __repr__(self):
-        return "[helper|%s]" %self.name
+        return "[watcher|%s]" %self.name
 
     def __str__(self):
-        return "[helper|%s]" %self.name
+        return "[watcher|%s]" %self.name
 
 
 # Settings
 
-WatcherBase._load_config = load_config
-WatcherBase._load_envars = load_envars
-WatcherBase._remove_setting = remove_setting
-WatcherBase._get_setting = get_setting
-WatcherBase._get_settings = get_settings
-WatcherBase._get_and_update_setting = get_and_update_setting
-WatcherBase._update_settings = update_settings
+Watcher.remove_setting = remove_setting
+Watcher.get_setting = get_setting
+Watcher.get_section = get_section
+Watcher.set_setting = set_setting
+Watcher.remove_section = remove_section
+Watcher.print_section = print_section
 
 # Schedule 
 
-WatcherBase.remove_schedule = remove_schedule
-WatcherBase.get_crontab = get_crontab
-WatcherBase.update_schedule = update_schedule
-WatcherBase.clear_schedule = clear_schedule
-WatcherBase.schedule = schedule
+Watcher.remove_schedule = remove_schedule
+Watcher.get_crontab = get_crontab
+Watcher.update_schedule = update_schedule
+Watcher.clear_schedule = clear_schedule
+Watcher.schedule = schedule

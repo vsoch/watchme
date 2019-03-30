@@ -108,17 +108,100 @@ $ tree /home/vanessa/.watchme/
 ```
 
 and what you can't see is that there is a Git repo (a .git folder) in the 
-watcher directory too. 
+watcher directory too. Good job! The watcher is set up, and ready to add
+tasks to it.
 
-### How do I configure my watcher?
+### How do I add tasks?
 
-After creation, the watcher doesn't do much. It doesn't have a schedule to run,
-or any things to watch. When you do this, your specifications will be saved in
-the `watchme.cfg` you see in the folder above. When first created, this configuration file doesn't do much. But after you've set up your watcher, if you put the repository on GitHub, others could reproduce your protocol. 
+After creation, the watcher is empty. You need to add tasks for it to run. 
+The configuration commands will vary based on the kind of task you want to add, 
+and here is a quick example of adding a task to watch a url (the default task):
 
-> Do I need to manually edit this file?
+```bash
+$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc
+[task-reddit-hpc]
+url  = https://www.reddit.com/r/hpc
+active  = true
+type  = urls
+```
 
-While you don't need to manually edit this file, there isn't any reason that you can't if you wanted to. To read more about the settings here, see the [watcher configuration]({{ site.baseurl }}/getting-started/watcher-config/) documentation.
+In the example above, we added a task called "task-reddit-hpc" to the default
+watcher "watcher." The only required variable is the url, and we provided it
+in the format `<key>@<value>`. This is how you will add any parameter to a task,
+and the parameters allowed will vary based on the task type. In the above, we didn't
+define a `--type` variable. By default, the setting is `--type url`. After
+you add a task, you can quickly verify it was added by looking at the configuration file
+directly:
+
+
+```bash
+$ cat /home/vanessa/.watchme/watcher/watchme.cfg
+
+[watcher]
+active = false
+
+[task-reddit-hpc]
+url = https://www.reddit.com/r/hpc
+active = true
+type = urls
+```
+
+While you don't need to manually edit this file, there isn't any reason that you can't if you wanted to. 
+To read more about the settings here, see the [watcher configuration]({{ site.baseurl }}/getting-started/watcher-config/) documentation.
+
+The task is active by default (after you set up its schedule) and you can disable
+this with --active false:
+
+```bash
+$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc --active false
+```
+
+The reason we save these parameters in the repo is that if you put it under version
+control on GitHub (or similar), others will be able to reproduce your protocol.
+
+### What are the parameters for each task?
+
+The parameters will vary based on the task type. When you are ready,
+take a look at the [watchers]({{ site.baseurl }}/watchers/) page to choose a
+task type that you want to configure.
+
+
+### How do I protect or freeze my watcher?
+
+If you want to prevent deletion of your folder, you can protect it.
+
+```bash
+$ watchme protect watcher on
+[watcher]
+active  = false
+protected  = on
+```
+
+protection means that you cannot delete the watcher, but you can edit the tasks. To
+remove protection:
+
+```bash
+$ watchme protect watcher off
+[watcher]
+active  = false
+protected  = off
+```
+
+Freezing is one step above protected - it means that you cannot delete *or* edit
+the tasks for your watcher. You can also turn it on or off:
+
+```bash
+$ watchme protect watcher freeze
+[watcher]
+active  = false
+frozen  = on
+
+$ watchme protect watcher unfreeze
+[watcher]
+active  = false
+```
+
+Frozen takes preference to protected, if the settings don't agree.
 
 
 ### How do I schedule my watcher?
@@ -142,6 +225,55 @@ times? If you want to set a [custom cron string](https://crontab.guru/) you can 
 ```bash
 $ watchme schedule watcher 0 * * * * *
 ```
+
+### How do I remove a task from a watcher?
+
+To remove a task, just specify it:
+
+```bash
+$ watchme remove watcher task-reddit-hpc
+task-reddit-hpc removed successfully.
+```
+
+If the task doesn't exist, it will tell you.
+
+```bash
+$ watchme remove watcher task-reddit-hpc
+WARNING task-reddit-hpc does not exist.
+```
+
+If the watcher is frozen, it will not allow you to remove it.
+
+```bash
+$ watchme remove watcher task-reddit-hpc
+ERROR watcher is frozen, unfreeze first.
+```
+
+### How do I delete a watcher?
+
+To remove an entire watcher, specify `--delete`:
+
+```bash
+$ watchme remove watcher --delete
+```
+
+If the watcher is frozen, you need to unfreeze it first:
+
+```bash
+$ watchme remove  watcher --delete
+ERROR watcher watcher is frozen, unfreeze to delete.
+
+$ watchme protect watcher unfreeze
+$ watchme remove  watcher --delete
+Removing watcher watcher
+```
+
+The entire folder is now removed.
+
+```bash
+$ ls /home/vanessa/.watchme/
+```
+
 
 ## Licenses
 
