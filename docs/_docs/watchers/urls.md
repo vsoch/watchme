@@ -1,7 +1,7 @@
 ---
 title: URLS
 category: Watchers
-permalink: /watchers/urls
+permalink: /watchers/urls/
 order: 2
 ---
 
