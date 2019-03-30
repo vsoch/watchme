@@ -6,5 +6,7 @@ navigation:
   url: install/
 - name: Getting Started
   url: getting-started/
+- name: Watcher Tasks
+  url: watchers/
 - name: Contributing
   url: contributing/
