@@ -9,10 +9,24 @@ order: 1
 You should first [install]({{ site.baseurl }}/install/) watchme.
 This will place the executable `watchme` in your bin folder, which is the client
 for setting up and running a watcher. You can jump into setting up your first
-watcher below, or read about the following:
+watcher below:
+
+ - [Background](#what-is-a-watcher): What is a watcher, exactly?
+ - [Setup](#setup-watchme): Watchme on your computer, meaning setting a base with a default watcher
+ - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
+ - [Add tasks](#how-do-i-add-tasks): to your watcher, such as monitoring a url or a data endpoint.
+ - [Task Parameters](what-are-the-parameters-for-each-task) to customize your tasks.
+ - [Inspect](#how-do-I-inspect-my-watcher) your watcher configuration easily.
+ - [Protect](#how-do-i-protect-or-freeze-my-watcher) or freeze your watcher against accidental deletion.
+ - [Schedule](#how-do-schedule-my-watcher) your watcher to run at some frequency using cron.
+ - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
+ - [Delete](#how-do-i-delete-a-watcher): a watcher repository
+
+or read about the following:
 
  - [Concepts]({{ site.baseurl }}/getting-started/concepts/) including watchers and their types
  - [Environment]({{ site.baseurl }}/getting-started/environment/) change defaults and settings via environmnet variables.
+
 
 ### What is a Watcher?
 
