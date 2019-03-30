@@ -63,6 +63,14 @@ def get_parser():
                       help="don't create the default watcher folder", 
                       default=False, action='store_true')
 
+    # get
+
+    get = subparsers.add_parser("get",
+                                help="get a watcher repository or task using git")
+
+    get.add_argument('repo', nargs=1,
+                     help='the repository url to clone')
+
     # create
 
     create = subparsers.add_parser("create",
@@ -232,6 +240,7 @@ def main():
     elif args.command == "add": from .add import main
     elif args.command == "create": from .create import main
     elif args.command == "deactivate": from .deactivate import main
+    elif args.command == "get": from .get import main
     elif args.command == "init": from .init import main
     elif args.command == "inspect": from .inspect import main
     elif args.command == "list": from .ls import main

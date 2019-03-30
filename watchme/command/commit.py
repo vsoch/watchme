@@ -24,3 +24,11 @@ def git_commit(repo, task, message):
     # Commit with the watch group and date string
     message = 'watchme %s %s' %(task, message)
     run_command('git commit -C %s -a -m "%s"' % (repo, message))
+
+
+def git_clone(repo, dest=None):
+    '''clone a git repo to a destination. If not provided, create a temporary
+       directory.
+    '''
+
+

@@ -51,7 +51,7 @@ def mkdir_p(path):
 
 # FILE OPERATIONS ##############################################################
 
-def generate_temporary_file(folder='/tmp', prefix='watchme', ext='json'):
+def generate_temporary_file(folder=None, prefix='watchme', ext='json'):
     '''write a temporary file, in base directory with a particular extension.
       
        Parameters
@@ -61,8 +61,32 @@ def generate_temporary_file(folder='/tmp', prefix='watchme', ext='json'):
        ext: the extension to use.
 
     '''        
+    if folder == None:
+        folder = tempfile.gettempdir()
     tmp = next(tempfile._get_candidate_names())
     return '%s/%s.%s.%s' %(folder, prefix, tmp, ext)
+
+
+def get_tmpdir(prefix="", create=True):
+    '''get a temporary directory for an operation. If SREGISTRY_TMPDIR
+       is set, return that. Otherwise, return the output of tempfile.mkdtemp
+
+       Parameters
+       ==========
+       prefix: Given a need for a sandbox (or similar), we will need to 
+       create a subfolder *within* the SREGISTRY_TMPDIR.
+       create: boolean to determine if we should create folder (True)
+    '''
+    tmpdir = tempfile.gettempdir()
+    prefix = prefix or "watchme-tmp"
+    prefix = "%s.%s" %(prefix, next(tempfile._get_candidate_names()))
+    tmpdir = os.path.join(tmpdir, prefix)
+
+    if not os.path.exists(tmpdir) and create is True:
+        os.mkdir(tmpdir)
+
+    return tmpdir
+
 
 
 def copyfile(source, destination, force=True):

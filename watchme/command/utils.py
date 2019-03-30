@@ -1,0 +1,91 @@
+'''
+
+Copyright (C) 2019 Vanessa Sochat.
+
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+'''
+
+from watchme.defaults import WATCHME_BASE_DIR
+from watchme.command import ( get_tmpdir, run_command )
+from watchme.logger import bot
+
+import os
+import re
+import shutil
+import sys
+
+def list_watchers(base=None):
+    '''list the watchers installed at a base. If base is not defined,
+       the default base is used.
+
+       Parameters
+       ==========
+       base: the watchme base, defaults to $HOME/.watchme
+    '''
+    if base == None:
+        base = WATCHME_BASE_DIR
+
+    watchers = os.listdir(base)
+    bot.info('\n'.join(watchers))
+
+
+def clone_watcher(repo, base=None, name=None):
+    '''clone a watcher from Github (or other version control with git)
+       meaning that we clone to a temporary folder, and then move
+       to a new folder. By default, the user gets all tasks associated
+       with the watcher, along with the git folder so that removing
+       is also done with version control.
+
+       Parameters
+       ==========
+       repo: the repository to clone
+       base: the watchme base, defaults to $HOME/.watchme
+       name: a new name for the watcher, if a rename is desired.
+    '''    
+    if base == None:
+        base = WATCHME_BASE_DIR
+
+    # Validate the repository address
+    if not re.search('^git@|http', repo):
+        bot.exit('Please provide a valid url to git repository')
+
+    # if the name is None, use the repo name
+    if name == None:
+        name = os.path.basename(repo) 
+
+    # Ensure we aren't overwriting
+    dest = os.path.join(base, name)
+    if os.path.exists(dest):
+        bot.exit('%s already exists, choose a different watcher name.' % name)
+
+    clone_dest = get_tmpdir(prefix="watchme-clone", create=False)
+    run_command("git clone %s %s" %(repo, clone_dest))
+
+    # Valid by default - will copy over if valid
+    valid = True    
+
+    # Iterate over watchers
+    watchers = os.listdir(clone_dest)
+    for watcher in watchers:
+        watcher = os.path.join(clone_dest, watcher)
+        tasks = os.listdir(watcher)
+
+        # Check that tasks include watchme.cfg
+        for task in tasks:
+            if not task.startswith('task'):
+                continue
+            task_folder = os.path.join(watcher, task)
+            content = os.listdir(task_folder)
+            if 'watcher.cfg' not in content:
+                bot.error('%s is missing a watcher.cfg' % task)
+                valid = False 
+                break
+                
+    if valid:
+        shutil.move(clone_dest, dest)
+        
+    if os.path.exists(clone_dest):
+        shutil.rmtree(clone_dest)
