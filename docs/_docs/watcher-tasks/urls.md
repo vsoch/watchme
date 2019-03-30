@@ -1,6 +1,6 @@
 ---
 title: URLS
-category: Watchers
+category: Watcher Tasks
 permalink: /watchers/urls/
 order: 2
 ---
