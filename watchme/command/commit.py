@@ -30,5 +30,19 @@ def git_clone(repo, dest=None):
     '''clone a git repo to a destination. If not provided, create a temporary
        directory.
     '''
+    #TODO: write me
 
 
+def git_add(files, repo):
+    '''add one or more files to the git repo.
+
+       Parameters
+       ==========
+       repo: the repository to commit to.
+       files: one or more files to add.
+    '''
+    if not isinstance(files, list):
+        files = [files]
+
+    for f in files:
+        run_command('git add -C %s %s' % (repo, f))

@@ -29,7 +29,17 @@ determined by the watcher schedule), it follows that adding the task minimally
 requires a url parameter. 
 
 
-### 1. Watch a URL Task
+### Task Parameters
+
+A urls task has the following parameters shared across functions. 
+
+| Name | Required | Default | Example | Notes|
+|------|----------|---------|---------|-----------|
+| url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
+| func | No    |get_task |func@download_task| must be defined in tasks.py |
+
+
+### 1. Get a URL Task
 
 This task will watch for changes at an entire URL, meaning tracking the entire page.
 For example, here is a page I wanted to watch for changes:
@@ -45,8 +55,58 @@ type  = urls
 In the above, we added the task "task-harvard-hpc" to the watcher called "watcher"
 and we defined the parameter "url" to be `https://www.rc.fas.harvard.edu/about/people/`.
 As a confirmation that the task was added, the configuration is printed to the screen.
+This task is appropriate for content that you want returned as a string, and then
+saved to a text file to the repository. By default, it will be saved as result.txt.
+If you want to customize the extension (e.g., get a json object and save as result.json)
+specify the save_as parameter:
 
-### 2. Download Content
+```bash
+$ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@json
+```
+
+The following custom parameters can be added:
+
+| Name | Required | Default | Example | Notes|
+|------|----------|---------|---------|-----------|
+| save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
+| file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+
+If you specify "save_as" to be json, you will get a results.json unless you specify another
+file name. 
+
+
+### 2. Post to a URL Task
+
+This task will post to get changes from a URL, ideal for watching restful API
+endpoints. For example, here is a page I wanted to watch for changes:
+
+```bash
+$ watchme add watcher task-api-post url@https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/ file_name@manifest-latest.json save_as@json func@post_task
+
+[task-api-post]
+url  = https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/
+file_name  = manifest-latest.json
+save_as  = json
+func  = post_task
+active  = true
+type  = urls
+```
+
+Since we are using the task "post_task" it defaults to saving json, so I don't need to set
+"save_as" (unless you want to save to a different type). Notice that I've specified a custom file_name too. 
+
+In the above, we added the task "task-api-post" to the watcher called "watcher"
+and we defined the parameter "url" to be the endpoint that we want to post to. 
+The following custom parameters can be added:
+
+| Name | Required | Default | Example | Notes|
+|------|----------|---------|---------|-----------|
+| save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
+| file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+
+If you want more control about headers, tokens, etc. please open an issue.
+
+### 3. Download Content
 
 You might also want to download some content or object, and save it to file
 to track changes over time. You can do this by using the urls type watcher and
@@ -55,6 +115,13 @@ specifying the variable func to be "download_task":
 ```bash
 $ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ func@download_task
 ```
+
+| Name | Required | Default | Example | Notes|
+|------|----------|---------|---------|-----------|
+| no_verify_ssl | No | unset |no_verify_ssl@true| |
+| write_format | No | unset |write_format@wb| only for download_task |
+| file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+
 
 ### Verify the Addition
 
@@ -75,21 +142,6 @@ You don't actually need to use watchme to write these files - you can write
 the sections in a text editor if you are comfortable with the format.
 The sections are always validated when the watcher is run.
 
-### Task Parameters
-
-A urls task has the following custom parameters. Note that "active" and "type" are
-added to all tasks, and indicate if the task is active, and the type to use to
-drive its running. 
-
-| Name | Required | Default | Example | Notes|
-|------|----------|---------|---------|-----------|
-| url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
-| func | No    |get_task |func@download_task| must be defined in tasks.py |
-| no_verify_ssl | No | unset |no_verify_ssl@true| |
-| write_format | No | unset |write_format@wb| only for download_task |
-
-We will be adding more variables to customize the url watcher as watchme
-is developed.
 
 ### Force Addition
 

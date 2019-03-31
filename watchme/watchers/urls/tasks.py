@@ -28,7 +28,40 @@ def get_task(url, **kwargs):
     result = None
     response = requests.get(url)
     if response.status_code == 200:
-        result = response.text
+        save_as = kwargs.get('save_as')
+
+        # Returning the result as json will detect dictionary, and save json
+        if save_as == "json":
+            result = response.json()
+
+        # Otherwise, we return text
+        else:
+            result = response.text
+    return result
+
+
+def post_task(url, **kwargs):
+    '''a simple task to use requests to post to. By default, we return json.
+
+       Parameters
+       ==========
+
+       REQUIRED:
+           url: a url to post to
+    '''
+    result = None
+    response = requests.post(url)
+    if response.status_code == 200:
+
+        save_as = kwargs.get('save_as', 'json')
+
+        # Returning the result as json will detect dictionary, and save json
+        if save_as == "json":
+            result = response.json()
+
+        # Otherwise, we return text
+        else:
+            result = response.text
     return result
 
 
@@ -51,7 +84,12 @@ def download_task(url, **kwargs):
     # Update the user what we are doing
     bot.verbose("Downloading %s" % url)
 
+    # Use the basename or the user set file_name to write to
+    file_name = kwargs.get('file_name', os.path.basename(url))
+
     # Generate a temporary object for the file
+ or generate_temporary_file()
+    
     destination = generate_temporary_file()
     verify = True
 

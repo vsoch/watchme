@@ -18,7 +18,8 @@ from watchme.defaults import (
 
 from watchme.command import (
     create_watcher,
-    git_commit
+    git_commit,
+    git_add
 )
 
 from configparser import NoOptionError
@@ -43,6 +44,12 @@ from .schedule import (
 from watchme.config import (
     read_config,
     write_config
+)
+
+from watchme.utils import (
+    mkdir_p,
+    write_file,
+    write_json
 )
 
 import os
@@ -148,8 +155,8 @@ class Watcher(object):
             if key in WATCHME_NOTALLOWED_PARAMS:
                 bot.error('%s is a default, not allowed setting by task.' % key)
                 self.valid = False
-            self.params[key] = value
-
+            params[key] = value
+        return params
 
 
 # Add Tasks
@@ -182,7 +189,7 @@ class Watcher(object):
 
         # Convert list to dictionary
         params = self._get_params_dict(params)
-
+ 
         # Creating the task will validate parameters
         newtask = Task(task, params=params)
 
@@ -500,7 +507,7 @@ class Watcher(object):
 
 # Running Tasks
 
-    def run_tasks(self, queue, parallel):
+    def run_tasks(self, queue, parallel=True):
         '''this run_tasks function takes a list of Task objects, each
            potentially a different kind of task, and extracts the parameters
            with task.export_params(), and the running function with 
@@ -519,6 +526,24 @@ class Watcher(object):
                                 ('active', 'true'),
                                 ('type', 'urls')]}
         ''' 
+        if parallel:
+            return self._run_parallel(queue)
+        
+        # Otherwise, run in serial
+        results = {}
+        for task in queue:
+            results[task.name] = task.run()
+        return results
+
+
+    def _run_parallel(self, queue):
+        ''' run tasks in parallel using the Workers class. Returns a dictionary
+            (lookup) wit results, with the key being the task name
+
+            Parameters
+            ==========
+            queue: the list of task objects to run
+        '''
         from watchme.tasks.worker import Workers
 
         # Run with multiprocessing
@@ -531,7 +556,6 @@ class Watcher(object):
             funcs[task.name] = task.export_func()
             tasks[task.name] = task.export_params()
 
-        print(tasks)
         workers = Workers()
         return workers.run(funcs, tasks)
 
@@ -568,10 +592,63 @@ class Watcher(object):
         # and then submitting with multiprocessing
         results = self.run_tasks(tasks, parallel)
 
-        print(results)
- 
         # Finally, finish the runs.
-        #self.finish_runs(results)
+        self.finish_runs(results)
+
+
+    def finish_runs(self, results):
+        '''finish runs should take a dictionary of results, with keys as the
+           folder name, and for each, depending on the result type,
+           write the result to file (or update file) and then commit
+           to git.
+
+           Parameters
+           ==========
+           results: a dictionary of tasks, with keys as the task name, and
+                    values as the result.
+        '''
+        for name, result in results.items():
+            task_folder = os.path.join(self.repo, name)
+
+            # Files to be added via Git after
+            files = set()
+
+            # Ensure that the task folder exists
+            if not os.path.exists(task_folder):
+                mkdir_p(task_folder)
+
+            # Case 1. The result is a string
+            if isinstance(result, str):
+
+                # if it's a path to a file, just save to repository
+                if os.path.exists(result):
+                    destination = os.path.join(task_folder, 
+                                               os.path.basename(result))
+                    shutil.move(result, destination)
+                    files.add(destination)
+
+                # Otherwise, it's a string that needs to be saved to file
+                else:
+                    file_name = task.params.get('file_name', 'result.txt')
+                    destination = os.path.join(task_folder, file_name)
+                    write_file(destination, result)
+
+            # Case 2. The result is a dictionary
+            if isinstance(result, dict):
+                file_name = task.params.get('file_name', 'result.json')
+                destination = os.path.join(task_folder, file_name)
+                write_json(result, destination)
+                files.add(destination)
+
+            else:
+                bot.error('Unsupported result format %s' % type(result))
+
+            # Add files to git, and commit
+            git_add(files, self.repo)
+            git_commit(self.repo, self.name, "ADD results %s" % task.name)
+
+        # Finally, update the timestamp for the watcher
+        
 
 
 # Identification

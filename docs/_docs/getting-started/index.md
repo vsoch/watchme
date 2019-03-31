@@ -19,14 +19,16 @@ watcher below:
  - [Inspect](#how-do-i-inspect-my-watcher) your watcher configuration easily.
  - [List](#how-do-i-list-watchers) your watchers
  - [Protect](#how-do-i-protect-or-freeze-my-watcher) or freeze your watcher against accidental deletion.
+ - [Run](#how-do-i-run-a-watcher): your watcher manually if you want to test or otherwise.
  - [Schedule](#how-do-i-schedule-my-watcher) your watcher to run at some frequency using cron.
  - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
  - [Delete](#how-do-i-delete-a-watcher): a watcher repository
 
 or read about the following:
 
+ - [Contribute a Task]({{ site.baseurl }}/contributing/watcher/) ranging from interacting with web APIs to local processes or networking.
  - [Concepts]({{ site.baseurl }}/getting-started/concepts/) including watchers and their types
- - [Environment]({{ site.baseurl }}/getting-started/environment/) change defaults and settings via environmnet variables.
+ - [Variables and Environment]({{ site.baseurl }}/getting-started/environment/) change defaults and settings via environmnet variables, or set variables that work across watcher tasks.
  - [Interactive Python]({{ site.baseurl }}/getting-started/python/) specifically, interaction from within Python.
 
 ### What is a Watcher?
@@ -225,7 +227,17 @@ watcher
 purpleair
 ```
 
-And logically, you can then inspect further with [inspect](#how-do-i-inspect-my-watchers)
+And logically, you can then inspect further with [inspect](#how-do-i-inspect-my-watchers).
+Here is a trick to loop through them all:
+
+```bash
+$ for watcher in $(watchme list) 
+do
+    echo "===================="
+    echo "Inspecting $watcher"
+    watchme inspect $watcher
+done
+```
 
 ### How do I protect or freeze my watcher?
 
@@ -263,6 +275,22 @@ active  = false
 ```
 
 Frozen takes preference to protected, if the settings don't agree.
+
+### How do I run a watcher?
+
+Typically, you would schedule your watcher with a cron job, and then forget about it.
+However, you are also able to run the watcher manually, if you so desire (to test 
+or otherwise.) To do this, simply run:
+
+```bash
+# watchme run <watcher>
+$ watchme run watcher
+```
+
+where "watcher" corresponds with the watcher name. When this is done, if the watcher
+has status "active" as true, all the associated tasks that are also active will be
+run, and the repository updated with results.
+
 
 
 ### How do I schedule my watcher?

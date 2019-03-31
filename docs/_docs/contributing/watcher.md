@@ -5,7 +5,10 @@ order: 2
 ---
 
 Along with contributing documentation and general code, the cool thing about watchme
-is that it's fairly easy to add a new kind of watcher task! Follow this guide for instructions.
+is that it's fairly easy to add a new kind of watcher task! A task can literally
+do anything that your imagination can come up, within the constraints of your
+local machine, ranging from interaction with web APIs to system resources and 
+networking. Follow this guide for instructions.
 
 ## 1. Add a Task Folder
 
@@ -178,11 +181,19 @@ as None.
 The following rules should pertain to writing tasks:
 
   1. The input variables must coincide with the variables named by the task.params. The task should accept some exploded list of of **kwargs to be flexible to do this.
-  2. The task should return some finished file object, string, or other text matter that the watcher can then update in the repository.
+  2. The task should return some finished file object, string, or other text matter that the watcher can then update in the repository (see next section).
+  3. If the function is not successful, return None.
+
+
+#### Return Values
+
+The return value of your task is going to determine how it's processed by the watcher.
+WRITEME
+
     a. If you want to write json data, return a dictionary
     b. If you want to download an actual file, return the full path. It will be found to exist, and moved to the correct watcher folder.
     c. If a string is provided and it doesn't exist as a path, it's assumed to be some text to write to file.
-  3. If the function is not successful, return None.
+
 
 #### Variables for Tasks
 

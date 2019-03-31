@@ -14,5 +14,9 @@ from .create import (
     create_watcher
 )
 
-from .commit import git_commit
+from .commit import (
+    git_commit, 
+    git_clone, 
+    git_add
+)
 from .utils import list_watchers
