@@ -89,10 +89,12 @@ A urls task has the following custom parameters. Note that "active" and "type" a
 added to all tasks, and indicate if the task is active, and the type to use to
 drive its running. 
 
-| Name | Required | Default | Example |Validation|
+| Name | Required | Default | Example | Notes|
 |------|----------|---------|---------|-----------|
-| url  | True     |undefined|url@https://www.reddit.com/r/hpc| starts with http |
-
+| url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
+| func | No    |get_task |func@download_task| must be defined in tasks.py |
+| no_verify_ssl | No | unset |no_verify_ssl@true| |
+| write_format | No | unset |write_format@wb| only for download_task |
 
 We will be adding more variables to customize the url watcher as watchme
 is developed.

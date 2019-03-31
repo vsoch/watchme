@@ -24,7 +24,7 @@ class Workers(object):
     def __init__(self, workers=None):
 
         if workers is None:
-            workers = watchme_WORKERS
+            workers = WATCHME_WORKERS
         self.workers = workers
         bot.debug("Using %s workers for multiprocess." % (self.workers))
 
@@ -37,16 +37,19 @@ class Workers(object):
         self.runtime = self.runtime = self.end_time - self.start_time
         bot.debug("Ending multiprocess, runtime: %s sec" % (self.runtime))
 
-    def run(self, func, tasks, func2=None):
-        '''run will send a list of tasks,
-        a tuple with arguments, through a function.
-        the arguments should be ordered correctly.
-        :param func: the function to run with multiprocessing.pool
-        :param tasks: a list of tasks, each a tuple
-                      of arguments to process
-        :param func2: filter function to run result
-                      from func through (optional)
+    def run(self, funcs, tasks):
+        '''run will send a list of tasks, a tuple with arguments, through a function.
+           the arguments should be ordered correctly.
+        
+           Parameters
+           ==========
+           funcs: the functions to run with multiprocessing.pool, a dictionary
+                  with lookup by the task name
+           tasks: a dict of tasks, each task name (key) with a 
+                  tuple of arguments to process
         '''
+        # Number of tasks must == number of functions
+        assert(len(funcs)==len(tasks))
 
         # Keep track of some progress for the user
         progress = 1
@@ -56,12 +59,8 @@ class Workers(object):
         if len(tasks) == 0:
             return
 
-        # If two functions are run per task, double total jobs
-        if func2 is not None:
-            total = total * 2
-
-        finished = []
-        level1 = []
+        # results will also have the same key to look up
+        finished = dict()
         results = []
 
         try:
@@ -70,27 +69,22 @@ class Workers(object):
             pool = multiprocessing.Pool(self.workers, init_worker)
 
             self.start()
-            for task in tasks:
+            for key, task in tasks.items():
+                func = funcs[key]
                 result = pool.apply_async(multi_wrapper,
                                           multi_package(func, [task]))
-                results.append(result)
-                level1.append(result._job)
+
+                # Store the key with the result
+                results.append((key, result,))
 
             while len(results) > 0:
-                result = results.pop()
+                pair = results.pop()
+                key, result = pair
                 result.wait()
                 bot.show_progress(progress, total, length=35, prefix=prefix)
                 progress += 1
                 prefix = "[%s/%s]" % (progress, total)
-
-                # Pass the result through a second function?
-                if func2 is not None and result._job in level1:
-                    result = pool.apply_async(multi_wrapper,
-                                              multi_package(func2,
-                                                            [(result.get(),)]))
-                    results.append(result)
-                else:
-                    finished.append(result.get())
+                finished[key] = result.get()
 
             self.end()
             pool.close()

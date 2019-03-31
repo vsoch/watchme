@@ -18,7 +18,7 @@ class Task(TaskBase):
 
     required_params = ['url']
 
-    def __init__(self, name, params=[], **kwargs): 
+    def __init__(self, name, params={}, **kwargs): 
 
         self.type = 'urls'
 
@@ -27,24 +27,30 @@ class Task(TaskBase):
 
     def _validate(self):
         '''additional validation function, called by validate() of 
-           superclass. Here we assume all required params are included.
+           superclass. Here we assume all required self.params are included.
+           If an parameter is found to be invalid, self.valid should be set
+           to False
         '''
         # The url must begin with http
         if not self.params['url'].startswith('http'):
-            bot.exit('%s is not a valid url.' % self.params['url'])
+            bot.error('%s is not a valid url.' % self.params['url'])
+            self.valid = False
 
-    def run_task(self):
-        '''run a function to run for a task. including:
-           1. checking that the task is active
-           2. checking that the watcher type matches
-           3. validating the variables provided in the section
-           4. running the task
-
-           Parameters
-           ==========
-           section: the (dictionary) lookup of variables for a task,
-                    each Task has a known set of variables to use.
+    def export_func(self):
+        '''this function should return the correct task (from the tasks.py
+           in the same folder) based on some logic of the params that are given
+           by the user (self.params). If there is only one kind of function for
+           the task, it's fairly easy to import and return it here. This
+           function should take no arguments, but instead use the self.params
+           already provided in the client.
         '''
+        name = self.params.get('func', 'get_task')
+        
+        if name == 'get_task':
+            from .tasks import get_task as func
+        elif name == 'download_task':
+            from .tasks import download_task as func
+        else:
+            func = None
 
-    # TODO: need to step through running of task (should this be get_task?)
-    # - write functions in "tasks" to import
+        return func

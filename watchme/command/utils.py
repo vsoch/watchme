@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.defaults import WATCHME_BASE_DIR
-from watchme.command import ( get_tmpdir, run_command )
+from watchme.utils import ( get_tmpdir, run_command )
 from watchme.logger import bot
 
 import os

@@ -27,7 +27,7 @@ or read about the following:
 
  - [Concepts]({{ site.baseurl }}/getting-started/concepts/) including watchers and their types
  - [Environment]({{ site.baseurl }}/getting-started/environment/) change defaults and settings via environmnet variables.
-
+ - [Interactive Python]({{ site.baseurl }}/getting-started/python/) specifically, interaction from within Python.
 
 ### What is a Watcher?
 

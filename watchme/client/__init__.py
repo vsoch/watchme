@@ -142,6 +142,18 @@ def get_parser():
                         help="delete the entire watch repository", 
                         default=False, action='store_true')
 
+    # run
+
+    run = subparsers.add_parser("run",
+                                help="run a watcher.")
+
+    run.add_argument('watcher', nargs=1,
+                     help='the watcher to run')
+
+    run.add_argument('--serial', dest="serial", 
+                     help="run tasks in serial", 
+                     default=False, action='store_true')
+
     # activate
 
     activate = subparsers.add_parser("activate",
@@ -246,6 +258,7 @@ def main():
     elif args.command == "list": from .ls import main
     elif args.command == "protect": from .protect import main
     elif args.command == "remove": from .remove import main
+    elif args.command == "run": from .run import main
     elif args.command == "schedule": from .schedule import main
     else: help()
 

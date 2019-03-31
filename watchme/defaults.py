@@ -59,3 +59,6 @@ WATCHME_WORKERS = int(getenv('WATCHME_WORKERS', 9))
 # a folder under "main/watchers"
 WATCHME_TASK_TYPES = ['urls', 'url']
 WATCHME_DEFAULT_TYPE = "urls"
+
+# Parameters not allowed for task clients, set by TaskBase
+WATCHME_NOTALLOWED_PARAMS = ['type', 'active']

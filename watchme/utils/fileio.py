@@ -51,7 +51,7 @@ def mkdir_p(path):
 
 # FILE OPERATIONS ##############################################################
 
-def generate_temporary_file(folder=None, prefix='watchme', ext='json'):
+def generate_temporary_file(folder=None, prefix='watchme', ext=None):
     '''write a temporary file, in base directory with a particular extension.
       
        Parameters
@@ -64,7 +64,13 @@ def generate_temporary_file(folder=None, prefix='watchme', ext='json'):
     if folder == None:
         folder = tempfile.gettempdir()
     tmp = next(tempfile._get_candidate_names())
-    return '%s/%s.%s.%s' %(folder, prefix, tmp, ext)
+    tmp = '%s/%s.%s' %(folder, prefix, tmp)
+
+    # Does the user want an extension?
+    if ext != None:
+        tmp = "%s.%s" %(tmp, ext)
+
+    return tmp
 
 
 def get_tmpdir(prefix="", create=True):
@@ -86,7 +92,6 @@ def get_tmpdir(prefix="", create=True):
         os.mkdir(tmpdir)
 
     return tmpdir
-
 
 
 def copyfile(source, destination, force=True):

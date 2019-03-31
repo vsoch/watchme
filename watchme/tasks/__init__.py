@@ -8,24 +8,23 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-# Multiprocess Workers
-from .worker import Workers
+from watchme.logger import bot
 
 class TaskBase(object):
 
-    params = dict()
+    params = {}
+    valid = False
 
-    def __init__(self, name, params=[], **kwargs):
+    def __init__(self, name, params={}, **kwargs):
 
         # Ensure subclass was created correctly
-        for required in ['required_params', 'type']:
-            if not hasattr(self, required):
-                bot.exit('A Task must have a %s attribute.' % required)
+        for req in ['required_params', 'type', 'export_func']:
+            if not hasattr(self, req):
+                bot.exit('A Task must have a %s function or attribute.' % req)
 
         self.name = name
         self.set_params(params)
         self.validate()
-
 
     def get_type(self):
         '''get the watcher type.
@@ -33,20 +32,27 @@ class TaskBase(object):
         return self.type
 
 
+# Identification
+
+    def __repr__(self):
+        return "[task|%s]" %self.name
+
+    def __str__(self):
+        return "[task|%s]" %self.name
+
+
 # Parameters
 
     def set_params(self, params):
-        '''iterate through parameters, ensure they are valid
+        '''iterate through parameters, set into dictionary.
 
            Parameters
            ==========
            params: a list of key@value pairs to set.
         '''
-        for pair in params:
-            if "@" not in pair:
-                bot.exit('incorrectly formatted param, must be key@value')
-            key,value = pair.split('@', 1)
-            self.params[key.lower()] = value
+        for key,value in params.items():
+            key = key.lower()
+            self.params[key] = value
 
 
     def export_params(self, active="true"):
@@ -59,18 +65,19 @@ class TaskBase(object):
         return params
 
 
+# Validation
+
     def validate(self):
         '''validate the parameters set for the Task. Exit if there are any
            errors. Ensure required parameters are defined, and have correct
            values.
         '''
+        self.valid = True
+
         for param in self.required_params:
             if param not in self.params:
-                bot.exit('Missing required parameter: %s' % param)
-
-        # The url must begin with http
-        if not self.params['url'].startswith('http'):
-            bot.exit('%s is not a valid url.' % self.params['url'])
+                bot.error('Missing required parameter: %s' % param)
+                self.valid = False
 
         # Call subclass validation function
         self._validate()
