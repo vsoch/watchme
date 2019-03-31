@@ -14,10 +14,8 @@ from requests.exceptions import HTTPError
 import tempfile
 import requests
 
-# https://www.rc.fas.harvard.edu/about/people/
-# STOPPED HERE - multiprocessing needs to accept kwargs (not positional)
 
-def get_task(url, *args):
+def get_task(url, **kwargs):
     '''a simple task to use requests to get a url. By default, we return
        the raw response.
 
@@ -27,7 +25,6 @@ def get_task(url, *args):
        REQUIRED:
            url: a url to return the page for
     '''
-    print(args)
     result = None
     response = requests.get(url)
     if response.status_code == 200:
@@ -35,7 +32,7 @@ def get_task(url, *args):
     return result
 
 
-def download_task(url, *args):
+def download_task(url, **kwargs):
     '''a simple task to use requests to get a url. By default, we return
        the raw response.
 

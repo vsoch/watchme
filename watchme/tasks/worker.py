@@ -69,10 +69,10 @@ class Workers(object):
             pool = multiprocessing.Pool(self.workers, init_worker)
 
             self.start()
-            for key, task in tasks.items():
+            for key, params in tasks.items():
                 func = funcs[key]
                 result = pool.apply_async(multi_wrapper,
-                                          multi_package(func, [task]))
+                                          multi_package(func, [params]))
 
                 # Store the key with the result
                 results.append((key, result,))
@@ -107,9 +107,9 @@ def init_worker():
 
 
 def multi_wrapper(func_args):
-    function, args = func_args
-    return function(*args)
+    function, kwargs = func_args
+    return function(**kwargs)
 
 
-def multi_package(func, args):
-    return zip(itertools.repeat(func), args)
+def multi_package(func, kwargs):
+    return zip(itertools.repeat(func), kwargs)

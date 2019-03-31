@@ -1,5 +1,5 @@
 ---
-title: Watcher Contribution
+title: Contribute a Task
 category: Contributing
 order: 2
 ---
@@ -146,6 +146,32 @@ watchme/
       __init__.py
       tasks.py
 ```
+
+#### Example Task
+
+Here is a simple example task. Notice that the required argument url is a positional
+argument, and the rest (anything could be passed from the configuration, potentially, including
+optional args) are represented with kwargs.
+
+```python
+def get_task(url, **kwargs):
+    '''a simple task to use requests to get a url. By default, we return
+       the raw response.
+
+       Parameters
+       ==========
+       url: a url to return the page for (required
+    '''
+    result = None
+    response = requests.get(url)
+    if response.status_code == 200:
+        result = response.text
+    return result
+```
+
+Notice also that if there is an issue retrieving the url, the result is returned
+as None.
+
 
 #### Rules for Tasks
 

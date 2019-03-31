@@ -29,8 +29,8 @@ watcher.inspect()
 [watcher]
 active  = false
 
-[task-reddit-hpc]
-url  = https://www.reddit.com/r/hpc
+[task-harvard-hpc]
+url  = https://www.rc.fas.harvard.edu/about/people/
 active  = true
 type  = urls
 ```
@@ -39,8 +39,8 @@ or for a specific task:
 
 ```python
 watcher.inspect('task-reddit-hpc')
-[task-reddit-hpc]
-url  = https://www.reddit.com/r/hpc
+[task-harvard-hpc]
+url  = https://www.rc.fas.harvard.edu/about/people/
 active  = true
 type  = urls
 ```
@@ -52,7 +52,7 @@ or use a list to inspect more than one.
 You can get a task instance by asking for it by name:
 
 ```python
-task = watcher.get_task('task-reddit-hpc')
+task = watcher.get_task('task-harvard-hpc')
 [task|task-reddit-hpc]
 ```
 
@@ -61,8 +61,25 @@ None will be returned. You can also ask for all tasks that the watcher has,
 that are valid:
 
 ```python
-watcher.get_tasks()
+tasks = watcher.get_tasks()
 Found 1 contender tasks.
+```
+
+## Run a task
+
+To run a task manually, you can either run all tasks from the watcher (done with
+multiprocessing):
+
+```bash
+watcher.run()
+```
+
+And when you do this, the watcher's repository will be updated with data
+and the running timestamp. If you want to run a task and return a result
+without updating / interacting with the watcher, just run the task directly:
+
+```python
+task.run()
 ```
 
 ## Get function to run it

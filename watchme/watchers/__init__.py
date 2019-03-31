@@ -527,13 +527,11 @@ class Watcher(object):
 
         for task in queue:
 
-            # Export parameters and functions
-            params = task.export_params()
-            
+            # Export parameters and functions            
             funcs[task.name] = task.export_func()
-            tasks[task.name] = [(k,v) for k, v  in params.items()]
+            tasks[task.name] = task.export_params()
 
-
+        print(tasks)
         workers = Workers()
         return workers.run(funcs, tasks)
 

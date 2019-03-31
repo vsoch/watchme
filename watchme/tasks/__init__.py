@@ -86,3 +86,14 @@ class TaskBase(object):
         '''validation function intended to be implemented by subclass.
         '''
         pass
+
+
+# Run Single Task
+
+    def run(self):
+        '''run an isolated task, meaning no update or communication with
+           the watcher. This will return the raw result.
+        '''
+        params = self.export_params()
+        func = self.export_func()
+        return func(**params)
