@@ -507,7 +507,7 @@ class Watcher(object):
 
 # Running Tasks
 
-    def run_tasks(self, queue, parallel=True):
+    def run_tasks(self, queue, parallel=True, show_progress=True):
         '''this run_tasks function takes a list of Task objects, each
            potentially a different kind of task, and extracts the parameters
            with task.export_params(), and the running function with 
@@ -526,17 +526,29 @@ class Watcher(object):
                                 ('active', 'true'),
                                 ('type', 'urls')]}
         ''' 
-        if parallel:
-            return self._run_parallel(queue)
+        if parallel is True:
+            return self._run_parallel(queue, show_progress)
         
         # Otherwise, run in serial
         results = {}
+
+        # Progressbar
+        total = len(queue)
+        progress = 1
+
         for task in queue:
+            prefix = "[%s:%s/%s]" % (task.name, progress, total)
+            if show_progress is True:
+                bot.show_progress(progress, total, length=35, prefix=prefix)
+            else:
+                bot.info('Running %s' % prefix)
             results[task.name] = task.run()
+            progress+=1
+
         return results
 
 
-    def _run_parallel(self, queue):
+    def _run_parallel(self, queue, show_progress=True):
         ''' run tasks in parallel using the Workers class. Returns a dictionary
             (lookup) wit results, with the key being the task name
 
@@ -556,11 +568,11 @@ class Watcher(object):
             funcs[task.name] = task.export_func()
             tasks[task.name] = task.export_params()
 
-        workers = Workers()
+        workers = Workers(show_progress=show_progress)
         return workers.run(funcs, tasks)
 
 
-    def run(self, regexp=None, parallel=True):
+    def run(self, regexp=None, parallel=True, show_progress=True):
         '''run the watcher, which should be done via the crontab, including:
 
              - checks: the instantiation of the client already ensures that 
@@ -576,6 +588,8 @@ class Watcher(object):
                    a particular pattern         
            parallel: if True, use multiprocessing to run tasks (True)
                      each watcher should have this setup ready to go. 
+           show_progress: if True, show progress bar instead of task information
+                          (defaults to True)
         '''
         # Step 0: Each run session is given a fun name
         run_id = RobotNamer().generate()
@@ -590,7 +604,7 @@ class Watcher(object):
 
         # Step 3: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
-        results = self.run_tasks(tasks, parallel)
+        results = self.run_tasks(tasks, parallel, show_progress)
 
         # Finally, finish the runs.
         self.finish_runs(results)
@@ -640,13 +654,18 @@ class Watcher(object):
                 write_json(result, destination)
                 files.add(destination)
 
+            elif result == None:
+                bot.error('Result for task %s is None' % name)
+
             else:
                 bot.error('Unsupported result format %s' % type(result))
 
             # Add files to git, and commit
             git_add(files, self.repo)
-            git_commit(self.repo, self.name, "ADD results %s" % task.name)
+            git_commit(self.repo, self.name, "ADD results %s" % name)
 
+        # STOPPED HERE - there is a bug in one of the task functions (returning None)
+        # need to write the git_clone function, and test git_add
         # Finally, update the timestamp for the watcher
         
 

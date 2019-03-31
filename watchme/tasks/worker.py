@@ -21,11 +21,12 @@ import os
 
 class Workers(object):
 
-    def __init__(self, workers=None):
+    def __init__(self, workers=None, show_progress=False):
 
         if workers is None:
             workers = WATCHME_WORKERS
         self.workers = workers
+        self.show_progress = show_progress
         bot.debug("Using %s workers for multiprocess." % (self.workers))
 
     def start(self):
@@ -65,12 +66,15 @@ class Workers(object):
 
         try:
             prefix = "[%s/%s]" % (progress, total)
-            bot.show_progress(0, total, length=35, prefix=prefix)
+            if self.show_progress:
+                bot.show_progress(0, total, length=35, prefix=prefix)
             pool = multiprocessing.Pool(self.workers, init_worker)
 
             self.start()
             for key, params in tasks.items():
                 func = funcs[key]
+                if not self.show_progress:
+                    bot.info('Processing task %s:%s' % (key, params))
                 result = pool.apply_async(multi_wrapper,
                                           multi_package(func, [params]))
 
@@ -81,7 +85,8 @@ class Workers(object):
                 pair = results.pop()
                 key, result = pair
                 result.wait()
-                bot.show_progress(progress, total, length=35, prefix=prefix)
+                if self.show_progress:
+                    bot.show_progress(progress, total, length=35, prefix=prefix)
                 progress += 1
                 prefix = "[%s/%s]" % (progress, total)
                 finished[key] = result.get()

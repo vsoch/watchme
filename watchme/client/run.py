@@ -24,5 +24,7 @@ def main(args, extra):
         extra = "(%s)" % '|'.join(extra)
 
     # Run the watcher, providing regular expressions to match tasks
-    watcher.run(regexp=extra, parallel=not args.serial)
+    watcher.run(regexp=extra, 
+                parallel=not args.serial, 
+                show_progress=not args.no_progress)
 

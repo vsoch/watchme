@@ -50,6 +50,8 @@ class Task(TaskBase):
             from .tasks import get_task as func
         elif name == 'download_task':
             from .tasks import download_task as func
+        elif name == 'post_task':
+            from .tasks import post_task as func
         else:
             func = None
 

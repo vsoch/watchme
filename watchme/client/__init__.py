@@ -154,6 +154,10 @@ def get_parser():
                      help="run tasks in serial", 
                      default=False, action='store_true')
 
+    run.add_argument('--no-progress', dest="no_progress", 
+                     help="run tasks in serial", 
+                     default=False, action='store_true')
+
     # activate
 
     activate = subparsers.add_parser("activate",

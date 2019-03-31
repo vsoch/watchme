@@ -96,4 +96,6 @@ class TaskBase(object):
         '''
         params = self.export_params()
         func = self.export_func()
-        return func(**params)
+        if func != None:
+            return func(**params)
+        bot.error('Cannot find function.')

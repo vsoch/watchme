@@ -86,11 +86,7 @@ def download_task(url, **kwargs):
 
     # Use the basename or the user set file_name to write to
     file_name = kwargs.get('file_name', os.path.basename(url))
-
-    # Generate a temporary object for the file
- or generate_temporary_file()
-    
-    destination = generate_temporary_file()
+    destination = os.path.join(tempfile.gettempdir(), file_name)    
     verify = True
 
     # Does the user want to disable ssl?

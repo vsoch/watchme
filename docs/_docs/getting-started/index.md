@@ -289,9 +289,20 @@ $ watchme run watcher
 
 where "watcher" corresponds with the watcher name. When this is done, if the watcher
 has status "active" as true, all the associated tasks that are also active will be
-run, and the repository updated with results.
+run, and the repository updated with results. If you want to show variables
+and names of the tasks instead of the default progress bar, do:
 
 
+```bash
+$ watchme run watcher --no-progress
+```
+
+You can also choose to run in serial, also with or without a progress bar:
+
+
+```bash
+$ watchme run watcher --no-progress --serial
+```
 
 ### How do I schedule my watcher?
 
