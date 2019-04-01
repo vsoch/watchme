@@ -101,7 +101,7 @@ def download_task(url, **kwargs):
             verify = False
 
     # If the user doesn't want to write, but maybe write binary
-    fmt = kwargs.get('write_format', 'w')
+    fmt = kwargs.get('write_format', 'wb')
 
     # Does the url being requested exist?
     if requests.head(url, verify=verify).status_code in [200, 401]:

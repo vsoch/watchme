@@ -112,10 +112,11 @@ to track changes over time. You can do this by using the urls type watcher and
 specifying the variable func to be "download_task":
 
 ```bash
-$ watchme add watcher task-download url@https://httpbin.org/image/png func@download_task
+$ watchme add watcher task-download url@https://httpbin.org/image/png func@download_task file_name@image.png
 [task-download]
 url  = https://httpbin.org/image/png
 func  = download_task
+file_name = image.png
 active  = true
 type  = urls
 ```

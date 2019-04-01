@@ -666,10 +666,16 @@ class Watcher(object):
 
                 # if it's a path to a file, just save to repository
                 if os.path.exists(result):
-                    destination = os.path.join(task_folder, 
-                                               os.path.basename(result))
+
+                    file_name = task.params.get('file_name', os.path.basename(result))
+
+                    # HOME/.watchme/watcher/<task>/<result>
+                    destination = os.path.join(task_folder, file_name)
                     shutil.move(result, destination)
-                    files.append(os.path.basename(destination))
+
+                    # <task>/<result>     
+                    add_folder = os.path.join(name, file_name)
+                    files.append(add_folder)
 
                 # Otherwise, it's a string that needs to be saved to file
                 else:
@@ -696,10 +702,7 @@ class Watcher(object):
             git_add(self.repo, files)
             git_commit(self.repo, self.name, "ADD results %s" % name)
 
-        # STOPPED HERE - instances with more than 1 task are being overwritten (bug)
-        # need to write the git_clone function
-        # Finally, update the timestamp for the watcher
-        
+        # need to write the git_clone function        
 
 # Identification
 

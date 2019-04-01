@@ -188,11 +188,25 @@ The following rules should pertain to writing tasks:
 #### Return Values
 
 The return value of your task is going to determine how it's processed by the watcher.
-WRITEME
 
-    a. If you want to write json data, return a dictionary
-    b. If you want to download an actual file, return the full path. It will be found to exist, and moved to the correct watcher folder.
-    c. If a string is provided and it doesn't exist as a path, it's assumed to be some text to write to file.
+#### File Objects
+
+If your function returns a file that is found to exist, it will be moved into the task folder.
+If your function names the file, it will be moved without changing the name. If the user defined
+a `file_name` parameter, it will be renamed to this. If you don't do a good job to name your
+file and the user doesn't specify this parameter, it will be the basename of the url provided.
+
+#### Json Objects
+
+If you want to write a json to file, either return a path to file (somewhere in tmp to be
+moved to the repository) or return a dictionary type, and it will be written to `result.json`
+in the task folder. If your user (or default task) specifies a `file_name` variable, it will
+be named this instead of `result.json`
+
+#### Text
+
+If a string is provided and it doesn't exist as a path, it's assumed to be some text to write to file.
+It will by default written to `result.txt` unless another `file_name` parameter is specified.
 
 
 #### Variables for Tasks
