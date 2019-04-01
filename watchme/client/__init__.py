@@ -163,16 +163,16 @@ def get_parser():
     activate = subparsers.add_parser("activate",
                                      help="activate a new watcher")
 
-    activate.add_argument('watchers', nargs="*",
-                          help='watchers to activate')
+    activate.add_argument('watcher', nargs=1,
+                          help='watcher to activate (optionally add tasks)')
 
     # deactivate
 
     deactivate = subparsers.add_parser("deactivate",
                                        help="deactivate a watcher")
 
-    deactivate.add_argument('watchers', nargs="*",
-                            help='watchers to deactivate')
+    deactivate.add_argument('watcher', nargs=1,
+                            help='watcher to deactivate (optionally add tasks)')
 
 
     # schedule

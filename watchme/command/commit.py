@@ -54,7 +54,7 @@ def git_commit(repo, task, message):
 
     # Commit
     command = 'git commit -a -m "%s"' % message
-    bot.info(command)
+    bot.debug(command)
     run_command(command)
 
 @git_pwd
@@ -96,5 +96,5 @@ def git_add(repo, files):
 
     for f in files:
         command = 'git add %s' % f
-        bot.info(command)
+        bot.debug(command)
         run_command(command)

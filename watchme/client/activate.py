@@ -14,11 +14,14 @@ from watchme.logger import bot
 def main(args, extra):
     '''activate one or more watchers
     '''    
+    # Doesn't work if watcher not provided
+    watcher = args.watcher[0]
+    watcher = get_watcher(watcher, base=args.base)
+        
+    # The user is deactivating the entire watcher
+    if extra == None:
+        watcher.activate()
+    else:
+        for name in extra:
+            watcher.activate(task)
 
-    watchers = args.watchers
-    if len(watchers) == 0:
-        bot.exit('You must provide one or more watchers to activate.')
-
-    for name in watchers:
-        watcher = get_watcher(name, base=args.base)
-        watcher.activate()    

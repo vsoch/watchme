@@ -381,44 +381,64 @@ class Watcher(object):
 
 # Status
 
-    def _active_status(self, status='true'):
+    def _active_status(self, status='true', name=None):
         '''a general function to change the status, used by activate and
            deactivate.
  
            Parameters
            ==========
            status: must be one of true, false
+           name: if not None, we are deactivating a task (not the watcher)
         '''
-        if status not in ['true', 'false']:
-            bot.exit('status must be true or false.')
-
         # Load the configuration, if not loaded
         self.load_config()
 
+        if name == None:
+            name = 'watcher'
+
+        # Cut out early if section not in config
+        if name not in self.config._sections:
+            bot.exit('%s is not a valid task or section' % name)     
+
+        if status not in ['true', 'false']:
+            bot.exit('status must be true or false.')
+
         # Update the status and alert the user
-        self.set_setting('watcher','active', status)
+        self.set_setting(name, 'active', status)
         self.save()
 
-        bot.info('[watcher|%s] active: %s' % (self.name, status)) 
+        # Return the message for the commit
+        message = "ACTIVE"
+        if status == "false":
+            message = "DEACTIVATE"
 
+        # Add the task name
+        if name != None:
+            message = "%s task %s" %(message, name)
+
+        bot.info('[%s|%s] active: %s' % (name, self.name, status)) 
+        return message
 
     def activate(self):
         '''turn the active status of a watcher to True
         '''
-        self._active_status('true')
-        git_commit(self.repo, self.name, "ACTIVATE")
+        message = self._active_status('true')
+        git_commit(self.repo, self.name, message)
    
-    def deactivate(self):
-        '''turn the active status of a watcher to false
+
+    def deactivate(self, task=None):
+        '''turn the active status of a watcher to false. If a task is provided,
+           update the config value for the task to be false.
         '''
-        self._active_status('false')
-        git_commit(self.repo, self.name, "DEACTIVATE")
+        # If no task defined, user wants to deactiate watcher
+        message =self._active_status('false', task)
+        git_commit(self.repo, self.name, message)
 
 
     def is_active(self):
         '''determine if the watcher is active by reading from the config directly
         '''
-        if self.get_setting('watcher', 'active', 'true'):
+        if self.get_setting('watcher', 'active', default='true') == "true":
             return True
         return False
 
@@ -475,13 +495,13 @@ class Watcher(object):
         # Is the task not active (undefined is active)?
         active = task.params.get('active', 'true')
         if active == "false":
-            bot.info('Task %s is not active.' % name)
+            bot.info('Task %s is not active.' % task)
             selected = False
         
         # The user wants to search for a custom task name
         if regexp != None:
-            if not re.search(regexp, name):
-                bot.info('Task %s is selected to run.' % name)
+            if not re.search(regexp, task):
+                bot.info('Task %s is selected to run.' % task)
                 selected = False
 
         return selected
@@ -604,9 +624,8 @@ class Watcher(object):
         run_id = RobotNamer().generate()
 
         # Step 1: determine if the watcher is active.
-        if not self.is_active():
-            bot.info('Watcher %s is not active.' % self.name)
-            return
+        if self.is_active() == False:
+            bot.exit('Watcher %s is not active.' % self.name)
 
         # Step 2: get the tasks associated with the run, a list of param dicts
         tasks = self.get_tasks()

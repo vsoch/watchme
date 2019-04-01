@@ -38,6 +38,7 @@ A urls task has the following parameters shared across functions.
 | url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
+
 ### 1. Get a URL Task
 
 This task will watch for changes at an entire URL, meaning tracking the entire page.
@@ -80,12 +81,11 @@ This task will post to get changes from a URL, ideal for watching restful API
 endpoints. For example, here is a page I wanted to watch for changes:
 
 ```bash
-$ watchme add watcher task-api-post url@https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/ file_name@manifest-latest.json save_as@json func@post_task
+$ watchme add watcher task-api-post url@https://httpbin.org/post file_name@post-latest.json func@post_task
 
 [task-api-post]
-url  = https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/
-file_name  = manifest-latest.json
-save_as  = json
+url  = https://httpbin.org/post
+file_name  = post-latest.json
 func  = post_task
 active  = true
 type  = urls
@@ -112,7 +112,12 @@ to track changes over time. You can do this by using the urls type watcher and
 specifying the variable func to be "download_task":
 
 ```bash
-$ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ func@download_task
+$ watchme add watcher task-download url@https://httpbin.org/image/png func@download_task
+[task-download]
+url  = https://httpbin.org/image/png
+func  = download_task
+active  = true
+type  = urls
 ```
 
 | Name | Required | Default | Example | Notes|

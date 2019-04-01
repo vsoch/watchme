@@ -11,6 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from watchme.utils import generate_temporary_file
 from watchme.logger import bot
 from requests.exceptions import HTTPError
+import os
 import tempfile
 import requests
 
@@ -62,6 +63,10 @@ def post_task(url, **kwargs):
         # Otherwise, we return text
         else:
             result = response.text
+
+    else:
+        bot.error("%s: %s" %(response.status_code, response.reason))
+
     return result
 
 

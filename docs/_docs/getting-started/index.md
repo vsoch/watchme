@@ -19,6 +19,7 @@ watcher below:
  - [Inspect](#how-do-i-inspect-my-watcher) your watcher configuration easily.
  - [List](#how-do-i-list-watchers) your watchers
  - [Protect](#how-do-i-protect-or-freeze-my-watcher) or freeze your watcher against accidental deletion.
+ - [Activate](#how-do-i-activate-my-watcher) or deactivate your watcher and/or associated tasks
  - [Run](#how-do-i-run-a-watcher): your watcher manually if you want to test or otherwise.
  - [Schedule](#how-do-i-schedule-my-watcher) your watcher to run at some frequency using cron.
  - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
@@ -135,14 +136,14 @@ The configuration commands will vary based on the kind of task you want to add,
 and here is a quick example of adding a task to watch a url (the default task):
 
 ```bash
-$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc
-[task-reddit-hpc]
-url  = https://www.reddit.com/r/hpc
+$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases
+[task-singularity-release]
+url  = https://github.com/sylabs/singularity/releases
 active  = true
 type  = urls
 ```
 
-In the example above, we added a task called "task-reddit-hpc" to the default
+In the example above, we added a task called "task-singularity-release" to the default
 watcher "watcher." The only required variable is the url, and we provided it
 in the format `<key>@<value>`. This is how you will add any parameter to a task,
 and the parameters allowed will vary based on the task type. In the above, we didn't
@@ -157,8 +158,8 @@ $ cat /home/vanessa/.watchme/watcher/watchme.cfg
 [watcher]
 active = false
 
-[task-reddit-hpc]
-url = https://www.reddit.com/r/hpc
+[task-singularity-release]
+url = https://github.com/sylabs/singularity/releases
 active = true
 type = urls
 ```
@@ -170,7 +171,7 @@ The task is active by default (after you set up its schedule) and you can disabl
 this with --active false:
 
 ```bash
-$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc --active false
+$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases --active false
 ```
 
 The reason we save these parameters in the repo is that if you put it under version
@@ -194,20 +195,20 @@ $ watchme inspect watcher
 [watcher]
 active  = false
 
-[task-reddit-hpc]
-url  = https://www.reddit.com/r/hpc
-active  = true
-type  = urls
+[task-singularity-release]
+url = https://github.com/sylabs/singularity/releases
+active = true
+type = urls
 ```
 
 You can also inspect a particular task alone:
 
 ```bash
-$ watchme inspect watcher task-reddit-hpc
-[task-reddit-hpc]
-url  = https://www.reddit.com/r/hpc
-active  = true
-type  = urls
+$ watchme inspect watcher task-singularity-release
+[task-singularity-release]
+url = https://github.com/sylabs/singularity/releases
+active = true
+type = urls
 ```
 
 If the task doesn't exist, it will tell you:
@@ -276,6 +277,34 @@ active  = false
 
 Frozen takes preference to protected, if the settings don't agree.
 
+### How do I activate my watcher?
+
+By default, when you add a watcher, it isn't active. You can see this
+by looking at the watcher configuration file in the `[watcher]` section:
+
+```bash
+$ watchme inspect watcher
+[watcher]
+active  = false
+```
+
+To activate or deactivate the entire watcher, run these commands:
+
+```bash
+$ watchme activate watcher
+[watcher|watcher] active: true
+$ watchme deactivate watcher
+[watcher|watcher] active: false
+```
+
+If you want to activate or deactivate single tasks, just add the task name:
+
+```bash
+$ watchme deactivate watcher task-singularity-release
+```
+
+By default, when a task is added, it is active.
+
 ### How do I run a watcher?
 
 Typically, you would schedule your watcher with a cron job, and then forget about it.
@@ -303,6 +332,40 @@ You can also choose to run in serial, also with or without a progress bar:
 ```bash
 $ watchme run watcher --no-progress --serial
 ```
+
+After you run your watcher tasks, you will see a directory created named
+based on the task, along with a result file (if successful) and a `TIMESTAMP`
+file to indicate when the task was last run.
+
+```bash
+$ tree
+.
+├── task-harvard-hpc
+│   ├── result.txt
+│   └── TIMESTAMP
+└── watchme.cfg
+```
+
+You can also confirm that the watcher has run and commit results to the repo.
+Here we are in the watcher base folder, at `$HOME/.watchme/watcher`. We just
+ran the watcher, and there were two tasks:
+
+```bash
+git log
+commit c8929ea7caf71a4172195b618ff602f9b47686e1
+Author: Vanessa Sochat <vsochat@stanford.edu>
+Date:   Mon Apr 1 13:07:47 2019 -0400
+
+    watchme watcher ADD results task-harvard-hpc
+
+commit 95517ff8d4d39e326be5e9638969f385fbe05355
+Author: Vanessa Sochat <vsochat@stanford.edu>
+Date:   Mon Apr 1 13:07:47 2019 -0400
+
+    watchme watcher ADD results task-singularity-release
+```
+
+We can see results were added for both.
 
 ### How do I schedule my watcher?
 
@@ -373,7 +436,6 @@ The entire folder is now removed.
 ```bash
 $ ls /home/vanessa/.watchme/
 ```
-
 
 ## Licenses
 
