@@ -7,11 +7,14 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
-
-from watchme.utils import run_command
+from watchme.utils import ( 
+    run_command, 
+    write_file
+)
 from watchme.logger import bot
 import os
-
+from datetime import datetime
+import time
 
 def git_pwd(func):
     '''ensure that we are in the repo present working directory before running
@@ -49,11 +52,27 @@ def git_commit(repo, task, message):
     # Commit with the watch group and date string
     message = 'watchme %s %s' %(task, message)
 
+    # Commit
     command = 'git commit -a -m "%s"' % message
     bot.info(command)
-
-    # Commit
     run_command(command)
+
+@git_pwd
+def write_timestamp(repo, task, filename='TIMESTAMP'):
+    '''write a file that includes the last run timestamp. This should be written
+       in each task folder after a run.
+
+       Parameters
+       ==========
+       repo: the repository to write the TIMESTAMP file to
+       task: the name of the task folder to write the file to
+       filename: the filename (defaults to TIMESTAMP)
+    '''
+    ts = time.time()
+    strtime = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    filename = os.path.join(repo, task, filename)
+    write_file(filename, strtime)  
+    git_add(repo, filename)
 
 
 def git_clone(repo, dest=None):

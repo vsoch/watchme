@@ -18,6 +18,7 @@ from watchme.defaults import (
 
 from watchme.command import (
     create_watcher,
+    write_timestamp,
     git_commit,
     git_add
 )
@@ -672,6 +673,7 @@ class Watcher(object):
                 bot.error('Unsupported result format %s' % type(result))
 
             # Add files to git, and commit
+            write_timestamp(self.repo, name)
             git_add(self.repo, files)
             git_commit(self.repo, self.name, "ADD results %s" % name)
 
