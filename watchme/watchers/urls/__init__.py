@@ -44,8 +44,10 @@ class Task(TaskBase):
            function should take no arguments, but instead use the self.params
            already provided in the client.
         '''
+        print(self.params)
         name = self.params.get('func', 'get_task')
-        
+        print(name)        
+
         if name == 'get_task':
             from .tasks import get_task as func
         elif name == 'download_task':

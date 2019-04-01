@@ -16,7 +16,7 @@ def main(args, extra):
 
     watchers = args.watchers
     if len(watchers) == 0:
-        watchers = ['watchers']
+        watchers = ['watcher']
 
     for watcher in watchers:
         create_watcher(watcher)

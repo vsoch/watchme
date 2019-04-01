@@ -12,9 +12,6 @@ from watchme.logger import bot
 
 class TaskBase(object):
 
-    params = {}
-    valid = False
-
     def __init__(self, name, params={}, **kwargs):
 
         # Ensure subclass was created correctly
@@ -23,6 +20,8 @@ class TaskBase(object):
                 bot.exit('A Task must have a %s function or attribute.' % req)
 
         self.name = name
+        self.valid = False
+        self.params = {}
         self.set_params(params)
         self.validate()
 

@@ -231,6 +231,14 @@ class Watcher(object):
         self.config[task.name] = task.export_params(active=active)
         self.print_section(task.name)
         self.save()
+
+        # If the task folder doesn't exist, recreate it.
+        task_folder = os.path.join(self.repo, task.name)
+        if not os.path.exists(task_folder):
+            mkdir_p(task_folder)
+            git_add(self.repo, task.name)
+
+        # Commit changes
         git_commit(self.repo, self.name, "ADD task %s" % task.name)
 
 # Delete
@@ -623,13 +631,15 @@ class Watcher(object):
         '''
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
+            task = self.get_task(name)
 
             # Files to be added via Git after
-            files = set()
+            files = []
 
             # Ensure that the task folder exists
             if not os.path.exists(task_folder):
                 mkdir_p(task_folder)
+                git_add(self.repo, task_folder)
 
             # Case 1. The result is a string
             if isinstance(result, str):
@@ -639,20 +649,21 @@ class Watcher(object):
                     destination = os.path.join(task_folder, 
                                                os.path.basename(result))
                     shutil.move(result, destination)
-                    files.add(destination)
+                    files.append(os.path.basename(destination))
 
                 # Otherwise, it's a string that needs to be saved to file
                 else:
                     file_name = task.params.get('file_name', 'result.txt')
                     destination = os.path.join(task_folder, file_name)
                     write_file(destination, result)
+                    files.append(destination)
 
             # Case 2. The result is a dictionary
-            if isinstance(result, dict):
+            elif isinstance(result, dict):
                 file_name = task.params.get('file_name', 'result.json')
                 destination = os.path.join(task_folder, file_name)
                 write_json(result, destination)
-                files.add(destination)
+                files.append(destination)
 
             elif result == None:
                 bot.error('Result for task %s is None' % name)
@@ -661,14 +672,13 @@ class Watcher(object):
                 bot.error('Unsupported result format %s' % type(result))
 
             # Add files to git, and commit
-            git_add(files, self.repo)
+            git_add(self.repo, files)
             git_commit(self.repo, self.name, "ADD results %s" % name)
 
-        # STOPPED HERE - there is a bug in one of the task functions (returning None)
-        # need to write the git_clone function, and test git_add
+        # STOPPED HERE - instances with more than 1 task are being overwritten (bug)
+        # need to write the git_clone function
         # Finally, update the timestamp for the watcher
         
-
 
 # Identification
 

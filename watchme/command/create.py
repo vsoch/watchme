@@ -39,9 +39,6 @@ def create_watcher(name=None, watcher_type=None):
         bot.info('Adding watcher %s...' % repo)
         mkdir_p(repo)
 
-        # Add a folder for the watcher
-        mkdir_p(os.path.join(repo, name))
-
         # Ensure no gpg signing happens
         run_command("git --git-dir=%s/.git init" % repo)
         run_command("git --git-dir=%s/.git config commit.gpgsign false" % repo)

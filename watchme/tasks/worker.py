@@ -77,9 +77,10 @@ class Workers(object):
                     bot.info('Processing task %s:%s' % (key, params))
                 result = pool.apply_async(multi_wrapper,
                                           multi_package(func, [params]))
-
+                
                 # Store the key with the result
-                results.append((key, result,))
+                results.append((key, result))
+
 
             while len(results) > 0:
                 pair = results.pop()
@@ -115,6 +116,6 @@ def multi_wrapper(func_args):
     function, kwargs = func_args
     return function(**kwargs)
 
-
 def multi_package(func, kwargs):
-    return zip(itertools.repeat(func), kwargs)
+    zipped = zip(itertools.repeat(func), kwargs)
+    return zipped

@@ -38,7 +38,6 @@ A urls task has the following parameters shared across functions.
 | url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
-
 ### 1. Get a URL Task
 
 This task will watch for changes at an entire URL, meaning tracking the entire page.
