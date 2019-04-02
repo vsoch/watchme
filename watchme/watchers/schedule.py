@@ -41,7 +41,7 @@ def has_schedule(self):
     return True
 
 
-def get_job(self):
+def get_job(self, user=None):
     '''return the job to the user, or None
     '''
     # Find the job based on a standard of comment

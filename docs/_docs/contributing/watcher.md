@@ -189,25 +189,52 @@ The following rules should pertain to writing tasks:
 
 The return value of your task is going to determine how it's processed by the watcher.
 
-#### File Objects
+##### File Objects
 
 If your function returns a file that is found to exist, it will be moved into the task folder.
 If your function names the file, it will be moved without changing the name. If the user defined
 a `file_name` parameter, it will be renamed to this. If you don't do a good job to name your
 file and the user doesn't specify this parameter, it will be the basename of the url provided.
 
-#### Json Objects
+##### Json Objects
 
 If you want to write a json to file, either return a path to file (somewhere in tmp to be
 moved to the repository) or return a dictionary type, and it will be written to `result.json`
 in the task folder. If your user (or default task) specifies a `file_name` variable, it will
 be named this instead of `result.json`
 
-#### Text
+##### Text
 
 If a string is provided and it doesn't exist as a path, it's assumed to be some text to write to file.
 It will by default written to `result.txt` unless another `file_name` parameter is specified.
 
+
+##### Lists
+
+If your task returns a list, watchme will do it's best to attempt to sniff the content,
+and figure out what kind of save you want. To make things simply, you are allowed to
+return lists, but all of the content must be of the same save type.
+
+ 1. If the list is empty, no further action is taken.
+ 2. If the list is provided with save_as@json, then the entire list is saved as a single json object.
+ 3. If the list is provided and save_as@json_list is set, each object in the list (should be json or dict) is saved as a separate json object.
+ 4. If the first item in the list is a path that exists, the entire list is assumed to be files that should be copied to the repository.
+ 5. Otherwise, each item in the list is saved as text content.
+
+As before, if you want to have a custom name for the items in the list, either write the files yourselves (and they will
+be copied) or set the `file_name@custom.txt` variable. If you set a custom name, the list of items will be named like:
+
+```bash
+watcher/
+    task-name/
+        custom0.txt
+        custom1.txt
+        ...
+        customN.txt
+```
+
+If there is some functionality you aren't able to achieve with return types, or you
+would like a new return type added, please [open an issue]({{ site.repo }}/issues).
 
 #### Variables for Tasks
 

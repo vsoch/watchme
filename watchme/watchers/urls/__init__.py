@@ -52,6 +52,8 @@ class Task(TaskBase):
             from .tasks import download_task as func
         elif name == 'post_task':
             from .tasks import post_task as func
+        elif name == "get_url_selection":
+            from .tasks import get_url_selection as func
         else:
             func = None
 

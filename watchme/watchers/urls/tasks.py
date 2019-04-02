@@ -124,3 +124,51 @@ def download_task(url, **kwargs):
             result = destination
 
     return result
+
+
+def get_url_selection(url, **kwargs):
+    '''select some content from a page dynamically, using selenium.
+    '''
+    from bs4 import BeautifulSoup
+    
+    result = None
+    selector = kwargs.get('selection', None)
+
+    if selector == None:
+        bot.error('You must define the selection (e.g., selection@.main')
+        return result        
+
+    # Does the user want to get text?
+    get_text = False
+    if kwargs.get('get_text') != None:
+        get_text = True
+
+    # Does the user want to get one or more attributes?
+    attributes = kwargs.get('attributes', None)
+    if attributes != None:
+        attributes = attributes.split(',') 
+
+    # Get the page
+    response = requests.get(url)
+    if response.status_code == 200:   
+        soup = BeautifulSoup(response.text, 'lxml')
+
+        # Get the selection
+        results = []
+        for entry in soup.select(selector):
+
+            # Does the user want to get attributes
+            if attributes != None:
+                [results.append(entry.get(x)) for x in attributes]
+
+            # Does the user want to get text?
+            elif get_text == True:
+                results.append(entry.text)
+
+            # Otherwise, return the entire thing
+            else:
+                results.append(str(entry))
+
+    # Clean up results
+    results = [x for x in results if x]
+    return results

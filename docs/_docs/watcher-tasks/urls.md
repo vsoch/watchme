@@ -128,9 +128,73 @@ type  = urls
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 
 
+### 4. Select on a Page Task
+
+You might be interested in scraping one div (or general selection, such as a section
+identified by a class or id) on a page. For this purpose, you can use the function
+`get_url_selection`. Note that you will need to install an extra set of dynamic 
+packages to do this:
+
+```bash
+$ pip install watchme[urls-dynamic]
+```
+
+This task will watch for changes based on a selection from a page. For example, 
+let's say there is a text value on a page with an air quality value. We would want
+to define this as the selection:
+
+```bash
+$ watchme create air-quality
+$ watchme add air-quality task-air-oakland url@http://aqicn.org/city/california/alameda/oakland-west func@get_url_selection selection@#aqiwgtvalue file_name@oakland.txt get_text@true
+[task-air-oakland]
+url  = http://aqicn.org/city/california/alameda/oakland-west
+func  = get_url_selection
+selection  = #aqiwgtvalue
+file_name  = oakland.txt
+get_text  = true
+active  = true
+type  = urls
+```
+
+We set "get_text" to true (or anything) so that we are sure to grab the text content of our
+selection. The following parameters apply for this function:
+
+| Name | Required | Default | Example | Notes|
+|------|----------|---------|---------|-----------|
+| selection | Yes | unset | #idname|  |           |
+| get_text | No | unset | get_text@true | if found, return text from the selection |
+| attributes | No | unset | style,id or id | for some selection, return attributes |
+| file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+
+We can run the task:
+
+```bash
+$ watchme activate air-quality
+$ watchme run air-quality
+```
+
+and then see the result!
+
+```bash
+$ tree $HOME/.watchme/air-quality
+├── task-air-oakland
+│   ├── oakland.txt
+│   └── TIMESTAMP
+└── watchme.cfg
+```
+
+The file itself has the value of 30, the air quality in Oakland today.
+I would next want to schedule this at some frequency to collect data 
+consistently when my computer is on.
+
+```bash
+$ watchme schedule air-quality @hourly
+```
+
 ### Verify the Addition
 
-We can also confirm this section has been written to file:
+We can also confirm this section has been written to file, either by looking
+at a watcher directly:
 
 ```bash
 $ cat /home/vanessa/.watchme/watcher/watchme.cfg 
@@ -141,6 +205,12 @@ active = false
 url  = https://www.rc.fas.harvard.edu/about/people/
 active  = true
 type  = urls
+```
+
+or using inspect:
+
+```bash
+$ watchme inspect air-quality
 ```
 
 You don't actually need to use watchme to write these files - you can write

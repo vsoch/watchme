@@ -6,7 +6,7 @@
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.11"
 AUTHOR = 'Vanessa Sochat'
 AUTHOR_EMAIL = 'vsochat@stanford.edu'
 NAME = 'watchme'
@@ -18,3 +18,12 @@ LICENSE = "LICENSE"
 INSTALL_REQUIRES = (
     ('python-crontab', {"min_version":"2.3.6"}),
 )
+
+## beautiful soup selection task
+
+INSTALL_URLS_DYNAMIC = (
+    ('beautifulsoup4', {'min_version': '4.6.0'}),
+)
+
+INSTALL_ALL = (INSTALL_REQUIRES +
+               INSTALL_URLS_DYNAMIC)

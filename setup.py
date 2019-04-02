@@ -29,7 +29,7 @@ def get_lookup():
     return lookup
 
 # Read in requirements
-def get_requirements(lookup=None):
+def get_requirements(lookup=None, key="INSTALL_REQUIRES"):
     '''get_requirements reads in requirements and versions from
     the lookup obtained with get_lookup'''
 
@@ -37,7 +37,7 @@ def get_requirements(lookup=None):
         lookup = get_lookup()
 
     install_requires = []
-    for module in lookup['INSTALL_REQUIRES']:
+    for module in lookup[key]:
         module_name = module[0]
         module_meta = module[1]
         if "exact_version" in module_meta:
@@ -77,6 +77,7 @@ with open('README.md') as filey:
 if __name__ == "__main__":
 
     INSTALL_REQUIRES = get_requirements(lookup)
+    URLS_DYNAMIC = get_requirements(lookup,'INSTALL_URLS_DYNAMIC')
 
     setup(name=NAME,
           version=VERSION,
@@ -95,6 +96,10 @@ if __name__ == "__main__":
           setup_requires=["pytest-runner"],
           tests_require=["pytest"],
           install_requires = INSTALL_REQUIRES,
+          extras_require={
+              'all': [INSTALL_REQUIRES],
+              'urls-dynamic': [URLS_DYNAMIC]
+          },
           classifiers=[
               'Intended Audience :: Science/Research',
               'Intended Audience :: Developers',

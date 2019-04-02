@@ -37,6 +37,8 @@ from .settings import (
 from .schedule import (
     remove_schedule,
     get_crontab,
+    get_job,
+    has_schedule,
     update_schedule,
     clear_schedule,
     schedule
@@ -279,7 +281,7 @@ class Watcher(object):
             self.remove_section(task)
 
             # If the task has a folder, remove the entire thing
-            repo = os.path.join(self.base, task)
+            repo = os.path.join(self.repo, task)
             if os.path.exists(repo):
                 shutil.rmtree(repo)
 
@@ -661,41 +663,57 @@ class Watcher(object):
                 mkdir_p(task_folder)
                 git_add(self.repo, task_folder)
 
-            # Case 1. The result is a string
-            if isinstance(result, str):
+            # Case 1. The result is a list
+            if isinstance(result, list):           
+
+                # Get rid of Nones, if the user accidentally added
+                result = [r for r in result if r]
+
+                if len(result) == 0:
+                    bot.error('%s returned empty list of results.' % name)
+
+                # json output is specified
+                elif task.params.get('save_as') == 'json':
+                    bot.debug('Saving single list as one json...')
+                    files.append(task._save_json(result, self.repo))
+
+                elif task.params.get('save_as') == 'json':
+                    bot.debug('Saving single list as multiple json...')
+                    files += task._save_json_list(result, self.repo)
+
+                # Otherwise, sniff for list of paths
+                elif os.path.exists(result[0]):
+                    bot.debug('Found list of paths...')
+                    files += task._save_files_list(result, self.repo)     
+
+                # Finally, assume just writing text to file
+                else:
+                    bot.debug('Saving content from list to file...')
+                    files += task._save_text_list(result, self.repo)     
+
+            # Case 2. The result is a string
+            elif isinstance(result, str):
 
                 # if it's a path to a file, just save to repository
                 if os.path.exists(result):
-
-                    file_name = task.params.get('file_name', os.path.basename(result))
-
-                    # HOME/.watchme/watcher/<task>/<result>
-                    destination = os.path.join(task_folder, file_name)
-                    shutil.move(result, destination)
-
-                    # <task>/<result>     
-                    add_folder = os.path.join(name, file_name)
-                    files.append(add_folder)
+                    files.append(task._save_file(result, self.repo))
 
                 # Otherwise, it's a string that needs to be saved to file
                 else:
-                    file_name = task.params.get('file_name', 'result.txt')
-                    destination = os.path.join(task_folder, file_name)
-                    write_file(destination, result)
-                    files.append(destination)
+                    files.append(task._save_text(result, self.repo))
 
-            # Case 2. The result is a dictionary
+            # Case 3. The result is a dictionary
             elif isinstance(result, dict):
-                file_name = task.params.get('file_name', 'result.json')
-                destination = os.path.join(task_folder, file_name)
-                write_json(result, destination)
-                files.append(destination)
+                files.append(task._save_json(result, repo))
 
             elif result == None:
                 bot.error('Result for task %s is None' % name)
 
             else:
                 bot.error('Unsupported result format %s' % type(result))
+
+            # Get rid of None results (don't check excessively for None above)
+            files = [f for f in files if f]
 
             # Add files to git, and commit
             write_timestamp(self.repo, name)
@@ -727,5 +745,7 @@ Watcher.print_section = print_section
 Watcher.remove_schedule = remove_schedule
 Watcher.get_crontab = get_crontab
 Watcher.update_schedule = update_schedule
+Watcher.has_schedule = has_schedule
+Watcher.get_job = get_job
 Watcher.clear_schedule = clear_schedule
 Watcher.schedule = schedule
