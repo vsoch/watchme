@@ -451,6 +451,16 @@ $ crontab -l
 @hourly watchme run air-quality # watchme-air-quality
 ```
 
+You can check to see if cron is running (and the job ran):
+
+```bash
+# ubuntu
+$ service cron status
+
+# linux
+$ service crond status
+```
+
 ### How do I remove a task from a watcher?
 
 To remove a task, just specify it:
