@@ -20,4 +20,7 @@ from .commit import (
     git_clone, 
     git_add
 )
-from .utils import list_watchers
+from .utils import (
+    list_watchers,
+    list_watcher
+)

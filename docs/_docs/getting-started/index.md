@@ -15,6 +15,7 @@ watcher below:
  - [Setup](#setup-watchme): Watchme on your computer, meaning setting a base with a default watcher
  - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
  - [Add tasks](#how-do-i-add-tasks): to your watcher, such as monitoring a url or a data endpoint.
+ - [Edit tasks](#how-do-i-edit-tasks): meaning an update, addition, or removal of parameters
  - [Task Parameters](#what-are-the-parameters-for-each-task) to customize your tasks.
  - [Inspect](#how-do-i-inspect-my-watcher) your watcher configuration easily.
  - [List](#how-do-i-list-watchers) your watchers
@@ -177,6 +178,44 @@ $ watchme add watcher task-singularity-release url@https://github.com/sylabs/sin
 The reason we save these parameters in the repo is that if you put it under version
 control on GitHub (or similar), others will be able to reproduce your protocol.
 
+### How do I add tasks?
+
+After you've added a task, you can easily update parameters. The format is:
+
+```bash
+$ watchme edit <watcher> <action> <task> <key> <value> 
+```
+
+Where action can be one of "update" or "add" or "remove." For example, add a value:
+
+```bash
+$ watchme edit watcher add task-harvard-hpc file_name file.txt
+Adding file_name:file.txt to task-harvard-hpc
+```
+
+If you try adding again, it won't let you because the value exists.
+
+
+```bash
+$ watchme edit watcher add task-harvard-hpc file_name file.txt
+ERROR file_name already exists. Use "update" action to change.
+```
+
+Instead, use update:
+
+```bash
+$ watchme edit watcher update task-harvard-hpc file_name churro.txt
+Updating file_name to churro.txt in task-harvard-hpc
+```
+
+and when you have had enough, remove a parameter entirely:
+
+```bash
+$ watchme edit watcher remove task-harvard-hpc file_name
+Removing file_name
+```
+
+
 ### What are the parameters for each task?
 
 The parameters will vary based on the task type. When you are ready,
@@ -226,6 +265,16 @@ You can quickly see the watchers installed to your watcher home with:
 $ watchme list
 watcher
 purpleair
+```
+
+You can also list files for a particular watcher folder:
+
+```bash
+$ watchme list purpleair
+task: /home/vanessa/.watchme/purpleair
+README.md
+  .git
+  watchme.cfg
 ```
 
 And logically, you can then inspect further with [inspect](#how-do-i-inspect-my-watchers).

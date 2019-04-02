@@ -187,6 +187,21 @@ def get_parser():
                            help="force overwrite of a schedule, if exists.", 
                            default=False, action='store_true')
 
+    # edit
+
+    edit = subparsers.add_parser("edit",
+                                  help="edit a watcher task.")
+ 
+    edit.add_argument('watcher', nargs=1,
+                      help='the watcher to edit')
+
+    edit.add_argument('action', nargs=1, 
+                      help="the action to take",
+                      choices=['add', 'update', 'remove'])
+
+    edit.add_argument('task', nargs=1, 
+                      help="the task to edit.")
+
     return parser
 
 
@@ -254,6 +269,7 @@ def main():
 
     if args.command == "activate": from .activate import main
     elif args.command == "add": from .add import main
+    elif args.command == "edit": from .edit import main
     elif args.command == "create": from .create import main
     elif args.command == "deactivate": from .deactivate import main
     elif args.command == "get": from .get import main

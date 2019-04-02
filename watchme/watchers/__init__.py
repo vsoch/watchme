@@ -118,6 +118,71 @@ class Watcher(object):
         write_config(self.configfile, self.config)
 
 
+    def edit_task(self, name, action, key, value=None):
+        '''edit a task, meaning doing an addition (add), update (update), or
+           "remove", All actions require a value other than remove.
+
+           Parameters
+           ==========
+           name: the name of the task to update
+           action: the action to take (update, add, remove) a parameter
+           key: the key to update
+           value: the value to update
+        '''
+
+        if not self.has_task(name):
+            bot.exit('%s is not a task defined by %s' %(name, self.name))
+
+        if action not in ['update', 'add', 'remove']:
+            bot.exit('Action must be update, add, or remove')
+
+        if action in ['update', 'add'] and value == None:
+            bot.exit('A value must be provided for the %s action' % action)
+
+        # Add, and it doesn't exist so it's okay
+        if action == "add" and key not in self.config[name]:
+            bot.info('Adding %s:%s to %s' %(key, value, name))
+            self.set_setting(name, key, value)
+
+        # Already exists, encourage user to update
+        elif action == "add" and key in self.config[name]:
+            bot.exit('%s already exists. Use "update" action to change.' % key)
+
+        # Update, and it's a valid choice
+        elif action == 'update' and key in self.config[name]:
+            bot.info('Updating %s to %s in %s' %(key, value, name))
+            self.set_setting(name, key, value)
+
+        # Update, and it's not a valid choice
+        elif action == 'update' and key not in self.config[name]:
+            bot.exit('%s is not found in config, cannot be updated.' % key)
+
+        # Remove, and it's a valid choice
+        elif action == "remove" and key in self.config[name]:
+            bot.info('Removing %s' % key )
+            del self.config[name][key]
+
+        # Remove, and it's not a valid choice
+        elif action == "remove" and key not in self.config[name]:
+            bot.exit('%s is not found in config, cannot be removed.' % key)
+        self.save()
+
+
+    def has_section(self, name):
+        '''returns True or False to indicate if the watcher has a specified
+           section. To get a task, use self.has_task.
+
+           Parameters
+           ==========
+           name: the name of the section to check for.
+        '''
+        self.load_config()
+        if name in self.config._sections:
+            return True
+        bot.warning('%s not found for watcher %s' %(name, self.name))
+        return False
+
+
     def load_config(self):
         '''load a configuration file, and set the active setting for the watcher
            if the file doesn't exist, the function will exit and prompt the user 
@@ -446,6 +511,16 @@ class Watcher(object):
 
 
 # Get and Prepare Tasks
+
+    def has_task(self, name):
+        '''returns True or False to indicate if the watcher has a specified
+           task.
+        '''
+        self.load_config()
+        if self.has_section(name) and name.startswith('task'):
+            return True
+        return False
+
 
     def get_task(self, name):
         '''get a particular task, based on the name. This is where each type

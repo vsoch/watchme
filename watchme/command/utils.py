@@ -28,9 +28,29 @@ def list_watchers(base=None):
     if base == None:
         base = WATCHME_BASE_DIR
 
-    watchers = os.listdir(base)
-    bot.info('\n'.join(watchers))
+    if os.path.exists(base):
+        watchers = os.listdir(base)
+        bot.info('\n'.join(watchers))
+    else:
+        bot.exit('%s does not exist.' % base)
 
+def list_watcher(watcher, base=None):
+    '''list the contents (tasks) of a single watcher.
+
+       Parameters
+       ==========
+       base: the watchme base, defaults to $HOME/.watchme
+    '''
+    if base == None:
+        base = WATCHME_BASE_DIR
+
+    repo = os.path.join(base, watcher)
+    if os.path.exists(repo):
+        files = os.listdir(repo)
+        bot.custom(prefix="task:", message="%s" % repo, color="CYAN")
+        bot.info('\n  '.join(files))
+    else:
+        bot.exit('%s does not exist.' % base)
 
 def clone_watcher(repo, base=None, name=None):
     '''clone a watcher from Github (or other version control with git)
