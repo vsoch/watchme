@@ -13,4 +13,5 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - first beta release of watchme, all commands and docs (0.0.11)
  - adding changelog, and original skeleton for client  (0.0.1)

@@ -58,6 +58,26 @@ def remove_section(self, section, save=True):
 
     return removed
 
+def print_add_task(self, task):
+    '''assemble a task section into a command that can create/add it.
+
+       Parameters
+       ==========
+       task: the name of the task to inspect
+    '''
+    self.load_config()
+
+    if task in self.config:
+        command = "watchme add %s" % task
+        for key in self.config[task]:
+            value = self.config[task][key]
+            command = "%s %s@%s" %(command, key, value)
+
+        bot.info(command)
+    else:
+        bot.exit('%s is not a valid task.' % task)
+
+
 def print_section(self, section):
     '''print a section (usually a task) from a configuration file,
        if it exists.

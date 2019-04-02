@@ -19,6 +19,7 @@ from watchme.defaults import (
 from watchme.command import (
     create_watcher,
     write_timestamp,
+    get_watchers,
     git_commit,
     git_add
 )
@@ -30,6 +31,7 @@ from .settings import (
     set_setting,
     get_section,
     print_section,
+    print_add_task,
     remove_setting,
     remove_section
 )
@@ -359,7 +361,7 @@ class Watcher(object):
 
 # Inspect
     
-    def inspect(self, tasks=None):
+    def inspect(self, tasks=None, create_command=False):
         '''inspect a watcher, or one or more tasks belonging to it. This means
            printing the configuration for the entire watcher (if tasks is None)
            or just for one or more tasks.
@@ -367,6 +369,8 @@ class Watcher(object):
            Parameters
            ==========
            tasks: one or more tasks to inspect (None will show entire file)
+           create_command: if True, given one or more tasks, print the command
+                           to create them.
         '''
         self.load_config()
         if tasks == None:
@@ -378,9 +382,19 @@ class Watcher(object):
 
         # Show all sections
         for task in tasks:
-            self.print_section(task)
-            bot.newline()
- 
+
+            # If the user doesn't want to see the create command:
+            if create_command is False:
+                self.print_section(task)
+                bot.newline()
+            else:
+                self.print_add_task(task)
+
+
+    def list(self, quiet=False):
+        '''list the watchers. If quiet is True, don't print to the screen.'''
+        watchers = get_watchers(base=None, quiet=quiet)
+        return watchers
 
 # Protection
 
@@ -814,6 +828,7 @@ Watcher.get_section = get_section
 Watcher.set_setting = set_setting
 Watcher.remove_section = remove_section
 Watcher.print_section = print_section
+Watcher.print_add_task = print_add_task
 
 # Schedule 
 

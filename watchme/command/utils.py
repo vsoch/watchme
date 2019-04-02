@@ -17,7 +17,7 @@ import re
 import shutil
 import sys
 
-def list_watchers(base=None):
+def get_watchers(base=None, quiet=False):
     '''list the watchers installed at a base. If base is not defined,
        the default base is used.
 
@@ -30,9 +30,12 @@ def list_watchers(base=None):
 
     if os.path.exists(base):
         watchers = os.listdir(base)
-        bot.info('\n'.join(watchers))
+        if quiet == False:
+            bot.info('\n'.join(watchers))
+        return watchers
     else:
         bot.exit('%s does not exist.' % base)
+
 
 def list_watcher(watcher, base=None):
     '''list the contents (tasks) of a single watcher.

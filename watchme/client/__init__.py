@@ -79,7 +79,6 @@ def get_parser():
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
 
-
     # add
 
     add = subparsers.add_parser("add",
@@ -112,6 +111,9 @@ def get_parser():
     inspect.add_argument('watcher', nargs=1,
                          help='the watcher to inspect')
 
+    inspect.add_argument('--add-command', dest="create_command", 
+                         help="print the command used to add a a task.", 
+                         default=False, action='store_true')
 
     # list
 

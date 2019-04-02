@@ -438,6 +438,19 @@ times? If you want to set a [custom cron string](https://crontab.guru/) you can 
 $ watchme schedule watcher 0 * * * * *
 ```
 
+Here is how to schedule your watcher to run:
+
+```bash
+$ watchme schedule air-quality @hourly
+```
+
+And then check that an entry has been added to crontab:
+
+```bash
+$ crontab -l
+@hourly watchme run air-quality # watchme-air-quality
+```
+
 ### How do I remove a task from a watcher?
 
 To remove a task, just specify it:

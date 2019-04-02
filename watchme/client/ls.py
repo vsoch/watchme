@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.command import (
-    list_watchers,
+    get_watchers,
     list_watcher
 )
 from watchme.logger import bot
@@ -18,7 +18,7 @@ def main(args, extra):
     '''list installed watchers
     '''    
     if extra == None:
-        list_watchers(args.base)
+        get_watchers(args.base)
     else:
         for watcher in extra:
             list_watcher(watcher, args.base)

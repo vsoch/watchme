@@ -10,6 +10,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme import get_watcher
 from watchme.logger import bot
+from watchme.command import get_watchers
+
 
 def main(args, extra):
     '''activate one or more watchers
@@ -18,5 +20,9 @@ def main(args, extra):
     name = args.watcher[0]
     watcher = get_watcher(name, base=args.base, create=False)
 
-    # If extra is None (no tasks provided) will show entire watcher
-    watcher.inspect(extra)
+    # If user wants to see create command, must have list of tasks
+    if args.create_command is True and extra is None:
+        extra = [x.name for x in watcher.get_tasks()]
+
+    # Show the create command, or inspect a task
+    watcher.inspect(extra, create_command=args.create_command)

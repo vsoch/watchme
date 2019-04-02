@@ -9,6 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
+from watchme.utils import get_user
 from crontab import CronTab
 
 # Scheduling
@@ -23,7 +24,7 @@ def remove_schedule(self, name=None, user=None):
         name = self.name
 
     cron = self.get_crontab(user)
-    job = self.get_job()
+    job = self.get_job(must_exist=False)
 
     # Remove the job, if found
     if job != None:
@@ -33,15 +34,15 @@ def remove_schedule(self, name=None, user=None):
     return False
 
 
-def has_schedule(self):
+def has_schedule(self, must_exist=False):
     '''determine if a watcher already has a schedule, as a warning to the user.
     '''
-    if self.get_job() == None:
+    if self.get_job(must_exist=False) == None:
         return False
     return True
 
 
-def get_job(self, user=None):
+def get_job(self, user=None, must_exist=True):
     '''return the job to the user, or None
     '''
     # Find the job based on a standard of comment
@@ -51,7 +52,7 @@ def get_job(self, user=None):
     job = job[0]
 
     # Return None, or the actual cron job
-    if job == None:
+    if job == None and must_exist == True:
         bot.warning('%s does not have a cron job configured' % self.name)
     
     return job
@@ -63,7 +64,7 @@ def get_crontab(self, user=None):
     '''
     # If no user provided, just default to running user
     if user == None:
-        user = True
+        user = get_user()
 
     # Create an instance of the user's crontab
     return CronTab(user=user)
@@ -76,7 +77,7 @@ def update_schedule(self, minute=12, hour='*', month='*', day='*', user=None):
        to be used by a client from within Python, and isn't exposed from
        the command line.
     '''
-    job = self.get_job()
+    job = self.get_job(must_exist=True)
 
     # Update the job if found
     if job != None:
@@ -167,5 +168,7 @@ def schedule(self,
     # Set the time, and then write the job to file
     job.setall(minute, hour, day, month, weekday)
     job.enable()
-    
+    cron.write()
+    bot.info(job)    
+
     return job

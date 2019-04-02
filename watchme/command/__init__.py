@@ -21,6 +21,6 @@ from .commit import (
     git_add
 )
 from .utils import (
-    list_watchers,
+    get_watchers,
     list_watcher
 )

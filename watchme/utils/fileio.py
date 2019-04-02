@@ -31,6 +31,9 @@ def get_userhome():
     '''
     return pwd.getpwuid(os.getuid())[5]
 
+def get_user():
+    '''return the active user'''
+    return os.path.basename(get_userhome())
 
 def mkdir_p(path):
     ''' mkdir_p attempts to get the same functionality as mkdir -p
