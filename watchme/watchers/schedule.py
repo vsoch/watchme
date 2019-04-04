@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.logger import bot
 from crontab import CronTab
-from watchme.utils import which
+from watchme.utils import ( which, get_user )
 
 # Scheduling
 
@@ -26,17 +26,27 @@ def remove_schedule(self, name=None):
     cron = self.get_crontab()
     job = self.get_job(must_exist=True)
 
-    # Remove the job, if found
-    update = []
+    # Remove any jobs, if found
+    remove = []
     if job != None:
         for cronjob in cron.crons:
-            if cronjob.comment != job.comment:
-                update.append(cronjob)
+            if cronjob.comment == job.comment:
+                remove.append(cronjob)
     
-            bot.info('Clearing schedule associated with watcher %s' % name)
-        cron.crons = update
-        cron.write_to_user(user=True)
-        return True
+        # Remove from crons and list, rewrite
+        for item in remove:
+            cron.crons.remove(item)
+            cron.lines.remove(item)
+
+        #print(cron.lines)
+        #print(cron.crons)
+
+        # Alert the user if found jobs
+        if len(remove) > 0:
+            bot.info('Found %s schedules for watcher %s' % (len(remove), name))
+            cron.write_to_user(user=True)
+            return True
+
     return False
 
 
@@ -158,7 +168,7 @@ def schedule(self,
 
     # The command will run the watcher, watcher.cfg controls what happens
     whereis = which('watchme')
-    command = '%s watchme run %s' % (whereis, self.name)
+    command = '%s run %s' % (whereis, self.name)
     comment = 'watchme-%s' % self.name
 
     if job == None:
