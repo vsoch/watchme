@@ -26,6 +26,10 @@ from watchme.command import (
 
 from configparser import NoOptionError
 
+from .data import (
+    export_dataframe
+)
+
 from .settings import (
     get_setting,
     set_setting,
@@ -102,7 +106,8 @@ class Watcher(object):
             base = WATCHME_BASE_DIR
 
         # Does the watcher exist?
-        self.repo = os.path.join(base, self.name)
+        self.base = base
+        self.repo = os.path.join(self.base, self.name)
         self.configfile = os.path.join(self.repo, 'watchme.cfg')
 
         # If the watcher doesn't exist and we need to create:
@@ -839,3 +844,7 @@ Watcher.has_schedule = has_schedule
 Watcher.get_job = get_job
 Watcher.clear_schedule = clear_schedule
 Watcher.schedule = schedule
+
+# Data
+
+Watcher.export_dataframe = export_dataframe

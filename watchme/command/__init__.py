@@ -16,6 +16,8 @@ from .create import (
 
 from .commit import (
     write_timestamp,
+    get_earliest_commit,
+    get_commits,
     git_commit, 
     git_clone, 
     git_add

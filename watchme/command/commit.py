@@ -27,17 +27,18 @@ def git_pwd(func):
     def git_pwd_inner(*args, **kwargs): 
 
         # Repo is either provided as a keyword argument, or the first positionl
-        repo = kwargs.get('repo', args[0])
+        repo = kwargs.get('repo', '')
 
         # Keep a record of the present working directory
         pwd = os.getcwd()
         os.chdir(repo)
           
         # Run the git command         
-        func(*args, **kwargs) 
+        result = func(*args, **kwargs) 
 
         # Return to where we were before
         os.chdir(pwd)
+        return result
     
     return git_pwd_inner
 
@@ -131,6 +132,67 @@ def git_clone(repo, name=None, base=None, force=False):
     shutil.move(tmpdir, dest)
     bot.info('Added watcher %s' % name)
     
+
+@git_pwd
+def get_commits(repo, from_commit=None, to_commit=None, grep=None, filename=None):
+    '''get commits, starting from and going to a particular commit. if grep
+       is defined, filter commits to those with messages that match that
+       particular expression
+
+       Parameters
+       ==========
+       from_commit: the commit to start at
+       to_commit: the commit to go to
+       grep: the expression to match (not used if None)
+       filename: the filename to filter to. Includes all files if not specified.
+    '''
+    command = 'git log --all --oneline --pretty=tformat:"%H"' 
+
+    # The earliest commit
+    if from_commit == None:
+        from_commit = get_earliest_commit()
+
+    # The latest commit
+    if to_commit == None:
+        to_commit = get_latest_commit()
+
+    # A regular expression to search for (and filter commits)
+    if grep != None:
+        command = "%s --grep \"ADD results\"" % command
+
+    # Add the commit range
+    command = "%s %s..%s" % (command, from_commit, to_commit)
+
+    if filename != None:
+        command = "%s -- %s" %(command, filename)
+
+    bot.info(command)
+    results = run_command(command)['message']
+    results = [x for x in results.split('\n') if x]
+    return results
+
+
+def get_earliest_commit():
+    '''get the earliest commit for a repository. This is intended to be used
+       when in the present working directory
+
+       Parameters
+       ==========
+       repo: the repository path to get the commit from
+    '''
+    commit = run_command('git rev-list --max-parents=0 HEAD')['message']
+    return commit.strip('\n')
+
+
+def get_latest_commit():
+    '''get the latest commit for a repository in the present working directory
+
+       Parameters
+       ==========
+       repo: the repository path to get the commit from
+    '''
+    commit = run_command('git log -n 1 --pretty=format:"%H"')['message']
+    return commit.strip('\n')
 
 @git_pwd
 def git_add(repo, files):

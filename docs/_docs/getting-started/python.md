@@ -97,6 +97,28 @@ The export_func function should take all of the (exploded) params.
 **under development**
 
 
+## Export Data
+
+Let's say that we want to export data for a particular task. First, initialize
+the watcher. Here is watcher `watchme-air-quality`:
+
+```bash
+from watchme import get_watcher
+watcher = get_watcher('watchme-air-quality')
+```
+
+Next, export based on a task and a file in the folder:
+
+```bash
+watcher.export_dataframe('task-air-oakland', 'oakland.txt')
+git log --all --oneline --pretty=tformat:"%H" --grep "ADD results" cca3c4eb84d9c38527ec93a9a620bfab07d798f2..86ba4c775fab86ea47d3b96b4477d4aaf6bdde83 -- task-air-oakland/oakland.txt
+```
+
+The command shown is how to get the list of commits that are relevant for your
+task and file. Notice how we filter to the git message to ADD results, which is used
+when we add results.
+
+
 Read about [Concepts]({{ site.baseurl }}/getting-started/concepts/),
 [Environment]({{ site.baseurl }}/getting-started/environment/) or go back to the
 [Quick Start]({{ site.baseurl }}/getting-started/)

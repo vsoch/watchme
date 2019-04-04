@@ -559,6 +559,9 @@ $ watchme get https://www.github.com/vsoch/watchme-air-quality special-name --fo
 Added watcher special-name
 ```
 
+You will still need to schedule the water to run (and update the .git folder cloned 
+there) and activate it, in the case that it wasn't active in the repository.
+
 ## Licenses
 
 This code is licensed under the Affero GPL, version 3.0 or later [LICENSE](LICENSE).
