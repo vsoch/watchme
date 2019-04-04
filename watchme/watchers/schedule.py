@@ -9,13 +9,13 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
-from watchme.utils import get_user
 from crontab import CronTab
+from watchme.utils import which
 
 # Scheduling
 
 
-def remove_schedule(self, name=None, user=None):
+def remove_schedule(self, name=None):
     '''remove a scheduled item from crontab, this is based on the watcher
        name. By default, we use the watcher instance name, however you
        can specify a custom name if desired.
@@ -23,13 +23,19 @@ def remove_schedule(self, name=None, user=None):
     if name == None:
         name = self.name
 
-    cron = self.get_crontab(user)
-    job = self.get_job(must_exist=False)
+    cron = self.get_crontab()
+    job = self.get_job(must_exist=True)
 
     # Remove the job, if found
+    update = []
     if job != None:
-        bot.info('Clearing schedule associated with watcher %s' % name)
-        cron.remove(job)
+        for cronjob in cron.crons:
+            if cronjob.comment != job.comment:
+                update.append(cronjob)
+    
+            bot.info('Clearing schedule associated with watcher %s' % name)
+        cron.crons = update
+        cron.write_to_user(user=True)
         return True
     return False
 
@@ -42,11 +48,11 @@ def has_schedule(self, must_exist=False):
     return True
 
 
-def get_job(self, user=None, must_exist=True):
+def get_job(self, must_exist=True):
     '''return the job to the user, or None
     '''
     # Find the job based on a standard of comment
-    cron = self.get_crontab(user)
+    cron = self.get_crontab()
     comment = 'watchme-%s' % self.name
     job = list(cron.find_comment(comment)) or [None]
     job = job[0]
@@ -58,19 +64,14 @@ def get_job(self, user=None, must_exist=True):
     return job
 
 
-def get_crontab(self, user=None):  
-    '''get an instance of the user's crontab. If no user is defined, we use
-       the running user.
+def get_crontab(self):  
+    '''get an instance of the user's crontab. We use the running user.
     '''
-    # If no user provided, just default to running user
-    if user == None:
-        user = get_user()
-
     # Create an instance of the user's crontab
-    return CronTab(user=user)
+    return CronTab(user=True)
 
 
-def update_schedule(self, minute=12, hour='*', month='*', day='*', user=None):
+def update_schedule(self, minute=12, hour='*', month='*', day='*'):
     '''update a scheduled item from the crontab, with a new entry. This
        first looks for the entry (and removes it) and then clls the new_
        schedule function to write a new one. This function is intended
@@ -85,7 +86,6 @@ def update_schedule(self, minute=12, hour='*', month='*', day='*', user=None):
                           hour=hour,
                           month=month, 
                           day=day,
-                          user=user,
                           job=job,
                           force=True)
 
@@ -93,7 +93,7 @@ def clear_schedule(self):
     '''clear all cron jobs associated with the watcher. To remove jobs
        associated with a single watcher, use remove_schedule
     '''
-    cron = self.get_crontab(user)
+    cron = self.get_crontab()
     bot.info('Clearing jobs associated with all watchers')
     cron.remove_all(comment='watchme-*')
     return cron
@@ -105,7 +105,6 @@ def schedule(self,
              month='*', 
              day='*', 
              weekday='*',
-             user=None,
              job=None,
              force=False):
     '''schedule the watcher to run at some frequency to update record of pages.
@@ -126,10 +125,9 @@ def schedule(self,
        month: must be within 1 and 12, or *
        day: must be between 1 and 31, or *
        weekday: must be between 0 and 6 or *
-       user: if not defined, use running user.
        job: if provided, assumes we are updated an existing entry.
     '''
-    cron = self.get_crontab(user)
+    cron = self.get_crontab()
 
     # Cut out early if the job already exists, and force is false
     if self.has_schedule() and not force:
@@ -159,7 +157,8 @@ def schedule(self,
         bot.exit('weekday must be in [0..6] or equal to *')
 
     # The command will run the watcher, watcher.cfg controls what happens
-    command = 'watchme run %s' % self.name
+    whereis = which('watchme')
+    command = '%s watchme run %s' % (whereis, self.name)
     comment = 'watchme-%s' % self.name
 
     if job == None:
@@ -168,7 +167,7 @@ def schedule(self,
     # Set the time, and then write the job to file
     job.setall(minute, hour, day, month, weekday)
     job.enable()
-    cron.write()
+    cron.write_to_user(user=True)
     bot.info(job)    
 
     return job

@@ -71,6 +71,9 @@ def clone_watcher(repo, base=None, name=None):
     if base == None:
         base = WATCHME_BASE_DIR
 
+    # clone_watcher(repo=repo, base=args.base, name=extra)
+    # STOPPED HERE - need to test this.
+
     # Validate the repository address
     if not re.search('^git@|http', repo):
         bot.exit('Please provide a valid url to git repository')

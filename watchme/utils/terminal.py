@@ -83,12 +83,14 @@ def which(software, strip_newline=True):
     '''get_install will return the path to where an executable is installed.
     '''
     if software is None:
-        software = "singularity"
-    cmd = ['which', software ]
+        software = "watchme"
+    cmd = 'which %s' % software
     try:
         result = run_command(cmd)
         if strip_newline is True:
             result['message'] = result['message'].strip('\n')
+        if "message" in result:
+            return result['message']
         return result
 
     except: # FileNotFoundError
@@ -111,10 +113,11 @@ def run_command(cmd, sudo=False):
     if none specified, will alert that command failed.
 
     '''
-    if sudo is True:
-        cmd = ['sudo'] + cmd
 
     cmd = shlex.split(cmd)
+
+    if sudo is True:
+        cmd = ['sudo'] + cmd
 
     try:
         output = Popen(cmd, stderr=STDOUT, stdout=PIPE)
