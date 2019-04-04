@@ -15,7 +15,7 @@ from watchme.utils import ( which, get_user )
 # Scheduling
 
 
-def remove_schedule(self, name=None):
+def remove_schedule(self, name=None, quiet=False):
     '''remove a scheduled item from crontab, this is based on the watcher
        name. By default, we use the watcher instance name, however you
        can specify a custom name if desired.
@@ -24,30 +24,17 @@ def remove_schedule(self, name=None):
         name = self.name
 
     cron = self.get_crontab()
-    job = self.get_job(must_exist=True)
 
-    # Remove any jobs, if found
-    remove = []
-    if job != None:
-        for cronjob in cron.crons:
-            if cronjob.comment == job.comment:
-                remove.append(cronjob)
+    comment = 'watchme-%s' % self.name
+    found = False
+    for job in cron.find_comment(comment):
+        found = True
+        cron.remove(job)
     
-        # Remove from crons and list, rewrite
-        for item in remove:
-            cron.crons.remove(item)
-            cron.lines.remove(item)
-
-        #print(cron.lines)
-        #print(cron.crons)
-
-        # Alert the user if found jobs
-        if len(remove) > 0:
-            bot.info('Found %s schedules for watcher %s' % (len(remove), name))
-            cron.write_to_user(user=True)
-            return True
-
-    return False
+    if found is True:
+        bot.info('Removed schedule for watcher %s' % name)
+        cron.write_to_user(user=True)
+    return cron
 
 
 def has_schedule(self, must_exist=False):
@@ -92,12 +79,14 @@ def update_schedule(self, minute=12, hour='*', month='*', day='*'):
 
     # Update the job if found
     if job != None:
-        self.new_schedule(minute=minute,
-                          hour=hour,
-                          month=month, 
-                          day=day,
-                          job=job,
-                          force=True)
+        return self.schedule(minute=minute,
+                             hour=hour,
+                             month=month, 
+                             day=day,
+                             job=job,
+                             force=True)
+
+    bot.warning('%s does not have a current schedule to update.' % self.name)
 
 def clear_schedule(self):
     '''clear all cron jobs associated with the watcher. To remove jobs
@@ -106,6 +95,9 @@ def clear_schedule(self):
     cron = self.get_crontab()
     bot.info('Clearing jobs associated with all watchers')
     cron.remove_all(comment='watchme-*')
+
+    # Save new cron
+    cron.write_to_user(user=True)
     return cron
 
 
@@ -144,7 +136,7 @@ def schedule(self,
         bot.exit('%s already has a schedule. Use --force to update.' % self.name)
 
     # Remove any previous schedules
-    self.remove_schedule()
+    cron = self.remove_schedule(quiet=True)
 
     # minute must be between * or 0 through 59, or *
     if minute not in ['*'] + list(range(60)):
