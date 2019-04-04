@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.command import clone_watcher
+from watchme.command import git_clone
 from watchme.logger import bot
 
 def main(args, extra):
@@ -24,5 +24,5 @@ def main(args, extra):
         extra = extra.pop(0)
 
     # Clone the watcher, and optionally just one task
-    clone_watcher(repo=repo, base=args.base, name=extra)
+    git_clone(repo=repo, base=args.base, name=extra, force=args.force)
 

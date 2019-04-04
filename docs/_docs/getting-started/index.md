@@ -509,6 +509,56 @@ The entire folder is now removed.
 $ ls /home/vanessa/.watchme/
 ```
 
+### How do I get a watcher?
+
+Not only can you share your watcher (configuration and data output) on a service
+like GitHub thanks to version control, you can also easily grab someone else's
+watcher repository!
+
+```bash
+$ watchme get https://www.github.com/vsoch/watchme-air-quality special-name
+Added watcher watchme-air-quality
+```
+
+Conflrm that it was added:
+
+```bash
+$ watchme list
+purpleair
+watchme-air-quality
+air-quality
+watcher
+```
+
+You can also clone (and name it something else):
+
+```bash
+$ watchme get https://www.github.com/vsoch/watchme-air-quality special-name
+Added watcher special-name
+```
+```bash
+$ watchme list
+purpleair
+watchme-air-quality
+special-name
+air-quality
+watcher
+```
+
+If you attempt to overwrite a folder that exists, you'll get a warning.
+
+```bash
+vanessa@vanessa-ThinkPad-T460s:~/Documents/Dropbox/Code/Python/watchme$ watchme get https://www.github.com/vsoch/watchme-air-quality special-name
+ERROR /home/vanessa/.watchme/special-name exists. Use --force to overwrite
+```
+
+and need to use `--force` to remove first, and then clone the watcher to the same location.
+
+```bash
+$ watchme get https://www.github.com/vsoch/watchme-air-quality special-name --force
+Added watcher special-name
+```
+
 ## Licenses
 
 This code is licensed under the Affero GPL, version 3.0 or later [LICENSE](LICENSE).

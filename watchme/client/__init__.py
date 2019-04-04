@@ -71,6 +71,10 @@ def get_parser():
     get.add_argument('repo', nargs=1,
                      help='the repository url to clone')
 
+    get.add_argument('--force', dest="force", 
+                     help="force overwrite a watcher, if already exists.", 
+                     default=False, action='store_true')
+
     # create
 
     create = subparsers.add_parser("create",
