@@ -75,8 +75,8 @@ def write_timestamp(repo, task, filename='TIMESTAMP'):
     ts = time.time()
     strtime = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     filename = os.path.join(repo, task, filename)
-    write_file(filename, strtime)  
-    git_add(repo, filename)
+    write_file(filename, strtime)
+    return filename
 
 
 @git_pwd

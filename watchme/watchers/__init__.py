@@ -810,9 +810,11 @@ class Watcher(object):
             files = [f for f in files if f]
 
             # Add files to git, and commit
-            write_timestamp(self.repo, name)
-            git_add(self.repo, files)
-            git_commit(self.repo, self.name, "ADD results %s" % name)
+            files.append(write_timestamp(repo=self.repo, task=name))
+            git_add(repo=self.repo, files=files)
+            git_commit(repo=self.repo, 
+                       task=self.name, 
+                       message="ADD results %s" % name)
 
         # need to write the git_clone function        
 
