@@ -79,6 +79,42 @@ def write_timestamp(repo, task, filename='TIMESTAMP'):
     git_add(repo, filename)
 
 
+@git_pwd
+def git_date(repo, commit):
+    '''get the date for a particular commit.
+    
+       Parameters
+       ==========
+       repo: the full path to the repository
+       commit: the commit to get the date for
+    '''
+    command = 'git show -s --format=' + "%ci " + commit
+    bot.debug(command)
+    result = run_command(command)
+    if result['return_code'] == 0:
+        return result['message'].strip('\n')
+    
+
+@git_pwd
+def git_show(repo, commit, filename):
+    '''git show is used to pipe the content of a file at a particular commit
+       to the screen (and calling python client). We must be in the $PWD of the
+       repo for this to work.
+
+       Parameters
+       ==========
+       repo: the repository to interact with
+       commit: the commit to investigate for the file
+       filename: the relative path to the file
+    '''
+    command = 'git show %s:%s' %(commit, filename)
+    bot.debug(command)
+    result = run_command(command)
+    if result['return_code'] == 0:
+        return result['message'].strip('\n')
+
+
+
 def git_clone(repo, name=None, base=None, force=False):
     '''clone a git repo to a destination. The user can provide the following
        groupings of arguments:

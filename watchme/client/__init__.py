@@ -75,6 +75,29 @@ def get_parser():
                      help="force overwrite a watcher, if already exists.", 
                      default=False, action='store_true')
 
+    # export
+
+    export = subparsers.add_parser("export",
+                                  help="export data for a task and result file")
+
+    export.add_argument('watcher', nargs=1,
+                         help='the watcher export data from')
+
+    export.add_argument('task', nargs=1,
+                         help='the name of the task to export data from')
+
+    export.add_argument('filename', nargs=1,
+                         help='the filename in the task folder to export')
+
+    export.add_argument('--force', dest="force", 
+                         help="force overwrite output, if already exists.", 
+                         default=False, action='store_true')
+
+    export.add_argument('--out', dest="out", 
+                         help="the output file (json) to export the data",
+                         default=None)
+
+
     # create
 
     create = subparsers.add_parser("create",
@@ -276,6 +299,7 @@ def main():
     if args.command == "activate": from .activate import main
     elif args.command == "add": from .add import main
     elif args.command == "edit": from .edit import main
+    elif args.command == "export": from .export import main
     elif args.command == "create": from .create import main
     elif args.command == "deactivate": from .deactivate import main
     elif args.command == "get": from .get import main

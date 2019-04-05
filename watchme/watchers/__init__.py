@@ -27,7 +27,7 @@ from watchme.command import (
 from configparser import NoOptionError
 
 from .data import (
-    export_dataframe
+    export_dict
 )
 
 from .settings import (
@@ -847,4 +847,4 @@ Watcher.schedule = schedule
 
 # Data
 
-Watcher.export_dataframe = export_dataframe
+Watcher.export_dict = export_dict

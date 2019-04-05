@@ -13,19 +13,22 @@ from watchme.utils import (
     which, 
     get_user
 )
-
-from watchme.command import get_commits
+from watchme.command import (
+    get_commits,
+    git_show,
+    git_date
+)
 import os
 
 # Data Exports
 
 
-def export_dataframe(self, task,
-                           filename, 
-                           name=None,
-                           from_commit=None,
-                           to_commit=None,
-                           base=None):
+def export_dict(self, task,
+                      filename, 
+                      name=None,
+                      from_commit=None,
+                      to_commit=None,
+                      base=None):
     '''Export a data frame of changes for a filename over time.
 
        Parameters
@@ -67,5 +70,12 @@ def export_dataframe(self, task,
                           grep="ADD results %s" % task,
                           filename=filepath)
 
-    #for commit in commits:                        
-    print(commits)
+    # Keep lists of commits, dates, content    
+    result = {'commits': [], 'dates': [], 'content': []}
+
+    # Empty content (or other) returns None
+    for commit in commits:
+        result['content'].append(git_show(repo=repo, commit=commit, filename=filepath))
+        result['dates'].append(git_date(repo=repo, commit=commit))
+        result['commits'].append(commit)
+    return result

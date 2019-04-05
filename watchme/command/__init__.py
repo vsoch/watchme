@@ -20,7 +20,9 @@ from .commit import (
     get_commits,
     git_commit, 
     git_clone, 
-    git_add
+    git_add,
+    git_date,
+    git_show
 )
 from .utils import (
     get_watchers,

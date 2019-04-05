@@ -11,9 +11,14 @@ This will place the executable `watchme` in your bin folder, which is the client
 for setting up and running a watcher. You can jump into setting up your first
 watcher below:
 
+## Setup
+
  - [Background](#what-is-a-watcher): What is a watcher, exactly?
  - [Setup](#setup-watchme): Watchme on your computer, meaning setting a base with a default watcher
  - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
+
+## Tasks
+
  - [Add tasks](#how-do-i-add-tasks): to your watcher, such as monitoring a url or a data endpoint.
  - [Edit tasks](#how-do-i-edit-tasks): meaning an update, addition, or removal of parameters
  - [Task Parameters](#what-are-the-parameters-for-each-task) to customize your tasks.
@@ -25,6 +30,10 @@ watcher below:
  - [Schedule](#how-do-i-schedule-my-watcher) your watcher to run at some frequency using cron.
  - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
  - [Delete](#how-do-i-delete-a-watcher): a watcher repository
+
+## Data
+
+ - [Export](#how-do-i-export-data): data for a particular result file and task.
 
 or read about the following:
 
@@ -561,6 +570,42 @@ Added watcher special-name
 
 You will still need to schedule the water to run (and update the .git folder cloned 
 there) and activate it, in the case that it wasn't active in the repository.
+
+### How do I export data?
+
+The core reason you would want to use WatchMe in the first place is to collect data
+over time for some task. Let's say we have a result file, "oakland.txt" in
+the task folder "task-air-oakland" for the "air-quality" watcher. We can
+export that from the command line via:
+
+```bash
+# watchme export <watcher>   <task>           <filename>
+$ watchme export air-quality task-air-oakland oakland.txt
+git log --all --oneline --pretty=tformat:"%H" --grep "ADD results" cca3c4eb84d9c38527ec93a9a620bfab07d798f2..5d2b047dabe74e76e1585341bb956fd633bd0832 -- task-air-oakland/oakland.txt
+Result written to /tmp/watchme-task-air-oakland.8juxugi9.json
+```
+
+By default, it will write the result to a temporary file, unless you define an output file with `--out`.
+Also notice that the git commands to get the list of commits are shown. Let's quickly peek at the results
+file exported:
+
+```bash
+$ cat /tmp/watchme-task-air-oakland.8juxugi9.json
+{
+    "commits": [
+        "1ee8998dd036accada21c2968e1d270bed4ba058"
+    ],
+    "dates": [
+        "2019-04-02 12:31:19 -0400"
+    ],
+    "content": [
+        "30"
+    ]
+```
+
+We only have one commit for the task file, but we can see that it has an associated date,
+and the content of the file. For more than one commit, each of the entries in the output
+dictionary would be a list.
 
 ## Licenses
 
