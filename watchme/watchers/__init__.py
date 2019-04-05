@@ -729,6 +729,7 @@ class Watcher(object):
         # Step 3: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
         results = self.run_tasks(tasks, parallel, show_progress)
+        print('results are %s' % results)
 
         # Finally, finish the runs.
         self.finish_runs(results)
