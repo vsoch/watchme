@@ -816,7 +816,6 @@ class Watcher(object):
                        task=self.name, 
                        message="ADD results %s" % name)
 
-        # need to write the git_clone function        
 
 # Identification
 
