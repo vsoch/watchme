@@ -601,6 +601,7 @@ $ cat /tmp/watchme-task-air-oakland.8juxugi9.json
     "content": [
         "30"
     ]
+}
 ```
 
 We only have one commit for the task file, but we can see that it has an associated date,
