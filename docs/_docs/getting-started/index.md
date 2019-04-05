@@ -583,15 +583,6 @@ export that from the command line via:
 # watchme export <watcher>   <task>           <filename>
 $ watchme export air-quality task-air-oakland oakland.txt
 git log --all --oneline --pretty=tformat:"%H" --grep "ADD results" cca3c4eb84d9c38527ec93a9a620bfab07d798f2..5d2b047dabe74e76e1585341bb956fd633bd0832 -- task-air-oakland/oakland.txt
-Result written to /tmp/watchme-task-air-oakland.8juxugi9.json
-```
-
-By default, it will write the result to a temporary file, unless you define an output file with `--out`.
-Also notice that the git commands to get the list of commits are shown. Let's quickly peek at the results
-file exported:
-
-```bash
-$ cat /tmp/watchme-task-air-oakland.8juxugi9.json
 {
     "commits": [
         "1ee8998dd036accada21c2968e1d270bed4ba058"
@@ -605,9 +596,21 @@ $ cat /tmp/watchme-task-air-oakland.8juxugi9.json
 }
 ```
 
+By default, it will print the result to the screen, unless you provide a `--out` to print it to file. 
+Also notice that the git commands to get the list of commits are shown.
 We only have one commit for the task file, but we can see that it has an associated date,
 and the content of the file. For more than one commit, each of the entries in the output
 dictionary would be a list.
+
+### Exporting Json
+
+If your results files have json, you will get a funny looking unparsed json inside json.
+If you know this about your task, add the `--json` flag so the entire thing is parsed
+as a single (loadable) json file:
+
+```bash
+$ watchme export system task-cpu vanessa-thinkpad-t460s_vanessa.json  --json
+```
 
 ## Licenses
 

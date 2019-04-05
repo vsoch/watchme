@@ -19,6 +19,7 @@ from watchme.command import (
     git_date
 )
 import os
+import json
 
 # Data Exports
 
@@ -26,6 +27,7 @@ import os
 def export_dict(self, task,
                       filename, 
                       name=None,
+                      export_json=False,
                       from_commit=None,
                       to_commit=None,
                       base=None):
@@ -75,7 +77,12 @@ def export_dict(self, task,
 
     # Empty content (or other) returns None
     for commit in commits:
-        result['content'].append(git_show(repo=repo, commit=commit, filename=filepath))
+        content = git_show(repo=repo, commit=commit, filename=filepath)
+
+        if export_json is True:
+            content = json.loads(content)
+
+        result['content'].append(content)
         result['dates'].append(git_date(repo=repo, commit=commit))
         result['commits'].append(commit)
     return result

@@ -40,6 +40,7 @@ def main(args, extra):
     result = watcher.export_dict(task=task,
                                  filename=filename,
                                  name=name,
+                                 export_json=args.json,
                                  base=args.base)
 
     if result != None:

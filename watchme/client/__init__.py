@@ -93,6 +93,10 @@ def get_parser():
                          help="force overwrite output, if already exists.", 
                          default=False, action='store_true')
 
+    export.add_argument('--json', dest="json", 
+                         help="signal to load the file as json", 
+                         default=False, action='store_true')
+
     export.add_argument('--out', dest="out", 
                          help="the output file (json) to export the data",
                          default=None)
