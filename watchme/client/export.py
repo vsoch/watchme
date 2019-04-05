@@ -11,6 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from watchme import get_watcher
 from watchme.utils import ( write_json, generate_temporary_file )
 from watchme.logger import bot
+import json
 import os
 
 def main(args, extra):
@@ -27,14 +28,13 @@ def main(args, extra):
 
     # Use the output file, or a temporary file
     out = args.out
-    if out == None:
-        out = generate_temporary_file(prefix='watchme-%s' % task, ext="json")
 
     # Get the watcher to interact with, must already exist
     watcher = get_watcher(name, base=args.base, create=False) 
 
-    if os.path.exists(out) and args.force is False:
-        bot.exit('%s exists! Use --force to overwrite.' % out)
+    if out is not None:
+        if os.path.exists(out) and args.force is False:
+            bot.exit('%s exists! Use --force to overwrite.' % out)
 
     # Export the data to file
     result = watcher.export_dict(task=task,
@@ -43,5 +43,9 @@ def main(args, extra):
                                  base=args.base)
 
     if result != None:
-        write_json(result, out)
-        bot.info('Result written to %s' % out)
+
+        if out == None:
+            print(json.dumps(result, indent=4))
+        else:
+            write_json(result, out)
+            bot.info('Result written to %s' % out)
