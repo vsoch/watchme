@@ -64,6 +64,7 @@ from watchme.utils import (
 import os
 import re
 import shutil
+import json
 import sys
 
 
@@ -262,6 +263,13 @@ class Watcher(object):
         if task_type.startswith('url'):
             from .urls import Task
 
+        # Validate variables provided for task
+        if task_type == 'psutils':
+            from .psutils import Task
+
+        else:
+            bot.exit('task_type %s not properly added to Watcher' % task_type)
+
         # Convert list to dictionary
         params = self._get_params_dict(params)
  
@@ -314,7 +322,7 @@ class Watcher(object):
             git_add(self.repo, task.name)
 
         # Commit changes
-        git_commit(self.repo, self.name, "ADD task %s" % task.name)
+        git_commit(repo=self.repo, task=self.name, message="ADD task %s" % task.name)
 
 # Delete
 
@@ -541,7 +549,7 @@ class Watcher(object):
         return False
 
 
-    def get_task(self, name):
+    def get_task(self, name, save=False):
         '''get a particular task, based on the name. This is where each type
            of class should check the "type" parameter from the config, and
            import the correct Task class.
@@ -549,6 +557,7 @@ class Watcher(object):
            Parameters
            ==========
            name: the name of the task to load
+           save: if saving, will be True
         '''
         self.load_config()
 
@@ -567,8 +576,14 @@ class Watcher(object):
             if task_type.startswith("url"):
                 from .urls import Task
 
+            elif task_type == 'psutils':
+                from .psutils import Task
+
+            else:
+                bot.exit('Type %s not properly set up in get_task' % task_type)
+
             # if not valid, will return None
-            task = Task(name, params)
+            task = Task(name, params, _save=save)
 
         return task
 
@@ -697,7 +712,7 @@ class Watcher(object):
         return workers.run(funcs, tasks)
 
 
-    def run(self, regexp=None, parallel=True, show_progress=True):
+    def run(self, regexp=None, parallel=True, test=False, show_progress=True):
         '''run the watcher, which should be done via the crontab, including:
 
              - checks: the instantiation of the client already ensures that 
@@ -713,6 +728,7 @@ class Watcher(object):
                    a particular pattern         
            parallel: if True, use multiprocessing to run tasks (True)
                      each watcher should have this setup ready to go. 
+           test: run in test mode (no saving of results)
            show_progress: if True, show progress bar instead of task information
                           (defaults to True)
         '''
@@ -720,7 +736,7 @@ class Watcher(object):
         run_id = RobotNamer().generate()
 
         # Step 1: determine if the watcher is active.
-        if self.is_active() == False:
+        if self.is_active() == False and test is False:
             bot.exit('Watcher %s is not active.' % self.name)
 
         # Step 2: get the tasks associated with the run, a list of param dicts
@@ -731,7 +747,11 @@ class Watcher(object):
         results = self.run_tasks(tasks, parallel, show_progress)
 
         # Finally, finish the runs.
-        self.finish_runs(results)
+        if test is False:
+            self.finish_runs(results)
+        else:
+            # or print results to the screen
+            print(json.dumps(results, indent=4))
 
 
     def finish_runs(self, results):
@@ -747,7 +767,7 @@ class Watcher(object):
         '''
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
-            task = self.get_task(name)
+            task = self.get_task(name, save=True)
 
             # Files to be added via Git after
             files = []
@@ -798,7 +818,7 @@ class Watcher(object):
 
             # Case 3. The result is a dictionary
             elif isinstance(result, dict):
-                files.append(task._save_json(result, repo))
+                files.append(task._save_json(result, self.repo))
 
             elif result == None:
                 bot.error('Result for task %s is None' % name)

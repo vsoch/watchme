@@ -20,6 +20,7 @@ import re
 import tempfile
 import json
 import io
+import socket
 import sys
 
 from watchme.logger import bot
@@ -34,6 +35,10 @@ def get_userhome():
 def get_user():
     '''return the active user'''
     return os.path.basename(get_userhome())
+
+def get_host():
+    '''return the hostname'''
+    return socket.gethostname()
 
 def mkdir_p(path):
     ''' mkdir_p attempts to get the same functionality as mkdir -p

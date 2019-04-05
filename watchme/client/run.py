@@ -26,5 +26,6 @@ def main(args, extra):
     # Run the watcher, providing regular expressions to match tasks
     watcher.run(regexp=extra, 
                 parallel=not args.serial, 
+                test=args.test,
                 show_progress=not args.no_progress)
 

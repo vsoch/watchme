@@ -197,7 +197,7 @@ class TaskBase(object):
     def _save_file_list(self, results, repo):
         '''for a list of results that exist, move the files to 
            final destination.
-z 
+ 
            Parameters
            ==========
            results: list of paths to a file, those not existing are skipped

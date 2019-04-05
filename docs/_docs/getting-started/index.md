@@ -31,9 +31,10 @@ watcher below:
  - [Remove](#how-do-i-remove-a-task-from-a-watcher) a task from a watcher, if it's not frozen
  - [Delete](#how-do-i-delete-a-watcher): a watcher repository
 
-## Data
+## Data and Sharing
 
  - [Export](#how-do-i-export-data): data for a particular result file and task.
+ - [Get](#how-do-i-get-a-watcher) a watcher from GitHub, meaning cloning a repo to use.
 
 or read about the following:
 

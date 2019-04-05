@@ -8,5 +8,7 @@ navigation:
   url: getting-started/
 - name: Watcher Tasks
   url: watchers/
+- name: Examples
+  url: examples/
 - name: Contributing
   url: contributing/

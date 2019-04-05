@@ -25,5 +25,10 @@ INSTALL_URLS_DYNAMIC = (
     ('beautifulsoup4', {'min_version': '4.6.0'}),
 )
 
+INSTALL_PSUTILS = (
+    ('psutil', {'min_version': '5.4.3'}),
+)
+
 INSTALL_ALL = (INSTALL_REQUIRES +
+               INSTALL_PSUTILS +
                INSTALL_URLS_DYNAMIC)

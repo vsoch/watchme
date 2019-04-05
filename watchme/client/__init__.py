@@ -183,6 +183,10 @@ def get_parser():
                      help="run tasks in serial", 
                      default=False, action='store_true')
 
+    run.add_argument('--test', dest="test", 
+                     help="run tasks in test mode (no save)", 
+                     default=False, action='store_true')
+
     run.add_argument('--no-progress', dest="no_progress", 
                      help="run tasks in serial", 
                      default=False, action='store_true')

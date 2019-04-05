@@ -10,6 +10,7 @@ from .fileio import (
     copyfile,
     get_userhome,
     get_user,
+    get_host,
     generate_temporary_file,
     mkdir_p,
     get_tmpdir,

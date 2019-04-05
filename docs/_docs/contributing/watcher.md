@@ -14,11 +14,100 @@ networking. Follow this guide for instructions.
 
 First, create a new folder under `watchme/tasks` that corresponds with the name of your
 task. For example, the urls watcher is located at `watchme/tasks/urls`. 
+Actually, it's usually easiest to copy an entire watcher folder as a template to start:
 
-## 2. Add your Task
+```bash
+cp -R watchme/watchers/urls watchme/watchers/mytype
+```
 
-In the `__init__.py`
-in that folder you should put your watcher class called "Task" that instantiates the TaskBase
+## 2. Task Setup
+
+You will then need to add your new task name and or links to the following files:
+
+### List of Watchers
+There is a [list of watchers](https://github.com/vsoch/watchme/blob/master/watchme/watchers/README.md) 
+(bullets) in the watchers folder README.md. Add a relative link to your folder there. This is to
+help those browsing GitHub to find the folder (and you can add some details about what kinds of tasks
+are included)
+
+### Dependencies
+The [version.py](https://github.com/vsoch/watchme/blob/master/watchme/version.py) file defines
+sets of dependencies for different "extra_install" options provided by watchme. For example,
+for the urls task folder there is a "dynamic" function that uses Python's beautiful soup
+to parse html. We add this to version.py:
+
+```python
+## beautiful soup selection task
+
+INSTALL_URLS_DYNAMIC = (
+    ('beautifulsoup4', {'min_version': '4.6.0'}),
+)
+```
+
+Also add the new set of dependencies to the `INSTALL_ALL` variable (if the user runs
+`pip install watchme[all]`:
+
+```python
+INSTALL_ALL = (INSTALL_REQUIRES +
+               INSTALL_URLS_DYNAMIC)
+```
+
+And then in the [setup.py](https://github.com/vsoch/watchme/blob/master/setup.py) we add a named
+extra install to point to it (the variable URLS_DYNAMIC):
+
+```python
+INSTALL_REQUIRES = get_requirements(lookup)
+URLS_DYNAMIC = get_requirements(lookup,'INSTALL_URLS_DYNAMIC')
+```
+
+And add it to the list here:
+
+```python
+extras_require={
+    'all': [INSTALL_REQUIRES],
+    'urls-dynamic': [URLS_DYNAMIC]
+},
+...
+```
+
+And then the interested user would install the extra dependecies like:
+
+```bash
+$ pip install watchme[urls-dynamic]
+```
+
+You should be sure to write instructions for how to do this in the documentation for
+your task folder (discussed later).
+
+### List of Task Types
+
+Add the task name to the `WATCHME_TASK_TYPES` in [defaults.py](https://github.com/vsoch/watchme/blob/master/watchme/defaults.py)
+
+```python
+WATCHME_TASK_TYPES = ['urls', 'url', 'mytype']
+```
+
+### Import of Task
+
+Also in the `watchme/watchers/__init__.py` you should add a handler to import
+the Task type from the correct folder:
+
+```python
+# Validate variables provided for task
+if task_type.startswith('url'):
+    from .urls import Task
+
+# Validate variables provided for task
+if task_type == 'psutils':
+    from .psutils import Task
+```
+
+If you forget the handler, an error message will alert you when you try to add
+a task from your set.
+
+## 3. Add your Task
+
+In the `__init__.py` folder you should put your watcher class called "Task" that instantiates the TaskBase
 class as a parent:
 
 ```python
@@ -54,7 +143,8 @@ Under `self.type` you should put the name, which is usually the same as the fold
 (urls shown above). If you have any required parameters (the minimum set for the
 task to run) put them under `required_params`.
 
-## 2. Write a validation function
+
+## 4. Write a validation function
 
 The parent class is already going to check that the user has provided the `required_params`,
 so you can implement an (optional) `_validate` function that does additional input
@@ -78,7 +168,7 @@ file and invalidate a task.
 If one or more parameters are found to be invalid, you should set self.valid to False.
 You don't need to exit from the function. You also don't need to have this function if no further validation is needed.
 
-### 3. Write a function to run your task
+### 5. Write a function to run your task
 
 The watcher client is going to be assembling the list of tasks to run, and then
 running them. Specifically, it's going to be creating an instance of your Task
@@ -118,7 +208,7 @@ It follows that in the instantiation of your class, it must return a task object
 If the `task.valid` is True, you are good to go. If `task.valid` is False, the
 task won't be run. 
 
-### 4. Write Task Functions
+### 6. Write Task Functions
 
 The multiprocessing workers are going to expect, for each task, to be able
 to export a set of parameters (dictionary of key value pairs, usually just

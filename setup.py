@@ -78,6 +78,7 @@ if __name__ == "__main__":
 
     INSTALL_REQUIRES = get_requirements(lookup)
     URLS_DYNAMIC = get_requirements(lookup,'INSTALL_URLS_DYNAMIC')
+    PSUTILS = get_requirements(lookup, 'INSTALL_PSUTILS')
 
     setup(name=NAME,
           version=VERSION,
@@ -98,7 +99,8 @@ if __name__ == "__main__":
           install_requires = INSTALL_REQUIRES,
           extras_require={
               'all': [INSTALL_REQUIRES],
-              'urls-dynamic': [URLS_DYNAMIC]
+              'urls-dynamic': [URLS_DYNAMIC],
+              'psutils': [PSUTILS]
           },
           classifiers=[
               'Intended Audience :: Science/Research',

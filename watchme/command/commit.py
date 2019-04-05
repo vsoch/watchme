@@ -29,6 +29,10 @@ def git_pwd(func):
         # Repo is either provided as a keyword argument, or the first positionl
         repo = kwargs.get('repo', '')
 
+        # If provided as a positional argument
+        if repo == '' and len(args) > 0:
+            repo = args[0]
+
         # Keep a record of the present working directory
         pwd = os.getcwd()
         os.chdir(repo)
