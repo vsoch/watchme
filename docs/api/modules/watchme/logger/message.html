@@ -1,0 +1,556 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.logger.message &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.logger.message</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.logger.message</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">The watcher is actually a connection to crontab. This is what helps to schedule</span>
+<span class="sd">the watched to check for changes at some frequency, and update the files.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">.spinner</span> <span class="k">import</span> <span class="n">Spinner</span>
+
+<span class="n">ABORT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span>
+<span class="n">CRITICAL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
+<span class="n">ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="n">WARNING</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">CUSTOM</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">QUIET</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">VERBOSE</span> <span class="o">=</span> <span class="n">VERBOSE1</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">VERBOSE2</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">VERBOSE3</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">PURPLE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
+<span class="n">YELLOW</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m&quot;</span>
+<span class="n">RED</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m&quot;</span>
+<span class="n">DARKRED</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[31m&quot;</span>
+<span class="n">CYAN</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[36m&quot;</span>
+
+<div class="viewcode-block" id="WatchMeMessage"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage">[docs]</a><span class="k">class</span> <span class="nc">WatchMeMessage</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MESSAGELEVEL</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">get_logging_level</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errorStream</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputStream</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colorize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">useColor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="n">ABORT</span><span class="p">:</span> <span class="n">DARKRED</span><span class="p">,</span>
+                       <span class="n">CRITICAL</span><span class="p">:</span> <span class="n">RED</span><span class="p">,</span>
+                       <span class="n">ERROR</span><span class="p">:</span> <span class="n">RED</span><span class="p">,</span>    
+                       <span class="n">WARNING</span><span class="p">:</span> <span class="n">YELLOW</span><span class="p">,</span>  
+                       <span class="n">LOG</span><span class="p">:</span> <span class="n">PURPLE</span><span class="p">,</span>      
+                       <span class="n">CUSTOM</span><span class="p">:</span> <span class="n">PURPLE</span><span class="p">,</span>       
+                       <span class="n">DEBUG</span><span class="p">:</span> <span class="n">CYAN</span><span class="p">,</span>      
+                       <span class="s1">&#39;OFF&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="c1"># end sequence</span>
+                       <span class="s1">&#39;CYAN&#39;</span><span class="p">:</span><span class="n">CYAN</span><span class="p">,</span>
+                       <span class="s1">&#39;PURPLE&#39;</span><span class="p">:</span><span class="n">PURPLE</span><span class="p">,</span>
+                       <span class="s1">&#39;RED&#39;</span><span class="p">:</span><span class="n">RED</span><span class="p">,</span>
+                       <span class="s1">&#39;DARKRED&#39;</span><span class="p">:</span><span class="n">DARKRED</span><span class="p">,</span>
+                       <span class="s1">&#39;YELLOW&#39;</span><span class="p">:</span><span class="n">YELLOW</span><span class="p">}</span>
+                       
+
+    <span class="c1"># Colors --------------------------------------------</span>
+
+<div class="viewcode-block" id="WatchMeMessage.useColor"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.useColor">[docs]</a>    <span class="k">def</span> <span class="nf">useColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;useColor will determine if color should be added</span>
+<span class="sd">        to a print. Will check if being run in a terminal, and</span>
+<span class="sd">        if has support for asci&#39;&#39;&#39;</span>
+        <span class="n">COLORIZE</span> <span class="o">=</span> <span class="n">get_user_color_preference</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">COLORIZE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">COLORIZE</span>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">errorStream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputStream</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">&#39;isatty&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.addColor"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.addColor">[docs]</a>    <span class="k">def</span> <span class="nf">addColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;addColor to the prompt (usually prefix) if terminal</span>
+<span class="sd">        supports, and specified to do so&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">colorize</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">level</span><span class="p">],</span>
+                                   <span class="n">text</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="s2">&quot;OFF&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.emitError"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.emitError">[docs]</a>    <span class="k">def</span> <span class="nf">emitError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;determine if a level should print to</span>
+<span class="sd">        stderr, includes all levels but INFO and QUIET&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ABORT</span><span class="p">,</span>
+                     <span class="n">ERROR</span><span class="p">,</span>
+                     <span class="n">WARNING</span><span class="p">,</span>
+                     <span class="n">VERBOSE</span><span class="p">,</span>
+                     <span class="n">VERBOSE1</span><span class="p">,</span>
+                     <span class="n">VERBOSE2</span><span class="p">,</span>
+                     <span class="n">VERBOSE3</span><span class="p">,</span>
+                     <span class="n">DEBUG</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.emitOutput"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.emitOutput">[docs]</a>    <span class="k">def</span> <span class="nf">emitOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;determine if a level should print to stdout</span>
+<span class="sd">        only includes INFO&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="n">LOG</span><span class="p">,</span>
+                     <span class="n">INFO</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.isEnabledFor"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.isEnabledFor">[docs]</a>    <span class="k">def</span> <span class="nf">isEnabledFor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messageLevel</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;check if a messageLevel is enabled to emit a level</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">messageLevel</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.emit"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.emit">[docs]</a>    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;emit is the main function to print the message</span>
+<span class="sd">        optionally with a prefix</span>
+<span class="sd">        :param level: the level of the message</span>
+<span class="sd">        :param message: the message to print</span>
+<span class="sd">        :param prefix: a prefix for the message</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">level</span>
+
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addColor</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addColor</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Add the prefix</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">message</span>
+
+        <span class="c1"># If the level is quiet, only print to error</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">QUIET</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Otherwise if in range print to stdout and stderr</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">emitError</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errorStream</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputStream</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Add all log messages to history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.write"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;write will write a message to a stream,</span>
+<span class="sd">        first checking the encoding</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.get_logs"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.get_logs">[docs]</a>    <span class="k">def</span> <span class="nf">get_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">join_newline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;&#39;get_logs will return the complete history, joined by newline</span>
+<span class="sd">        (default) or as is.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">join_newline</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span></div>
+
+
+<div class="viewcode-block" id="WatchMeMessage.show_progress"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.show_progress">[docs]</a>    <span class="k">def</span> <span class="nf">show_progress</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">iteration</span><span class="p">,</span>
+            <span class="n">total</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">min_level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">carriage_return</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;create a terminal progress bar, default bar shows for verbose+</span>
+<span class="sd">        :param iteration: current iteration (Int)</span>
+<span class="sd">        :param total: total iterations (Int)</span>
+<span class="sd">        :param length: character length of bar (Int)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">percent</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">iteration</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">iteration</span> <span class="o">//</span> <span class="n">total</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">suffix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;Progress&#39;</span>
+
+        <span class="c1"># Download sizes can be imperfect, setting carriage_return to False</span>
+        <span class="c1"># and writing newline with caller cleans up the UI</span>
+        <span class="k">if</span> <span class="n">percent</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">percent</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">length</span>
+
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">symbol</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+
+        <span class="k">if</span> <span class="n">progress</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+            <span class="n">bar</span> <span class="o">=</span> <span class="n">symbol</span> <span class="o">*</span> <span class="n">progress</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="n">progress</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bar</span> <span class="o">=</span> <span class="n">symbol</span> <span class="o">*</span> <span class="n">progress</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="n">progress</span><span class="p">)</span>
+
+        <span class="c1"># Only show progress bar for level &gt; min_level</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="n">min_level</span><span class="p">:</span>
+            <span class="n">percent</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:.1f}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> \
+                <span class="s2">&quot; |</span><span class="si">%s</span><span class="s2">| </span><span class="si">%s%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">percent</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">),</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="n">total</span> <span class="ow">and</span> <span class="n">carriage_return</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+    <span class="c1"># Logging ------------------------------------------</span>
+
+<div class="viewcode-block" id="WatchMeMessage.abort"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.abort">[docs]</a>    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">ABORT</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;ABORT&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.critical"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.critical">[docs]</a>    <span class="k">def</span> <span class="nf">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">CRITICAL</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;CRITICAL&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.error"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.exit"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.exit">[docs]</a>    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="mi">255</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.warning"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.warning">[docs]</a>    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.log"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">LOG</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;LOG&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.custom"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.custom">[docs]</a>    <span class="k">def</span> <span class="nf">custom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">PURPLE</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">CUSTOM</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.info"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.newline"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.newline">[docs]</a>    <span class="k">def</span> <span class="nf">newline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.verbose"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.verbose">[docs]</a>    <span class="k">def</span> <span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;VERBOSE&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.verbose1"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.verbose1">[docs]</a>    <span class="k">def</span> <span class="nf">verbose1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">VERBOSE</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;VERBOSE1&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.verbose2"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.verbose2">[docs]</a>    <span class="k">def</span> <span class="nf">verbose2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">VERBOSE2</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;VERBOSE2&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.verbose3"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.verbose3">[docs]</a>    <span class="k">def</span> <span class="nf">verbose3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">VERBOSE3</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;VERBOSE3&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.debug"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WatchMeMessage.is_quiet"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.is_quiet">[docs]</a>    <span class="k">def</span> <span class="nf">is_quiet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;is_quiet returns true if the level is under 1</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="c1"># Terminal ------------------------------------------</span>
+
+<div class="viewcode-block" id="WatchMeMessage.table"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.WatchMeMessage.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">col_width</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;table will print a table of entries. If the rows is </span>
+<span class="sd">        a dictionary, the keys are interpreted as column names. if</span>
+<span class="sd">        not, a numbered list is used.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span> 
+            <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">col_width</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div></div>
+        
+
+
+<div class="viewcode-block" id="get_logging_level"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.get_logging_level">[docs]</a><span class="k">def</span> <span class="nf">get_logging_level</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;get_logging_level will configure a logging to standard out based on the user&#39;s</span>
+<span class="sd">    selected level, which should be in an environment variable called</span>
+<span class="sd">    MESSAGELEVEL. if MESSAGELEVEL is not set, the maximum level</span>
+<span class="sd">    (5) is assumed (all messages).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MESSAGELEVEL&quot;</span><span class="p">,</span> <span class="n">INFO</span><span class="p">))</span>
+
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+
+        <span class="n">level</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MESSAGELEVEL&quot;</span><span class="p">,</span> <span class="n">INFO</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CRITICAL</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;ABORT&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ABORT</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ERROR</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WARNING</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;LOG&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LOG</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;INFO&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">INFO</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;QUIET&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QUIET</span>
+        <span class="k">elif</span> <span class="n">level</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VERBOSE&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">VERBOSE3</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;LOG&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LOG</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DEBUG</span>
+
+    <span class="k">return</span> <span class="n">level</span></div>
+
+
+<div class="viewcode-block" id="get_user_color_preference"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.get_user_color_preference">[docs]</a><span class="k">def</span> <span class="nf">get_user_color_preference</span><span class="p">():</span>
+    <span class="n">COLORIZE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;WATCHME_COLORIZE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">COLORIZE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">COLORIZE</span> <span class="o">=</span> <span class="n">convert2boolean</span><span class="p">(</span><span class="n">COLORIZE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">COLORIZE</span></div>
+
+
+<div class="viewcode-block" id="convert2boolean"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.convert2boolean">[docs]</a><span class="k">def</span> <span class="nf">convert2boolean</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;convert2boolean is used for environmental variables that must be</span>
+<span class="sd">    returned as boolean&#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">arg</span></div>
+
+
+<span class="n">WatchMeMessage</span><span class="o">.</span><span class="n">spinner</span> <span class="o">=</span> <span class="n">Spinner</span><span class="p">()</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">WatchMeMessage</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

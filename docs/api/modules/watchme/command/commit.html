@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.command.commit &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.command.commit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.command.commit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> 
+    <span class="n">run_command</span><span class="p">,</span> 
+    <span class="n">write_file</span><span class="p">,</span>
+    <span class="n">get_tmpdir</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="n">WATCHME_BASE_DIR</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="git_pwd"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_pwd">[docs]</a><span class="k">def</span> <span class="nf">git_pwd</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;ensure that we are in the repo present working directory before running</span>
+<span class="sd">       a git command. Return to where we were before after completion.</span>
+<span class="sd">       The repo is always the first (positional or keyword) argument.</span>
+<span class="sd">    &#39;&#39;&#39;</span>      
+    <span class="k">def</span> <span class="nf">git_pwd_inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+
+        <span class="c1"># Repo is either provided as a keyword argument, or the first positionl</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;repo&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># If provided as a positional argument</span>
+        <span class="k">if</span> <span class="n">repo</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">repo</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Keep a record of the present working directory</span>
+        <span class="n">pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+          
+        <span class="c1"># Run the git command         </span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> 
+
+        <span class="c1"># Return to where we were before</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">return</span> <span class="n">git_pwd_inner</span></div>
+
+
+<div class="viewcode-block" id="git_commit"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_commit">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Commit to the git repo with a particular message. folder.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository to commit to.</span>
+<span class="sd">       task: the name of the task to add to the commit message</span>
+<span class="sd">       message: the message for the commit, passed from the client</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Commit with the watch group and date string</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;watchme </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+    <span class="c1"># Commit</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git commit -a -m &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">message</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="write_timestamp"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.write_timestamp">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">write_timestamp</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;write a file that includes the last run timestamp. This should be written</span>
+<span class="sd">       in each task folder after a run.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository to write the TIMESTAMP file to</span>
+<span class="sd">       task: the name of the task folder to write the file to</span>
+<span class="sd">       filename: the filename (defaults to TIMESTAMP)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">strtime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">write_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">strtime</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">filename</span></div>
+
+
+<div class="viewcode-block" id="git_date"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_date">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">git_date</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">commit</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get the date for a particular commit.</span>
+<span class="sd">    </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the full path to the repository</span>
+<span class="sd">       commit: the commit to get the date for</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git show -s --format=&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%c</span><span class="s2">i &quot;</span> <span class="o">+</span> <span class="n">commit</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+    
+
+<div class="viewcode-block" id="git_show"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_show">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">git_show</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">commit</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;git show is used to pipe the content of a file at a particular commit</span>
+<span class="sd">       to the screen (and calling python client). We must be in the $PWD of the</span>
+<span class="sd">       repo for this to work.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository to interact with</span>
+<span class="sd">       commit: the commit to investigate for the file</span>
+<span class="sd">       filename: the relative path to the file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git show </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">commit</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="git_clone"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_clone">[docs]</a><span class="k">def</span> <span class="nf">git_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;clone a git repo to a destination. The user can provide the following</span>
+<span class="sd">       groupings of arguments:</span>
+
+<span class="sd">       base without name: destination is ignored, the repo is cloned (named as</span>
+<span class="sd">       it is) to the base. If the folder exists, --force must be used to remove</span>
+<span class="sd">       it first.</span>
+
+<span class="sd">       base with name: destination is ignored, repo is cloned (and named based</span>
+<span class="sd">       on name variable) to the base. The same applies for force.</span>
+
+<span class="sd">       dest provided: the repo is cloned to the destination, if it doesn&#39;t exist</span>
+<span class="sd">       and/or force is True.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       name: the name of the watcher to add</span>
+<span class="sd">       base: the base of the watcher (defaults to $HOME/.watchme</span>
+<span class="sd">       force: remove first if already exists</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="c1"># Derive the repository name</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.git&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># First clone to temporary directory</span>
+    <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">get_tmpdir</span><span class="p">()</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git clone </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">tmpdir</span><span class="p">)</span>    
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+    <span class="c1"># ensure there is a watchme.cfg</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s1">&#39;watchme.cfg&#39;</span><span class="p">)):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;No watchme.cfg found in </span><span class="si">%s</span><span class="s1">, aborting.&#39;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">)</span>
+
+    <span class="c1"># If it&#39;s good, move the repository</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Don&#39;t allow for overwrite</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dest</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">force</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>        
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> exists. Use --force to overwrite&#39;</span> <span class="o">%</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+
+    <span class="c1"># Move the repository there</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
+    
+
+<div class="viewcode-block" id="get_commits"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.get_commits">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">get_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">from_commit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_commit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get commits, starting from and going to a particular commit. if grep</span>
+<span class="sd">       is defined, filter commits to those with messages that match that</span>
+<span class="sd">       particular expression</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       from_commit: the commit to start at</span>
+<span class="sd">       to_commit: the commit to go to</span>
+<span class="sd">       grep: the expression to match (not used if None)</span>
+<span class="sd">       filename: the filename to filter to. Includes all files if not specified.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git log --all --oneline --pretty=tformat:&quot;%H&quot;&#39;</span> 
+
+    <span class="c1"># The earliest commit</span>
+    <span class="k">if</span> <span class="n">from_commit</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">from_commit</span> <span class="o">=</span> <span class="n">get_earliest_commit</span><span class="p">()</span>
+
+    <span class="c1"># The latest commit</span>
+    <span class="k">if</span> <span class="n">to_commit</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">to_commit</span> <span class="o">=</span> <span class="n">get_latest_commit</span><span class="p">()</span>
+
+    <span class="c1"># A regular expression to search for (and filter commits)</span>
+    <span class="k">if</span> <span class="n">grep</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> --grep </span><span class="se">\&quot;</span><span class="s2">ADD results</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span>
+
+    <span class="c1"># Add the commit range</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">..</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">from_commit</span><span class="p">,</span> <span class="n">to_commit</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="get_earliest_commit"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.get_earliest_commit">[docs]</a><span class="k">def</span> <span class="nf">get_earliest_commit</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;get the earliest commit for a repository. This is intended to be used</span>
+<span class="sd">       when in the present working directory</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository path to get the commit from</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">commit</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;git rev-list --max-parents=0 HEAD&#39;</span><span class="p">)[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">commit</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_latest_commit"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.get_latest_commit">[docs]</a><span class="k">def</span> <span class="nf">get_latest_commit</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;get the latest commit for a repository in the present working directory</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository path to get the commit from</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">commit</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;git log -n 1 --pretty=format:&quot;%H&quot;&#39;</span><span class="p">)[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">commit</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="git_add"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.commit.git_add">[docs]</a><span class="nd">@git_pwd</span>
+<span class="k">def</span> <span class="nf">git_add</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;add one or more files to the git repo.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository to commit to.</span>
+<span class="sd">       files: one or more files to add.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;git add </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">f</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

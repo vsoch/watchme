@@ -1,0 +1,1025 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.watchers.psutils package" href="watchme.watchers.psutils.html" />
+    <link rel="prev" title="watchme.utils package" href="watchme.utils.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="watchme.client.html">watchme.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.command.html">watchme.command package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.config.html">watchme.config package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.logger.html">watchme.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.utils.html">watchme.utils package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.watchers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.watchers.data">watchme.watchers.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.watchers.schedule">watchme.watchers.schedule module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.watchers.settings">watchme.watchers.settings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.watchers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.watchers package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.watchers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-watchers-package">
+<h1>watchme.watchers package<a class="headerlink" href="#watchme-watchers-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="watchme.watchers.psutils.html">watchme.watchers.psutils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.psutils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.psutils.html#module-watchme.watchers.psutils.tasks">watchme.watchers.psutils.tasks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.psutils.html#module-watchme.watchers.psutils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="watchme.watchers.urls.html">watchme.watchers.urls package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.urls.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.urls.html#module-watchme.watchers.urls.tasks">watchme.watchers.urls.tasks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.watchers.urls.html#module-watchme.watchers.urls">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-watchme.watchers.data">
+<span id="watchme-watchers-data-module"></span><h2>watchme.watchers.data module<a class="headerlink" href="#module-watchme.watchers.data" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.watchers.data.export_dict">
+<code class="descclassname">watchme.watchers.data.</code><code class="descname">export_dict</code><span class="sig-paren">(</span><em>self</em>, <em>task</em>, <em>filename</em>, <em>name=None</em>, <em>export_json=False</em>, <em>from_commit=None</em>, <em>to_commit=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/data.html#export_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.data.export_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a data frame of changes for a filename over time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>task</strong> (<em>the task folder for the watcher to look in</em>)</li>
+<li><strong>name</strong> (<em>the name of the watcher, defaults to the client’s</em>)</li>
+<li><strong>base</strong> (<em>the base of watchme to look for the task folder</em>)</li>
+<li><strong>from_commit</strong> (<em>the commit to start at</em>)</li>
+<li><strong>to_commit</strong> (<em>the commit to go to</em>)</li>
+<li><strong>grep</strong> (<em>the expression to match (not used if None)</em>)</li>
+<li><strong>filename</strong> (<em>the filename to filter to. Includes all files if not specified.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.watchers.schedule">
+<span id="watchme-watchers-schedule-module"></span><h2>watchme.watchers.schedule module<a class="headerlink" href="#module-watchme.watchers.schedule" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.watchers.schedule.clear_schedule">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">clear_schedule</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#clear_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.clear_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>clear all cron jobs associated with the watcher. To remove jobs
+associated with a single watcher, use remove_schedule</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.get_crontab">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">get_crontab</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#get_crontab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.get_crontab" title="Permalink to this definition">¶</a></dt>
+<dd><p>get an instance of the user’s crontab. We use the running user.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.get_job">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">get_job</code><span class="sig-paren">(</span><em>self</em>, <em>must_exist=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#get_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.get_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the job to the user, or None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.has_schedule">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">has_schedule</code><span class="sig-paren">(</span><em>self</em>, <em>must_exist=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#has_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.has_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a watcher already has a schedule, as a warning to the user.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.remove_schedule">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">remove_schedule</code><span class="sig-paren">(</span><em>self</em>, <em>name=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#remove_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.remove_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a scheduled item from crontab, this is based on the watcher
+name. By default, we use the watcher instance name, however you
+can specify a custom name if desired.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.schedule">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">schedule</code><span class="sig-paren">(</span><em>self</em>, <em>minute=12</em>, <em>hour=0</em>, <em>month='*'</em>, <em>day='*'</em>, <em>weekday='*'</em>, <em>job=None</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>schedule the watcher to run at some frequency to update record of pages.
+By default, the task will run at 12 minutes passed midnight, daily.
+You can change the variables to change the frequency. See
+<a class="reference external" href="https://crontab.guru/">https://crontab.guru/</a> to get a setting that works for you.</p>
+<blockquote>
+<div>Hourly:     0 * * * *
+Daily:      0 0 * * *    (midnight) default
+weekly      0 0 * * 0
+monthly     0 0 1 * *
+yearly      0 0 1 1 *</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>minute</strong> (<em>must be within 1 and 60, or set to “</em>” for every minute*)</li>
+<li><strong>hour</strong> (<em>must be within 0 through 23 or set to *</em>)</li>
+<li><strong>month</strong> (<em>must be within 1 and 12, or *</em>)</li>
+<li><strong>day</strong> (<em>must be between 1 and 31, or *</em>)</li>
+<li><strong>weekday</strong> (<em>must be between 0 and 6 or *</em>)</li>
+<li><strong>job</strong> (<em>if provided, assumes we are updated an existing entry.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.schedule.update_schedule">
+<code class="descclassname">watchme.watchers.schedule.</code><code class="descname">update_schedule</code><span class="sig-paren">(</span><em>self</em>, <em>minute=12</em>, <em>hour='*'</em>, <em>month='*'</em>, <em>day='*'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/schedule.html#update_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.schedule.update_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>update a scheduled item from the crontab, with a new entry. This
+first looks for the entry (and removes it) and then clls the <a href="#id1"><span class="problematic" id="id2">new_</span></a>
+schedule function to write a new one. This function is intended
+to be used by a client from within Python, and isn’t exposed from
+the command line.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.watchers.settings">
+<span id="watchme-watchers-settings-module"></span><h2>watchme.watchers.settings module<a class="headerlink" href="#module-watchme.watchers.settings" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.watchers.settings.get_section">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">get_section</code><span class="sig-paren">(</span><em>self</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#get_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.get_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a section from the config, if it exists</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.get_setting">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">get_setting</code><span class="sig-paren">(</span><em>self</em>, <em>section</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#get_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.get_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a setting from the environment (first priority) and then
+secrets (second priority) if one can be found. If not, return None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the section in the config, defaults to self.name</em>)</li>
+<li><strong>name</strong> (<em>they key (index) of the setting to look up</em>)</li>
+<li><strong>default</strong> (<em>(optional) if not found, return default instead.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.print_add_task">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">print_add_task</code><span class="sig-paren">(</span><em>self</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#print_add_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.print_add_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>assemble a task section into a command that can create/add it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>task</strong> (<em>the name of the task to inspect</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.print_section">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">print_section</code><span class="sig-paren">(</span><em>self</em>, <em>section</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#print_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.print_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>print a section (usually a task) from a configuration file,
+if it exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>section</strong> (<em>the name of the section (task)</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.remove_section">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">remove_section</code><span class="sig-paren">(</span><em>self</em>, <em>section</em>, <em>save=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#remove_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.remove_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a setting from the configuration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the name of the section (task)</em>)</li>
+<li><strong>save</strong> (<em>save the configuration file (default is True)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.remove_setting">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">remove_setting</code><span class="sig-paren">(</span><em>self</em>, <em>section</em>, <em>name</em>, <em>save=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#remove_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.remove_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a setting from the configuration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the name of the section (task)</em>)</li>
+<li><strong>name</strong> (<em>the name of the variable to remove</em>)</li>
+<li><strong>save</strong> (<em>save the configuration file (default is True)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.settings.set_setting">
+<code class="descclassname">watchme.watchers.settings.</code><code class="descname">set_setting</code><span class="sig-paren">(</span><em>self</em>, <em>section</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/settings.html#set_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.settings.set_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>set a key value pair in a section, if the section exists. Returns
+a boolean (True or False) to indicate if added.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the section in the config, defaults to self.name</em>)</li>
+<li><strong>key</strong> (<em>they key (index) of the setting to set</em>)</li>
+<li><strong>value</strong> (<em>the value to set.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.watchers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.watchers" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="class">
+<dt id="watchme.watchers.Watcher">
+<em class="property">class </em><code class="descclassname">watchme.watchers.</code><code class="descname">Watcher</code><span class="sig-paren">(</span><em>name=None</em>, <em>base=None</em>, <em>create=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="watchme.watchers.Watcher.activate">
+<code class="descname">activate</code><span class="sig-paren">(</span><em>task=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>turn the active status of a watcher to True</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.add_task">
+<code class="descname">add_task</code><span class="sig-paren">(</span><em>task</em>, <em>task_type</em>, <em>params</em>, <em>force=False</em>, <em>active='true'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.add_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.add_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a task, meaning ensuring that the type is valid, and that
+the parameters are valid for the task.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>task</strong> (<em>the Task object to add, should have a name and params and</em>) – be child of watchme.tasks.TaskBase</li>
+<li><strong>task_type</strong> (<em>must be in WATCHME_TASK_TYPES, meaning a client exists</em>)</li>
+<li><strong>params</strong> (<em>list of parameters to be validated (key&#64;value)</em>)</li>
+<li><strong>force</strong> (<em>if task already exists, overwrite</em>)</li>
+<li><strong>active</strong> (<em>add the task as active (default “true”)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.clear_schedule">
+<code class="descname">clear_schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.clear_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>clear all cron jobs associated with the watcher. To remove jobs
+associated with a single watcher, use remove_schedule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.Watcher.configfile">
+<code class="descname">configfile</code><em class="property"> = None</em><a class="headerlink" href="#watchme.watchers.Watcher.configfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.deactivate">
+<code class="descname">deactivate</code><span class="sig-paren">(</span><em>task=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>turn the active status of a watcher to false. If a task is provided,
+update the config value for the task to be false.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>delete the entire watcher, only if not protected. Cannot be undone.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.edit_task">
+<code class="descname">edit_task</code><span class="sig-paren">(</span><em>name</em>, <em>action</em>, <em>key</em>, <em>value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.edit_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.edit_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>edit a task, meaning doing an addition (add), update (update), or
+“remove”, All actions require a value other than remove.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the name of the task to update</em>)</li>
+<li><strong>action</strong> (<em>the action to take (update, add, remove) a parameter</em>)</li>
+<li><strong>key</strong> (<em>the key to update</em>)</li>
+<li><strong>value</strong> (<em>the value to update</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.export_dict">
+<code class="descname">export_dict</code><span class="sig-paren">(</span><em>task</em>, <em>filename</em>, <em>name=None</em>, <em>export_json=False</em>, <em>from_commit=None</em>, <em>to_commit=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.export_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a data frame of changes for a filename over time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>task</strong> (<em>the task folder for the watcher to look in</em>)</li>
+<li><strong>name</strong> (<em>the name of the watcher, defaults to the client’s</em>)</li>
+<li><strong>base</strong> (<em>the base of watchme to look for the task folder</em>)</li>
+<li><strong>from_commit</strong> (<em>the commit to start at</em>)</li>
+<li><strong>to_commit</strong> (<em>the commit to go to</em>)</li>
+<li><strong>grep</strong> (<em>the expression to match (not used if None)</em>)</li>
+<li><strong>filename</strong> (<em>the filename to filter to. Includes all files if not specified.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.finish_runs">
+<code class="descname">finish_runs</code><span class="sig-paren">(</span><em>results</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.finish_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.finish_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>finish runs should take a dictionary of results, with keys as the
+folder name, and for each, depending on the result type,
+write the result to file (or update file) and then commit
+to git.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>results</strong> (<em>a dictionary of tasks, with keys as the task name, and</em>) – values as the result.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.freeze">
+<code class="descname">freeze</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.freeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.freeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>freeze a watcher, meaning that it along with its tasks cannot be
+deleted. This does not prevent the user from manual editing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_crontab">
+<code class="descname">get_crontab</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.get_crontab" title="Permalink to this definition">¶</a></dt>
+<dd><p>get an instance of the user’s crontab. We use the running user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_job">
+<code class="descname">get_job</code><span class="sig-paren">(</span><em>must_exist=True</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.get_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the job to the user, or None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_section">
+<code class="descname">get_section</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.get_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a section from the config, if it exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_setting">
+<code class="descname">get_setting</code><span class="sig-paren">(</span><em>section</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.get_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a setting from the environment (first priority) and then
+secrets (second priority) if one can be found. If not, return None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the section in the config, defaults to self.name</em>)</li>
+<li><strong>name</strong> (<em>they key (index) of the setting to look up</em>)</li>
+<li><strong>default</strong> (<em>(optional) if not found, return default instead.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_task">
+<code class="descname">get_task</code><span class="sig-paren">(</span><em>name</em>, <em>save=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.get_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a particular task, based on the name. This is where each type
+of class should check the “type” parameter from the config, and
+import the correct Task class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the name of the task to load</em>)</li>
+<li><strong>save</strong> (<em>if saving, will be True</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.get_tasks">
+<code class="descname">get_tasks</code><span class="sig-paren">(</span><em>regexp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.get_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.get_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the tasks for a watcher, possibly matching a regular expression.
+A list of dictionaries is returned, each holding the parameters for
+a task. “uri” will hold the task (folder) name, active</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>regexp</strong> (<em>if supplied, the user wants to run only tasks that match</em>) – a particular pattern</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.has_schedule">
+<code class="descname">has_schedule</code><span class="sig-paren">(</span><em>must_exist=False</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.has_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a watcher already has a schedule, as a warning to the user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.has_section">
+<code class="descname">has_section</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.has_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.has_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True or False to indicate if the watcher has a specified
+section. To get a task, use self.has_task.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>the name of the section to check for.</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.has_task">
+<code class="descname">has_task</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.has_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.has_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True or False to indicate if the watcher has a specified
+task.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.inspect">
+<code class="descname">inspect</code><span class="sig-paren">(</span><em>tasks=None</em>, <em>create_command=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.inspect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.inspect" title="Permalink to this definition">¶</a></dt>
+<dd><p>inspect a watcher, or one or more tasks belonging to it. This means
+printing the configuration for the entire watcher (if tasks is None)
+or just for one or more tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tasks</strong> (<em>one or more tasks to inspect (None will show entire file)</em>)</li>
+<li><strong>create_command</strong> (<em>if True, given one or more tasks, print the command</em>) – to create them.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.is_active">
+<code class="descname">is_active</code><span class="sig-paren">(</span><em>task=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.is_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.is_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if the watcher is active by reading from the config directly
+if a task name is provided, check the active status of the task</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.is_frozen">
+<code class="descname">is_frozen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.is_frozen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.is_frozen" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a boolean to indicate if the watcher is frozen.
+protected indicates no delete to the watcher, but allowed delete
+to tasks, frozen indicates no change of anything.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.is_protected">
+<code class="descname">is_protected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.is_protected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.is_protected" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a boolean to indicate if the watcher is protected or frozen.
+protected indicates no delete to the watcher, but allowed delete
+to tasks, frozen indicates no change of anything.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.list">
+<code class="descname">list</code><span class="sig-paren">(</span><em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the watchers. If quiet is True, don’t print to the screen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.load_config">
+<code class="descname">load_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.load_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>load a configuration file, and set the active setting for the watcher
+if the file doesn’t exist, the function will exit and prompt the user
+to create the watcher first. If the watcher section isn’t yet defined,
+it will be written with a default active status set to false.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.print_add_task">
+<code class="descname">print_add_task</code><span class="sig-paren">(</span><em>task</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.print_add_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>assemble a task section into a command that can create/add it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>task</strong> (<em>the name of the task to inspect</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.print_section">
+<code class="descname">print_section</code><span class="sig-paren">(</span><em>section</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.print_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>print a section (usually a task) from a configuration file,
+if it exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>section</strong> (<em>the name of the section (task)</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.protect">
+<code class="descname">protect</code><span class="sig-paren">(</span><em>status='on'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.protect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.protect" title="Permalink to this definition">¶</a></dt>
+<dd><p>protect a watcher, meaning that it cannot be deleted. This does
+not influence removing a task. To freeze the entire watcher,
+use the freeze() function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.remove_schedule">
+<code class="descname">remove_schedule</code><span class="sig-paren">(</span><em>name=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.remove_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a scheduled item from crontab, this is based on the watcher
+name. By default, we use the watcher instance name, however you
+can specify a custom name if desired.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.remove_section">
+<code class="descname">remove_section</code><span class="sig-paren">(</span><em>section</em>, <em>save=True</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.remove_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a setting from the configuration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the name of the section (task)</em>)</li>
+<li><strong>save</strong> (<em>save the configuration file (default is True)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.remove_setting">
+<code class="descname">remove_setting</code><span class="sig-paren">(</span><em>section</em>, <em>name</em>, <em>save=True</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.remove_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a setting from the configuration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the name of the section (task)</em>)</li>
+<li><strong>name</strong> (<em>the name of the variable to remove</em>)</li>
+<li><strong>save</strong> (<em>save the configuration file (default is True)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.remove_task">
+<code class="descname">remove_task</code><span class="sig-paren">(</span><em>task</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.remove_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.remove_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove a task from the watcher repo, if it exists, and the
+watcher is not frozen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>task</strong> (<em>the name of the task to remove</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.Watcher.repo">
+<code class="descname">repo</code><em class="property"> = None</em><a class="headerlink" href="#watchme.watchers.Watcher.repo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>regexp=None</em>, <em>parallel=True</em>, <em>test=False</em>, <em>show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>run the watcher, which should be done via the crontab, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt>checks: the instantiation of the client already ensures that</dt>
+<dd>the watcher folder exists, and has a configuration,
+and it loads.</dd>
+</dl>
+</li>
+<li>parse: parse the tasks to be run</li>
+<li>start: run the tasks that are defined for the watcher.</li>
+<li>finish: after completion, commit to the repository changed files</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>regexp</strong> (<em>if supplied, the user wants to run only tasks that match</em>) – a particular pattern</li>
+<li><strong>parallel</strong> (<em>if True, use multiprocessing to run tasks (True)</em>) – each watcher should have this setup ready to go.</li>
+<li><strong>test</strong> (<em>run in test mode (no saving of results)</em>)</li>
+<li><strong>show_progress</strong> (<em>if True, show progress bar instead of task information</em>) – (defaults to True)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.run_tasks">
+<code class="descname">run_tasks</code><span class="sig-paren">(</span><em>queue</em>, <em>parallel=True</em>, <em>show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.run_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.run_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>this run_tasks function takes a list of Task objects, each
+potentially a different kind of task, and extracts the parameters
+with task.export_params(), and the running function with
+task.export_func(), and hands these over to the multiprocessing
+worker. It’s up to the Task to return some correct function
+from it’s set of task functions that correspond with the variables.</p>
+<p class="rubric">Examples</p>
+<p>funcs
+{‘task-reddit-hpc’: &lt;function watchme.watchers.urls.tasks.get_task&gt;}</p>
+<p>tasks
+{‘task-reddit-hpc’: [(‘url’, ‘<a class="reference external" href="https://www.reddit.com/r/hpc">https://www.reddit.com/r/hpc</a>’),</p>
+<blockquote>
+<div>(‘active’, ‘true’),
+(‘type’, ‘urls’)]}</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>save the configuration to file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.schedule">
+<code class="descname">schedule</code><span class="sig-paren">(</span><em>minute=12</em>, <em>hour=0</em>, <em>month='*'</em>, <em>day='*'</em>, <em>weekday='*'</em>, <em>job=None</em>, <em>force=False</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>schedule the watcher to run at some frequency to update record of pages.
+By default, the task will run at 12 minutes passed midnight, daily.
+You can change the variables to change the frequency. See
+<a class="reference external" href="https://crontab.guru/">https://crontab.guru/</a> to get a setting that works for you.</p>
+<blockquote>
+<div>Hourly:     0 * * * *
+Daily:      0 0 * * *    (midnight) default
+weekly      0 0 * * 0
+monthly     0 0 1 * *
+yearly      0 0 1 1 *</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>minute</strong> (<em>must be within 1 and 60, or set to “</em>” for every minute*)</li>
+<li><strong>hour</strong> (<em>must be within 0 through 23 or set to *</em>)</li>
+<li><strong>month</strong> (<em>must be within 1 and 12, or *</em>)</li>
+<li><strong>day</strong> (<em>must be between 1 and 31, or *</em>)</li>
+<li><strong>weekday</strong> (<em>must be between 0 and 6 or *</em>)</li>
+<li><strong>job</strong> (<em>if provided, assumes we are updated an existing entry.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.set_setting">
+<code class="descname">set_setting</code><span class="sig-paren">(</span><em>section</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.set_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>set a key value pair in a section, if the section exists. Returns
+a boolean (True or False) to indicate if added.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>section</strong> (<em>the section in the config, defaults to self.name</em>)</li>
+<li><strong>key</strong> (<em>they key (index) of the setting to set</em>)</li>
+<li><strong>value</strong> (<em>the value to set.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.unfreeze">
+<code class="descname">unfreeze</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers.html#Watcher.unfreeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.Watcher.unfreeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>freeze a watcher, meaning that it along with its tasks cannot be
+deleted. This does not prevent the user from manual editing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.Watcher.update_schedule">
+<code class="descname">update_schedule</code><span class="sig-paren">(</span><em>minute=12</em>, <em>hour='*'</em>, <em>month='*'</em>, <em>day='*'</em><span class="sig-paren">)</span><a class="headerlink" href="#watchme.watchers.Watcher.update_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>update a scheduled item from the crontab, with a new entry. This
+first looks for the entry (and removes it) and then clls the <a href="#id3"><span class="problematic" id="id4">new_</span></a>
+schedule function to write a new one. This function is intended
+to be used by a client from within Python, and isn’t exposed from
+the command line.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.watchers.psutils.html" class="btn btn-neutral float-right" title="watchme.watchers.psutils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.utils.html" class="btn btn-neutral" title="watchme.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

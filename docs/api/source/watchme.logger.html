@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.logger package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.tasks package" href="watchme.tasks.html" />
+    <link rel="prev" title="watchme.config package" href="watchme.config.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="watchme.client.html">watchme.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.command.html">watchme.command package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.config.html">watchme.config package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.logger package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.logger.message">watchme.logger.message module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.logger.namer">watchme.logger.namer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.logger.progress">watchme.logger.progress module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.logger.spinner">watchme.logger.spinner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.logger">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.utils.html">watchme.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.watchers.html">watchme.watchers package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.logger package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.logger.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-logger-package">
+<h1>watchme.logger package<a class="headerlink" href="#watchme-logger-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-watchme.logger.message">
+<span id="watchme-logger-message-module"></span><h2>watchme.logger.message module<a class="headerlink" href="#module-watchme.logger.message" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<p>The watcher is actually a connection to crontab. This is what helps to schedule
+the watched to check for changes at some frequency, and update the files.</p>
+<dl class="class">
+<dt id="watchme.logger.message.WatchMeMessage">
+<em class="property">class </em><code class="descclassname">watchme.logger.message.</code><code class="descname">WatchMeMessage</code><span class="sig-paren">(</span><em>MESSAGELEVEL=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.abort">
+<code class="descname">abort</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.abort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.abort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.addColor">
+<code class="descname">addColor</code><span class="sig-paren">(</span><em>level</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.addColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.addColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>addColor to the prompt (usually prefix) if terminal
+supports, and specified to do so</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.critical">
+<code class="descname">critical</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.critical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.critical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.custom">
+<code class="descname">custom</code><span class="sig-paren">(</span><em>prefix</em>, <em>message=''</em>, <em>color='\x1b[95m'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.custom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.custom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.debug">
+<code class="descname">debug</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>level</em>, <em>message</em>, <em>prefix=None</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.emit" title="Permalink to this definition">¶</a></dt>
+<dd><p>emit is the main function to print the message
+optionally with a prefix
+:param level: the level of the message
+:param message: the message to print
+:param prefix: a prefix for the message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.emitError">
+<code class="descname">emitError</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.emitError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.emitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a level should print to
+stderr, includes all levels but INFO and QUIET</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.emitOutput">
+<code class="descname">emitOutput</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.emitOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.emitOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a level should print to stdout
+only includes INFO</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.error">
+<code class="descname">error</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><em>message</em>, <em>error_code=255</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.get_logs">
+<code class="descname">get_logs</code><span class="sig-paren">(</span><em>join_newline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.get_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.get_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘get_logs will return the complete history, joined by newline
+(default) or as is.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.info">
+<code class="descname">info</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.isEnabledFor">
+<code class="descname">isEnabledFor</code><span class="sig-paren">(</span><em>messageLevel</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.isEnabledFor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.isEnabledFor" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if a messageLevel is enabled to emit a level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.is_quiet">
+<code class="descname">is_quiet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.is_quiet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.is_quiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>is_quiet returns true if the level is under 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.newline">
+<code class="descname">newline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.newline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.newline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.show_progress">
+<code class="descname">show_progress</code><span class="sig-paren">(</span><em>iteration</em>, <em>total</em>, <em>length=40</em>, <em>min_level=0</em>, <em>prefix=None</em>, <em>carriage_return=True</em>, <em>suffix=None</em>, <em>symbol=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.show_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.show_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a terminal progress bar, default bar shows for verbose+
+:param iteration: current iteration (Int)
+:param total: total iterations (Int)
+:param length: character length of bar (Int)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.logger.message.WatchMeMessage.spinner">
+<code class="descname">spinner</code><em class="property"> = &lt;watchme.logger.spinner.Spinner object&gt;</em><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.spinner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.table">
+<code class="descname">table</code><span class="sig-paren">(</span><em>rows</em>, <em>col_width=2</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.table" title="Permalink to this definition">¶</a></dt>
+<dd><p>table will print a table of entries. If the rows is
+a dictionary, the keys are interpreted as column names. if
+not, a numbered list is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.useColor">
+<code class="descname">useColor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.useColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.useColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>useColor will determine if color should be added
+to a print. Will check if being run in a terminal, and
+if has support for asci</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.verbose">
+<code class="descname">verbose</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.verbose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.verbose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.verbose1">
+<code class="descname">verbose1</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.verbose1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.verbose1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.verbose2">
+<code class="descname">verbose2</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.verbose2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.verbose2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.verbose3">
+<code class="descname">verbose3</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.verbose3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.verbose3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.warning">
+<code class="descname">warning</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.message.WatchMeMessage.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>stream</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#WatchMeMessage.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.WatchMeMessage.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>write will write a message to a stream,
+first checking the encoding</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.logger.message.convert2boolean">
+<code class="descclassname">watchme.logger.message.</code><code class="descname">convert2boolean</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#convert2boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.convert2boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert2boolean is used for environmental variables that must be
+returned as boolean</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.logger.message.get_logging_level">
+<code class="descclassname">watchme.logger.message.</code><code class="descname">get_logging_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#get_logging_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.get_logging_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_logging_level will configure a logging to standard out based on the user’s
+selected level, which should be in an environment variable called
+MESSAGELEVEL. if MESSAGELEVEL is not set, the maximum level
+(5) is assumed (all messages).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.logger.message.get_user_color_preference">
+<code class="descclassname">watchme.logger.message.</code><code class="descname">get_user_color_preference</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/message.html#get_user_color_preference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.message.get_user_color_preference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-watchme.logger.namer">
+<span id="watchme-logger-namer-module"></span><h2>watchme.logger.namer module<a class="headerlink" href="#module-watchme.logger.namer" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="class">
+<dt id="watchme.logger.namer.RobotNamer">
+<em class="property">class </em><code class="descclassname">watchme.logger.namer.</code><code class="descname">RobotNamer</code><a class="reference internal" href="../modules/watchme/logger/namer.html#RobotNamer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.namer.RobotNamer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="watchme.logger.namer.RobotNamer.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><em>delim='-'</em>, <em>length=4</em>, <em>chars='0123456789'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/namer.html#RobotNamer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.namer.RobotNamer.generate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Generate a robot name. Inspiration from Haikunator, but much more</dt>
+<dd>poorly implemented ;)</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>delim</strong> (<em>Delimiter</em>)</li>
+<li><strong>length</strong> (<em>TokenLength</em>)</li>
+<li><strong>chars</strong> (<em>TokenChars</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.logger.namer.main">
+<code class="descclassname">watchme.logger.namer.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/namer.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.namer.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-watchme.logger.progress">
+<span id="watchme-logger-progress-module"></span><h2>watchme.logger.progress module<a class="headerlink" href="#module-watchme.logger.progress" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clint-textui-progress">
+<h3>clint.textui.progress<a class="headerlink" href="#clint-textui-progress" title="Permalink to this headline">¶</a></h3>
+<p>A derivation of clint version, to not introduce a dependency and add custom functionality.
+Credit to base code goes to <a class="reference external" href="https://github.com/kennethreitz/clint/blob/master/clint/textui/progress.py">https://github.com/kennethreitz/clint/blob/master/clint/textui/progress.py</a></p>
+<dl class="class">
+<dt id="watchme.logger.progress.ProgressBar">
+<em class="property">class </em><code class="descclassname">watchme.logger.progress.</code><code class="descname">ProgressBar</code><span class="sig-paren">(</span><em>label=''</em>, <em>width=32</em>, <em>hide=None</em>, <em>empty_char=' '</em>, <em>filled_char='-'</em>, <em>expected_size=None</em>, <em>every=1</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/progress.html#ProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.progress.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="watchme.logger.progress.ProgressBar.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/progress.html#ProgressBar.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.progress.ProgressBar.done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.progress.ProgressBar.format_time">
+<code class="descname">format_time</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/progress.html#ProgressBar.format_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.progress.ProgressBar.format_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.progress.ProgressBar.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>progress</em>, <em>count=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/progress.html#ProgressBar.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.progress.ProgressBar.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.logger.progress.bar">
+<code class="descclassname">watchme.logger.progress.</code><code class="descname">bar</code><span class="sig-paren">(</span><em>it</em>, <em>label=''</em>, <em>width=32</em>, <em>hide=None</em>, <em>empty_char=' '</em>, <em>filled_char='-'</em>, <em>expected_size=None</em>, <em>every=1</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/progress.html#bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.progress.bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Progress iterator. Wrap your iterables with it.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-watchme.logger.spinner">
+<span id="watchme-logger-spinner-module"></span><h2>watchme.logger.spinner module<a class="headerlink" href="#module-watchme.logger.spinner" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<p>The watcher is actually a connection to crontab. This is what helps to schedule
+the watched to check for changes at some frequency, and update the files.</p>
+<dl class="class">
+<dt id="watchme.logger.spinner.Spinner">
+<em class="property">class </em><code class="descclassname">watchme.logger.spinner.</code><code class="descname">Spinner</code><span class="sig-paren">(</span><em>delay=None</em>, <em>generator=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="staticmethod">
+<dt id="watchme.logger.spinner.Spinner.balloons_cursor">
+<em class="property">static </em><code class="descname">balloons_cursor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.balloons_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.balloons_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="watchme.logger.spinner.Spinner.changing_arrows">
+<em class="property">static </em><code class="descname">changing_arrows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.changing_arrows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.changing_arrows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.logger.spinner.Spinner.delay">
+<code class="descname">delay</code><em class="property"> = 0.1</em><a class="headerlink" href="#watchme.logger.spinner.Spinner.delay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.spinner.Spinner.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.spinner.Spinner.select_generator">
+<code class="descname">select_generator</code><span class="sig-paren">(</span><em>generator</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.select_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.select_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.logger.spinner.Spinner.spinning">
+<code class="descname">spinning</code><em class="property"> = False</em><a class="headerlink" href="#watchme.logger.spinner.Spinner.spinning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="watchme.logger.spinner.Spinner.spinning_cursor">
+<em class="property">static </em><code class="descname">spinning_cursor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.spinning_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.spinning_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.spinner.Spinner.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="watchme.logger.spinner.Spinner.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/logger/spinner.html#Spinner.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.logger.spinner.Spinner.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.logger">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.logger" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.tasks.html" class="btn btn-neutral float-right" title="watchme.tasks package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.config.html" class="btn btn-neutral" title="watchme.config package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

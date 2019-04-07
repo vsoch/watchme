@@ -1,6 +1,8 @@
 footer:
 - name: ChangeLog
   url: changelog
+- name: Python API
+  url: api
 navigation:
 - name: Installation
   url: install/

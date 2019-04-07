@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.data &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+      <li>watchme.watchers.data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.data</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> 
+    <span class="n">which</span><span class="p">,</span> 
+    <span class="n">get_user</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.command</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">get_commits</span><span class="p">,</span>
+    <span class="n">git_show</span><span class="p">,</span>
+    <span class="n">git_date</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Data Exports</span>
+
+
+<div class="viewcode-block" id="export_dict"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.data.export_dict">[docs]</a><span class="k">def</span> <span class="nf">export_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span>
+                      <span class="n">filename</span><span class="p">,</span> 
+                      <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">export_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">from_commit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">to_commit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Export a data frame of changes for a filename over time.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       task: the task folder for the watcher to look in</span>
+<span class="sd">       name: the name of the watcher, defaults to the client&#39;s</span>
+<span class="sd">       base: the base of watchme to look for the task folder</span>
+<span class="sd">       from_commit: the commit to start at</span>
+<span class="sd">       to_commit: the commit to go to</span>
+<span class="sd">       grep: the expression to match (not used if None)</span>
+<span class="sd">       filename: the filename to filter to. Includes all files if not specified.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span>
+
+    <span class="c1"># Quit early if the task isn&#39;t there</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_task</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid task for </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">)</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="c1"># Ensure that the filename exists in the repository</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist for watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+    <span class="c1"># Now filepath must be relative to the repo</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+                          <span class="n">from_commit</span><span class="o">=</span><span class="n">from_commit</span><span class="p">,</span> 
+                          <span class="n">to_commit</span><span class="o">=</span><span class="n">to_commit</span><span class="p">,</span>
+                          <span class="n">grep</span><span class="o">=</span><span class="s2">&quot;ADD results </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span><span class="p">,</span>
+                          <span class="n">filename</span><span class="o">=</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="c1"># Keep lists of commits, dates, content    </span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;commits&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;dates&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="c1"># Empty content (or other) returns None</span>
+    <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">commits</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">git_show</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filepath</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">export_json</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;dates&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">git_date</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span><span class="p">))</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;commits&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">commit</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

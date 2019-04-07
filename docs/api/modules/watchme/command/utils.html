@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.command.utils &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.command.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.command.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="n">WATCHME_BASE_DIR</span>
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> <span class="n">get_tmpdir</span><span class="p">,</span> <span class="n">run_command</span> <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<div class="viewcode-block" id="get_watchers"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.get_watchers">[docs]</a><span class="k">def</span> <span class="nf">get_watchers</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;list the watchers installed at a base. If base is not defined,</span>
+<span class="sd">       the default base is used.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+        <span class="n">watchers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">quiet</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">watchers</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">watchers</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="list_watcher"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.list_watcher">[docs]</a><span class="k">def</span> <span class="nf">list_watcher</span><span class="p">(</span><span class="n">watcher</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;list the contents (tasks) of a single watcher.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">watcher</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;task:&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="clone_watcher"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.clone_watcher">[docs]</a><span class="k">def</span> <span class="nf">clone_watcher</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;clone a watcher from Github (or other version control with git)</span>
+<span class="sd">       meaning that we clone to a temporary folder, and then move</span>
+<span class="sd">       to a new folder. By default, the user gets all tasks associated</span>
+<span class="sd">       with the watcher, along with the git folder so that removing</span>
+<span class="sd">       is also done with version control.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       repo: the repository to clone</span>
+<span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
+<span class="sd">       name: a new name for the watcher, if a rename is desired.</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="c1"># clone_watcher(repo=repo, base=args.base, name=extra)</span>
+    <span class="c1"># STOPPED HERE - need to test this.</span>
+
+    <span class="c1"># Validate the repository address</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^git@|http&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Please provide a valid url to git repository&#39;</span><span class="p">)</span>
+
+    <span class="c1"># if the name is None, use the repo name</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> 
+
+    <span class="c1"># Ensure we aren&#39;t overwriting</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dest</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> already exists, choose a different watcher name.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">clone_dest</span> <span class="o">=</span> <span class="n">get_tmpdir</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;watchme-clone&quot;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">run_command</span><span class="p">(</span><span class="s2">&quot;git clone </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_dest</span><span class="p">))</span>
+
+    <span class="c1"># Valid by default - will copy over if valid</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>    
+
+    <span class="c1"># Iterate over watchers</span>
+    <span class="n">watchers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">clone_dest</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">watcher</span> <span class="ow">in</span> <span class="n">watchers</span><span class="p">:</span>
+        <span class="n">watcher</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clone_dest</span><span class="p">,</span> <span class="n">watcher</span><span class="p">)</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">watcher</span><span class="p">)</span>
+
+        <span class="c1"># Check that tasks include watchme.cfg</span>
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">watcher</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">task_folder</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;watcher.cfg&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is missing a watcher.cfg&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+                <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span> 
+                <span class="k">break</span>
+                
+    <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">clone_dest</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">clone_dest</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">clone_dest</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

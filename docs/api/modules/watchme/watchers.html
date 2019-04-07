@@ -1,0 +1,1086 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.watchers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="p">(</span> <span class="n">bot</span><span class="p">,</span> <span class="n">RobotNamer</span> <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.version</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">WATCHME_BASE_DIR</span><span class="p">,</span>
+    <span class="n">WATCHME_TASK_TYPES</span><span class="p">,</span>
+    <span class="n">WATCHME_NOTALLOWED_PARAMS</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">watchme.command</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">create_watcher</span><span class="p">,</span>
+    <span class="n">write_timestamp</span><span class="p">,</span>
+    <span class="n">get_watchers</span><span class="p">,</span>
+    <span class="n">git_commit</span><span class="p">,</span>
+    <span class="n">git_add</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">configparser</span> <span class="k">import</span> <span class="n">NoOptionError</span>
+
+<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">export_dict</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.settings</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">get_setting</span><span class="p">,</span>
+    <span class="n">set_setting</span><span class="p">,</span>
+    <span class="n">get_section</span><span class="p">,</span>
+    <span class="n">print_section</span><span class="p">,</span>
+    <span class="n">print_add_task</span><span class="p">,</span>
+    <span class="n">remove_setting</span><span class="p">,</span>
+    <span class="n">remove_section</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.schedule</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">remove_schedule</span><span class="p">,</span>
+    <span class="n">get_crontab</span><span class="p">,</span>
+    <span class="n">get_job</span><span class="p">,</span>
+    <span class="n">has_schedule</span><span class="p">,</span>
+    <span class="n">update_schedule</span><span class="p">,</span>
+    <span class="n">clear_schedule</span><span class="p">,</span>
+    <span class="n">schedule</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">watchme.config</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">read_config</span><span class="p">,</span>
+    <span class="n">write_config</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">mkdir_p</span><span class="p">,</span>
+    <span class="n">write_file</span><span class="p">,</span>
+    <span class="n">write_json</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="Watcher"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher">[docs]</a><span class="k">class</span> <span class="nc">Watcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">repo</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">configfile</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                       <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                       <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;the watcher base loads configuration files for the user (in $HOME)</span>
+<span class="sd">           and module, and then stores any arguments given from the caller</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the watcher name, defaults to github</span>
+<span class="sd">           base: the watcher base, will default to $HOME/.watchme</span>
+<span class="sd">           create: boolean to create the watcher if doesn&#39;t exist (default False)</span>
+<span class="sd">           kwargs: should include command line arguments from the client.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Set the watcher base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_base</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">create</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">__version__</span>
+
+        <span class="c1"># Load the configuration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_set_base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; set the base for the watcher, ensuring that it exists.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ==========</span>
+<span class="sd">            base: the base folder of watcher repos. Uses $HOME/.watchme default</span>
+<span class="sd">            create: create the watcher if it doesn&#39;t exist (default is False)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+        <span class="c1"># Does the watcher exist?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="s1">&#39;watchme.cfg&#39;</span><span class="p">)</span>
+
+        <span class="c1"># If the watcher doesn&#39;t exist and we need to create:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">create</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">create_watcher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>   
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Watcher </span><span class="si">%s</span><span class="s1"> does not exist. Use watchme create.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="c1"># Config</span>
+
+<div class="viewcode-block" id="Watcher.save"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;save the configuration to file.&#39;&#39;&#39;</span>
+        <span class="n">write_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Watcher.edit_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.edit_task">[docs]</a>    <span class="k">def</span> <span class="nf">edit_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;edit a task, meaning doing an addition (add), update (update), or</span>
+<span class="sd">           &quot;remove&quot;, All actions require a value other than remove.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the task to update</span>
+<span class="sd">           action: the action to take (update, add, remove) a parameter</span>
+<span class="sd">           key: the key to update</span>
+<span class="sd">           value: the value to update</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_task</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a task defined by </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Action must be update, add, or remove&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;A value must be provided for the </span><span class="si">%s</span><span class="s1"> action&#39;</span> <span class="o">%</span> <span class="n">action</span><span class="p">)</span>
+
+        <span class="c1"># Add, and it doesn&#39;t exist so it&#39;s okay</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Adding </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Already exists, encourage user to update</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> already exists. Use &quot;update&quot; action to change.&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="c1"># Update, and it&#39;s a valid choice</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;update&#39;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Updating </span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Update, and it&#39;s not a valid choice</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;update&#39;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not found in config, cannot be updated.&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="c1"># Remove, and it&#39;s a valid choice</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;remove&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span> <span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="c1"># Remove, and it&#39;s not a valid choice</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;remove&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not found in config, cannot be removed.&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Watcher.has_section"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.has_section">[docs]</a>    <span class="k">def</span> <span class="nf">has_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;returns True or False to indicate if the watcher has a specified</span>
+<span class="sd">           section. To get a task, use self.has_task.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the section to check for.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> not found for watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Watcher.load_config"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.load_config">[docs]</a>    <span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;load a configuration file, and set the active setting for the watcher</span>
+<span class="sd">           if the file doesn&#39;t exist, the function will exit and prompt the user </span>
+<span class="sd">           to create the watcher first. If the watcher section isn&#39;t yet defined,</span>
+<span class="sd">           it will be written with a default active status set to false.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">):</span>
+           
+            <span class="c1"># Load the configuration file if it exists (will exit if not found)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">)</span>
+
+            <span class="c1"># The watcher section is added by default, args for the watcher</span>
+            <span class="k">if</span> <span class="s1">&#39;watcher&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span>
+
+                <span class="c1"># Only update the config if we&#39;ve changed it</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_params_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;iterate through parameters, make keys lowercase, and ensure</span>
+<span class="sd">           valid format.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           pairs: a list of key@value pairs to set.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;incorrectly formatted param, must be key@value&#39;</span><span class="p">)</span>
+            <span class="n">key</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+            <span class="c1"># All tasks are not allowed to have default params</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">WATCHME_NOTALLOWED_PARAMS</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is a default, not allowed setting by task.&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="c1"># Add Tasks</span>
+
+<div class="viewcode-block" id="Watcher.add_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.add_task">[docs]</a>    <span class="k">def</span> <span class="nf">add_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">task_type</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;add a task, meaning ensuring that the type is valid, and that</span>
+<span class="sd">           the parameters are valid for the task.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           task: the Task object to add, should have a name and params and</span>
+<span class="sd">                 be child of watchme.tasks.TaskBase</span>
+<span class="sd">           task_type: must be in WATCHME_TASK_TYPES, meaning a client exists</span>
+<span class="sd">           params: list of parameters to be validated (key@value)</span>
+<span class="sd">           force: if task already exists, overwrite</span>
+<span class="sd">           active: add the task as active (default &quot;true&quot;)</span>
+<span class="sd">           </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Check again, in case user calling from client</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Task name must start with &quot;task&quot; (e.g., task-reddit)&#39;</span><span class="p">)</span>
+       
+        <span class="c1"># Ensure it&#39;s a valid type</span>
+        <span class="k">if</span> <span class="n">task_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WATCHME_TASK_TYPES</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">WATCHME_TASK_TYPES</span><span class="p">)</span>
+
+        <span class="c1"># Validate variables provided for task</span>
+        <span class="k">if</span> <span class="n">task_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">.urls</span> <span class="k">import</span> <span class="n">Task</span>
+
+        <span class="c1"># Validate variables provided for task</span>
+        <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;psutils&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;task_type </span><span class="si">%s</span><span class="s1"> not properly added to Watcher&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>
+
+        <span class="c1"># Convert list to dictionary</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+ 
+        <span class="c1"># Creating the task will validate parameters</span>
+        <span class="n">newtask</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># Exit if the new task is not valid</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">newtask</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not valid, will not be added.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+
+        <span class="c1"># Write to file (all tasks get active = True added, and type)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_task</span><span class="p">(</span><span class="n">newtask</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_add_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;add a new task to the watcher, meaning we:</span>
+
+<span class="sd">           1. Check first that the task doesn&#39;t already exist (if the task</span>
+<span class="sd">              exists, we only add if force is set to true)</span>
+<span class="sd">           2. Validate the task (depends on the task)</span>
+<span class="sd">           3. write the task to the helper config file, if valid.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           task: the Task object to add, should have a name and params and</span>
+<span class="sd">                 be child of watchme.tasks.TaskBase</span>
+<span class="sd">           force: if task already exists, overwrite</span>
+<span class="sd">           active: add the task as active (default &quot;true&quot;)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">active</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Active must be &quot;true&quot; or &quot;false&quot;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Don&#39;t overwrite a section that already exists</span>
+        <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> exists, use --force to overwrite.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_section</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Add the new section</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">export_params</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="n">active</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_section</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># If the task folder doesn&#39;t exist, recreate it.</span>
+        <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">task_folder</span><span class="p">):</span>
+            <span class="n">mkdir_p</span><span class="p">(</span><span class="n">task_folder</span><span class="p">)</span>
+            <span class="n">git_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Commit changes</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;ADD task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Delete</span>
+
+<div class="viewcode-block" id="Watcher.delete"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;delete the entire watcher, only if not protected. Cannot be undone.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+        <span class="c1"># Check for protection</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_frozen</span><span class="p">():</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;watcher </span><span class="si">%s</span><span class="s1"> is frozen, unfreeze to delete.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_protected</span><span class="p">():</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;watcher </span><span class="si">%s</span><span class="s1"> is protected, turn off protection to delete.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">)</span>
+
+        <span class="c1"># Ensure repository exists before delete</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2"> doesn&#39;t exist&quot;</span> <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Watcher.remove_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.remove_task">[docs]</a>    <span class="k">def</span> <span class="nf">remove_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;remove a task from the watcher repo, if it exists, and the</span>
+<span class="sd">           watcher is not frozen.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           task: the name of the task to remove</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_frozen</span><span class="p">():</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;watcher is frozen, unfreeze first.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+            <span class="c1"># If the task has a folder, remove the entire thing</span>
+            <span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> removed successfully.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+            <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;REMOVE task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span></div>
+
+
+<span class="c1"># Inspect</span>
+    
+<div class="viewcode-block" id="Watcher.inspect"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.inspect">[docs]</a>    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tasks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create_command</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;inspect a watcher, or one or more tasks belonging to it. This means</span>
+<span class="sd">           printing the configuration for the entire watcher (if tasks is None)</span>
+<span class="sd">           or just for one or more tasks.</span>
+<span class="sd"> </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           tasks: one or more tasks to inspect (None will show entire file)</span>
+<span class="sd">           create_command: if True, given one or more tasks, print the command</span>
+<span class="sd">                           to create them.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tasks</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">()</span>
+
+        <span class="c1"># If the user supplied one task:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">tasks</span><span class="p">]</span>
+
+        <span class="c1"># Show all sections</span>
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+
+            <span class="c1"># If the user doesn&#39;t want to see the create command:</span>
+            <span class="k">if</span> <span class="n">create_command</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">newline</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_add_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Watcher.list"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;list the watchers. If quiet is True, don&#39;t print to the screen.&#39;&#39;&#39;</span>
+        <span class="n">watchers</span> <span class="o">=</span> <span class="n">get_watchers</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">watchers</span></div>
+
+<span class="c1"># Protection</span>
+
+<div class="viewcode-block" id="Watcher.protect"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.protect">[docs]</a>    <span class="k">def</span> <span class="nf">protect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;on&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;protect a watcher, meaning that it cannot be deleted. This does</span>
+<span class="sd">           not influence removing a task. To freeze the entire watcher,</span>
+<span class="sd">           use the freeze() function.</span>
+<span class="sd">        &#39;&#39;&#39;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_status</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="s1">&#39;protected&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;PROTECT </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">status</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_section</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Watcher.freeze"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.freeze">[docs]</a>    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;freeze a watcher, meaning that it along with its tasks cannot be </span>
+<span class="sd">           deleted. This does not prevent the user from manual editing.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_status</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;FREEZE&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_section</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Watcher.unfreeze"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.unfreeze">[docs]</a>    <span class="k">def</span> <span class="nf">unfreeze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;freeze a watcher, meaning that it along with its tasks cannot be </span>
+<span class="sd">           deleted. This does not prevent the user from manual editing.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_status</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;UNFREEZE&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_section</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;a helper function to set a status, ensuring that status value</span>
+<span class="sd">           is in &quot;on&quot; or &quot;off&quot;</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           status: one of &quot;on&quot; or &quot;off&quot;</span>
+<span class="sd">           name: a value to set status for.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Status must be &quot;on&quot; or &quot;off&quot;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">setting</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+
+<div class="viewcode-block" id="Watcher.is_protected"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.is_protected">[docs]</a>    <span class="k">def</span> <span class="nf">is_protected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return a boolean to indicate if the watcher is protected or frozen.</span>
+<span class="sd">           protected indicates no delete to the watcher, but allowed delete</span>
+<span class="sd">           to tasks, frozen indicates no change of anything.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">protected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;protected&#39;</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;on&quot;</span><span class="p">:</span>
+                <span class="n">protected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">protected</span></div>
+        
+
+<div class="viewcode-block" id="Watcher.is_frozen"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.is_frozen">[docs]</a>    <span class="k">def</span> <span class="nf">is_frozen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return a boolean to indicate if the watcher is frozen.</span>
+<span class="sd">           protected indicates no delete to the watcher, but allowed delete</span>
+<span class="sd">           to tasks, frozen indicates no change of anything.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;on&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<span class="c1"># Status</span>
+
+    <span class="k">def</span> <span class="nf">_active_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;a general function to change the status, used by activate and</span>
+<span class="sd">           deactivate.</span>
+<span class="sd"> </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           status: must be one of true, false</span>
+<span class="sd">           name: if not None, we are deactivating a task (not the watcher)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Load the configuration, if not loaded</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;watcher&#39;</span>
+
+        <span class="c1"># Cut out early if section not in config</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid task or section&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>     
+
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">]:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;status must be true or false.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Update the status and alert the user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># Return the message for the commit</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;ACTIVE&quot;</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;DEACTIVATE&quot;</span>
+
+        <span class="c1"># Add the task name</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">|</span><span class="si">%s</span><span class="s1">] active: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span> 
+        <span class="k">return</span> <span class="n">message</span>
+
+<div class="viewcode-block" id="Watcher.activate"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;turn the active status of a watcher to True</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_active_status</span><span class="p">(</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+   
+
+<div class="viewcode-block" id="Watcher.deactivate"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;turn the active status of a watcher to false. If a task is provided,</span>
+<span class="sd">           update the config value for the task to be false.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># If no task defined, user wants to deactiate watcher</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_active_status</span><span class="p">(</span><span class="s1">&#39;false&#39;</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Watcher.is_active"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.is_active">[docs]</a>    <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;determine if the watcher is active by reading from the config directly</span>
+<span class="sd">           if a task name is provided, check the active status of the task</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="s1">&#39;watcher&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="c1"># Get and Prepare Tasks</span>
+
+<div class="viewcode-block" id="Watcher.has_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.has_task">[docs]</a>    <span class="k">def</span> <span class="nf">has_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;returns True or False to indicate if the watcher has a specified</span>
+<span class="sd">           task.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Watcher.get_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;get a particular task, based on the name. This is where each type</span>
+<span class="sd">           of class should check the &quot;type&quot; parameter from the config, and</span>
+<span class="sd">           import the correct Task class.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the task to load</span>
+<span class="sd">           save: if saving, will be True</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+        <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Only sections that start with task- are considered tasks</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
+
+            <span class="c1"># Task is an ordered dict, key value pairs are entries</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+            <span class="c1"># Get the task type (if removed, consider disabled)</span>
+            <span class="n">task_type</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># If we get here, validate and prepare the task</span>
+            <span class="k">if</span> <span class="n">task_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">):</span>
+                <span class="kn">from</span> <span class="nn">.urls</span> <span class="k">import</span> <span class="n">Task</span>
+
+            <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;psutils&#39;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> not properly set up in get_task&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>
+
+            <span class="c1"># if not valid, will return None</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">_save</span><span class="o">=</span><span class="n">save</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">task</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_task_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;check if a task is active and (if defined) passes user provided</span>
+<span class="sd">           task names or regular expressions.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           task: the task object to check</span>
+<span class="sd">           regexp: an optional regular expression (or name) to check</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="kc">True</span> 
+
+        <span class="c1"># A task can be None if it wasn&#39;t found</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Is the task not active (undefined is active)?</span>
+        <span class="n">active</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">active</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is not active.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+            <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># The user wants to search for a custom task name</span>
+        <span class="k">if</span> <span class="n">regexp</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is selected to run.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+                <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">selected</span>
+
+
+<div class="viewcode-block" id="Watcher.get_tasks"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;get the tasks for a watcher, possibly matching a regular expression.</span>
+<span class="sd">           A list of dictionaries is returned, each holding the parameters for</span>
+<span class="sd">           a task. &quot;uri&quot; will hold the task (folder) name, active</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           regexp: if supplied, the user wants to run only tasks that match</span>
+<span class="sd">                   a particular pattern</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">:</span>
+
+            <span class="c1"># Get the task based on the section name</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
+            <span class="c1"># Check that the task should be run, and is valid</span>
+            <span class="k">if</span> <span class="n">task</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_selected</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="p">)</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+                    <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%s</span><span class="s1"> contender tasks.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tasks</span>   </div>
+
+
+<span class="c1"># Running Tasks</span>
+
+<div class="viewcode-block" id="Watcher.run_tasks"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.run_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">run_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;this run_tasks function takes a list of Task objects, each</span>
+<span class="sd">           potentially a different kind of task, and extracts the parameters</span>
+<span class="sd">           with task.export_params(), and the running function with </span>
+<span class="sd">           task.export_func(), and hands these over to the multiprocessing</span>
+<span class="sd">           worker. It&#39;s up to the Task to return some correct function</span>
+<span class="sd">           from it&#39;s set of task functions that correspond with the variables.</span>
+
+<span class="sd">           Examples</span>
+<span class="sd">           ========</span>
+
+<span class="sd">           funcs</span>
+<span class="sd">           {&#39;task-reddit-hpc&#39;: &lt;function watchme.watchers.urls.tasks.get_task&gt;}</span>
+
+<span class="sd">           tasks</span>
+<span class="sd">           {&#39;task-reddit-hpc&#39;: [(&#39;url&#39;, &#39;https://www.reddit.com/r/hpc&#39;),</span>
+<span class="sd">                                (&#39;active&#39;, &#39;true&#39;),</span>
+<span class="sd">                                (&#39;type&#39;, &#39;urls&#39;)]}</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="k">if</span> <span class="n">parallel</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_parallel</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">show_progress</span><span class="p">)</span>
+        
+        <span class="c1"># Otherwise, run in serial</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Progressbar</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">show_progress</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">show_progress</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">prefix</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">progress</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_run_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; run tasks in parallel using the Workers class. Returns a dictionary</span>
+<span class="sd">            (lookup) wit results, with the key being the task name</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ==========</span>
+<span class="sd">            queue: the list of task objects to run</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">watchme.tasks.worker</span> <span class="k">import</span> <span class="n">Workers</span>
+
+        <span class="c1"># Run with multiprocessing</span>
+        <span class="n">funcs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">queue</span><span class="p">:</span>
+
+            <span class="c1"># Export parameters and functions            </span>
+            <span class="n">funcs</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">export_func</span><span class="p">()</span>
+            <span class="n">tasks</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">export_params</span><span class="p">()</span>
+
+        <span class="n">workers</span> <span class="o">=</span> <span class="n">Workers</span><span class="p">(</span><span class="n">show_progress</span><span class="o">=</span><span class="n">show_progress</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">workers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">tasks</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Watcher.run"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;run the watcher, which should be done via the crontab, including:</span>
+
+<span class="sd">             - checks: the instantiation of the client already ensures that </span>
+<span class="sd">                       the watcher folder exists, and has a configuration,</span>
+<span class="sd">                       and it loads.</span>
+<span class="sd">             - parse: parse the tasks to be run</span>
+<span class="sd">             - start: run the tasks that are defined for the watcher.</span>
+<span class="sd">             - finish: after completion, commit to the repository changed files</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           regexp: if supplied, the user wants to run only tasks that match</span>
+<span class="sd">                   a particular pattern         </span>
+<span class="sd">           parallel: if True, use multiprocessing to run tasks (True)</span>
+<span class="sd">                     each watcher should have this setup ready to go. </span>
+<span class="sd">           test: run in test mode (no saving of results)</span>
+<span class="sd">           show_progress: if True, show progress bar instead of task information</span>
+<span class="sd">                          (defaults to True)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Step 0: Each run session is given a fun name</span>
+        <span class="n">run_id</span> <span class="o">=</span> <span class="n">RobotNamer</span><span class="p">()</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+        <span class="c1"># Step 1: determine if the watcher is active.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Watcher </span><span class="si">%s</span><span class="s1"> is not active.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Step 2: get the tasks associated with the run, a list of param dicts</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">()</span>
+
+        <span class="c1"># Step 3: Run the tasks. This means preparing a list of funcs/params,</span>
+        <span class="c1"># and then submitting with multiprocessing</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_tasks</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">parallel</span><span class="p">,</span> <span class="n">show_progress</span><span class="p">)</span>
+
+        <span class="c1"># Finally, finish the runs.</span>
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finish_runs</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># or print results to the screen</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Watcher.finish_runs"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.finish_runs">[docs]</a>    <span class="k">def</span> <span class="nf">finish_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;finish runs should take a dictionary of results, with keys as the</span>
+<span class="sd">           folder name, and for each, depending on the result type,</span>
+<span class="sd">           write the result to file (or update file) and then commit</span>
+<span class="sd">           to git.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           results: a dictionary of tasks, with keys as the task name, and</span>
+<span class="sd">                    values as the result.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Files to be added via Git after</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Ensure that the task folder exists</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">task_folder</span><span class="p">):</span>
+                <span class="n">mkdir_p</span><span class="p">(</span><span class="n">task_folder</span><span class="p">)</span>
+                <span class="n">git_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task_folder</span><span class="p">)</span>
+
+            <span class="c1"># Case 1. The result is a list</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>           
+
+                <span class="c1"># Get rid of Nones, if the user accidentally added</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span> <span class="k">if</span> <span class="n">r</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> returned empty list of results.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+                <span class="c1"># json output is specified</span>
+                <span class="k">elif</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as one json...&#39;</span><span class="p">)</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
+
+                <span class="k">elif</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as multiple json...&#39;</span><span class="p">)</span>
+                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_json_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>
+
+                <span class="c1"># Otherwise, sniff for list of paths</span>
+                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Found list of paths...&#39;</span><span class="p">)</span>
+                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_files_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>     
+
+                <span class="c1"># Finally, assume just writing text to file</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving content from list to file...&#39;</span><span class="p">)</span>
+                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_text_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>     
+
+            <span class="c1"># Case 2. The result is a string</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+                <span class="c1"># if it&#39;s a path to a file, just save to repository</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_file</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
+
+                <span class="c1"># Otherwise, it&#39;s a string that needs to be saved to file</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_text</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
+
+            <span class="c1"># Case 3. The result is a dictionary</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Result for task </span><span class="si">%s</span><span class="s1"> is None&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unsupported result format </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+
+            <span class="c1"># Get rid of None results (don&#39;t check excessively for None above)</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">f</span><span class="p">]</span>
+
+            <span class="c1"># Add files to git, and commit</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_timestamp</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">git_add</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+            <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> 
+                       <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> 
+                       <span class="n">message</span><span class="o">=</span><span class="s2">&quot;ADD results </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="c1"># Identification</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<span class="c1"># Settings</span>
+
+<span class="n">Watcher</span><span class="o">.</span><span class="n">remove_setting</span> <span class="o">=</span> <span class="n">remove_setting</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">get_setting</span> <span class="o">=</span> <span class="n">get_setting</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">get_section</span> <span class="o">=</span> <span class="n">get_section</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">set_setting</span> <span class="o">=</span> <span class="n">set_setting</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">remove_section</span> <span class="o">=</span> <span class="n">remove_section</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">print_section</span> <span class="o">=</span> <span class="n">print_section</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">print_add_task</span> <span class="o">=</span> <span class="n">print_add_task</span>
+
+<span class="c1"># Schedule </span>
+
+<span class="n">Watcher</span><span class="o">.</span><span class="n">remove_schedule</span> <span class="o">=</span> <span class="n">remove_schedule</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">get_crontab</span> <span class="o">=</span> <span class="n">get_crontab</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">update_schedule</span> <span class="o">=</span> <span class="n">update_schedule</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">has_schedule</span> <span class="o">=</span> <span class="n">has_schedule</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">get_job</span> <span class="o">=</span> <span class="n">get_job</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">clear_schedule</span> <span class="o">=</span> <span class="n">clear_schedule</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">schedule</span> <span class="o">=</span> <span class="n">schedule</span>
+
+<span class="c1"># Data</span>
+
+<span class="n">Watcher</span><span class="o">.</span><span class="n">export_dict</span> <span class="o">=</span> <span class="n">export_dict</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

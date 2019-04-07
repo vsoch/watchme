@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.logger.spinner &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.logger.spinner</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.logger.spinner</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">The watcher is actually a connection to crontab. This is what helps to schedule</span>
+<span class="sd">the watched to check for changes at some frequency, and update the files.</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+
+<div class="viewcode-block" id="Spinner"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner">[docs]</a><span class="k">class</span> <span class="nc">Spinner</span><span class="p">:</span>
+    <span class="n">spinning</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<div class="viewcode-block" id="Spinner.spinning_cursor"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.spinning_cursor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">spinning_cursor</span><span class="p">():</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">cursor</span> <span class="ow">in</span> <span class="s1">&#39;|/-</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span> <span class="k">yield</span> <span class="n">cursor</span></div>
+
+<div class="viewcode-block" id="Spinner.balloons_cursor"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.balloons_cursor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">balloons_cursor</span><span class="p">():</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">cursor</span> <span class="ow">in</span> <span class="s1">&#39;. o O @ *&#39;</span><span class="p">:</span> <span class="k">yield</span> <span class="n">cursor</span></div>
+
+<div class="viewcode-block" id="Spinner.changing_arrows"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.changing_arrows">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">changing_arrows</span><span class="p">():</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">cursor</span> <span class="ow">in</span> <span class="s1">&#39;&lt;^&gt;v&#39;</span><span class="p">:</span> <span class="k">yield</span> <span class="n">cursor</span></div>
+
+<div class="viewcode-block" id="Spinner.select_generator"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.select_generator">[docs]</a>    <span class="k">def</span> <span class="nf">select_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generator</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">generator</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">generator</span> <span class="o">=</span> <span class="n">choice</span><span class="p">([</span><span class="s1">&#39;cursor&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;arrow&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;balloons&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">generator</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_generator</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">generator</span> <span class="o">==</span> <span class="s1">&#39;cursor&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spinner_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinning_cursor</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">generator</span> <span class="o">==</span> <span class="s1">&#39;arrow&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spinner_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">changing_arrows</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">generator</span> <span class="o">==</span> <span class="s1">&#39;balloons&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spinner_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">balloons_cursor</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">delay</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">delay</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spinner_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinning_cursor</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">delay</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">delay</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
+
+<div class="viewcode-block" id="Spinner.run"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">spinning</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spinner_generator</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Spinner.start"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spinning</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Spinner.stop"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.message.Spinner.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spinning</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

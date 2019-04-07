@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.utils package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.watchers package" href="watchme.watchers.html" />
+    <link rel="prev" title="watchme.tasks package" href="watchme.tasks.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="watchme.client.html">watchme.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.command.html">watchme.command package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.config.html">watchme.config package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.logger.html">watchme.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.utils.fileio">watchme.utils.fileio module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.utils.terminal">watchme.utils.terminal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.watchers.html">watchme.watchers package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-utils-package">
+<h1>watchme.utils package<a class="headerlink" href="#watchme-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-watchme.utils.fileio">
+<span id="watchme-utils-fileio-module"></span><h2>watchme.utils.fileio module<a class="headerlink" href="#module-watchme.utils.fileio" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<p>The watcher is actually a connection to crontab. This is what helps to schedule
+the watched to check for changes at some frequency, and update the files.</p>
+<dl class="function">
+<dt id="watchme.utils.fileio.copyfile">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">copyfile</code><span class="sig-paren">(</span><em>source</em>, <em>destination</em>, <em>force=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#copyfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.copyfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>copy a file from a source to its destination.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.generate_temporary_file">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">generate_temporary_file</code><span class="sig-paren">(</span><em>folder=None</em>, <em>prefix='watchme'</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#generate_temporary_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.generate_temporary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>write a temporary file, in base directory with a particular extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>folder</strong> (<em>the base directory to write in.</em>)</li>
+<li><strong>prefix</strong> (<em>the prefix to use</em>)</li>
+<li><strong>ext</strong> (<em>the extension to use.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.get_host">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_host</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_host"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the hostname</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.get_tmpdir">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_tmpdir</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>create=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_tmpdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_tmpdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a temporary directory for an operation. If SREGISTRY_TMPDIR
+is set, return that. Otherwise, return the output of tempfile.mkdtemp</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>prefix</strong> (<em>Given a need for a sandbox (or similar), we will need to</em>)</li>
+<li><strong>create a subfolder *within* the SREGISTRY_TMPDIR.</strong></li>
+<li><strong>create</strong> (<em>boolean to determine if we should create folder (True)</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.get_user">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the active user</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.get_userhome">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_userhome</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_userhome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_userhome" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the user home based on the effective uid</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.mkdir_p">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">mkdir_p</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#mkdir_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.mkdir_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>mkdir_p attempts to get the same functionality as mkdir -p</p>
+<p>param path: the path to create.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.print_json">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">print_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.print_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>just dump the json in a “pretty print” format</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.read_file">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">read_file</code><span class="sig-paren">(</span><em>filename</em>, <em>mode='r'</em>, <em>readlines=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_file will open a file, “filename” and write content, “content”
+and properly close the file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.read_json">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">read_json</code><span class="sig-paren">(</span><em>filename</em>, <em>mode='r'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#read_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.read_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>read_json reads in a json file and returns
+the data structure as dict.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.write_file">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">write_file</code><span class="sig-paren">(</span><em>filename</em>, <em>content</em>, <em>mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_file will open a file, “filename” and write content, “content”
+and properly close the file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.fileio.write_json">
+<code class="descclassname">watchme.utils.fileio.</code><code class="descname">write_json</code><span class="sig-paren">(</span><em>json_obj</em>, <em>filename</em>, <em>mode='w'</em>, <em>print_pretty=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.write_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_json will (optionally,pretty print) a json object to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>json_obj</strong> (<em>the dict to print to json</em>)</li>
+<li><strong>filename</strong> (<em>the output file to write to</em>)</li>
+<li><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.utils.terminal">
+<span id="watchme-utils-terminal-module"></span><h2>watchme.utils.terminal module<a class="headerlink" href="#module-watchme.utils.terminal" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.utils.terminal.choice_prompt">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">choice_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>choices=None</em>, <em>choice=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#choice_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.choice_prompt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the user for a prompt, and only return when one of the requested
+options is provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>prompt</strong> (<em>the prompt to ask the user</em>)</li>
+<li><strong>choices</strong> (<em>a list of choices that are valid, defaults to [Y/N/y/n]</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.confirm_prompt">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">confirm_prompt</code><span class="sig-paren">(</span><em>prompt</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#confirm_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.confirm_prompt" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around choice_prompt, but ask the user specifically for a
+yes / no response that is converted to boolean for the calling agent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prompt</strong> (<em>the prompt to ask the user</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.convert2boolean">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">convert2boolean</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#convert2boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.convert2boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert2boolean is used for environmental variables
+that must be returned as boolean</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.get_installdir">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">get_installdir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#get_installdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.get_installdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_installdir returns the installation directory of the application</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.regexp_prompt">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">regexp_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>regexp='.'</em>, <em>answer=''</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#regexp_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.regexp_prompt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the user for a text entry that matches a regular expression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>prompt</strong> (<em>the prompt to ask the user</em>)</li>
+<li><strong>regexp</strong> (<em>the regular expression to match. defaults to anything.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.run_command">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">run_command</code><span class="sig-paren">(</span><em>cmd</em>, <em>sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.run_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>run_command uses subprocess to send a command to the terminal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</li>
+<li><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</li>
+<li><strong>if none specified, will alert that command failed.</strong></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.utils.terminal.which">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">which</code><span class="sig-paren">(</span><em>software</em>, <em>strip_newline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#which"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.which" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_install will return the path to where an executable is installed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.watchers.html" class="btn btn-neutral float-right" title="watchme.watchers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.tasks.html" class="btn btn-neutral" title="watchme.tasks package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

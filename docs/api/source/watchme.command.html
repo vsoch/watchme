@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.command package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.config package" href="watchme.config.html" />
+    <link rel="prev" title="watchme.client package" href="watchme.client.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="watchme.client.html">watchme.client package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.command package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.command.commit">watchme.command.commit module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.command.create">watchme.command.create module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.command.utils">watchme.command.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.command">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.config.html">watchme.config package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.logger.html">watchme.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.utils.html">watchme.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.watchers.html">watchme.watchers package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.command package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.command.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-command-package">
+<h1>watchme.command package<a class="headerlink" href="#watchme-command-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-watchme.command.commit">
+<span id="watchme-command-commit-module"></span><h2>watchme.command.commit module<a class="headerlink" href="#module-watchme.command.commit" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.command.commit.get_commits">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">get_commits</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#get_commits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.get_commits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.get_earliest_commit">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">get_earliest_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#get_earliest_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.get_earliest_commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the earliest commit for a repository. This is intended to be used
+when in the present working directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repo</strong> (<em>the repository path to get the commit from</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.get_latest_commit">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">get_latest_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#get_latest_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.get_latest_commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the latest commit for a repository in the present working directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repo</strong> (<em>the repository path to get the commit from</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_add">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_add</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_clone">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_clone</code><span class="sig-paren">(</span><em>repo</em>, <em>name=None</em>, <em>base=None</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>clone a git repo to a destination. The user can provide the following
+groupings of arguments:</p>
+<p>base without name: destination is ignored, the repo is cloned (named as
+it is) to the base. If the folder exists, –force must be used to remove
+it first.</p>
+<p>base with name: destination is ignored, repo is cloned (and named based
+on name variable) to the base. The same applies for force.</p>
+<p>dest provided: the repo is cloned to the destination, if it doesn’t exist
+and/or force is True.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the name of the watcher to add</em>)</li>
+<li><strong>base</strong> (<em>the base of the watcher (defaults to $HOME/.watchme</em>)</li>
+<li><strong>force</strong> (<em>remove first if already exists</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_commit">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_commit</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_commit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_date">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_date</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_pwd">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_pwd</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_pwd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_pwd" title="Permalink to this definition">¶</a></dt>
+<dd><p>ensure that we are in the repo present working directory before running
+a git command. Return to where we were before after completion.
+The repo is always the first (positional or keyword) argument.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.git_show">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">git_show</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#git_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.git_show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.commit.write_timestamp">
+<code class="descclassname">watchme.command.commit.</code><code class="descname">write_timestamp</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#write_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.write_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-watchme.command.create">
+<span id="watchme-command-create-module"></span><h2>watchme.command.create module<a class="headerlink" href="#module-watchme.command.create" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.command.create.create_watcher">
+<code class="descclassname">watchme.command.create.</code><code class="descname">create_watcher</code><span class="sig-paren">(</span><em>name=None</em>, <em>watcher_type=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/create.html#create_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.create.create_watcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a watcher, meaning a folder with a configuration and
+initialized git repo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</li>
+<li><strong>watcher_type</strong> (<em>the type of watcher to create. defaults to</em>) – WATCHER_DEFAULT_TYPE</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.create.create_watcher_base">
+<code class="descclassname">watchme.command.create.</code><code class="descname">create_watcher_base</code><span class="sig-paren">(</span><em>name=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/create.html#create_watcher_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.create.create_watcher_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a watch base and default repo, if it doesn’t already exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</li>
+<li><strong>base</strong> (<em>the watcher base, defaults to WATCHME_BASE_DIR</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.command.utils">
+<span id="watchme-command-utils-module"></span><h2>watchme.command.utils module<a class="headerlink" href="#module-watchme.command.utils" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.command.utils.clone_watcher">
+<code class="descclassname">watchme.command.utils.</code><code class="descname">clone_watcher</code><span class="sig-paren">(</span><em>repo</em>, <em>base=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#clone_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.clone_watcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>clone a watcher from Github (or other version control with git)
+meaning that we clone to a temporary folder, and then move
+to a new folder. By default, the user gets all tasks associated
+with the watcher, along with the git folder so that removing
+is also done with version control.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repo</strong> (<em>the repository to clone</em>)</li>
+<li><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</li>
+<li><strong>name</strong> (<em>a new name for the watcher, if a rename is desired.</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.utils.get_watchers">
+<code class="descclassname">watchme.command.utils.</code><code class="descname">get_watchers</code><span class="sig-paren">(</span><em>base=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#get_watchers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.get_watchers" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the watchers installed at a base. If base is not defined,
+the default base is used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.utils.list_watcher">
+<code class="descclassname">watchme.command.utils.</code><code class="descname">list_watcher</code><span class="sig-paren">(</span><em>watcher</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#list_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.list_watcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the contents (tasks) of a single watcher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.command">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.command" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.config.html" class="btn btn-neutral float-right" title="watchme.config package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.client.html" class="btn btn-neutral" title="watchme.client package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

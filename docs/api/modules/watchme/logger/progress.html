@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.logger.progress &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.logger.progress</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.logger.progress</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">clint.textui.progress</span>
+<span class="sd">~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">A derivation of clint version, to not introduce a dependency and add custom functionality.</span>
+<span class="sd">Credit to base code goes to https://github.com/kennethreitz/clint/blob/master/clint/textui/progress.py</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">STREAM</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+
+<span class="n">BAR_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">[</span><span class="si">%s%s</span><span class="s1">] </span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1"> MB - </span><span class="si">%s</span><span class="se">\r</span><span class="s1">&#39;</span>
+<span class="n">BAR_FILLED_CHAR</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+<span class="n">BAR_EMPTY_CHAR</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+
+<span class="c1"># How long to wait before recalculating the ETA</span>
+<span class="n">ETA_INTERVAL</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># How many intervals (excluding the current one) to calculate the simple moving</span>
+<span class="c1"># average</span>
+<span class="n">ETA_SMA_WINDOW</span> <span class="o">=</span> <span class="mi">9</span>
+
+
+<div class="viewcode-block" id="ProgressBar"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.progress.ProgressBar">[docs]</a><span class="k">class</span> <span class="nc">ProgressBar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># we&#39;re not suppressing exceptions</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+                 <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="n">hide</span>
+        <span class="c1"># Only show bar in terminals by default (better for piping, logging etc.)</span>
+        <span class="k">if</span> <span class="n">hide</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">STREAM</span><span class="o">.</span><span class="n">isatty</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>  <span class="c1"># output does not support isatty()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">=</span>    <span class="n">empty_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">=</span>   <span class="n">filled_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="o">=</span> <span class="n">expected_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">every</span> <span class="o">=</span>         <span class="n">every</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span>         <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span> <span class="o">=</span>       <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span>           <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">etadelta</span> <span class="o">=</span>      <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span> <span class="o">=</span>       <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProgressBar.show"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.progress.ProgressBar.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;expected_size not initialized&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span> <span class="o">=</span> <span class="n">progress</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">etadelta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ETA_INTERVAL</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">etadelta</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">[</span><span class="o">-</span><span class="n">ETA_SMA_WINDOW</span><span class="p">:]</span> <span class="o">+</span> \
+                    <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">progress</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> \
+                <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">))</span> <span class="o">*</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="o">-</span> <span class="n">progress</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">progress</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">progress</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">every</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span>      <span class="c1"># True every &quot;every&quot; updates</span>
+                <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">)):</span>   <span class="c1"># And when we&#39;re done</span>
+                <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BAR_TEMPLATE</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">x</span><span class="p">),</span> <span class="n">progress</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span><span class="p">))</span>
+                <span class="n">STREAM</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ProgressBar.done"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.progress.ProgressBar.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="n">elapsed_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">:</span>
+            <span class="c1"># Print completed bar with elapsed time</span>
+            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BAR_TEMPLATE</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span> <span class="n">elapsed_disp</span><span class="p">))</span>
+            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">STREAM</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ProgressBar.format_time"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.progress.ProgressBar.format_time">[docs]</a>    <span class="k">def</span> <span class="nf">format_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="bar"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.progress.bar">[docs]</a><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+        <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Progress iterator. Wrap your iterables with it.&quot;&quot;&quot;</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">if</span> <span class="n">expected_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">expected_size</span>
+
+    <span class="k">with</span> <span class="n">Bar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="n">hide</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+             <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="n">every</span><span class="p">)</span> \
+            <span class="k">as</span> <span class="n">bar</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">item</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

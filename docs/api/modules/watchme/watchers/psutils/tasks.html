@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.psutils.tasks &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+          <li><a href="../psutils.html">watchme.watchers.psutils</a> &raquo;</li>
+        
+      <li>watchme.watchers.psutils.tasks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.psutils.tasks</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="n">generate_temporary_file</span>
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+
+
+<div class="viewcode-block" id="cpu_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.cpu_task">[docs]</a><span class="k">def</span> <span class="nf">cpu_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get variables about the cpu of the host. No parameters are required.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_freq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_freq</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_stats</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_times&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_times</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;cpu_times_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_times_percent</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="python_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.python_task">[docs]</a><span class="k">def</span> <span class="nf">python_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get modules, version, etc. about currently running python</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;modules&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">),</span>
+              <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+              <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+              <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span>
+              <span class="s1">&#39;executable&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+              <span class="s1">&#39;copyright&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">copyright</span> <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="system_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.system_task">[docs]</a><span class="k">def</span> <span class="nf">system_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get basic system info, unlikely to change.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;platform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;api_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">api_version</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;maxsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;bits_per_digit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">int_info</span><span class="o">.</span><span class="n">bits_per_digit</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sizeof_digit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">int_info</span><span class="o">.</span><span class="n">sizeof_digit</span>
+ 
+    <span class="n">vinfo</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;version_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;major&#39;</span><span class="p">:</span> <span class="n">vinfo</span><span class="o">.</span><span class="n">major</span><span class="p">,</span>
+                              <span class="s1">&#39;minor&#39;</span><span class="p">:</span> <span class="n">vinfo</span><span class="o">.</span><span class="n">minor</span><span class="p">,</span>
+                              <span class="s1">&#39;micro&#39;</span><span class="p">:</span> <span class="n">vinfo</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
+                              <span class="s1">&#39;releaselevel&#39;</span><span class="p">:</span> <span class="n">vinfo</span><span class="o">.</span><span class="n">releaselevel</span><span class="p">,</span>
+                              <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="n">vinfo</span><span class="o">.</span><span class="n">serial</span><span class="p">}</span>
+
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>
+    <span class="n">uname</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sysname&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="o">.</span><span class="n">sysname</span><span class="p">,</span>
+                       <span class="s1">&#39;nodename&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="o">.</span><span class="n">nodename</span><span class="p">,</span>
+                       <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                       <span class="s1">&#39;release&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="o">.</span><span class="n">release</span><span class="p">,</span>
+                       <span class="s1">&#39;machine&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="o">.</span><span class="n">machine</span><span class="p">}</span>
+
+
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="memory_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.memory_task">[docs]</a><span class="k">def</span> <span class="nf">memory_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get values for memory of the host. No parameters are required.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># gives an object with many fields</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;virtual_memory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="users_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.users_task">[docs]</a><span class="k">def</span> <span class="nf">users_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get values for current users</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;users&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">users</span><span class="p">():</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="sensors_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.sensors_task">[docs]</a><span class="k">def</span> <span class="nf">sensors_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get values from system sensors like fans, temperature, battery</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sensors_temperatures&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sensors_fans&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># battery</span>
+    <span class="n">battery</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sensors_battery&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span> <span class="n">battery</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span>
+                                 <span class="s1">&#39;secsleft&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">battery</span><span class="o">.</span><span class="n">secsleft</span><span class="p">),</span>
+                                 <span class="s1">&#39;power_plugged&#39;</span><span class="p">:</span> <span class="n">battery</span><span class="o">.</span><span class="n">power_plugged</span><span class="p">}</span>
+
+    <span class="c1"># fans</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_fans</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                    <span class="s1">&#39;current&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">current</span><span class="p">}</span>
+            <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sensors_fans&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span>
+
+    <span class="c1"># temperature</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_temperatures</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+           <span class="n">temp</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                   <span class="s1">&#39;current&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">current</span><span class="p">,</span>
+                   <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">high</span><span class="p">,</span>
+                   <span class="s1">&#39;critical&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">critical</span><span class="p">}</span>
+           <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;sensors_temperatures&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span>
+
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="net_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.net_task">[docs]</a><span class="k">def</span> <span class="nf">net_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get values for networking on the host</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_connections&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_if_address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_if_stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">net_connections</span><span class="p">():</span>
+        <span class="n">net_result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">fd</span><span class="p">,</span>
+                      <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">family</span><span class="p">),</span>
+                      <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">type</span><span class="p">),</span>
+                      <span class="s1">&#39;laddr_ip&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">laddr</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span>
+                      <span class="s1">&#39;laddr_port&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">laddr</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                      <span class="s1">&#39;raddr&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">raddr</span><span class="p">,</span>
+                      <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+                      <span class="s1">&#39;pid&#39;</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">pid</span><span class="p">}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_connections&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">net_result</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">net_if_addrs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">family</span><span class="p">),</span>
+                    <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
+                    <span class="s1">&#39;netmask&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">netmask</span><span class="p">,</span>
+                    <span class="s1">&#39;broadcast&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">broadcast</span><span class="p">,</span>
+                    <span class="s1">&#39;ptp&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">ptp</span><span class="p">}</span>
+            <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_if_address&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">net_if_stats</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;isup&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">isup</span><span class="p">,</span>
+                <span class="s1">&#39;duplex&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">duplex</span><span class="p">),</span>
+                <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span>
+                <span class="s1">&#39;mtu&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">mtu</span><span class="p">}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_if_stats&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="n">netio</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">net_io_counters</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;net_io_counters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bytes_sent&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">bytes_sent</span><span class="p">,</span>
+                                 <span class="s1">&#39;bytes_recv&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">bytes_recv</span><span class="p">,</span>
+                                 <span class="s1">&#39;packets_sent&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">packets_sent</span><span class="p">,</span>
+                                 <span class="s1">&#39;packets_recv&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">packets_recv</span><span class="p">,</span>
+                                 <span class="s1">&#39;errin&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">errin</span><span class="p">,</span>
+                                 <span class="s1">&#39;errout&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">errout</span><span class="p">,</span>
+                                 <span class="s1">&#39;dropin&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">dropin</span><span class="p">,</span>
+                                 <span class="s1">&#39;dropout&#39;</span><span class="p">:</span> <span class="n">netio</span><span class="o">.</span><span class="n">dropout</span><span class="p">}</span>
+
+    <span class="c1"># Remove those not wanted</span>
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="disk_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.disk_task">[docs]</a><span class="k">def</span> <span class="nf">disk_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get values for disks on the host</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       disk_usage: an optional path to get disk usage for.</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;disk_usage&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;disk_to_counters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_io_counters</span><span class="p">()</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;disk_partitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">disk</span> <span class="ow">in</span> <span class="n">psutil</span><span class="o">.</span><span class="n">disk_partitions</span><span class="p">():</span>
+        <span class="n">disk_result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="n">disk</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                       <span class="s1">&#39;mountpoint&#39;</span><span class="p">:</span> <span class="n">disk</span><span class="o">.</span><span class="n">mountpoint</span><span class="p">,</span>
+                       <span class="s1">&#39;fstype&#39;</span><span class="p">:</span> <span class="n">disk</span><span class="o">.</span><span class="n">fstype</span><span class="p">,</span>
+                       <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="n">disk</span><span class="o">.</span><span class="n">opts</span><span class="p">}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;disk_partitions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">disk_result</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;disk_usage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+
+    <span class="c1"># Remove those not wanted</span>
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_filter_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;a helper function to filter a dictionary based on a list of keys to </span>
+<span class="sd">       skip.</span>
+<span class="sd">    </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       result: a dictionary of results</span>
+<span class="sd">       skip: a list of keys to remove/filter from the result.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

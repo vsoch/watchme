@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.client &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.client</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.client</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="p">(</span> 
+    <span class="n">WATCHME_WATCHER</span><span class="p">,</span> 
+    <span class="n">WATCHME_TASK_TYPES</span><span class="p">,</span> 
+    <span class="n">WATCHME_DEFAULT_TYPE</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">watchme</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="get_parser"><a class="viewcode-back" href="../../source/watchme.client.html#watchme.client.get_parser">[docs]</a><span class="k">def</span> <span class="nf">get_parser</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;WatchMe Command Line Tool&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Global Variables</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use verbose logging to debug.&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;show version and exit.&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--quiet&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;quiet&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;suppress additional output.&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--watcher&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;watcher&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the watcher to create (defaults to watcher)&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--base&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the watcher base (defaults to $HOME/.watchme)&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;actions for WatchMe Command Line Tool&#39;</span>
+
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;watchme actions&#39;</span><span class="p">,</span>
+                                       <span class="n">title</span><span class="o">=</span><span class="s1">&#39;actions&#39;</span><span class="p">,</span>
+                                       <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                                       <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">)</span>
+
+    <span class="c1"># init</span>
+
+    <span class="n">init</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span>
+                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;initialize watchme&quot;</span><span class="p">)</span>
+ 
+    <span class="n">init</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--empty&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;create_empty&quot;</span><span class="p">,</span> 
+                      <span class="n">help</span><span class="o">=</span><span class="s2">&quot;don&#39;t create the default watcher folder&quot;</span><span class="p">,</span> 
+                      <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># get</span>
+
+    <span class="n">get</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;get a watcher repository or task using git&quot;</span><span class="p">)</span>
+
+    <span class="n">get</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;repo&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the repository url to clone&#39;</span><span class="p">)</span>
+
+    <span class="n">get</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--force&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;force&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;force overwrite a watcher, if already exists.&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># export</span>
+
+    <span class="n">export</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;export&quot;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;export data for a task and result file&quot;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher export data from&#39;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the name of the task to export data from&#39;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the filename in the task folder to export&#39;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--force&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;force&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;force overwrite output, if already exists.&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--json&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;signal to load the file as json&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">export</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--out&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the output file (json) to export the data&quot;</span><span class="p">,</span>
+                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+
+    <span class="c1"># create</span>
+
+    <span class="n">create</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">,</span>
+                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;create a new watcher&quot;</span><span class="p">)</span>
+
+    <span class="n">create</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watchers&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;watchers to create (default: single watcher)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add</span>
+
+    <span class="n">add</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;add&quot;</span><span class="p">,</span>
+                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add a task to a watcher.&quot;</span><span class="p">)</span>
+
+    <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to add to&#39;</span><span class="p">)</span>
+
+    <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the name of the task to add. Must start with task&#39;</span><span class="p">)</span>
+
+    <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--type&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;watcher_type&quot;</span><span class="p">,</span>
+                     <span class="n">choices</span><span class="o">=</span><span class="n">WATCHME_TASK_TYPES</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="n">WATCHME_DEFAULT_TYPE</span><span class="p">)</span>
+
+    <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--active&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
+                     <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">],</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">)</span>
+
+    <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--force&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;force&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;force overwrite a task, if already exists.&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+
+    <span class="c1"># inspect</span>
+
+    <span class="n">inspect</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;inspect&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;inspect a task or watcher&quot;</span><span class="p">)</span>
+
+    <span class="n">inspect</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to inspect&#39;</span><span class="p">)</span>
+
+    <span class="n">inspect</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--add-command&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;create_command&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print the command used to add a a task.&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># list</span>
+
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span>
+                               <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list all watchers at a base&quot;</span><span class="p">)</span>
+
+    <span class="c1"># protect and freeze</span>
+
+    <span class="n">protect</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;protect&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;protect or freeze a watcher.&quot;</span><span class="p">)</span>
+
+    <span class="n">protect</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to protect or freeze&#39;</span><span class="p">)</span>
+
+    <span class="n">protect</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span>
+                         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;on&quot;</span><span class="p">,</span>
+                         <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">,</span> <span class="s1">&#39;freeze&#39;</span><span class="p">,</span> <span class="s1">&#39;unfreeze&#39;</span><span class="p">])</span>
+
+    <span class="c1"># remove</span>
+
+    <span class="n">remove</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;remove&quot;</span><span class="p">,</span>
+                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;remove a task or entire watcher.&quot;</span><span class="p">)</span>
+
+    <span class="n">remove</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to remove tasks from&#39;</span><span class="p">)</span>
+
+    <span class="n">remove</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--delete&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;delete the entire watch repository&quot;</span><span class="p">,</span> 
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># run</span>
+
+    <span class="n">run</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span>
+                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run a watcher.&quot;</span><span class="p">)</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to run&#39;</span><span class="p">)</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--serial&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;serial&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run tasks in serial&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--test&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run tasks in test mode (no save)&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-progress&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_progress&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run tasks in serial&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># activate</span>
+
+    <span class="n">activate</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;activate&quot;</span><span class="p">,</span>
+                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;activate a new watcher&quot;</span><span class="p">)</span>
+
+    <span class="n">activate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;watcher to activate (optionally add tasks)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># deactivate</span>
+
+    <span class="n">deactivate</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;deactivate&quot;</span><span class="p">,</span>
+                                       <span class="n">help</span><span class="o">=</span><span class="s2">&quot;deactivate a watcher&quot;</span><span class="p">)</span>
+
+    <span class="n">deactivate</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;watcher to deactivate (optionally add tasks)&#39;</span><span class="p">)</span>
+
+
+    <span class="c1"># schedule</span>
+
+    <span class="n">schedule</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;schedule&quot;</span><span class="p">,</span>
+                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;schedule your watcher.&quot;</span><span class="p">)</span>
+ 
+    <span class="n">schedule</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to schedule&#39;</span><span class="p">)</span>
+
+    <span class="n">schedule</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--force&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;force&quot;</span><span class="p">,</span> 
+                           <span class="n">help</span><span class="o">=</span><span class="s2">&quot;force overwrite of a schedule, if exists.&quot;</span><span class="p">,</span> 
+                           <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
+    <span class="c1"># edit</span>
+
+    <span class="n">edit</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;edit&quot;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;edit a watcher task.&quot;</span><span class="p">)</span>
+ 
+    <span class="n">edit</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to edit&#39;</span><span class="p">)</span>
+
+    <span class="n">edit</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the action to take&quot;</span><span class="p">,</span>
+                      <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">])</span>
+
+    <span class="n">edit</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the task to edit.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="get_subparsers"><a class="viewcode-back" href="../../source/watchme.client.html#watchme.client.get_subparsers">[docs]</a><span class="k">def</span> <span class="nf">get_subparsers</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get_subparser will get a dictionary of subparsers, to help with printing help</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">action</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">_actions</span> 
+               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">)]</span>
+
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+        <span class="c1"># get all subparsers and print help</span>
+        <span class="k">for</span> <span class="n">choice</span><span class="p">,</span> <span class="n">subparser</span> <span class="ow">in</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">subparsers</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span> <span class="o">=</span> <span class="n">subparser</span>
+
+    <span class="k">return</span> <span class="n">subparsers</span></div>
+
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../source/watchme.client.html#watchme.client.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;the main entry point for the WatchMe Command line application.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Customize parser</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">get_parser</span><span class="p">()</span>
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">get_subparsers</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="n">return_code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;print help, including the software version and active client </span>
+<span class="sd">           and exit with return code.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="n">watchme</span><span class="o">.</span><span class="n">__version__</span>
+        
+        <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Command Line Tool v</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">version</span><span class="p">,</span>
+                   <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">[WatchMe] &#39;</span><span class="p">,</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;CYAN&#39;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span>
+    
+    <span class="c1"># If the user didn&#39;t provide any arguments, show the full help</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">help</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">unknown</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">extras</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">extras</span> <span class="o">=</span> <span class="n">unknown</span>
+
+    <span class="c1"># if environment logging variable not set, make silent</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MESSAGELEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;INFO&quot;</span>
+
+    <span class="c1"># Show the version and exit</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">watchme</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.activate</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.add</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;edit&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.edit</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;export&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.export</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.create</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;deactivate&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.deactivate</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;get&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.get</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;init&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.init</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;inspect&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.inspect</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.ls</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;protect&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.protect</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;remove&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.remove</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.run</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;schedule&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.schedule</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">help</span><span class="p">()</span>
+
+    <span class="c1"># Pass on to the correct parser</span>
+    <span class="n">return_code</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">extras</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">UnboundLocalError</span><span class="p">:</span>
+        <span class="n">return_code</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">help</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

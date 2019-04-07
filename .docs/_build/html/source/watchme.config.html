@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.config package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.logger package" href="watchme.logger.html" />
+    <link rel="prev" title="watchme.command package" href="watchme.command.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="watchme.client.html">watchme.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.command.html">watchme.command package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.config package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.config">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.logger.html">watchme.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.utils.html">watchme.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.watchers.html">watchme.watchers package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.config package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.config.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-config-package">
+<h1>watchme.config package<a class="headerlink" href="#watchme-config-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-watchme.config">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.config" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.config.check_exists">
+<code class="descclassname">watchme.config.</code><code class="descname">check_exists</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#check_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.check_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>a general helper function to check for existence, and exit if not found.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.config.generate_watcher_config">
+<code class="descclassname">watchme.config.</code><code class="descname">generate_watcher_config</code><span class="sig-paren">(</span><em>path</em>, <em>watcher_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#generate_watcher_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.generate_watcher_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a watcher config, meaning a watcher folder in the watchme
+base folder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>the path to the watcher repository</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.config.get_configfile">
+<code class="descclassname">watchme.config.</code><code class="descname">get_configfile</code><span class="sig-paren">(</span><em>name</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the full path to a specific watcher configuration</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.config.get_configfile_template">
+<code class="descclassname">watchme.config.</code><code class="descname">get_configfile_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the full path to the default configuration file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.config.read_config">
+<code class="descclassname">watchme.config.</code><code class="descname">read_config</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.read_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>use configparser to write a config object to filename</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.config.write_config">
+<code class="descclassname">watchme.config.</code><code class="descname">write_config</code><span class="sig-paren">(</span><em>filename</em>, <em>config</em>, <em>mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#write_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.write_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>use configparser to write a config object to filename</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.logger.html" class="btn btn-neutral float-right" title="watchme.logger package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.command.html" class="btn btn-neutral" title="watchme.command package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

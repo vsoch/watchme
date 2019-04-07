@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.logger.namer &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.logger.namer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.logger.namer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+
+<div class="viewcode-block" id="RobotNamer"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.namer.RobotNamer">[docs]</a><span class="k">class</span> <span class="nc">RobotNamer</span><span class="p">:</span>
+
+    <span class="n">_descriptors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;chunky&#39;</span><span class="p">,</span> <span class="s1">&#39;buttery&#39;</span><span class="p">,</span> <span class="s1">&#39;delicious&#39;</span><span class="p">,</span> <span class="s1">&#39;scruptious&#39;</span><span class="p">,</span> <span class="s1">&#39;dinosaur&#39;</span><span class="p">,</span> <span class="s1">&#39;boopy&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lovely&#39;</span><span class="p">,</span> <span class="s1">&#39;carniverous&#39;</span><span class="p">,</span> <span class="s1">&#39;hanky&#39;</span><span class="p">,</span> <span class="s1">&#39;loopy&#39;</span><span class="p">,</span> <span class="s1">&#39;doopy&#39;</span><span class="p">,</span> <span class="s1">&#39;astute&#39;</span><span class="p">,</span> <span class="s1">&#39;gloopy&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;outstanding&#39;</span><span class="p">,</span> <span class="s1">&#39;stinky&#39;</span><span class="p">,</span> <span class="s1">&#39;conspicuous&#39;</span><span class="p">,</span> <span class="s1">&#39;fugly&#39;</span><span class="p">,</span> <span class="s1">&#39;frigid&#39;</span><span class="p">,</span> <span class="s1">&#39;angry&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;adorable&#39;</span><span class="p">,</span> <span class="s1">&#39;sticky&#39;</span><span class="p">,</span> <span class="s1">&#39;moolicious&#39;</span><span class="p">,</span> <span class="s1">&#39;cowy&#39;</span><span class="p">,</span> <span class="s1">&#39;spicy&#39;</span><span class="p">,</span> <span class="s1">&#39;grated&#39;</span><span class="p">,</span> <span class="s1">&#39;crusty&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;stanky&#39;</span><span class="p">,</span> <span class="s1">&#39;blank&#39;</span><span class="p">,</span> <span class="s1">&#39;bumfuzzled&#39;</span><span class="p">,</span> <span class="s1">&#39;fuzzy&#39;</span><span class="p">,</span> <span class="s1">&#39;hairy&#39;</span><span class="p">,</span> <span class="s1">&#39;peachy&#39;</span><span class="p">,</span> <span class="s1">&#39;tart&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;creamy&#39;</span><span class="p">,</span> <span class="s1">&#39;arid&#39;</span><span class="p">,</span> <span class="s1">&#39;strawberry&#39;</span><span class="p">,</span> <span class="s1">&#39;butterscotch&#39;</span><span class="p">,</span> <span class="s1">&#39;wobbly&#39;</span><span class="p">,</span> <span class="s1">&#39;persnickety&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;nerdy&#39;</span><span class="p">,</span> <span class="s1">&#39;dirty&#39;</span><span class="p">,</span> <span class="s1">&#39;placid&#39;</span><span class="p">,</span> <span class="s1">&#39;bloated&#39;</span><span class="p">,</span> <span class="s1">&#39;swampy&#39;</span><span class="p">,</span> <span class="s1">&#39;pusheena&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;goodbye&#39;</span><span class="p">,</span> <span class="s1">&#39;milky&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;rainbow&#39;</span><span class="p">,</span> <span class="s1">&#39;bricky&#39;</span><span class="p">,</span> <span class="s1">&#39;muffled&#39;</span><span class="p">,</span> <span class="s1">&#39;anxious&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;misunderstood&#39;</span><span class="p">,</span> <span class="s1">&#39;eccentric&#39;</span><span class="p">,</span> <span class="s1">&#39;quirky&#39;</span><span class="p">,</span> <span class="s1">&#39;lovable&#39;</span><span class="p">,</span> <span class="s1">&#39;reclusive&#39;</span><span class="p">,</span> <span class="s1">&#39;faux&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;evasive&#39;</span><span class="p">,</span> <span class="s1">&#39;confused&#39;</span><span class="p">,</span> <span class="s1">&#39;crunchy&#39;</span><span class="p">,</span> <span class="s1">&#39;expensive&#39;</span><span class="p">,</span> <span class="s1">&#39;ornery&#39;</span><span class="p">,</span> <span class="s1">&#39;fat&#39;</span><span class="p">,</span> <span class="s1">&#39;phat&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;joyous&#39;</span><span class="p">,</span> <span class="s1">&#39;expressive&#39;</span><span class="p">,</span> <span class="s1">&#39;psycho&#39;</span><span class="p">,</span> <span class="s1">&#39;chocolate&#39;</span><span class="p">,</span> <span class="s1">&#39;salted&#39;</span><span class="p">,</span> <span class="s1">&#39;gassy&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blue&#39;</span>
+    <span class="p">]</span>
+
+    <span class="n">_nouns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;squidward&#39;</span><span class="p">,</span> <span class="s1">&#39;hippo&#39;</span><span class="p">,</span> <span class="s1">&#39;butter&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;peas&#39;</span><span class="p">,</span> <span class="s1">&#39;lettuce&#39;</span><span class="p">,</span> <span class="s1">&#39;carrot&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;onion&#39;</span><span class="p">,</span> <span class="s1">&#39;peanut&#39;</span><span class="p">,</span> <span class="s1">&#39;cupcake&#39;</span><span class="p">,</span> <span class="s1">&#39;muffin&#39;</span><span class="p">,</span> <span class="s1">&#39;buttface&#39;</span><span class="p">,</span> <span class="s1">&#39;leopard&#39;</span><span class="p">,</span> <span class="s1">&#39;parrot&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;parsnip&#39;</span><span class="p">,</span> <span class="s1">&#39;poodle&#39;</span><span class="p">,</span> <span class="s1">&#39;itch&#39;</span><span class="p">,</span> <span class="s1">&#39;punk&#39;</span><span class="p">,</span> <span class="s1">&#39;kerfuffle&#39;</span><span class="p">,</span> <span class="s1">&#39;soup&#39;</span><span class="p">,</span> <span class="s1">&#39;noodle&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;avocado&#39;</span><span class="p">,</span> <span class="s1">&#39;peanut-butter&#39;</span><span class="p">,</span> <span class="s1">&#39;latke&#39;</span><span class="p">,</span> <span class="s1">&#39;milkshake&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;lizard&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lemur&#39;</span><span class="p">,</span> <span class="s1">&#39;lentil&#39;</span><span class="p">,</span> <span class="s1">&#39;bits&#39;</span><span class="p">,</span> <span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;leader&#39;</span><span class="p">,</span> <span class="s1">&#39;toaster&#39;</span><span class="p">,</span> <span class="s1">&#39;signal&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pancake&#39;</span><span class="p">,</span> <span class="s1">&#39;kitty&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cattywampus&#39;</span><span class="p">,</span> <span class="s1">&#39;poo&#39;</span><span class="p">,</span> <span class="s1">&#39;malarkey&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;rabbit&#39;</span><span class="p">,</span> <span class="s1">&#39;chair&#39;</span><span class="p">,</span> <span class="s1">&#39;staircase&#39;</span><span class="p">,</span> <span class="s1">&#39;underoos&#39;</span><span class="p">,</span> <span class="s1">&#39;snack&#39;</span><span class="p">,</span> <span class="s1">&#39;lamp&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;eagle&#39;</span><span class="p">,</span> <span class="s1">&#39;hobbit&#39;</span><span class="p">,</span> <span class="s1">&#39;diablo&#39;</span><span class="p">,</span> <span class="s1">&#39;earthworm&#39;</span><span class="p">,</span> <span class="s1">&#39;pot&#39;</span><span class="p">,</span> <span class="s1">&#39;plant&#39;</span><span class="p">,</span> <span class="s1">&#39;leg&#39;</span><span class="p">,</span> <span class="s1">&#39;arm&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bike&#39;</span><span class="p">,</span> <span class="s1">&#39;citrus&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;puppy&#39;</span><span class="p">,</span> <span class="s1">&#39;blackbean&#39;</span><span class="p">,</span> <span class="s1">&#39;ricecake&#39;</span><span class="p">,</span> <span class="s1">&#39;gato&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;nalgas&#39;</span><span class="p">,</span> <span class="s1">&#39;lemon&#39;</span><span class="p">,</span> <span class="s1">&#39;caramel&#39;</span><span class="p">,</span> <span class="s1">&#39;fudge&#39;</span><span class="p">,</span> <span class="s1">&#39;cherry&#39;</span><span class="p">,</span> <span class="s1">&#39;sundae&#39;</span><span class="p">,</span> <span class="s1">&#39;truffle&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cinnamonbun&#39;</span><span class="p">,</span> <span class="s1">&#39;pastry&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;omelette&#39;</span><span class="p">,</span> <span class="s1">&#39;fork&#39;</span><span class="p">,</span> <span class="s1">&#39;knife&#39;</span><span class="p">,</span> <span class="s1">&#39;spoon&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;salad&#39;</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="s1">&#39;motorcycle&#39;</span><span class="p">,</span> <span class="s1">&#39;bicycle&#39;</span><span class="p">,</span> <span class="s1">&#39;platanos&#39;</span><span class="p">,</span> <span class="s1">&#39;mango&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;taco&#39;</span><span class="p">,</span> <span class="s1">&#39;pedo&#39;</span><span class="p">,</span> <span class="s1">&#39;nunchucks&#39;</span><span class="p">,</span> <span class="s1">&#39;destiny&#39;</span><span class="p">,</span> <span class="s1">&#39;hope&#39;</span><span class="p">,</span> <span class="s1">&#39;despacito&#39;</span><span class="p">,</span> <span class="s1">&#39;frito&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;chip&#39;</span>
+    <span class="p">]</span>
+
+
+<div class="viewcode-block" id="RobotNamer.generate"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.namer.RobotNamer.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="s1">&#39;0123456789&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate a robot name. Inspiration from Haikunator, but much more</span>
+<span class="sd">                 poorly implemented ;)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ==========</span>
+<span class="sd">        delim: Delimiter</span>
+<span class="sd">        length: TokenLength</span>
+<span class="sd">        chars: TokenChars</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_descriptors</span><span class="p">)</span>
+        <span class="n">noun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nouns</span><span class="p">)</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">delim</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">noun</span><span class="p">,</span> <span class="n">numbers</span><span class="p">])</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">select_from</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; select an element from a list using random.choice</span>
+<span class="sd">        </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ==========</span>
+<span class="sd">            should be a list of things to select from</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">select_from</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="n">choice</span><span class="p">(</span><span class="n">select_from</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../source/watchme.logger.html#watchme.logger.namer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">bot</span> <span class="o">=</span> <span class="n">RobotNamer</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">bot</span><span class="o">.</span><span class="n">generate</span><span class="p">())</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

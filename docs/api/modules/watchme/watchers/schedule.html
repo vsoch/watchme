@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.schedule &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+      <li>watchme.watchers.schedule</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.schedule</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">crontab</span> <span class="k">import</span> <span class="n">CronTab</span>
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">get_user</span> <span class="p">)</span>
+
+<span class="c1"># Scheduling</span>
+
+
+<div class="viewcode-block" id="remove_schedule"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.remove_schedule">[docs]</a><span class="k">def</span> <span class="nf">remove_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;remove a scheduled item from crontab, this is based on the watcher</span>
+<span class="sd">       name. By default, we use the watcher instance name, however you</span>
+<span class="sd">       can specify a custom name if desired.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="n">cron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crontab</span><span class="p">()</span>
+
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;watchme-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">cron</span><span class="o">.</span><span class="n">find_comment</span><span class="p">(</span><span class="n">comment</span><span class="p">):</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">cron</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removed schedule for watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">cron</span><span class="o">.</span><span class="n">write_to_user</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cron</span></div>
+
+
+<div class="viewcode-block" id="has_schedule"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.has_schedule">[docs]</a><span class="k">def</span> <span class="nf">has_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">must_exist</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;determine if a watcher already has a schedule, as a warning to the user.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_job</span><span class="p">(</span><span class="n">must_exist</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="get_job"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.get_job">[docs]</a><span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">must_exist</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return the job to the user, or None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Find the job based on a standard of comment</span>
+    <span class="n">cron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crontab</span><span class="p">()</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;watchme-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cron</span><span class="o">.</span><span class="n">find_comment</span><span class="p">(</span><span class="n">comment</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">job</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Return None, or the actual cron job</span>
+    <span class="k">if</span> <span class="n">job</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">must_exist</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not have a cron job configured&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">job</span></div>
+
+
+<div class="viewcode-block" id="get_crontab"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.get_crontab">[docs]</a><span class="k">def</span> <span class="nf">get_crontab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+    <span class="sd">&#39;&#39;&#39;get an instance of the user&#39;s crontab. We use the running user.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Create an instance of the user&#39;s crontab</span>
+    <span class="k">return</span> <span class="n">CronTab</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_schedule"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.update_schedule">[docs]</a><span class="k">def</span> <span class="nf">update_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;update a scheduled item from the crontab, with a new entry. This</span>
+<span class="sd">       first looks for the entry (and removes it) and then clls the new_</span>
+<span class="sd">       schedule function to write a new one. This function is intended</span>
+<span class="sd">       to be used by a client from within Python, and isn&#39;t exposed from</span>
+<span class="sd">       the command line.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_job</span><span class="p">(</span><span class="n">must_exist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Update the job if found</span>
+    <span class="k">if</span> <span class="n">job</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="n">minute</span><span class="p">,</span>
+                             <span class="n">hour</span><span class="o">=</span><span class="n">hour</span><span class="p">,</span>
+                             <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> 
+                             <span class="n">day</span><span class="o">=</span><span class="n">day</span><span class="p">,</span>
+                             <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">,</span>
+                             <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not have a current schedule to update.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="clear_schedule"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.clear_schedule">[docs]</a><span class="k">def</span> <span class="nf">clear_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;clear all cron jobs associated with the watcher. To remove jobs</span>
+<span class="sd">       associated with a single watcher, use remove_schedule</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crontab</span><span class="p">()</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Clearing jobs associated with all watchers&#39;</span><span class="p">)</span>
+    <span class="n">cron</span><span class="o">.</span><span class="n">remove_all</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s1">&#39;watchme-*&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Save new cron</span>
+    <span class="n">cron</span><span class="o">.</span><span class="n">write_to_user</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cron</span></div>
+
+
+<div class="viewcode-block" id="schedule"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.schedule.schedule">[docs]</a><span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+             <span class="n">minute</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> 
+             <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+             <span class="n">month</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> 
+             <span class="n">day</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> 
+             <span class="n">weekday</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+             <span class="n">job</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;schedule the watcher to run at some frequency to update record of pages.</span>
+<span class="sd">       By default, the task will run at 12 minutes passed midnight, daily.</span>
+<span class="sd">       You can change the variables to change the frequency. See</span>
+<span class="sd">       https://crontab.guru/ to get a setting that works for you.</span>
+
+<span class="sd">            Hourly:	0 * * * *</span>
+<span class="sd">            Daily:	0 0 * * *    (midnight) default</span>
+<span class="sd">            weekly	0 0 * * 0</span>
+<span class="sd">            monthly	0 0 1 * *</span>
+<span class="sd">            yearly	0 0 1 1 *</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       minute: must be within 1 and 60, or set to &quot;*&quot; for every minute</span>
+<span class="sd">       hour: must be within 0 through 23 or set to *</span>
+<span class="sd">       month: must be within 1 and 12, or *</span>
+<span class="sd">       day: must be between 1 and 31, or *</span>
+<span class="sd">       weekday: must be between 0 and 6 or *</span>
+<span class="sd">       job: if provided, assumes we are updated an existing entry.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crontab</span><span class="p">()</span>
+
+    <span class="c1"># Cut out early if the job already exists, and force is false</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_schedule</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> already has a schedule. Use --force to update.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Remove any previous schedules</span>
+    <span class="n">cron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_schedule</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># minute must be between * or 0 through 59, or *</span>
+    <span class="k">if</span> <span class="n">minute</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">)):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;minute must be in [0..59] or equal to *&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Hour must be between 0 through 23, or *</span>
+    <span class="k">if</span> <span class="n">hour</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;hour must be in [0..23] or equal to *&#39;</span><span class="p">)</span>
+  
+    <span class="c1"># Day must be in range 1 through 31, or *</span>
+    <span class="k">if</span> <span class="n">day</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">)):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;day must be in [1..31] or equal to *&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Day must be in range 1 through 31, or *</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span><span class="p">)):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;month must be in [1..12] or equal to *&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Day must be in range 1 through 31, or *</span>
+    <span class="k">if</span> <span class="n">weekday</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;weekday must be in [0..6] or equal to *&#39;</span><span class="p">)</span>
+
+    <span class="c1"># The command will run the watcher, watcher.cfg controls what happens</span>
+    <span class="n">whereis</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="s1">&#39;watchme&#39;</span><span class="p">)</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> run </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">whereis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;watchme-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">if</span> <span class="n">job</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">job</span>  <span class="o">=</span> <span class="n">cron</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
+
+    <span class="c1"># Set the time, and then write the job to file</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">setall</span><span class="p">(</span><span class="n">minute</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">weekday</span><span class="p">)</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+    <span class="n">cron</span><span class="o">.</span><span class="n">write_to_user</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>    
+
+    <span class="k">return</span> <span class="n">job</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

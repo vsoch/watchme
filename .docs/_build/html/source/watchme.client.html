@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.client package &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="watchme.command package" href="watchme.command.html" />
+    <link rel="prev" title="watchme package" href="watchme.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="watchme.html">watchme package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="watchme.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">watchme.client package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.activate">watchme.client.activate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.add">watchme.client.add module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.create">watchme.client.create module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.deactivate">watchme.client.deactivate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.edit">watchme.client.edit module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.export">watchme.client.export module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.get">watchme.client.get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.init">watchme.client.init module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.inspect">watchme.client.inspect module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.ls">watchme.client.ls module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.protect">watchme.client.protect module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.remove">watchme.client.remove module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.run">watchme.client.run module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client.schedule">watchme.client.schedule module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-watchme.client">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.command.html">watchme.command package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.config.html">watchme.config package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.logger.html">watchme.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.tasks.html">watchme.tasks package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.utils.html">watchme.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchme.watchers.html">watchme.watchers package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.defaults">watchme.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme.version">watchme.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="watchme.html#module-watchme">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="watchme.html">watchme package</a> &raquo;</li>
+        
+      <li>watchme.client package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/watchme.client.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="watchme-client-package">
+<h1>watchme.client package<a class="headerlink" href="#watchme-client-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-watchme.client.activate">
+<span id="watchme-client-activate-module"></span><h2>watchme.client.activate module<a class="headerlink" href="#module-watchme.client.activate" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.activate.main">
+<code class="descclassname">watchme.client.activate.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/activate.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.activate.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.add">
+<span id="watchme-client-add-module"></span><h2>watchme.client.add module<a class="headerlink" href="#module-watchme.client.add" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.add.main">
+<code class="descclassname">watchme.client.add.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/add.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.add.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.create">
+<span id="watchme-client-create-module"></span><h2>watchme.client.create module<a class="headerlink" href="#module-watchme.client.create" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.create.main">
+<code class="descclassname">watchme.client.create.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/create.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.create.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>create means creating one or more watchers.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.deactivate">
+<span id="watchme-client-deactivate-module"></span><h2>watchme.client.deactivate module<a class="headerlink" href="#module-watchme.client.deactivate" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.deactivate.main">
+<code class="descclassname">watchme.client.deactivate.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/deactivate.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.deactivate.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>deactivate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.edit">
+<span id="watchme-client-edit-module"></span><h2>watchme.client.edit module<a class="headerlink" href="#module-watchme.client.edit" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.edit.main">
+<code class="descclassname">watchme.client.edit.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/edit.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.edit.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>edit the configuration for a watcher task</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.export">
+<span id="watchme-client-export-module"></span><h2>watchme.client.export module<a class="headerlink" href="#module-watchme.client.export" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.export.main">
+<code class="descclassname">watchme.client.export.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/export.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.export.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.get">
+<span id="watchme-client-get-module"></span><h2>watchme.client.get module<a class="headerlink" href="#module-watchme.client.get" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.get.main">
+<code class="descclassname">watchme.client.get.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/get.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.get.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a watcher using git, meaning clone to a temporary location and then
+copying the entire repo (or a subfolder) to the watcher base.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.init">
+<span id="watchme-client-init-module"></span><h2>watchme.client.init module<a class="headerlink" href="#module-watchme.client.init" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.init.main">
+<code class="descclassname">watchme.client.init.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/init.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.init.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>init means creating the watcher base, and the first (default) watcher.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.inspect">
+<span id="watchme-client-inspect-module"></span><h2>watchme.client.inspect module<a class="headerlink" href="#module-watchme.client.inspect" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.inspect.main">
+<code class="descclassname">watchme.client.inspect.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/inspect.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.inspect.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.ls">
+<span id="watchme-client-ls-module"></span><h2>watchme.client.ls module<a class="headerlink" href="#module-watchme.client.ls" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.ls.main">
+<code class="descclassname">watchme.client.ls.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/ls.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.ls.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>list installed watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.protect">
+<span id="watchme-client-protect-module"></span><h2>watchme.client.protect module<a class="headerlink" href="#module-watchme.client.protect" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.protect.main">
+<code class="descclassname">watchme.client.protect.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/protect.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.protect.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>protect or freeze a watcher, or disable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.remove">
+<span id="watchme-client-remove-module"></span><h2>watchme.client.remove module<a class="headerlink" href="#module-watchme.client.remove" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.remove.main">
+<code class="descclassname">watchme.client.remove.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/remove.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.remove.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.run">
+<span id="watchme-client-run-module"></span><h2>watchme.client.run module<a class="headerlink" href="#module-watchme.client.run" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.run.main">
+<code class="descclassname">watchme.client.run.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/run.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.run.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>run a watcher, optionally supplying one or more regular expressions to
+check for.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client.schedule">
+<span id="watchme-client-schedule-module"></span><h2>watchme.client.schedule module<a class="headerlink" href="#module-watchme.client.schedule" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.schedule.main">
+<code class="descclassname">watchme.client.schedule.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client/schedule.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.schedule.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>activate one or more watchers</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-watchme.client">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.client" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.client.get_parser">
+<code class="descclassname">watchme.client.</code><code class="descname">get_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client.html#get_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.get_parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.client.get_subparsers">
+<code class="descclassname">watchme.client.</code><code class="descname">get_subparsers</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client.html#get_subparsers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.get_subparsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_subparser will get a dictionary of subparsers, to help with printing help</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.client.main">
+<code class="descclassname">watchme.client.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/client.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.client.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main entry point for the WatchMe Command line application.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="watchme.command.html" class="btn btn-neutral float-right" title="watchme.command package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="watchme.html" class="btn btn-neutral" title="watchme package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.settings &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+      <li>watchme.watchers.settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.settings</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="remove_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.remove_setting">[docs]</a><span class="k">def</span> <span class="nf">remove_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;remove a setting from the configuration file</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the name of the section (task)</span>
+<span class="sd">       name: the name of the variable to remove</span>
+<span class="sd">       save: save the configuration file (default is True)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="c1"># Remove the named section, if it exists</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]:</span>
+            <span class="n">removed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">remove_option</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Does the user want to save the file?</span>
+    <span class="k">if</span> <span class="n">removed</span> <span class="ow">and</span> <span class="n">save</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">removed</span></div>
+
+
+<div class="viewcode-block" id="remove_section"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.remove_section">[docs]</a><span class="k">def</span> <span class="nf">remove_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;remove a setting from the configuration file</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the name of the section (task)</span>
+<span class="sd">       save: save the configuration file (default is True)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="c1"># Remove the named section, if it exists</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">remove_section</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Does the user want to save the file?</span>
+    <span class="k">if</span> <span class="n">removed</span> <span class="ow">and</span> <span class="n">save</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">removed</span></div>
+
+<div class="viewcode-block" id="print_add_task"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.print_add_task">[docs]</a><span class="k">def</span> <span class="nf">print_add_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;assemble a task section into a command that can create/add it.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       task: the name of the task to inspect</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;watchme add </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">task</span><span class="p">]:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">task</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid task.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="print_section"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.print_section">[docs]</a><span class="k">def</span> <span class="nf">print_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;print a section (usually a task) from a configuration file,</span>
+<span class="sd">       if it exists.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the name of the section (task)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="n">section</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot; = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid section.&#39;</span> <span class="o">%</span> <span class="n">section</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.get_setting">[docs]</a><span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return a setting from the environment (first priority) and then</span>
+<span class="sd">       secrets (second priority) if one can be found. If not, return None.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the section in the config, defaults to self.name</span>
+<span class="sd">       name: they key (index) of the setting to look up</span>
+<span class="sd">       default: (optional) if not found, return default instead.</span>
+<span class="sd">    &#39;&#39;&#39;</span> 
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="n">setting</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]:</span>
+            <span class="n">setting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+
+    <span class="k">if</span> <span class="n">setting</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">setting</span> <span class="o">=</span> <span class="n">default</span>
+
+    <span class="k">return</span> <span class="n">setting</span></div>
+
+
+
+<div class="viewcode-block" id="set_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.set_setting">[docs]</a><span class="k">def</span> <span class="nf">set_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;set a key value pair in a section, if the section exists. Returns</span>
+<span class="sd">       a boolean (True or False) to indicate if added.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the section in the config, defaults to self.name</span>
+<span class="sd">       key: they key (index) of the setting to set</span>
+<span class="sd">       value: the value to set.</span>
+<span class="sd">    &#39;&#39;&#39;</span> 
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="n">was_set</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">was_set</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">was_set</span></div>
+
+
+<div class="viewcode-block" id="get_section"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.get_section">[docs]</a><span class="k">def</span> <span class="nf">get_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get a section from the config, if it exists</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">section</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+        <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">section</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 '''
 clint.textui.progress
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 A derivation of clint version, to not introduce a dependency and add custom functionality.
 Credit to base code goes to https://github.com/kennethreitz/clint/blob/master/clint/textui/progress.py

@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.utils.fileio &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.utils.fileio</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.utils.fileio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">The watcher is actually a connection to crontab. This is what helps to schedule</span>
+<span class="sd">the watched to check for changes at some frequency, and update the files.</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">import</span> <span class="nn">errno</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pwd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+
+<span class="c1"># FOLDER OPERATIONS ############################################################</span>
+
+<div class="viewcode-block" id="get_userhome"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_userhome">[docs]</a><span class="k">def</span> <span class="nf">get_userhome</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;get the user home based on the effective uid</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">5</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="get_user"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_user">[docs]</a><span class="k">def</span> <span class="nf">get_user</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;return the active user&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">get_userhome</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="get_host"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_host">[docs]</a><span class="k">def</span> <span class="nf">get_host</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;return the hostname&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="mkdir_p"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.mkdir_p">[docs]</a><span class="k">def</span> <span class="nf">mkdir_p</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; mkdir_p attempts to get the same functionality as mkdir -p</span>
+
+<span class="sd">        Paramters</span>
+<span class="sd">        =========</span>
+<span class="sd">        param path: the path to create.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">EEXIST</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error creating path </span><span class="si">%s</span><span class="s2">, exiting.&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<span class="c1"># FILE OPERATIONS ##############################################################</span>
+
+<div class="viewcode-block" id="generate_temporary_file"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.generate_temporary_file">[docs]</a><span class="k">def</span> <span class="nf">generate_temporary_file</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;watchme&#39;</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;write a temporary file, in base directory with a particular extension.</span>
+<span class="sd">      </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       folder: the base directory to write in. </span>
+<span class="sd">       prefix: the prefix to use</span>
+<span class="sd">       ext: the extension to use.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>        
+    <span class="k">if</span> <span class="n">folder</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">_get_candidate_names</span><span class="p">())</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">tmp</span><span class="p">)</span>
+
+    <span class="c1"># Does the user want an extension?</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tmp</span></div>
+
+
+<div class="viewcode-block" id="get_tmpdir"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_tmpdir">[docs]</a><span class="k">def</span> <span class="nf">get_tmpdir</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get a temporary directory for an operation. If SREGISTRY_TMPDIR</span>
+<span class="sd">       is set, return that. Otherwise, return the output of tempfile.mkdtemp</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       prefix: Given a need for a sandbox (or similar), we will need to </span>
+<span class="sd">       create a subfolder *within* the SREGISTRY_TMPDIR.</span>
+<span class="sd">       create: boolean to determine if we should create folder (True)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="ow">or</span> <span class="s2">&quot;watchme-tmp&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">_get_candidate_names</span><span class="p">()))</span>
+    <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="ow">and</span> <span class="n">create</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tmpdir</span></div>
+
+
+<div class="viewcode-block" id="copyfile"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.copyfile">[docs]</a><span class="k">def</span> <span class="nf">copyfile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;copy a file from a source to its destination.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">destination</span></div>
+
+
+<div class="viewcode-block" id="write_file"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.write_file">[docs]</a><span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
+<span class="sd">    and properly close the file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
+        <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">filename</span></div>
+
+
+<div class="viewcode-block" id="write_json"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.write_json">[docs]</a><span class="k">def</span> <span class="nf">write_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">print_pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; write_json will (optionally,pretty print) a json object to file</span>
+<span class="sd">    </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ==========</span>
+<span class="sd">        json_obj: the dict to print to json</span>
+<span class="sd">        filename: the output file to write to</span>
+<span class="sd">        pretty_print: if True, will use nicer formatting</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">print_pretty</span><span class="p">:</span>
+            <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">print_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">filename</span></div>
+
+
+<div class="viewcode-block" id="print_json"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.print_json">[docs]</a><span class="k">def</span> <span class="nf">print_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; just dump the json in a &quot;pretty print&quot; format</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                    <span class="n">json_obj</span><span class="p">,</span>
+                    <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">separators</span><span class="o">=</span><span class="p">(</span>
+                        <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;: &#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">readlines</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
+<span class="sd">       and properly close the file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">readlines</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">filey</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">filey</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="read_json"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.read_json">[docs]</a><span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;read_json reads in a json file and returns</span>
+<span class="sd">       the data structure as dict.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filey</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

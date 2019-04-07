@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.config &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../watchme.html">watchme</a> &raquo;</li>
+        
+      <li>watchme.config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="p">(</span> 
+    <span class="n">WATCHME_WATCHER</span><span class="p">,</span> 
+    <span class="n">WATCHME_BASE_DIR</span><span class="p">,</span>
+    <span class="n">WATCHME_DEFAULT_TYPE</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> 
+    <span class="n">get_installdir</span><span class="p">,</span> 
+    <span class="n">read_file</span> 
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="c1"># CONFIG TEMPLATES #############################################################</span>
+
+<div class="viewcode-block" id="get_configfile_template"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.get_configfile_template">[docs]</a><span class="k">def</span> <span class="nf">get_configfile_template</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;return the full path to the default configuration file</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">_get_config</span><span class="p">(</span><span class="s1">&#39;watchme.cfg&#39;</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">_get_config</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;shared function to return a file in the config directory</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_installdir</span><span class="p">(),</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+
+<span class="c1"># ACTIVE CONFIG FILES ##########################################################</span>
+
+<div class="viewcode-block" id="get_configfile"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.get_configfile">[docs]</a><span class="k">def</span> <span class="nf">get_configfile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return the full path to a specific watcher configuration</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="n">configfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;watchme.cfg&#39;</span><span class="p">)</span>
+    <span class="n">check_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">configfile</span></div>
+    
+
+<span class="c1"># CONFIG IO ####################################################################</span>
+
+<div class="viewcode-block" id="write_config"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.write_config">[docs]</a><span class="k">def</span> <span class="nf">write_config</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;use configparser to write a config object to filename</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filey</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">filename</span></div>
+
+
+<div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;use configparser to write a config object to filename</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">check_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+<span class="c1"># WATCHER CONFIG ###############################################################</span>
+
+<div class="viewcode-block" id="generate_watcher_config"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.generate_watcher_config">[docs]</a><span class="k">def</span> <span class="nf">generate_watcher_config</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">watcher_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;generate a watcher config, meaning a watcher folder in the watchme</span>
+<span class="sd">       base folder.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       path: the path to the watcher repository</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">check_exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">configfile</span> <span class="o">=</span> <span class="n">get_configfile_template</span><span class="p">()</span>
+    <span class="n">watcher_config</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;watchme.cfg&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">watcher_config</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generating watcher config </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">watcher_config</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">configfile</span><span class="p">,</span> <span class="n">watcher_config</span><span class="p">)</span>
+
+    <span class="c1"># Complete generation includes the watcher type</span>
+    <span class="k">if</span> <span class="n">watcher_type</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">watcher_type</span> <span class="o">=</span> <span class="n">WATCHME_DEFAULT_TYPE</span>
+    
+    <span class="c1"># The template config has the section, but just in case</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="n">configfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;watcher&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">)</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;watcher&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">watcher_type</span>
+
+    <span class="c1"># Save to file</span>
+    <span class="n">write_config</span><span class="p">(</span><span class="n">configfile</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
+
+<span class="c1"># CONFIG HELPERS ###############################################################</span>
+
+<div class="viewcode-block" id="check_exists"><a class="viewcode-back" href="../../source/watchme.config.html#watchme.config.check_exists">[docs]</a><span class="k">def</span> <span class="nf">check_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;a general helper function to check for existence, and exit if not found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Cannot find </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'11',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../assets/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
