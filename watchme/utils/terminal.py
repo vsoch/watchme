@@ -72,7 +72,7 @@ def regexp_prompt(prompt, regexp='.', answer=''):
     while not re.search(regexp, answer):
         answer = get_input(prompt + ': ').strip()
         # If the option isn't valid, this is shown next
-        message = "Your entry must match the regular expression %s" %regexp    
+        message = "Your entry must match the regular expression %s" % regexp    
 
     return answer
 

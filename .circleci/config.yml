@@ -1,0 +1,89 @@
+# CircleCI build config to test different versions of Singuarity
+version: 2.1
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-watchme-python-3:
+          filters:
+            branches:
+              ignore: master
+      - test-watchme-python-2:
+          filters:
+            branches:
+              ignore: master
+
+
+install_watchme: &install_watchme
+  name: install watchme
+  command: |
+     $HOME/conda/bin/pip uninstall watchme --yes || echo "Not installed"
+     $HOME/conda/bin/python setup.py install
+
+
+install_python_3: &install_python_3
+  name: install Python 3.5 dependencies
+  command: | 
+      ls $HOME
+      if [ ! -d "/home/circleci/conda" ]; then
+          wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+          /bin/bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/conda
+          export PATH=$HOME/conda/bin:$PATH
+          $HOME/conda/bin/python setup.py install
+       else
+           echo "Miniconda 3 is already installed, continuing to build."
+       fi
+
+install_python_2: &install_python_2
+  name: install Python 3.5 dependencies
+  command: | 
+      ls $HOME
+      if [ ! -d "/home/circleci/conda" ]; then
+          wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
+          /bin/bash Miniconda2-latest-Linux-x86_64.sh -b -p $HOME/conda
+          export PATH=$HOME/conda/bin:$PATH
+          $HOME/conda/bin/python setup.py install
+       else
+           echo "Miniconda 2 is already installed, continuing to build."
+       fi
+
+test_watchme: &test_watchme
+  name: Test WatchMe
+  command: |
+        cd ~/repo/watchme/tests
+        $HOME/conda/bin/python -m unittest test_client
+        $HOME/conda/bin/python -m unittest test_utils
+
+jobs:
+  test-watchme-python-3:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies
+      - run: *install_python_3
+      - run: *install_watchme
+      - save_cache:
+          paths:
+            - /home/circleci/conda
+          key: v1-dependencies        
+      - run: *test_watchme
+
+  test-watchme-python-2:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies
+      - run: *install_python_2
+      - run: *install_watchme
+      - save_cache:
+          paths:
+            - /home/circleci/conda
+          key: v1-dependencies        
+      - run: *test_watchme

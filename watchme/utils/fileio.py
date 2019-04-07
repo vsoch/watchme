@@ -21,6 +21,7 @@ import tempfile
 import json
 import io
 import socket
+import shutil
 import sys
 
 from watchme.logger import bot

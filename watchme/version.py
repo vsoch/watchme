@@ -1,5 +1,5 @@
 
-# Copyright (C) 2018-2019 Vanessa Sochat.
+# Copyright (C) 2019 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -16,7 +16,8 @@ DESCRIPTION = "client to watch for webpage changes, and track over time"
 LICENSE = "LICENSE"
 
 INSTALL_REQUIRES = (
-    ('python-crontab', {"min_version":"2.3.6"}),
+    ('python-crontab', {"min_version": "2.3.6"}),
+    ('configparser', {"min_version": "3.5.3"}),
 )
 
 ## beautiful soup selection task
