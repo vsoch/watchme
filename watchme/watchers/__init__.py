@@ -264,7 +264,7 @@ class Watcher(object):
             from .urls import Task
 
         # Validate variables provided for task
-        if task_type == 'psutils':
+        elif task_type == 'psutils':
             from .psutils import Task
 
         else:
@@ -406,7 +406,7 @@ class Watcher(object):
 
     def list(self, quiet=False):
         '''list the watchers. If quiet is True, don't print to the screen.'''
-        watchers = get_watchers(base=None, quiet=quiet)
+        watchers = get_watchers(base=self.base, quiet=quiet)
         return watchers
 
 # Protection
@@ -513,10 +513,10 @@ class Watcher(object):
         bot.info('[%s|%s] active: %s' % (name, self.name, status)) 
         return message
 
-    def activate(self):
+    def activate(self, task=None):
         '''turn the active status of a watcher to True
         '''
-        message = self._active_status('true')
+        message = self._active_status('true', task)
         git_commit(self.repo, self.name, message)
    
 
@@ -525,14 +525,17 @@ class Watcher(object):
            update the config value for the task to be false.
         '''
         # If no task defined, user wants to deactiate watcher
-        message =self._active_status('false', task)
+        message = self._active_status('false', task)
         git_commit(self.repo, self.name, message)
 
 
-    def is_active(self):
+    def is_active(self, task=None):
         '''determine if the watcher is active by reading from the config directly
+           if a task name is provided, check the active status of the task
         '''
-        if self.get_setting('watcher', 'active', default='true') == "true":
+        if task == None:
+            task = 'watcher'
+        if self.get_setting(task, 'active', default='true') == "true":
             return True
         return False
 

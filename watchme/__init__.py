@@ -32,7 +32,6 @@ def get_watcher(name="watcher",
 
     Watcher.name = name.lower()
     Watcher.quiet = quiet
-    Watcher.base = base
 
     # Initialize the watcher
-    return Watcher(create=create)
+    return Watcher(create=create, base=base)

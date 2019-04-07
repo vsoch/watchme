@@ -18,7 +18,7 @@ from watchme.config import generate_watcher_config
 import os
 
 
-def create_watcher(name=None, watcher_type=None):
+def create_watcher(name=None, watcher_type=None, base=None):
     '''create a watcher, meaning a folder with a configuration and
        initialized git repo.
 
@@ -31,8 +31,11 @@ def create_watcher(name=None, watcher_type=None):
     if name == None:
         name = WATCHME_WATCHER
 
+    if base == None:
+        base = WATCHME_BASE_DIR
+
     # Create the repository folder
-    repo = os.path.join(WATCHME_BASE_DIR, name)
+    repo = os.path.join(base, name)
 
     if not os.path.exists(repo):
 
@@ -46,6 +49,7 @@ def create_watcher(name=None, watcher_type=None):
         # Add the watcher configuration file
         generate_watcher_config(repo, watcher_type)
         run_command("git -C %s add watchme.cfg" % repo)  
+        return repo
 
     else:
         bot.info('%s already exists: %s' % (name, repo))
