@@ -16,7 +16,8 @@ DESCRIPTION = "client to watch for webpage changes, and track over time"
 LICENSE = "LICENSE"
 
 INSTALL_REQUIRES = (
-    ('python-crontab', {"min_version":"2.3.6"}),
+    ('python-crontab', {"min_version": "2.3.6"}),
+    ('configparser', {"min_version": "3.5.3"}),
 )
 
 ## beautiful soup selection task
