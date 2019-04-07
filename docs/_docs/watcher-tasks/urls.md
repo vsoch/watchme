@@ -39,6 +39,15 @@ A urls task has the following parameters shared across functions.
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
 
+## Tasks Available
+
+ - [Get Task](#1-get-a-url-task) appropriate if you want to perform a GET (e.g., download a page)
+ - [Post Task](#2-post-to-a-url-task) is appropriate for POST requests. The default return value expects json.
+ - [Download Task](#3-download-content) to download content, such as a direct link to a file.
+ - [Page Select Task](#4-select-on-a-page-task) allows you to specify a javascript selector to return a subset of content
+
+For all tasks above, the Watcher runs them using multiprocessing so you can assume efficiency.
+
 ### 1. Get a URL Task
 
 This task will watch for changes at an entire URL, meaning tracking the entire page.
