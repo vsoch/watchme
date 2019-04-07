@@ -128,8 +128,8 @@ class TaskBase(object):
 
         for r in range(len(results)):
             result = results[r]
-            file_name = os.path.join(file_name, str(r), ext)
-            saved = func(result, repo, file_name)
+            filename = "%s-%s%s" %(file_name, str(r), ext)
+            saved = func(result, repo, filename)
             files.append(saved)
 
         return files

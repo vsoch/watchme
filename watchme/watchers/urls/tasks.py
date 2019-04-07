@@ -10,6 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.utils import generate_temporary_file
 from watchme.logger import bot
+from .helpers import ( get_params, get_results )
 from requests.exceptions import HTTPError
 import os
 import tempfile
@@ -26,19 +27,31 @@ def get_task(url, **kwargs):
        REQUIRED:
            url: a url to return the page for
     '''
-    result = None
-    response = requests.get(url)
-    if response.status_code == 200:
-        save_as = kwargs.get('save_as')
+    results = []
+    paramsets = get_params(kwargs)
 
-        # Returning the result as json will detect dictionary, and save json
-        if save_as == "json":
-            result = response.json()
+    for params in paramsets:
+        response = requests.get(url, params=params)
 
-        # Otherwise, we return text
-        else:
-            result = response.text
-    return result
+        if response.status_code == 200:
+            save_as = kwargs.get('save_as')
+
+            # Returning the result as json will detect dictionary, and save json
+            if save_as == "json":
+                result = response.json()
+
+            # Otherwise, we return text
+            else:
+                result = response.text
+
+            results.append(result)
+
+    results = [x for x in results if x]
+ 
+    if len(results) == 0:
+        results = None
+
+    return results
 
 
 def post_task(url, **kwargs):
@@ -129,14 +142,13 @@ def download_task(url, **kwargs):
 def get_url_selection(url, **kwargs):
     '''select some content from a page dynamically, using selenium.
     '''
-    from bs4 import BeautifulSoup
     
-    result = None
+    results = None
     selector = kwargs.get('selection', None)
 
     if selector == None:
         bot.error('You must define the selection (e.g., selection@.main')
-        return result        
+        return results
 
     # Does the user want to get text?
     get_text = False
@@ -148,27 +160,23 @@ def get_url_selection(url, **kwargs):
     if attributes != None:
         attributes = attributes.split(',') 
 
-    # Get the page
-    response = requests.get(url)
-    if response.status_code == 200:   
-        soup = BeautifulSoup(response.text, 'lxml')
+    # User can pass a parameter like url_param_<name>
+    # url_param_page=1,2,3,4,5,6,7,8,9
+    paramsets = get_params(kwargs)
 
-        # Get the selection
-        results = []
-        for entry in soup.select(selector):
+    # Each is a dictionary of values
+    results = []
+    for params in paramsets:
+ 
+        # Get the page
+        results += get_results(url=url,
+                               selector=selector,
+                               attributes=attributes,
+                               params=params,
+                               get_text=get_text)
 
-            # Does the user want to get attributes
-            if attributes != None:
-                [results.append(entry.get(x)) for x in attributes]
+    # No results
+    if len(results) == 0:
+        results = None
 
-            # Does the user want to get text?
-            elif get_text == True:
-                results.append(entry.text)
-
-            # Otherwise, return the entire thing
-            else:
-                results.append(str(entry))
-
-    # Clean up results
-    results = [x for x in results if x]
     return results

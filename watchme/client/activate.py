@@ -23,5 +23,5 @@ def main(args, extra):
         watcher.activate()
     else:
         for name in extra:
-            watcher.activate(task)
+            watcher.activate(name)
 

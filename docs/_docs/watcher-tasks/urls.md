@@ -38,6 +38,37 @@ A urls task has the following parameters shared across functions.
 | url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
+#### Lists of URL Parameters
+
+For the "Get" and "Get with selection" tasks, you might want to include url parameters. For example,
+you might want to loop through a set of pages, meaning ending the url with ?page=1 through ?page=9. 
+You can do that with the `url_param_<name>` prefix. As an example, here is how we would
+do that. The following task loops through 7 pages of Pusheen dolls, and collects the text value (get_text@true)
+from the result of selection page elements by the .money class.
+
+```bash
+$ watchme add pusheen task-pusheencom url@https://shop.pusheen.com/collections/pusheen func@get_url_selection get_text@true selection@.money url_param_page@1,2,3,4,5,6,7
+```
+
+Specifically, note how we specified the "page" parameter for the url, with commas separated each call separately.
+
+```bash
+url_param_page@1,2,3,4,5,6,7
+```
+
+If you wanted to add another parameter (for each page) you can think of the commas as indexing. So you might do this:
+
+```bash
+url_param_name@V,V,V,V,V,V,V
+```
+
+or to skip the third page call (page=3) for the name parameter, just leave it empty:
+
+
+```bash
+url_param_name@V,V,,V,V,V,V
+```
+
 
 ## Tasks Available
 
@@ -79,9 +110,11 @@ The following custom parameters can be added:
 |------|----------|---------|---------|-----------|
 | save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+| url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
 
 If you specify "save_as" to be json, you will get a results.json unless you specify another
 file name. 
+
 
 
 ### 2. Post to a URL Task
@@ -174,6 +207,7 @@ selection. The following parameters apply for this function:
 | get_text | No | unset | get_text@true | if found, return text from the selection |
 | attributes | No | unset | style,id or id | for some selection, return attributes |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+| url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
 
 We can run the task:
 
