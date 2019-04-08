@@ -151,7 +151,7 @@ for a particular result file. In the command below, we use the "watchme" client 
 for a task called "task-memory". We ask the watcher to parse the result content as json: 
 
 
-```python
+```bash
 $ watchme export system task-memory vanessa-thinkpad-t460s_vanessa.json --json
 ```
 ```python
