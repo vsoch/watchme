@@ -6,7 +6,13 @@ workflows:
   test:
     jobs:
       - test-watchme-python-3:
+          filters:
+            branches:
+              ignore: docs/*
       - test-watchme-python-2:
+          filters:
+            branches:
+              ignore: docs/*
 
 
 install_watchme: &install_watchme
