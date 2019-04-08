@@ -14,7 +14,7 @@ import requests
 
 # Helper functions
 
-def get_params(kwargs):
+def get_params(kwargs, key='url_param_'):
     '''a general function to get parameter sets based on a user input. 
        Returns a list of dictionaries, one per set.
 
@@ -22,17 +22,18 @@ def get_params(kwargs):
        ==========
        kwargs: the dictionary of keyword arguments that may contain url
                parameters (format is url_param_<name>
+       key: the string that the parameters start with (defaults to url_param)
     '''
     # Keey dictionary based on index of param
     params = {}
 
-    names = [x for x in kwargs if x.startswith('url_param')]
+    names = [x for x in kwargs if x.startswith(key)]
     for n in range(len(names)):
         name = names[n]
         # Params are split by commas, with index corresponding to list index
         paramlist = kwargs.get(name).split(',')
         # Remove the "url_param"
-        name = name.replace('url_param_', '', 1)
+        name = name.replace(key, '', 1)
         # Update the dictionary of dictionaries
         for i in range(len(paramlist)):
 
@@ -53,7 +54,25 @@ def get_params(kwargs):
     return params
 
 
-def get_results(url, selector, func=None, attributes=None, params={}, get_text=False):
+def get_headers(kwargs):
+    '''Get a single set of headers from the kwargs dict.
+
+       Parameters
+       ==========
+       kwargs: the dictionary of keyword arguments that may contain url
+               parameters (format is url_param_<name>
+    '''
+    headers = {}
+
+    for key, value in kwargs.items():
+        if key.startswith('header_'):
+            name = key.replace('header_', '', 1)
+            headers[name] = value
+
+    return headers
+
+
+def get_results(url, selector, func=None, attributes=None, params={}, get_text=False, headers={}):
     '''given a url, a function, an optional selector, optional attributes, and a set (dict)
        of parameters, perform a request.
 
@@ -64,13 +83,14 @@ def get_results(url, selector, func=None, attributes=None, params={}, get_text=F
        selector:  selection for the html response
        attributes: optional, a list of attributes
        params: a dictionary of parameters
+       headers: a dictionary of header key value pairs
     '''
     from bs4 import BeautifulSoup
 
     if func == None:
         func = requests.get
 
-    response = func(url, params=params)
+    response = func(url, params=params, headers=headers)
     results = []
 
     if response.status_code == 200:   

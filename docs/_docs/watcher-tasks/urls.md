@@ -111,6 +111,7 @@ The following custom parameters can be added:
 | save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 | url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
+| header_* | No | unset | header_Accept@json | Define 1 or headers |
 
 If you specify "save_as" to be json, you will get a results.json unless you specify another
 file name. 
@@ -144,8 +145,14 @@ The following custom parameters can be added:
 |------|----------|---------|---------|-----------|
 | save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+| json_param_* | No | unset | json_param_page@1 | Define 1 or more parameters (json/data) for the post |
+| header_* | No | unset | header_Accept@json | Define 1 or headers |
 
-If you want more control about headers, tokens, etc. please open an issue.
+You can define parameters for the POST with one or more definitions of `json_param_<name>`, where
+the name corresponds with the variable name you want (the json_param_ portion is removed). If you
+want to do multiple POSTS with different sets of parameters, you can separate them by commas. The same
+is True for headers, except you can only define one set shared across POSTS. Use
+ `header_<name>` to define one or more.
 
 ### 3. Download Content
 
@@ -168,6 +175,7 @@ type  = urls
 | no_verify_ssl | No | unset |no_verify_ssl@true| |
 | write_format | No | unset |write_format@wb| only for download_task |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
+| header_* | No | unset | header_Accept@json | Define 1 or headers |
 
 
 ### 4. Select on a Page Task
@@ -208,6 +216,7 @@ selection. The following parameters apply for this function:
 | attributes | No | unset | style,id or id | for some selection, return attributes |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 | url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
+| header_* | No | unset | header_Accept@json | Define 1 or headers |
 
 We can run the task:
 

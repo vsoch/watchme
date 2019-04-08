@@ -225,12 +225,8 @@ and that the computer was briefly unplugged after the morning work session.
 
 These kind of metrics are interesting to answer research questions about system
 resources and behavior, and represent only the tip of the iceberg in terms of the
-scope of data that WatchMe could help collect.
-
-
-### Other Examples
-
-
+scope of data that WatchMe could help collect. For other examples, see the 
+[WatchMe Examples](https://vsoch.github.io/watchme/examples) page.
 
 
 More information on WatchMe, including examples, information on watcher tasks, and function documentation is provided at the WatchMe <a href="https://vsoch.github.io/watchme/" target="_blank">documentation</a>. Others are encouraged to give feedback, ask questions, and request

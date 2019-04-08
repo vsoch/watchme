@@ -10,7 +10,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.utils import generate_temporary_file
 from watchme.logger import bot
-from .helpers import ( get_params, get_results )
+from .helpers import (
+    get_params, 
+    get_results, 
+    get_headers
+)
 from requests.exceptions import HTTPError
 import os
 import tempfile
@@ -29,9 +33,10 @@ def get_task(url, **kwargs):
     '''
     results = []
     paramsets = get_params(kwargs)
+    headers = get_headers(kwargs)
 
     for params in paramsets:
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, headers=headers)
 
         if response.status_code == 200:
             save_as = kwargs.get('save_as')
@@ -63,24 +68,34 @@ def post_task(url, **kwargs):
        REQUIRED:
            url: a url to post to
     '''
-    result = None
-    response = requests.post(url)
-    if response.status_code == 200:
+    results = []
 
-        save_as = kwargs.get('save_as', 'json')
+    # The json params can vary, but headers do not
+    jsonlist = get_params(kwargs, key='json_param_')
+    headers = get_headers(kwargs)
 
-        # Returning the result as json will detect dictionary, and save json
-        if save_as == "json":
-            result = response.json()
+    # Loop through lists of json and headers
+    for params in jsonlist:
+        response = requests.post(url, json=params, headers=headers)
+        if response.status_code == 200:
 
-        # Otherwise, we return text
+            save_as = kwargs.get('save_as', 'json')
+
+            # Returning the result as json will detect dictionary, and save json
+            if save_as == "json":
+                result = response.json()
+
+            # Otherwise, we return text
+            else:
+                result = response.text
+
         else:
-            result = response.text
+            bot.error("%s: %s" %(response.status_code, response.reason))
 
-    else:
-        bot.error("%s: %s" %(response.status_code, response.reason))
+    if len(results) == 0:
+        results = None
 
-    return result
+    return results
 
 
 def download_task(url, **kwargs):
@@ -115,12 +130,13 @@ def download_task(url, **kwargs):
 
     # If the user doesn't want to write, but maybe write binary
     fmt = kwargs.get('write_format', 'wb')
+    headers = get_headers(kwargs)
 
     # Does the url being requested exist?
-    if requests.head(url, verify=verify).status_code in [200, 401]:
+    if requests.head(url, verify=verify, headers=headers).status_code in [200, 401]:
 
         # Stream the response
-        response = requests.get(url, verify=verify, stream=True)
+        response = requests.get(url, verify=verify, stream=True, headers=headers)
 
         # Invalid permissions
         if response.status_code == 401:
@@ -145,6 +161,7 @@ def get_url_selection(url, **kwargs):
     
     results = None
     selector = kwargs.get('selection', None)
+    headers = get_headers(kwargs)
 
     if selector == None:
         bot.error('You must define the selection (e.g., selection@.main')
@@ -171,6 +188,7 @@ def get_url_selection(url, **kwargs):
         # Get the page
         results += get_results(url=url,
                                selector=selector,
+                               headers=headers,
                                attributes=attributes,
                                params=params,
                                get_text=get_text)
