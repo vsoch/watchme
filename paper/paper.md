@@ -149,7 +149,7 @@ Notice that each task folder has a result file, along with a timestamp to indica
 when the watcher was last run. The user can edit the watchme.cfg if desired, or simply
 activate and schedule the watcher (optionally disabling a subset of tasks) to run 
 at some frequency (e.g., hourly) and commit to git. No further work is required 
-by the researcher, other than keeping the host machine turned on. The researcher can push the results
+by the researcher other than keeping the host machine turned on. The researcher can push the results
 to a GitHub repository (as was done in this case) and at any time, export the results
 for a particular result file. In the command below, we use the "watchme" client to export the watcher folder "system"
 for a task called "task-memory". We ask the watcher to parse the result content as json: 
@@ -222,14 +222,16 @@ system's core temperature follows a similar trend:
 
 ![img/core-temp.png](img/core-temp.png)
 
-and that the computer was briefly unplugged after the morning work session.
+We also see that the computer was briefly unplugged after the morning work session.
 
 ![img/battery.png](img/battery.png)
 
 
-These kind of metrics are interesting to answer research questions about system
+These kinds of metrics are interesting to answer research questions about system
 resources and behavior, and represent only the tip of the iceberg in terms of the
-scope of data that WatchMe could help collect. For other examples, see the 
+scope of data that WatchMe could help collect. For example, WatchMe would have interesting
+use cases for monitoring resources or jobs for HPC, or watching for changes in any
+kind of web resource (prices, climate data, API endpoints, etc.) For other examples, see the 
 [WatchMe Examples](https://vsoch.github.io/watchme/examples) page.
 
 More information on WatchMe, including examples, information on watcher tasks, and function documentation is provided at the WatchMe <a href="https://vsoch.github.io/watchme/" target="_blank">documentation</a>. Others are encouraged to give feedback, ask questions, and request
