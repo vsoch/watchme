@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - small bug fixes (0.0.14)
  - added headers, params, and json args for post and get urls. (0.0.13)
  - added ability to specify URL params for Get and Get with selector functions (0.0.12)
  - first beta release of watchme, all commands and docs (0.0.11)
