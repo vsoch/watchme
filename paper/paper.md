@@ -31,7 +31,7 @@ reproducible tasks, meaning:
 With WatchMe, a researcher can easily generate a repository (a watcher) that is configured
 to run one or more tasks at a particular frequency, and automatically commit changes to git.
 If he or she chooses, the repository can be pushed to a version control service like GitHub,
-and the entire configuration and set of tasks easily reproducible by anyone that uses
+and the entire configuration and set of tasks is easily reproducible by anyone that uses
 the client to get the repository. Each watcher uses git not only for version control of
 configuration files, but as a temporal database from which the results of the task runs can
 be extracted. Every change to a task within a watcher directory is also recorded via
@@ -48,7 +48,7 @@ result. While many online services exist to watch for changes in one or more web
 for research use. Specifically:
 
  1. It's typically the case that you will be charged for more than a few pages
- 2. It's not appropriate for a research setting where you would want programmatical parsing
+ 2. It's not appropriate for a research setting where you would want programmatic parsing
  3. The configuration of your watcher is not reproducible.
 
 Thus, WatchMe is ideal for the individual researcher that does not want to (or cannot)
@@ -68,23 +68,27 @@ for creating specific monitoring tasks.
 It's a common need to want to retrieve content from the web, whether that be a request
 to get a page, a subset of a page, the download of a file, or a post to an application
 programming interface (API). These general tasks perform these operations, with customizations
-to control the url, how the response is parsed, and the result written. For example, the 
-general set of web tasks can be used to check a set of cities for changes to weather or climate,
+to control the url, how the response is parsed, headers and parameters, and the result written. 
+For example, the  general set of web tasks can be used to check a set of cities for changes to weather or climate,
 to monitor an API endpoint, track changes in prices of item(s) of interest, 
 download a file at some frequency, or watch a job board for changes. For details about
 setup and usage, see the [urls tasks](https://vsoch.github.io/watchme/watchers/urls/) 
 documentation.
 
+
 ### System Tasks
 
 The psutils library of functions uses the Python Psutil [@psutil] set of functions
-to monitor system resources, sensors, and python environment. An example is discussed next.
-Importantly, it's general enough so that if a second user forked the example repository
-and ran it on their host, he or she could open a pull request to contribute data. Given the
-unique naming of each task file, the data could co-exist. Given the common export formats,
+to monitor system resources, sensors, and python environment. Given the naming of data outputs
+based on the host, if a second user forked the example repository
+and ran it on his or her host, he or she could open a pull request to contribute new data. 
+Given the unique naming of each task file, the data could co-exist with previous
+data generated on other hosts. Given the common export formats,
 common analyses could be shared and run on the exports by the different users.
 See the [psutils tasks](https://vsoch.github.io/watchme/watchers/psutils/) 
 documentation for details, and continue reading for a specific example.
+An example that uses the set of system tasks is discussed next.
+
 
 ## Research Usage
 
@@ -92,7 +96,7 @@ The command line usage of watchme, along with making the tool programmatic,
 also makes it ideal for usage on research clusters, or custom usage within scripts.
 Importantly, WatchMe is able to take a repository of result files produced by one
 or more contributors, and export data structures that keep a record of timestamps,
-results, and commit ids for each addition of a results file. 
+results, and commit ids for each addition of a results file.
 
 ### Watcher Example
 

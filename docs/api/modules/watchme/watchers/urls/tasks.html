@@ -167,7 +167,11 @@
 
 <span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="n">generate_temporary_file</span>
 <span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="p">(</span> <span class="n">get_params</span><span class="p">,</span> <span class="n">get_results</span> <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">get_params</span><span class="p">,</span> 
+    <span class="n">get_results</span><span class="p">,</span> 
+    <span class="n">get_headers</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="k">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
@@ -186,9 +190,10 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">paramsets</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">get_headers</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">paramsets</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
             <span class="n">save_as</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span>
@@ -220,24 +225,37 @@
 <span class="sd">       REQUIRED:</span>
 <span class="sd">           url: a url to post to</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">save_as</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">)</span>
+    <span class="c1"># The json params can vary, but headers do not</span>
+    <span class="n">jsonlist</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;json_param_&#39;</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">get_headers</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="c1"># Returning the result as json will detect dictionary, and save json</span>
-        <span class="k">if</span> <span class="n">save_as</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="c1"># Loop through lists of json and headers</span>
+    <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">jsonlist</span><span class="p">:</span>
 
-        <span class="c1"># Otherwise, we return text</span>
+        <span class="c1"># Get the post response and proceed if successful</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+
+            <span class="n">save_as</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Returning the result as json will detect dictionary, and save json</span>
+            <span class="k">if</span> <span class="n">save_as</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+            <span class="c1"># Otherwise, we return text</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
+    <span class="c1"># Return None if no results found</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">result</span></div>
+    <span class="k">return</span> <span class="n">results</span></div>
 
 
 <div class="viewcode-block" id="download_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.urls.html#watchme.watchers.urls.tasks.download_task">[docs]</a><span class="k">def</span> <span class="nf">download_task</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -272,12 +290,13 @@
 
     <span class="c1"># If the user doesn&#39;t want to write, but maybe write binary</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;write_format&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">get_headers</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Does the url being requested exist?</span>
-    <span class="k">if</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">401</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">401</span><span class="p">]:</span>
 
         <span class="c1"># Stream the response</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="c1"># Invalid permissions</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
@@ -298,10 +317,15 @@
 
 <div class="viewcode-block" id="get_url_selection"><a class="viewcode-back" href="../../../../source/watchme.watchers.urls.html#watchme.watchers.urls.tasks.get_url_selection">[docs]</a><span class="k">def</span> <span class="nf">get_url_selection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;select some content from a page dynamically, using selenium.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       kwargs: a dictionary of key, value pairs provided by the user</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="n">results</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">selector</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selection&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">get_headers</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">selector</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;You must define the selection (e.g., selection@.main&#39;</span><span class="p">)</span>
@@ -328,6 +352,7 @@
         <span class="c1"># Get the page</span>
         <span class="n">results</span> <span class="o">+=</span> <span class="n">get_results</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
                                <span class="n">selector</span><span class="o">=</span><span class="n">selector</span><span class="p">,</span>
+                               <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                                <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                                <span class="n">get_text</span><span class="o">=</span><span class="n">get_text</span><span class="p">)</span>

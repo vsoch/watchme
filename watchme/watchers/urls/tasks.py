@@ -76,6 +76,8 @@ def post_task(url, **kwargs):
 
     # Loop through lists of json and headers
     for params in jsonlist:
+
+        # Get the post response and proceed if successful
         response = requests.post(url, json=params, headers=headers)
         if response.status_code == 200:
 
@@ -92,6 +94,7 @@ def post_task(url, **kwargs):
         else:
             bot.error("%s: %s" %(response.status_code, response.reason))
 
+    # Return None if no results found
     if len(results) == 0:
         results = None
 
@@ -157,6 +160,10 @@ def download_task(url, **kwargs):
 
 def get_url_selection(url, **kwargs):
     '''select some content from a page dynamically, using selenium.
+
+       Parameters
+       ==========
+       kwargs: a dictionary of key, value pairs provided by the user
     '''
     
     results = None
