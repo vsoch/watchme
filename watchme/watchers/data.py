@@ -51,7 +51,7 @@ def export_dict(self, task,
 
     # Quit early if the task isn't there
     if not self.has_task(task):
-        bot.exit('%s is not a valid task for %s' % name)
+        bot.exit('%s is not a valid task for %s' % (task, name))
 
     repo = os.path.join(base, self.name)
     if not os.path.exists(repo):
