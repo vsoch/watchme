@@ -228,7 +228,6 @@ resources and behavior, and represent only the tip of the iceberg in terms of th
 scope of data that WatchMe could help collect. For other examples, see the 
 [WatchMe Examples](https://vsoch.github.io/watchme/examples) page.
 
-
 More information on WatchMe, including examples, information on watcher tasks, and function documentation is provided at the WatchMe <a href="https://vsoch.github.io/watchme/" target="_blank">documentation</a>. Others are encouraged to give feedback, ask questions, and request
 new task functions or examples on <a href="https://www.github.com/vsoch/watchme/issues" target="_blank">the issue board</a>.
 
