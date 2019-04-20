@@ -11,6 +11,7 @@ import unittest
 import tempfile
 import shutil
 import json
+from sys import platform
 import os
 
 
@@ -118,7 +119,11 @@ class TestUtils(unittest.TestCase):
         from watchme.utils import get_user
         user = get_user()
         userhome = get_userhome()
-        self.assertEqual('/home/%s' % user, userhome)
+        print("Userhome is %s" % userhome)
+        if platform.startswith("linux"):
+            self.assertEqual('/home/%s' % user, userhome)
+        elif platform == "darwin":
+            self.assertEqual('/Users/%s' % user, userhome)
 
     def test_files(self):
         print('Testing utils.generate_temporary_files')
