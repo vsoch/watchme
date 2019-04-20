@@ -17,64 +17,33 @@ bibliography: paper.bib
 
 # Summary
 
-[WatchMe](https://vsoch.github.io/watchme/) is a simple tool to allow for reproducibly watching for changes in one or more 
-web pages, system resources, or any task function that is provided to the library.
-It addresses a problem in research that it's highly challenging to create and share
-reproducible tasks, meaning:
+[WatchMe](https://vsoch.github.io/watchme/) is a simple tool that allows you to reproducibly watch for changes in web pages, system resources, or any other task that is provided to the library. It addresses the challenge of creating *reproducible tasks*, where:
 
- 1. a configuration file (recipe) stores the parameters for tasks including a function to run, a frequency, and any other necessary variables
- 2. the tasks are automatically run at some frequency
- 3. the results of the runs are saved automatically via version control
- 4. the results collected can be re-assembled into temporal data structures that are ready for analysis
- 5. the entire base (configuration, tasks, and results) can be shared via GitHub, and reproduced by others
+ 1. A configuration file (recipe) stores the parameters for running tasks such as the function that needs to be run
+ 2. The tasks are automatically run at some frequency
+ 3. The results of the runs are saved automatically via version control
+ 4. The results can be re-assembled into temporal data structures that are ready for analysis
+ 5. The entire base (configuration, tasks, and results) can be shared via GitHub and reproduced by others
 
-With WatchMe, a researcher can easily generate a repository (a watcher) that is configured
-to run one or more tasks at a particular frequency, and automatically commit changes to git.
-If he or she chooses, the repository can be pushed to a version control service like GitHub,
-and the entire configuration and set of tasks is easily reproducible by anyone that uses
-the client to get the repository. Each watcher uses git not only for version control of
-configuration files, but as a temporal database from which the results of the task runs can
-be extracted. Every change to a task within a watcher directory is also recorded via
-git, making the entire setup well documented with minimal to no work needed by the
-researcher.
+With WatchMe, a researcher can easily generate a repository (a Watcher) that is configured to run one or more tasks at a particular frequency, and automatically commit changes to Git. If he or she chooses, the repository can be pushed to a version control service like GitHub, and the entire configuration and set of tasks can be easily reproduced. Each Watcher uses Git not only for version control of configuration files, but also as a temporal database from which the results of the task runs can be extracted. Every change to a task within a watcher directory is recorded via Git, making the entire setup well-documented with minimal to no work needed by the researcher.
 
 ## Background
 
-Reproducible monitoring and data collection for an individual researcher is a challenging task. Typically,
-if a web page or system resource is to be monitored, the researcher must write custom scripts and
-extraction steps, and in the best case scenario, he or she uses version control for the scripts or final
-result. While many online services exist to watch for changes in one or more web pages
-(e.g., see https://visualping.io/ for an example service), these resources are problematic
-for research use. Specifically:
+Reproducible monitoring and data collection for an individual researcher is a challenging task. Typically, if a web page or system resource is to be monitored, the researcher must write custom scripts and extraction steps, and in the best case scenario, he or she uses version control for the scripts or final result. While many online services exist to watch for changes in one or more web pages (e.g., see https://visualping.io/ for an example service), these resources are problematic for research use. Specifically:
 
  1. It's typically the case that you will be charged for more than a few pages
  2. It's not appropriate for a research setting where you would want programmatic parsing
- 3. The configuration of your watcher is not reproducible.
+ 3. The configuration of your watcher is not reproducible
 
-Thus, WatchMe is ideal for the individual researcher that does not want to (or cannot)
-pay for a service, and wants to be able to share their monitoring tasks with other
-researchers, such as for a publication or similar. It also allows for collaborative data
-collection, as multiple users can run the equivalent task, have data exported named
-uniquely, and then submit a pull request to combine the data. 
-
+WatchMe is ideal for the individual researcher who does not want to (or cannot) pay for such sercies, and wants to be able to share their monitoring tasks. It also allows for collaborative data collection, as multiple users can run the equivalent task nd then submit a pull request to combine their data. 
 
 ## WatchMe Tasks
 
-By default, WatchMe comes with two task types intended to provide general templates
-for creating specific monitoring tasks.
+By default, WatchMe comes with two task types intended to provide general templates for creating specific monitoring tasks.
 
 ### Web Tasks
 
-It's a common need to want to retrieve content from the web, whether that be a request
-to get a page, a subset of a page, the download of a file, or a post to an application
-programming interface (API). These general tasks perform these operations, with customizations
-to control the url, how the response is parsed, headers and parameters, and the result written. 
-For example, the  general set of web tasks can be used to check a set of cities for changes to weather or climate,
-to monitor an API endpoint, track changes in prices of item(s) of interest, 
-download a file at some frequency, or watch a job board for changes. For details about
-setup and usage, see the [urls tasks](https://vsoch.github.io/watchme/watchers/urls/) 
-documentation.
-
+It's a common need to want to retrieve content from the web, whether that be a request to get a page, a subset of a page, the download of a file, or a post to an application programming interface (API). In Watchme, general tasks perform these operations, with customizations to control things like the URL, how the response is parsed, the headers and parameters, and the result that is written. For example, these tasks can be used to check a set of cities for changes to weather or climate, to monitor an API endpoint, track changes in prices of item(s) of interest, download a file at some frequency, or watch a job board for changes. For details about setup and usage, see the [urls tasks](https://vsoch.github.io/watchme/watchers/urls/) documentation.
 
 ### System Tasks
 
