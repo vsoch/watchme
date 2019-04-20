@@ -12,14 +12,10 @@ the watched to check for changes at some frequency, and update the files.
 
 '''
 
-import configparser
 import errno
 import os
-import pwd
-import re
 import tempfile
 import json
-import io
 import socket
 import shutil
 import sys
