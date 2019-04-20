@@ -111,15 +111,6 @@ class TestUtils(unittest.TestCase):
         result = which('echo')
         self.assertEqual(result, '/bin/echo')
 
-    def test_userhome(self):
-        print('Testing utils.get_user')
-        print('Testing utils.get_userhome')
-        from watchme.utils import get_userhome
-        from watchme.utils import get_user
-        user = get_user()
-        userhome = get_userhome()
-        self.assertEqual('/home/%s' % user, userhome)
-
     def test_files(self):
         print('Testing utils.generate_temporary_files')
         from watchme.utils import generate_temporary_file
