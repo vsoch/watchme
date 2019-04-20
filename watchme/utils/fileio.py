@@ -12,17 +12,17 @@ the watched to check for changes at some frequency, and update the files.
 
 '''
 
-import configparser
 import errno
 import os
-import pwd
-import re
 import tempfile
 import json
 import io
 import socket
 import shutil
 import sys
+import getpass
+
+
 
 from watchme.logger import bot
 
@@ -31,11 +31,11 @@ from watchme.logger import bot
 def get_userhome():
     '''get the user home based on the effective uid
     '''
-    return pwd.getpwuid(os.getuid())[5]
+    return os.path.expanduser("~")
 
 def get_user():
     '''return the active user'''
-    return os.path.basename(get_userhome())
+    return getpass.getuser()
 
 def get_host():
     '''return the hostname'''
