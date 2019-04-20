@@ -23,6 +23,7 @@ import io
 import socket
 import shutil
 import sys
+import getpass
 
 from watchme.logger import bot
 
@@ -31,11 +32,11 @@ from watchme.logger import bot
 def get_userhome():
     '''get the user home based on the effective uid
     '''
-    return pwd.getpwuid(os.getuid())[5]
+    return os.path.expanduser("~")
 
 def get_user():
     '''return the active user'''
-    return os.path.basename(get_userhome())
+    return getpass.getuser()
 
 def get_host():
     '''return the hostname'''
