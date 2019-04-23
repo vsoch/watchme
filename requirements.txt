@@ -1,1 +1,4 @@
-python-crontab==2.3.6
+python-crontab>=2.3.6
+configparser>=3.5.3
+requests>=2.21.0
+
