@@ -1,7 +1,9 @@
 # WatchMe
 
-![docs/assets/img/logo_small.gif](docs/assets/img/logo_small.gif)
-
+<p align="center">
+  <img src="docs/assets/img/logo_small.gif" alt="logo_small">
+<p align="center">
+ 
 [![DOI](https://zenodo.org/badge/177837425.svg)](https://zenodo.org/badge/latestdoi/177837425)
 [![CircleCI](https://circleci.com/gh/vsoch/watchme.svg?style=svg)](https://circleci.com/gh/vsoch/watchme)
 
