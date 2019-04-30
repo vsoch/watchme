@@ -16,6 +16,7 @@ watcher below:
  - [Background](#what-is-a-watcher): What is a watcher, exactly?
  - [Setup](#setup-watchme): Watchme on your computer, meaning setting a base with a default watcher
  - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
+ - [Rename a Watcher](#how-do-i-rename-a-watcher): Rename a watching by changing the folder name
 
 ## Tasks
 
@@ -114,16 +115,31 @@ Notice how the `--base` argument comes before init? That's because it's a global
 argument, meaning you can supply it to any command group (init, create, etc.). If 
 you don't want to set it and want to change the default, remember that you can
 export `WATCHME_BASE_DIR` in your bash profile for a permanent setting.
+For the reminder of this tutorial, we will assume that you ran init without
+`--empty`, and interact with a watcher named "watcher."
 
 ### How do I create a watcher?
 
-If you didn't create a watcher above, or want to create
+If you didn't create a watcher above (meaning you ran the init command with `--empty`)
+this is ok! You can create as many watchers as you like with the "create" command.
 
 ```bash
-$ watchme init
-Creating /home/vanessa/.watchme...
-Adding watcher /home/vanessa/.watchme/watcher...
-Generating watcher config /home/vanessa/.watchme/watcher/watchme.cfg
+$ watchme create --help
+usage: watchme create [-h] [watchers [watchers ...]]
+
+positional arguments:
+  watchers    watchers to create (default: single watcher)
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+As an example (after running watchme init) let's create a watcher called "weather"
+
+```bash
+$ watchme create weather
+Adding watcher /home/vanessa/.watchme/weather...
+Generating watcher config /home/vanessa/.watchme/weather/watchme.cfg
 ```
 
 You can then see an empty watcher directory is created with a configuration
@@ -132,13 +148,22 @@ file:
 ```bash
 $ tree /home/vanessa/.watchme/
 /home/vanessa/.watchme/
-└── watcher
+└── weather
     └── watchme.cfg
 ```
 
 and what you can't see is that there is a Git repo (a .git folder) in the 
 watcher directory too. Good job! The watcher is set up, and ready to add
-tasks to it.
+tasks to it. 
+
+### How do I rename a watcher?
+
+The watcher name coincides with the folder name. For example, if you created
+the "weather" watcher and want to change the name at a later point, just rename
+the folder. For the remainder of this getting started guide, we will be using
+a watcher named "watcher," so if you didn't create this watcher, you can 
+either create it or rename an existing folder.
+
 
 ### How do I add tasks?
 

@@ -6,7 +6,7 @@
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-__version__ = "0.0.14"
+__version__ = "0.0.15"
 AUTHOR = 'Vanessa Sochat'
 AUTHOR_EMAIL = 'vsochat@stanford.edu'
 NAME = 'watchme'
@@ -18,6 +18,7 @@ LICENSE = "LICENSE"
 INSTALL_REQUIRES = (
     ('python-crontab', {"min_version": "2.3.6"}),
     ('configparser', {"min_version": "3.5.3"}),
+    ('requests', {"min_version": "2.21.0"})
 )
 
 ## beautiful soup selection task

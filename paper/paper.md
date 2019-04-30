@@ -169,17 +169,17 @@ While only two commits are shown in the result above, an actual export for this 
 The researcher could then perform an [analysis](https://github.com/vsoch/watchme-system/blob/master/data/watchme-task-analysis.ipynb) using the data collected. 
 As an example, here is a plot from such an analysis that tracks virtual memory usage of this author, recorded every hour, over two weekend days. 
 
-![img/virtual-memory-used.png](img/virtual-memory-used.png)
+![Virtual memory usage graph](img/virtual-memory-used.png)
 
 Interestingly, we can see a pattern that correlates with the activity of the author during the day. Virtual memory usage is low from the previous evening (1800 hours) through the early morning (0600 hours) and then rises sharply when the author starts to work. 
 It goes down briefly in the early afternoon when the author pauses for a break, and picks up afterward, stopping when it's time for dinner. 
 We see that the system's core temperature follows a similar trend:
 
-![img/core-temp.png](img/core-temp.png)
+![Core temperature graph](img/core-temp.png)
 
 We also see that the computer was briefly unplugged after the morning work session.
 
-![img/battery.png](img/battery.png)
+![Battery usage graph](img/battery.png)
 
 These kinds of metrics are interesting to answer research questions about system resources and behavior, and represent only the tip of the iceberg in terms of the scope of data that WatchMe could help collect. 
 For example, WatchMe would have interesting use cases for monitoring resources or jobs for HPC, or watching for changes in any kind of web resource (prices, climate data, API endpoints, etc.). 
