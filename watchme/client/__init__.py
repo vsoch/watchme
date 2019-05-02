@@ -110,6 +110,10 @@ def get_parser():
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
 
+    create.add_argument('--exporter', dest="exporter",
+                         help="where to export the data",
+                         default=None)
+
     # add
 
     add = subparsers.add_parser("add",
