@@ -26,15 +26,16 @@ import os
 
 # CONFIG TEMPLATES #############################################################
 
-def get_configfile_template():
+def get_configfile_template(watcher_type=None):
     '''return the full path to the default configuration file
     '''
-    return _get_config('watchme.cfg')
+    return _get_config('watchme.cfg', watcher_type)
 
-def _get_config(name):
+def _get_config(name, watcher_type):
     '''shared function to return a file in the config directory
     '''
-    return os.path.abspath(os.path.join(get_installdir(), 'config', name))
+    watcher_path = watcher_type or ''
+    return os.path.abspath(os.path.join(get_installdir(), 'config', watcher_path, name))
 
 
 # ACTIVE CONFIG FILES ##########################################################
