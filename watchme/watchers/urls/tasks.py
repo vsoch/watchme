@@ -19,6 +19,7 @@ from requests.exceptions import HTTPError
 import os
 import tempfile
 import requests
+import re
 
 
 def get_task(url, **kwargs):
@@ -36,15 +37,23 @@ def get_task(url, **kwargs):
     headers = get_headers(kwargs)
 
     for params in paramsets:
+        
         response = requests.get(url, params=params, headers=headers)
 
         if response.status_code == 200:
-            save_as = kwargs.get('save_as')
 
+            save_as = kwargs.get('save_as')
+            regex = kwargs.get('regex')
+            
             # Returning the result as json will detect dictionary, and save json
             if save_as == "json":
                 result = response.json()
 
+            # If the user defined a regex, capture the first group matching
+            elif regex:
+                matching = re.search(regex, response.text)
+                result = matching.group()
+            
             # Otherwise, we return text
             else:
                 result = response.text
