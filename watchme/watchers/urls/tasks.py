@@ -188,6 +188,9 @@ def get_url_selection(url, **kwargs):
     if kwargs.get('get_text') != None:
         get_text = True
 
+    # Does the user want to capture a certain value?
+    regex = kwargs.get('regex')
+
     # Does the user want to get one or more attributes?
     attributes = kwargs.get('attributes', None)
     if attributes != None:
@@ -207,7 +210,8 @@ def get_url_selection(url, **kwargs):
                                headers=headers,
                                attributes=attributes,
                                params=params,
-                               get_text=get_text)
+                               get_text=get_text,
+                               regex=regex)
 
     # No results
     if len(results) == 0:

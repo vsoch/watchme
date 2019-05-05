@@ -11,6 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import os
 import tempfile
 import requests
+import re
 
 # Helper functions
 
@@ -72,7 +73,7 @@ def get_headers(kwargs):
     return headers
 
 
-def get_results(url, selector, func=None, attributes=None, params={}, get_text=False, headers={}):
+def get_results(url, selector, func=None, attributes=None, params={}, get_text=False, headers={}, regex=None):
     '''given a url, a function, an optional selector, optional attributes, and a set (dict)
        of parameters, perform a request.
 
@@ -84,6 +85,7 @@ def get_results(url, selector, func=None, attributes=None, params={}, get_text=F
        attributes: optional, a list of attributes
        params: a dictionary of parameters
        headers: a dictionary of header key value pairs
+       regex : an optional regex
     '''
     from bs4 import BeautifulSoup
 
@@ -105,7 +107,12 @@ def get_results(url, selector, func=None, attributes=None, params={}, get_text=F
 
             # Does the user want to get text?
             elif get_text == True:
-                results.append(entry.text)
+                # Does the user want to capture a certain value?
+                if regex != None:
+                    matching = re.search(regex, entry.text)
+                    results.append(matching.group())
+                else:
+                    results.append(entry.text)
 
             # Otherwise, return the entire thing
             else:
