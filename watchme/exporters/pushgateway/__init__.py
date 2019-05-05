@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
 '''
-
+from watchme.logger import bot
 from watchme.exporters import ExporterBase
 
 from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
@@ -46,7 +46,16 @@ class Exporter(ExporterBase):
         self._write_to_pushgateway(result)
 
     def _write_to_pushgateway(self, result):
+        ''' writes data to the pushgateway
+ 
+           Parameters
+           ==========
+           result: the result object to save
+        '''
         g = Gauge(self.name.replace('-', ':'), '', registry=self.registry)
         g.set(result)
-        push_to_gateway(self.params['url'], job='watchme', registry=self.registry)
         
+        try:
+            push_to_gateway(self.params['url'], job='watchme', registry=self.registry)
+        except:
+            bot.error('An exception occurred while trying to export data using %s' % self.name)
