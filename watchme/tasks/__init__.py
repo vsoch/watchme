@@ -13,6 +13,7 @@ from watchme.utils import (
     write_file,
     write_json
 )
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 
 import shutil
 import os
@@ -217,3 +218,20 @@ class TaskBase(object):
         '''
         file_name = self.params.get('file_name', 'result.txt')
         return self._save_list(results, repo, self._save_text, file_name)
+
+    def _save_pushgateway_list(self, name, results):
+        '''for a list of general text results, send them to a pushgateway.
+ 
+           Parameters
+           ==========
+           results: list of string results to write to the pushgateway
+        '''
+        registry = CollectorRegistry()
+        for r in range(len(results)):
+            result = results[r]
+            g = Gauge(name.replace('-', ':'), '', registry=registry)
+            g.set(result)
+            push_to_gateway('localhost:9091', job='watchme', registry=registry)
+
+
+    
