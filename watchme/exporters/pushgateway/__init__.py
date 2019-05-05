@@ -20,7 +20,9 @@ class Exporter(ExporterBase):
     def __init__(self, name, params={}, **kwargs): 
 
         self.type = 'pushgateway'
-
+        
+        self.registry = CollectorRegistry()
+        
         super(Exporter, self).__init__(name, params, **kwargs)
 
     def _save_text_list(self, name, results):
@@ -30,9 +32,21 @@ class Exporter(ExporterBase):
            ==========
            results: list of string results to write to the pushgateway
         '''
-        registry = CollectorRegistry()
         for r in range(len(results)):
-            result = results[r]
-            g = Gauge(name.replace('-', ':'), '', registry=registry)
-            g.set(result)
-            push_to_gateway(self.params['url'], job='watchme', registry=registry)
+            self._write_to_pushgateway(results[r])
+
+
+    def _save_text(self, result):
+        '''exports the text to the exporter
+ 
+           Parameters
+           ==========
+           result: the result object to save, not a path to a file in this case
+        '''
+        self._write_to_pushgateway(result)
+
+    def _write_to_pushgateway(self, result):
+        g = Gauge(self.name.replace('-', ':'), '', registry=self.registry)
+        g.set(result)
+        push_to_gateway(self.params['url'], job='watchme', registry=self.registry)
+        

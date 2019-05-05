@@ -841,6 +841,7 @@ class Watcher(object):
         for name, result in results.items():
 
             task = self.get_task(name, save=True)
+            
             # Case 1. The result is a list
             if isinstance(result, list):
                 
@@ -856,6 +857,15 @@ class Watcher(object):
                         bot.debug('Exporting list to ' + exporter.name)
                         exporter._save_text_list(name, result)
 
+            # Case 2. The result is a string
+            elif isinstance(result, str):
+                
+                # if it's a path to a file, ignore it.
+                if not(os.path.exists(result)):
+                    exporter._save_text(result)
+            
+            # Case 3. The result is a dictionary, ignore it for now.
+    
     def finish_runs(self, results):
         '''finish runs should take a dictionary of results, with keys as the
            folder name, and for each, depending on the result type,
