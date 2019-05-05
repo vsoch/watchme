@@ -654,8 +654,15 @@ class Watcher(object):
             print("Elligible exporter " + name)
 
             params = self.config._sections[name]
+            
+            # Instantiate the correct exporter given the type
+            exporter_type = params['type']
+            
+            if exporter_type == 'pushgateway':
+                from watchme.exporters import ExporterBase
 
-            from watchme.exporters import ExporterBase
+            else:
+                bot.exit('exporter type %s does not exist' % exporter_type)
 
             exporter = ExporterBase(name, params)
 
