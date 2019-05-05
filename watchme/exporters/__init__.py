@@ -21,6 +21,12 @@ class ExporterBase(object):
         self.set_params(params)
         self.validate()
 
+            
+    def get_type(self):
+        '''get the exporter type.
+        '''
+        return self.type
+
     # Parameters
 
     def set_params(self, params):
@@ -48,3 +54,4 @@ class ExporterBase(object):
             if param not in self.params:
                 bot.error('Missing required parameter: %s' % param)
                 self.valid = False
+
