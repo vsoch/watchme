@@ -659,12 +659,12 @@ class Watcher(object):
             exporter_type = params['type']
             
             if exporter_type == 'pushgateway':
-                from watchme.exporters import ExporterBase
+                from watchme.exporters.pushgateway import Exporter
 
             else:
                 bot.exit('exporter type %s does not exist' % exporter_type)
 
-            exporter = ExporterBase(name, params)
+            exporter = Exporter(name, params)
 
         return exporter
 
@@ -829,18 +829,38 @@ class Watcher(object):
         # Finally, finish the runs.
         if test is False:
             self.finish_runs(results)
+            self.export_runs(results, exporters)
         else:
             # or print results to the screen
             print(json.dumps(results, indent=4))
+    
+    def export_runs(self, results, exporters):
+        ''' export data retrieved to the set of exporters defined and active. 
+            maybe an export flag could be set to choose to run + export?
+        '''
+        for name, result in results.items():
+
+            task = self.get_task(name, save=True)
+            # Case 1. The result is a list
+            if isinstance(result, list):
+                
+                # Get rid of Nones, if the user accidentally added
+                result = [r for r in result if r]
+
+                if len(result) == 0:
+                    bot.error('%s returned empty list of results.' % name)
+
+                # for a json, or a list of paths, ignore for now.
+                elif not(task.params.get('save_as') == 'json' or os.path.exists(result[0])):
+                    for exporter in exporters:
+                        bot.debug('Exporting list to ' + exporter.name)
+                        exporter._save_text_list(name, result)
 
     def finish_runs(self, results):
         '''finish runs should take a dictionary of results, with keys as the
            folder name, and for each, depending on the result type,
            write the result to file (or update file) and then commit
            to git.
-
-           Eventually, for active exporters, it should try to export it to
-           destinations defined.
 
            Parameters
            ==========
@@ -885,8 +905,7 @@ class Watcher(object):
                 else:
                     bot.debug('Saving content from list to file...')
                     files += task._save_text_list(result, self.repo)
-                    task._save_pushgateway_list(name, result)
-
+                    
             # Case 2. The result is a string
             elif isinstance(result, str):
                 # if it's a path to a file, just save to repository
