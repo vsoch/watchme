@@ -111,7 +111,7 @@ if __name__ == "__main__":
               'watchers': [WATCHERS],
               'exporters': [EXPORTERS],
               'watcher-urls-dynamic': [URLS_DYNAMIC],
-              'watcher-psutils': [PSUTILS]
+              'watcher-psutils': [PSUTILS],
               'exporter-pushgateway': [PUSHGATEWAY],
           },
           classifiers=[

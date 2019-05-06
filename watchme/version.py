@@ -11,8 +11,8 @@ AUTHOR = 'Vanessa Sochat'
 AUTHOR_EMAIL = 'vsochat@stanford.edu'
 NAME = 'watchme'
 PACKAGE_URL = "http://www.github.com/vsoch/watchme"
-KEYWORDS = 'web, changes, cron'
-DESCRIPTION = "client to watch for webpage changes, and track over time"
+KEYWORDS = 'web, changes, cron, reproducible, version-control'
+DESCRIPTION = "reproducible monitoring client with exporters"
 LICENSE = "LICENSE"
 
 INSTALL_REQUIRES = (
@@ -31,14 +31,14 @@ INSTALL_PSUTILS = (
     ('psutil', {'min_version': '5.4.3'}),
 )
 
-INSTALL_PUSHGATEWAY (
+INSTALL_PUSHGATEWAY = (
     ('prometheus_client', {'min_version': '0.6.0'}),
 )
 
 # Install all watchers and exporters
 INSTALL_ALL = (INSTALL_REQUIRES +
                INSTALL_PSUTILS +
-               INSTALL_URLS_DYNAMIC,
+               INSTALL_URLS_DYNAMIC +
                INSTALL_PUSHGATEWAY)
 
 # Install all watchers

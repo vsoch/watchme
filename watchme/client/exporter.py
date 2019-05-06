@@ -47,7 +47,7 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base, create=False) 
 
     # Double check the exporter type
-    if exporter_type not in WATCHME_EXPORTERS
+    if exporter_type not in WATCHME_EXPORTERS:
         choices = ','.join(WATCHME_EXPORTERS)
         bot.exit("%s is not a valid exporter, %s" %(exporter_type, choices))
 

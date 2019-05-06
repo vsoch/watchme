@@ -283,7 +283,7 @@ def export_runs(self, results):
                     bot.error('%s returned empty list of results.' % name)
 
                 # Only save if the export type is not json, and the result is a text string
-                elif not task.params.get('save_as') == 'json' and not os.path.exists(result[0])):
+                elif not task.params.get('save_as') == 'json' and not os.path.exists(result[0]):
                     bot.debug('Exporting list to ' + client.name)
                     client._save_text_list(name, result)
 
