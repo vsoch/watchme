@@ -39,7 +39,7 @@ A urls task has the following parameters shared across functions.
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
 
-### Task Headers
+#### Task Headers
 
 For some tasks, you can add one or more headers to the request by specifying `header_<name>`.
 For example, to add the header "Token" I could do `header_Token=123456`.
