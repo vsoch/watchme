@@ -38,6 +38,16 @@ A urls task has the following parameters shared across functions.
 | url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
 
+
+### Task Headers
+
+For some tasks, you can add one or more headers to the request by specifying `header_<name>`.
+For example, to add the header "Token" I could do `header_Token=123456`.
+By default, each task has the User-Agent header added, as it typically helps. 
+If you want to disable this, add the header_User-Agent to be empty, or change
+it to something else.
+
+
 #### Lists of URL Parameters
 
 For the "Get" and "Get with selection" tasks, you might want to include url parameters. For example,
@@ -68,7 +78,6 @@ or to skip the third page call (page=3) for the name parameter, just leave it em
 ```bash
 url_param_name@V,V,,V,V,V,V
 ```
-
 
 ## Tasks Available
 
@@ -115,7 +124,6 @@ The following custom parameters can be added:
 
 If you specify "save_as" to be json, you will get a results.json unless you specify another
 file name. 
-
 
 
 ### 2. Post to a URL Task

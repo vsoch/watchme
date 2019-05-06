@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - Adding option for regular expression for URL wachers, user agent header (0.0.16)
  - requests is missing from install dependencies (0.0.15)
  - small bug fixes (0.0.14)
  - added headers, params, and json args for post and get urls. (0.0.13)

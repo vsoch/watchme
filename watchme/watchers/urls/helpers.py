@@ -30,10 +30,13 @@ def get_params(kwargs, key='url_param_'):
     names = [x for x in kwargs if x.startswith(key)]
     for n in range(len(names)):
         name = names[n]
+
         # Params are split by commas, with index corresponding to list index
         paramlist = kwargs.get(name).split(',')
+
         # Remove the "url_param"
         name = name.replace(key, '', 1)
+
         # Update the dictionary of dictionaries
         for i in range(len(paramlist)):
 
@@ -54,27 +57,75 @@ def get_params(kwargs, key='url_param_'):
     return params
 
 
+def parse_success_response(response, kwargs):
+    '''parse a successful response of 200, meaning we honor the user
+       request to return json, search for a regular expression, or return
+       raw text. This is used by the basic GET/POST functions. For parsing
+       with beautiful soup, see "get_results" and "get_url_selection"
+
+       Parameters
+       ==========
+       response: the requests (200) response
+       kwargs: dictionary of keyword arguments provided to function
+    '''
+    result = None
+    save_as = kwargs.get('save_as', 'json')
+    regex = kwargs.get('regex')
+
+    # Returning the result as json will detect dictionary, and save json
+    if save_as == "json":
+        result = response.json()
+
+    # As an alternative, search for a regular expression
+    elif regex not in ["", None]:
+        match = re.search(regex, response.text)
+        result = match.group()
+
+    # Otherwise, we return text
+    else:
+        result = response.text
+    return result
+
+
 def get_headers(kwargs):
-    '''Get a single set of headers from the kwargs dict.
+    '''Get a single set of headers from the kwargs dict. A user agent is added
+       as it is helpful in most cases.
 
        Parameters
        ==========
        kwargs: the dictionary of keyword arguments that may contain url
                parameters (format is url_param_<name>
     '''
-    headers = {}
+    headers = {"User-Agent": "Mozilla/5.0"}
 
     for key, value in kwargs.items():
         if key.startswith('header_'):
             name = key.replace('header_', '', 1)
-            headers[name] = value
+
+            # The header is defined with a value
+            if value != None:
+                headers[name] = value
+
+            # If the user wants to remove the User-Agent (or any) header
+            elif value == None and name in headers:
+                del headers[name]
 
     return headers
 
 
-def get_results(url, selector, func=None, attributes=None, params={}, get_text=False, headers={}):
-    '''given a url, a function, an optional selector, optional attributes, and a set (dict)
-       of parameters, perform a request.
+def get_results(url, 
+                selector,
+                func=None,
+                attributes=None,
+                params={},
+                get_text=False,
+                headers={},
+                regex=None):
+
+    '''given a url, a function, an optional selector, optional attributes, 
+       and a set (dict) of parameters, perform a request. This function is
+       used if the calling function needs special parsing of the html with
+       beautiful soup. If only a post/get is needed, this is not necessary.
 
        Parameters
        ==========
@@ -102,6 +153,11 @@ def get_results(url, selector, func=None, attributes=None, params={}, get_text=F
             # Does the user want to get attributes
             if attributes != None:
                 [results.append(entry.get(x)) for x in attributes]
+
+            # Second priority for regular expression on text
+            elif regex not in [None, ""]:
+                match = re.search(regex, entry.text)
+                results.append(match.group())
 
             # Does the user want to get text?
             elif get_text == True:
