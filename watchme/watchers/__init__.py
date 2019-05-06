@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.logger import ( bot, RobotNamer )
+from watchme.logger import (bot, RobotNamer)
 from watchme.version import __version__
 from watchme.defaults import (
     WATCHME_BASE_DIR,
@@ -70,12 +70,12 @@ import sys
 
 class Watcher(object):
 
-    repo=None
-    configfile=None
+    repo = None
+    configfile = None
 
-    def __init__(self, name=None, 
-                       base=None, 
-                       create=False, **kwargs):
+    def __init__(self, name=None,
+                 base=None,
+                 create=False, **kwargs):
         '''the watcher base loads configuration files for the user (in $HOME)
            and module, and then stores any arguments given from the caller
 
@@ -93,7 +93,6 @@ class Watcher(object):
 
         # Load the configuration
         self.load_config()
-
 
     def _set_base(self, base=None, create=False):
         ''' set the base for the watcher, ensuring that it exists.
@@ -114,9 +113,10 @@ class Watcher(object):
         # If the watcher doesn't exist and we need to create:
         if not os.path.exists(self.repo) or not os.path.exists(self.configfile):
             if create is True:
-                create_watcher(self.name)   
+                create_watcher(self.name)
             else:
-                bot.exit('Watcher %s does not exist. Use watchme create.' % self.name)
+                bot.exit(
+                    'Watcher %s does not exist. Use watchme create.' % self.name)
 
 
 # Config
@@ -124,7 +124,6 @@ class Watcher(object):
     def save(self):
         '''save the configuration to file.'''
         write_config(self.configfile, self.config)
-
 
     def edit_task(self, name, action, key, value=None):
         '''edit a task, meaning doing an addition (add), update (update), or
@@ -139,7 +138,7 @@ class Watcher(object):
         '''
 
         if not self.has_task(name):
-            bot.exit('%s is not a task defined by %s' %(name, self.name))
+            bot.exit('%s is not a task defined by %s' % (name, self.name))
 
         if action not in ['update', 'add', 'remove']:
             bot.exit('Action must be update, add, or remove')
@@ -149,7 +148,7 @@ class Watcher(object):
 
         # Add, and it doesn't exist so it's okay
         if action == "add" and key not in self.config[name]:
-            bot.info('Adding %s:%s to %s' %(key, value, name))
+            bot.info('Adding %s:%s to %s' % (key, value, name))
             self.set_setting(name, key, value)
 
         # Already exists, encourage user to update
@@ -158,7 +157,7 @@ class Watcher(object):
 
         # Update, and it's a valid choice
         elif action == 'update' and key in self.config[name]:
-            bot.info('Updating %s to %s in %s' %(key, value, name))
+            bot.info('Updating %s to %s in %s' % (key, value, name))
             self.set_setting(name, key, value)
 
         # Update, and it's not a valid choice
@@ -167,14 +166,13 @@ class Watcher(object):
 
         # Remove, and it's a valid choice
         elif action == "remove" and key in self.config[name]:
-            bot.info('Removing %s' % key )
+            bot.info('Removing %s' % key)
             del self.config[name][key]
 
         # Remove, and it's not a valid choice
         elif action == "remove" and key not in self.config[name]:
             bot.exit('%s is not found in config, cannot be removed.' % key)
         self.save()
-
 
     def has_section(self, name):
         '''returns True or False to indicate if the watcher has a specified
@@ -187,9 +185,8 @@ class Watcher(object):
         self.load_config()
         if name in self.config._sections:
             return True
-        bot.warning('%s not found for watcher %s' %(name, self.name))
+        bot.warning('%s not found for watcher %s' % (name, self.name))
         return False
-
 
     def load_config(self):
         '''load a configuration file, and set the active setting for the watcher
@@ -198,7 +195,7 @@ class Watcher(object):
            it will be written with a default active status set to false.
         '''
         if not hasattr(self, 'config'):
-           
+
             # Load the configuration file if it exists (will exit if not found)
             if self.configfile != None:
                 self.config = read_config(self.configfile)
@@ -210,7 +207,6 @@ class Watcher(object):
 
                 # Only update the config if we've changed it
                 self.save()
-
 
     def _get_params_dict(self, pairs):
         '''iterate through parameters, make keys lowercase, and ensure
@@ -224,7 +220,7 @@ class Watcher(object):
         for pair in pairs:
             if "@" not in pair:
                 bot.exit('incorrectly formatted param, must be key@value')
-            key,value = pair.split('@', 1)
+            key, value = pair.split('@', 1)
             key = key.lower()
 
             # All tasks are not allowed to have default params
@@ -249,12 +245,12 @@ class Watcher(object):
            params: list of parameters to be validated (key@value)
            force: if task already exists, overwrite
            active: add the task as active (default "true")
-           
+
         '''
         # Check again, in case user calling from client
         if not task.startswith('task'):
             bot.exit('Task name must start with "task" (e.g., task-reddit)')
-       
+
         # Ensure it's a valid type
         if task_type not in WATCHME_TASK_TYPES:
             bot.exit('%s is not a valid type: %s' % WATCHME_TASK_TYPES)
@@ -272,7 +268,7 @@ class Watcher(object):
 
         # Convert list to dictionary
         params = self._get_params_dict(params)
- 
+
         # Creating the task will validate parameters
         newtask = Task(task, params=params)
 
@@ -282,7 +278,6 @@ class Watcher(object):
 
         # Write to file (all tasks get active = True added, and type)
         self._add_task(newtask, force, active)
-
 
     def _add_task(self, task, force=False, active='true'):
         '''add a new task to the watcher, meaning we:
@@ -322,7 +317,8 @@ class Watcher(object):
             git_add(self.repo, task.name)
 
         # Commit changes
-        git_commit(repo=self.repo, task=self.name, message="ADD task %s" % task.name)
+        git_commit(repo=self.repo, task=self.name,
+                   message="ADD task %s" % task.name)
 
 # Delete
 
@@ -335,7 +331,8 @@ class Watcher(object):
         if self.is_frozen():
             bot.exit('watcher %s is frozen, unfreeze to delete.' % self.name)
         elif self.is_protected():
-            bot.exit('watcher %s is protected, turn off protection to delete.' % self.name)
+            bot.exit(
+                'watcher %s is protected, turn off protection to delete.' % self.name)
 
         repo = os.path.dirname(self.configfile)
 
@@ -344,8 +341,7 @@ class Watcher(object):
             bot.info('Removing watcher %s' % self.name)
             shutil.rmtree(repo)
         else:
-            bot.exit("%s:%s doesn't exist" %(self.name, repo))
-
+            bot.exit("%s:%s doesn't exist" % (self.name, repo))
 
     def remove_task(self, task):
         '''remove a task from the watcher repo, if it exists, and the
@@ -373,12 +369,12 @@ class Watcher(object):
 
 
 # Inspect
-    
+
     def inspect(self, tasks=None, create_command=False):
         '''inspect a watcher, or one or more tasks belonging to it. This means
            printing the configuration for the entire watcher (if tasks is None)
            or just for one or more tasks.
- 
+
            Parameters
            ==========
            tasks: one or more tasks to inspect (None will show entire file)
@@ -403,7 +399,6 @@ class Watcher(object):
             else:
                 self.print_add_task(task)
 
-
     def list(self, quiet=False):
         '''list the watchers. If quiet is True, don't print to the screen.'''
         watchers = get_watchers(base=self.base, quiet=quiet)
@@ -415,11 +410,10 @@ class Watcher(object):
         '''protect a watcher, meaning that it cannot be deleted. This does
            not influence removing a task. To freeze the entire watcher,
            use the freeze() function.
-        '''        
+        '''
         self._set_status('watcher', 'protected', status)
         git_commit(self.repo, self.name, "PROTECT %s" % status)
         self.print_section('watcher')
-
 
     def freeze(self):
         '''freeze a watcher, meaning that it along with its tasks cannot be 
@@ -450,7 +444,6 @@ class Watcher(object):
             bot.exit('Status must be "on" or "off"')
         self.set_setting(section, setting, value)
         self.save()
-        
 
     def is_protected(self):
         '''return a boolean to indicate if the watcher is protected or frozen.
@@ -462,7 +455,6 @@ class Watcher(object):
             if self.get_setting('watcher', status) == "on":
                 protected = True
         return protected
-        
 
     def is_frozen(self):
         '''return a boolean to indicate if the watcher is frozen.
@@ -478,7 +470,7 @@ class Watcher(object):
     def _active_status(self, status='true', name=None):
         '''a general function to change the status, used by activate and
            deactivate.
- 
+
            Parameters
            ==========
            status: must be one of true, false
@@ -492,7 +484,7 @@ class Watcher(object):
 
         # Cut out early if section not in config
         if name not in self.config._sections:
-            bot.exit('%s is not a valid task or section' % name)     
+            bot.exit('%s is not a valid task or section' % name)
 
         if status not in ['true', 'false']:
             bot.exit('status must be true or false.')
@@ -508,9 +500,9 @@ class Watcher(object):
 
         # Add the task name
         if name != None:
-            message = "%s task %s" %(message, name)
+            message = "%s task %s" % (message, name)
 
-        bot.info('[%s|%s] active: %s' % (name, self.name, status)) 
+        bot.info('[%s|%s] active: %s' % (name, self.name, status))
         return message
 
     def activate(self, task=None):
@@ -518,7 +510,6 @@ class Watcher(object):
         '''
         message = self._active_status('true', task)
         git_commit(self.repo, self.name, message)
-   
 
     def deactivate(self, task=None):
         '''turn the active status of a watcher to false. If a task is provided,
@@ -527,7 +518,6 @@ class Watcher(object):
         # If no task defined, user wants to deactiate watcher
         message = self._active_status('false', task)
         git_commit(self.repo, self.name, message)
-
 
     def is_active(self, task=None):
         '''determine if the watcher is active by reading from the config directly
@@ -550,7 +540,6 @@ class Watcher(object):
         if self.has_section(name) and name.startswith('task'):
             return True
         return False
-
 
     def get_task(self, name, save=False):
         '''get a particular task, based on the name. This is where each type
@@ -590,7 +579,6 @@ class Watcher(object):
 
         return task
 
-
     def _task_selected(self, task, regexp=None):
         '''check if a task is active and (if defined) passes user provided
            task names or regular expressions.
@@ -600,7 +588,7 @@ class Watcher(object):
            task: the task object to check
            regexp: an optional regular expression (or name) to check
         '''
-        selected = True 
+        selected = True
 
         # A task can be None if it wasn't found
         if task == None:
@@ -611,7 +599,7 @@ class Watcher(object):
         if active == "false":
             bot.info('Task %s is not active.' % task)
             selected = False
-        
+
         # The user wants to search for a custom task name
         if regexp != None:
             if not re.search(regexp, task):
@@ -619,7 +607,6 @@ class Watcher(object):
                 selected = False
 
         return selected
-
 
     def get_tasks(self, regexp=None):
         '''get the tasks for a watcher, possibly matching a regular expression.
@@ -645,8 +632,97 @@ class Watcher(object):
                     tasks.append(task)
 
         bot.info('Found %s contender tasks.' % len(tasks))
-        return tasks   
+        return tasks
 
+# Get Exporters
+
+    def get_exporter(self, name, save=False):
+        '''get a particular exporter, based on the name. We could have
+           an exporter type (similarly to Tasks), but it is quite useless right now.
+           Parameters
+           ==========
+           name: the name of the exporter to load
+           save: if saving, will be True
+        '''
+        self.load_config()
+
+        exporter = None
+
+        # Only sections that start with exporter- are considered exporters
+        if name in self.config._sections and name.startswith('exporter'):
+
+            print("Elligible exporter " + name)
+
+            params = self.config._sections[name]
+            
+            # Instantiate the correct exporter given the type
+            exporter_type = params['type']
+            
+            if exporter_type == 'pushgateway':
+                from watchme.exporters.pushgateway import Exporter
+
+            else:
+                bot.exit('exporter type %s does not exist' % exporter_type)
+
+            exporter = Exporter(name, params)
+
+        return exporter
+
+    def get_exporters(self, regexp=None):
+        '''get the exporters for a watcher, possibly matching a regular expression.
+           A list of dictionaries is returned, each holding the parameters for
+           an exporter. An exporter has an active attribute.
+
+           Parameters
+           ==========
+           regexp: if supplied, the user wants to export to destinations
+           that only match the expression specified.
+        '''
+        self.load_config()
+
+        exporters = []
+
+        for section in self.config._sections:
+
+            # Get the exporter based on the section name
+            exporter = self.get_exporter(section)
+
+            # Check that the exporter should be used, and is valid
+            if exporter != None:
+                if self._exporter_selected(exporter, regexp) and exporter.valid:
+                    exporters.append(exporter)
+
+        bot.info('Found %s contender exporters.' % len(exporters))
+        return exporters
+
+    def _exporter_selected(self, exporter, regexp=None):
+        '''check if an exporter is active and (if defined) passes user provided
+           exporter names or regular expressions.
+
+           Parameters
+           ==========
+           exporter: the exporter object to check
+           regexp: an optional regular expression (or name) to check
+        '''
+        selected = True
+
+        # A exporter can be None if it wasn't found
+        if exporter == None:
+            selected = False
+
+        # Is the exporter not active (undefined is active)?
+        active = exporter.params.get('active', 'true')
+        if active == "false":
+            bot.info('Exporter %s is not active.' % exporter)
+            selected = False
+
+        # The user wants to search for a custom task name
+        if regexp != None:
+            if not re.search(regexp, exporter):
+                bot.info('Exporter %s is selected for data export.' % exporter)
+                selected = False
+
+        return selected
 
 # Running Tasks
 
@@ -668,10 +744,10 @@ class Watcher(object):
            {'task-reddit-hpc': [('url', 'https://www.reddit.com/r/hpc'),
                                 ('active', 'true'),
                                 ('type', 'urls')]}
-        ''' 
+        '''
         if parallel is True:
             return self._run_parallel(queue, show_progress)
-        
+
         # Otherwise, run in serial
         results = {}
 
@@ -686,10 +762,9 @@ class Watcher(object):
             else:
                 bot.info('Running %s' % prefix)
             results[task.name] = task.run()
-            progress+=1
+            progress += 1
 
         return results
-
 
     def _run_parallel(self, queue, show_progress=True):
         ''' run tasks in parallel using the Workers class. Returns a dictionary
@@ -707,13 +782,12 @@ class Watcher(object):
 
         for task in queue:
 
-            # Export parameters and functions            
+            # Export parameters and functions
             funcs[task.name] = task.export_func()
             tasks[task.name] = task.export_params()
 
         workers = Workers(show_progress=show_progress)
         return workers.run(funcs, tasks)
-
 
     def run(self, regexp=None, parallel=True, test=False, show_progress=True):
         '''run the watcher, which should be done via the crontab, including:
@@ -745,18 +819,53 @@ class Watcher(object):
         # Step 2: get the tasks associated with the run, a list of param dicts
         tasks = self.get_tasks()
 
-        # Step 3: Run the tasks. This means preparing a list of funcs/params,
+        # Step 3 : get the exporters if any were declared in the watcher configuration.
+        exporters = self.get_exporters()
+
+        # Step 4: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
         results = self.run_tasks(tasks, parallel, show_progress)
-
+        
         # Finally, finish the runs.
         if test is False:
             self.finish_runs(results)
+            self.export_runs(results, exporters)
         else:
             # or print results to the screen
             print(json.dumps(results, indent=4))
+    
+    def export_runs(self, results, exporters):
+        ''' export data retrieved to the set of exporters defined and active. 
+            maybe an export flag could be set to choose to run + export?
+        '''
+        for name, result in results.items():
 
+            task = self.get_task(name, save=True)
+            
+            # Case 1. The result is a list
+            if isinstance(result, list):
+                
+                # Get rid of Nones, if the user accidentally added
+                result = [r for r in result if r]
 
+                if len(result) == 0:
+                    bot.error('%s returned empty list of results.' % name)
+
+                # for a json, or a list of paths, ignore for now.
+                elif not(task.params.get('save_as') == 'json' or os.path.exists(result[0])):
+                    for exporter in exporters:
+                        bot.debug('Exporting list to ' + exporter.name)
+                        exporter._save_text_list(name, result)
+
+            # Case 2. The result is a string
+            elif isinstance(result, str):
+                
+                # if it's a path to a file, ignore it.
+                if not(os.path.exists(result)):
+                    exporter._save_text(result)
+            
+            # Case 3. The result is a dictionary, ignore it for now.
+    
     def finish_runs(self, results):
         '''finish runs should take a dictionary of results, with keys as the
            folder name, and for each, depending on the result type,
@@ -781,8 +890,7 @@ class Watcher(object):
                 git_add(self.repo, task_folder)
 
             # Case 1. The result is a list
-            if isinstance(result, list):           
-
+            if isinstance(result, list):
                 # Get rid of Nones, if the user accidentally added
                 result = [r for r in result if r]
 
@@ -801,16 +909,15 @@ class Watcher(object):
                 # Otherwise, sniff for list of paths
                 elif os.path.exists(result[0]):
                     bot.debug('Found list of paths...')
-                    files += task._save_files_list(result, self.repo)     
+                    files += task._save_files_list(result, self.repo)
 
                 # Finally, assume just writing text to file
                 else:
                     bot.debug('Saving content from list to file...')
-                    files += task._save_text_list(result, self.repo)     
-
+                    files += task._save_text_list(result, self.repo)
+                    
             # Case 2. The result is a string
             elif isinstance(result, str):
-
                 # if it's a path to a file, just save to repository
                 if os.path.exists(result):
                     files.append(task._save_file(result, self.repo))
@@ -835,18 +942,18 @@ class Watcher(object):
             # Add files to git, and commit
             files.append(write_timestamp(repo=self.repo, task=name))
             git_add(repo=self.repo, files=files)
-            git_commit(repo=self.repo, 
-                       task=self.name, 
+            git_commit(repo=self.repo,
+                       task=self.name,
                        message="ADD results %s" % name)
 
 
 # Identification
 
     def __repr__(self):
-        return "[watcher|%s]" %self.name
+        return "[watcher|%s]" % self.name
 
     def __str__(self):
-        return "[watcher|%s]" %self.name
+        return "[watcher|%s]" % self.name
 
 
 # Settings
@@ -859,7 +966,7 @@ Watcher.remove_section = remove_section
 Watcher.print_section = print_section
 Watcher.print_add_task = print_add_task
 
-# Schedule 
+# Schedule
 
 Watcher.remove_schedule = remove_schedule
 Watcher.get_crontab = get_crontab

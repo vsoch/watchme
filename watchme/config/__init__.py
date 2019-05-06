@@ -26,15 +26,23 @@ import os
 
 # CONFIG TEMPLATES #############################################################
 
-def get_configfile_template():
+def get_configfile_template(exporter=None):
     '''return the full path to the default configuration file
     '''
-    return _get_config('watchme.cfg')
+    return _get_config('watchme.cfg', exporter)
 
-def _get_config(name):
+def _get_config(name, exporter):
     '''shared function to return a file in the config directory
     '''
-    return os.path.abspath(os.path.join(get_installdir(), 'config', name))
+    exporter_path = exporter or ''
+
+    template_path = os.path.join(get_installdir(), 'config', 'templates', exporter_path, name)
+
+    if os.path.exists(template_path):
+        return os.path.abspath(template_path)
+    else:
+        bot.info('The exporter specified does not exist : %s. The task was created with no exporters. ' % exporter)
+        return os.path.abspath(os.path.join(get_installdir(), 'config', 'templates', name))
 
 
 # ACTIVE CONFIG FILES ##########################################################
@@ -71,7 +79,7 @@ def read_config(filename):
 
 # WATCHER CONFIG ###############################################################
 
-def generate_watcher_config(path, watcher_type=None):
+def generate_watcher_config(path, watcher_type=None, exporter=None):
     '''generate a watcher config, meaning a watcher folder in the watchme
        base folder.
 
@@ -80,7 +88,7 @@ def generate_watcher_config(path, watcher_type=None):
        path: the path to the watcher repository
     '''
     check_exists(path)
-    configfile = get_configfile_template()
+    configfile = get_configfile_template(exporter)
     watcher_config = os.path.join(path, 'watchme.cfg')
     if not os.path.exists(watcher_config):
         bot.info('Generating watcher config %s' % watcher_config)

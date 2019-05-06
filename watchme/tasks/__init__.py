@@ -217,3 +217,5 @@ class TaskBase(object):
         '''
         file_name = self.params.get('file_name', 'result.txt')
         return self._save_list(results, repo, self._save_text, file_name)
+
+    
