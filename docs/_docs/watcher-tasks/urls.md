@@ -194,7 +194,7 @@ identified by a class or id) on a page. For this purpose, you can use the functi
 packages to do this:
 
 ```bash
-$ pip install watchme[urls-dynamic]
+$ pip install watchme[watcher-urls-dynamic]
 ```
 
 This task will watch for changes based on a selection from a page. For example, 

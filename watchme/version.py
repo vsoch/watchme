@@ -6,7 +6,7 @@
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-__version__ = "0.0.16"
+__version__ = "0.0.17"
 AUTHOR = 'Vanessa Sochat'
 AUTHOR_EMAIL = 'vsochat@stanford.edu'
 NAME = 'watchme'
@@ -31,6 +31,21 @@ INSTALL_PSUTILS = (
     ('psutil', {'min_version': '5.4.3'}),
 )
 
+INSTALL_PUSHGATEWAY (
+    ('prometheus_client', {'min_version': '0.6.0'}),
+)
+
+# Install all watchers and exporters
 INSTALL_ALL = (INSTALL_REQUIRES +
                INSTALL_PSUTILS +
-               INSTALL_URLS_DYNAMIC)
+               INSTALL_URLS_DYNAMIC,
+               INSTALL_PUSHGATEWAY)
+
+# Install all watchers
+INSTALL_WATCHERS = (INSTALL_REQUIRES +
+                    INSTALL_PSUTILS +
+                    INSTALL_URLS_DYNAMIC)
+
+# Install all exporters
+INSTALL_EXPORTERS = (INSTALL_REQUIRES +
+                     INSTALL_PUSHGATEWAY)

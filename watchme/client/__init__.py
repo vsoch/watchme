@@ -101,6 +101,28 @@ def get_parser():
                          help="the output file (json) to export the data",
                          default=None)
 
+    # push (intended for exporters)
+
+    push = subparsers.add_parser("push",
+                                  help="push data to an extra exporter")
+
+    push.add_argument('watcher', nargs=1,
+                      help='the watcher export data from')
+
+    push.add_argument('task', nargs=1,
+                       help='the name of the task to push data for')
+
+    push.add_argument('exporter', nargs=1,
+                       help='the name of the exporter to push to')
+
+    push.add_argument('--all', dest="all", 
+                      help="instead of last timepoint, push all temporal data.", 
+                      default=False, action='store_true')
+
+    push.add_argument('--json', dest="json", 
+                      help="signal to load the file as json", 
+                      default=False, action='store_true')
+
 
     # create
 
@@ -111,8 +133,9 @@ def get_parser():
                         help='watchers to create (default: single watcher)')
 
     create.add_argument('--exporter', dest="exporter",
-                         help="where to export the data",
+                         help="an exporter to send the data",
                          default=None)
+
 
     # add
 
@@ -319,6 +342,7 @@ def main():
     elif args.command == "inspect": from .inspect import main
     elif args.command == "list": from .ls import main
     elif args.command == "protect": from .protect import main
+    elif args.command == "push": from .push import main
     elif args.command == "remove": from .remove import main
     elif args.command == "run": from .run import main
     elif args.command == "schedule": from .schedule import main

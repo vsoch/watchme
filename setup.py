@@ -76,9 +76,18 @@ with open('README.md') as filey:
 
 if __name__ == "__main__":
 
+    # Install all exporters and/or watchers
     INSTALL_REQUIRES = get_requirements(lookup)
-    URLS_DYNAMIC = get_requirements(lookup,'INSTALL_URLS_DYNAMIC')
+    INSTALL_ALL = get_requirements(lookup, 'INSTALL_ALL')
+    WATCHERS = get_requirements(lookup, 'INSTALL_WATCHERS')
+    EXPORTERS = get_requirements(lookup, 'INSTALL_EXPORTERS')
+
+    # Watchers
+    URLS_DYNAMIC = get_requirements(lookup, 'INSTALL_URLS_DYNAMIC')
     PSUTILS = get_requirements(lookup, 'INSTALL_PSUTILS')
+
+    # Exporters
+    PUSHGATEWAY = get_requirements(lookup, 'INSTALL_PUSHGATEWAY')
 
     setup(name=NAME,
           version=VERSION,
@@ -98,9 +107,12 @@ if __name__ == "__main__":
           tests_require=["pytest"],
           install_requires = INSTALL_REQUIRES,
           extras_require={
-              'all': [INSTALL_REQUIRES],
-              'urls-dynamic': [URLS_DYNAMIC],
-              'psutils': [PSUTILS]
+              'all': [INSTALL_ALL],
+              'watchers': [WATCHERS],
+              'exporters': [EXPORTERS],
+              'watcher-urls-dynamic': [URLS_DYNAMIC],
+              'watcher-psutils': [PSUTILS]
+              'exporter-pushgateway': [PUSHGATEWAY],
           },
           classifiers=[
               'Intended Audience :: Science/Research',

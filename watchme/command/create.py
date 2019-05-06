@@ -18,7 +18,7 @@ from watchme.config import generate_watcher_config
 import os
 
 
-def create_watcher(name=None, watcher_type=None, base=None, exporter=None):
+def create_watcher(name=None, watcher_type=None, base=None):
     '''create a watcher, meaning a folder with a configuration and
        initialized git repo.
 
@@ -27,6 +27,7 @@ def create_watcher(name=None, watcher_type=None, base=None, exporter=None):
        name: the watcher to create, uses default or WATCHME_WATCHER
        watcher_type: the type of watcher to create. defaults to 
                      WATCHER_DEFAULT_TYPE
+       base: The watcher base to use (defaults to $HOME/.watchme)
     '''
     if name == None:
         name = WATCHME_WATCHER
@@ -47,7 +48,7 @@ def create_watcher(name=None, watcher_type=None, base=None, exporter=None):
         run_command("git --git-dir=%s/.git config commit.gpgsign false" % repo)
     
         # Add the watcher configuration file
-        generate_watcher_config(repo, watcher_type, exporter)
+        generate_watcher_config(repo, watcher_type)
         run_command("git -C %s add watchme.cfg" % repo)  
         return repo
 

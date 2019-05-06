@@ -1,17 +1,16 @@
 '''
 
-Copyright (C) 2019 Antoine Solnichkin.
+Copyright (C) 2019 Vanessa Sochat
+Copyright (C) 2019 Antoine Solnichkin
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 '''
+
 from watchme.logger import bot
 from watchme.exporters import ExporterBase
-
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 
 class Exporter(ExporterBase):
 
@@ -19,8 +18,14 @@ class Exporter(ExporterBase):
 
     def __init__(self, name, params={}, **kwargs): 
 
+        # Ensure that the user has installed PushGateway
+        try:
+            from prometheus_client import CollectorRegistry
+        except:
+            bot.error("prometheus_client module not found.")
+            bot.exit("pip install watchme[exporter-pushgateway]")
+
         self.type = 'pushgateway'
-        
         self.registry = CollectorRegistry()
         
         super(Exporter, self).__init__(name, params, **kwargs)
@@ -52,6 +57,7 @@ class Exporter(ExporterBase):
            ==========
            result: the result object to save
         '''
+        from prometheus_client import Gauge, push_to_gateway
         g = Gauge(self.name.replace('-', ':'), '', registry=self.registry)
         g.set(result)
         

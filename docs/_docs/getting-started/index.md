@@ -637,7 +637,15 @@ as a single (loadable) json file:
 $ watchme export system task-cpu vanessa-thinkpad-t460s_vanessa.json  --json
 ```
 
+### Advanced Export
+
+What if .git doesn't work for you, or you want to send data elsewhere? We had
+a fantastic idea and contribution in [this thread](https://github.com/vsoch/watchme/issues/30)
+that resulted in the creation of exporters, or additional exports to make
+other than using GitHub. Each exporter is considered to be a plugin (akin to
+a watcher) and can be optionally installed and used. For more information,
+see the [exporters]({{ site.url }}/exporters) page.
+
 ## Licenses
 
-This code is licensed under the Affero GPL, version 3.0 or later [LICENSE](LICENSE).
-The SIF Header format is licesed by [Sylabs](https://github.com/sylabs/sif/blob/master/pkg/sif/sif.go).
+This code is licensed under the Mozilla, version 2.0 or later [LICENSE](LICENSE).
