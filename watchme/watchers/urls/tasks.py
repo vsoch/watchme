@@ -13,10 +13,12 @@ from watchme.logger import bot
 from .helpers import (
     get_params, 
     get_results, 
-    get_headers
+    get_headers,
+    parse_success_response
 )
 from requests.exceptions import HTTPError
 import os
+import re
 import tempfile
 import requests
 
@@ -30,6 +32,10 @@ def get_task(url, **kwargs):
 
        REQUIRED:
            url: a url to return the page for
+
+       OPTIONAL
+           regex: a regular expression to search the text for (not used w/ json)
+           save_as: return the result to save as json
     '''
     results = []
     paramsets = get_params(kwargs)
@@ -39,16 +45,9 @@ def get_task(url, **kwargs):
         response = requests.get(url, params=params, headers=headers)
 
         if response.status_code == 200:
-            save_as = kwargs.get('save_as')
 
-            # Returning the result as json will detect dictionary, and save json
-            if save_as == "json":
-                result = response.json()
-
-            # Otherwise, we return text
-            else:
-                result = response.text
-
+            # Parse the response per the user's request
+            result = parse_success_response(response, kwargs)
             results.append(result)
 
     results = [x for x in results if x]
@@ -81,18 +80,14 @@ def post_task(url, **kwargs):
         response = requests.post(url, json=params, headers=headers)
         if response.status_code == 200:
 
-            save_as = kwargs.get('save_as', 'json')
-
-            # Returning the result as json will detect dictionary, and save json
-            if save_as == "json":
-                result = response.json()
-
-            # Otherwise, we return text
-            else:
-                result = response.text
+            # Parse the response per the user's request
+            result = parse_success_response(response, kwargs)
+            results.append(result)
 
         else:
             bot.error("%s: %s" %(response.status_code, response.reason))
+
+    results = [x for x in results if x]
 
     # Return None if no results found
     if len(results) == 0:
@@ -179,6 +174,9 @@ def get_url_selection(url, **kwargs):
     if kwargs.get('get_text') != None:
         get_text = True
 
+    # Are we searching for a regular expression in the result?
+    regex = kwargs.get('regex')
+
     # Does the user want to get one or more attributes?
     attributes = kwargs.get('attributes', None)
     if attributes != None:
@@ -198,7 +196,8 @@ def get_url_selection(url, **kwargs):
                                headers=headers,
                                attributes=attributes,
                                params=params,
-                               get_text=get_text)
+                               get_text=get_text,
+                               regex=regex)
 
     # No results
     if len(results) == 0:
