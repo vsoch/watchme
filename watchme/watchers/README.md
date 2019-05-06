@@ -6,3 +6,11 @@ Each of these is a Watcher that the user can request.
  - [psutils](psutils) to get basic system statistics
 
 More watchers will be added as the library is developed.
+
+## Watcher Base
+
+The watcher base is defined in the [init](__init__.py) file here. 
+
+ - [schedules](schedule.py) to interact with cronjobs
+ - [exporters](data.py) (extras) and the default export of temporal data
+ - [settings](settings.py) meaning add/remove from the watchme.cfg

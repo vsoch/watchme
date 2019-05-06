@@ -22,6 +22,7 @@ def main(args, extra):
     if extra == None:
         watcher.deactivate()       
     else:
+        # This can be used for a task or an exporter
         for name in extra:
             watcher.deactivate(name)
 

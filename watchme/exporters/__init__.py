@@ -40,6 +40,16 @@ class ExporterBase(object):
             key = key.lower()
             self.params[key] = value
 
+
+    def export_params(self, active="true"):
+        '''export parameters, meaning returning a dictionary of the task
+           parameters plus the addition of the task type and active status.
+        '''
+        params = self.params.copy()
+        params['active'] = active
+        params['type'] = self.type
+        return params
+
     # Validation
 
     # For now, it should always be valid as no required parameters are defined.

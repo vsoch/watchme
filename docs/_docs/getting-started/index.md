@@ -172,7 +172,7 @@ The configuration commands will vary based on the kind of task you want to add,
 and here is a quick example of adding a task to watch a url (the default task):
 
 ```bash
-$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases
+$ watchme add-task watcher task-singularity-release url@https://github.com/sylabs/singularity/releases
 [task-singularity-release]
 url  = https://github.com/sylabs/singularity/releases
 active  = true
@@ -207,7 +207,7 @@ The task is active by default (after you set up its schedule) and you can disabl
 this with --active false:
 
 ```bash
-$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases --active false
+$ watchme add-task watcher task-singularity-release url@https://github.com/sylabs/singularity/releases --active false
 ```
 
 The reason we save these parameters in the repo is that if you put it under version

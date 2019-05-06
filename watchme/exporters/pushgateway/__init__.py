@@ -23,7 +23,8 @@ class Exporter(ExporterBase):
             from prometheus_client import CollectorRegistry
         except:
             bot.error("prometheus_client module not found.")
-            bot.exit("pip install watchme[exporter-pushgateway]")
+            bot.error("pip install watchme[exporter-pushgateway]")
+            return
 
         self.type = 'pushgateway'
         self.registry = CollectorRegistry()
@@ -50,6 +51,7 @@ class Exporter(ExporterBase):
         '''
         self._write_to_pushgateway(result)
 
+
     def _write_to_pushgateway(self, result):
         ''' writes data to the pushgateway
  
@@ -62,6 +64,11 @@ class Exporter(ExporterBase):
         g.set(result)
         
         try:
-            push_to_gateway(self.params['url'], job='watchme', registry=self.registry)
+            push_to_gateway(self.params['url'], 
+                            job='watchme', 
+                            registry=self.registry)
         except:
             bot.error('An exception occurred while trying to export data using %s' % self.name)
+
+            #TODO: disable task, and add a --test command
+            #TODO: need commands to add/remove exporters from a task

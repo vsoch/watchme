@@ -19,5 +19,5 @@ def main(args, extra):
         watchers = ['watcher']
 
     for watcher in watchers:
-        create_watcher(watcher, exporter=args.exporter)
+        create_watcher(watcher)
     

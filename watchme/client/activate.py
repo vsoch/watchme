@@ -12,7 +12,7 @@ from watchme import get_watcher
 from watchme.logger import bot
 
 def main(args, extra):
-    '''activate one or more watchers
+    '''activate one or more watchers, tasks, or exporters
     '''    
     # Doesn't work if watcher not provided
     watcher = args.watcher[0]
@@ -22,6 +22,7 @@ def main(args, extra):
     if extra == None:
         watcher.activate()
     else:
+        # This can be used for tasks and exporters
         for name in extra:
             watcher.activate(name)
 

@@ -27,12 +27,18 @@ from watchme.command import (
 from configparser import NoOptionError
 
 from .data import (
-    export_dict
+    export_dict,
+    export_runs,
+    get_exporter,
+    add_exporter,
+    _add_exporter
 )
 
 from .settings import (
     get_setting,
     set_setting,
+    has_setting,
+    has_section,
     get_section,
     print_section,
     print_add_task,
@@ -239,8 +245,7 @@ class Watcher(object):
 
            Parameters
            ==========
-           task: the Task object to add, should have a name and params and
-                 be child of watchme.tasks.TaskBase
+           task: the task name to add, must start with task-
            task_type: must be in WATCHME_TASK_TYPES, meaning a client exists
            params: list of parameters to be validated (key@value)
            force: if task already exists, overwrite
@@ -278,6 +283,7 @@ class Watcher(object):
 
         # Write to file (all tasks get active = True added, and type)
         self._add_task(newtask, force, active)
+
 
     def _add_task(self, task, force=False, active='true'):
         '''add a new task to the watcher, meaning we:
@@ -634,95 +640,6 @@ class Watcher(object):
         bot.info('Found %s contender tasks.' % len(tasks))
         return tasks
 
-# Get Exporters
-
-    def get_exporter(self, name, save=False):
-        '''get a particular exporter, based on the name. We could have
-           an exporter type (similarly to Tasks), but it is quite useless right now.
-           Parameters
-           ==========
-           name: the name of the exporter to load
-           save: if saving, will be True
-        '''
-        self.load_config()
-
-        exporter = None
-
-        # Only sections that start with exporter- are considered exporters
-        if name in self.config._sections and name.startswith('exporter'):
-
-            print("Elligible exporter " + name)
-
-            params = self.config._sections[name]
-            
-            # Instantiate the correct exporter given the type
-            exporter_type = params['type']
-            
-            if exporter_type == 'pushgateway':
-                from watchme.exporters.pushgateway import Exporter
-
-            else:
-                bot.exit('exporter type %s does not exist' % exporter_type)
-
-            exporter = Exporter(name, params)
-
-        return exporter
-
-    def get_exporters(self, regexp=None):
-        '''get the exporters for a watcher, possibly matching a regular expression.
-           A list of dictionaries is returned, each holding the parameters for
-           an exporter. An exporter has an active attribute.
-
-           Parameters
-           ==========
-           regexp: if supplied, the user wants to export to destinations
-           that only match the expression specified.
-        '''
-        self.load_config()
-
-        exporters = []
-
-        for section in self.config._sections:
-
-            # Get the exporter based on the section name
-            exporter = self.get_exporter(section)
-
-            # Check that the exporter should be used, and is valid
-            if exporter != None:
-                if self._exporter_selected(exporter, regexp) and exporter.valid:
-                    exporters.append(exporter)
-
-        bot.info('Found %s contender exporters.' % len(exporters))
-        return exporters
-
-    def _exporter_selected(self, exporter, regexp=None):
-        '''check if an exporter is active and (if defined) passes user provided
-           exporter names or regular expressions.
-
-           Parameters
-           ==========
-           exporter: the exporter object to check
-           regexp: an optional regular expression (or name) to check
-        '''
-        selected = True
-
-        # A exporter can be None if it wasn't found
-        if exporter == None:
-            selected = False
-
-        # Is the exporter not active (undefined is active)?
-        active = exporter.params.get('active', 'true')
-        if active == "false":
-            bot.info('Exporter %s is not active.' % exporter)
-            selected = False
-
-        # The user wants to search for a custom task name
-        if regexp != None:
-            if not re.search(regexp, exporter):
-                bot.info('Exporter %s is selected for data export.' % exporter)
-                selected = False
-
-        return selected
 
 # Running Tasks
 
@@ -819,52 +736,18 @@ class Watcher(object):
         # Step 2: get the tasks associated with the run, a list of param dicts
         tasks = self.get_tasks()
 
-        # Step 3 : get the exporters if any were declared in the watcher configuration.
-        exporters = self.get_exporters()
-
-        # Step 4: Run the tasks. This means preparing a list of funcs/params,
+        # Step 3: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
         results = self.run_tasks(tasks, parallel, show_progress)
         
         # Finally, finish the runs.
         if test is False:
             self.finish_runs(results)
-            self.export_runs(results, exporters)
+            self.export_runs(results)
         else:
             # or print results to the screen
             print(json.dumps(results, indent=4))
     
-    def export_runs(self, results, exporters):
-        ''' export data retrieved to the set of exporters defined and active. 
-            maybe an export flag could be set to choose to run + export?
-        '''
-        for name, result in results.items():
-
-            task = self.get_task(name, save=True)
-            
-            # Case 1. The result is a list
-            if isinstance(result, list):
-                
-                # Get rid of Nones, if the user accidentally added
-                result = [r for r in result if r]
-
-                if len(result) == 0:
-                    bot.error('%s returned empty list of results.' % name)
-
-                # for a json, or a list of paths, ignore for now.
-                elif not(task.params.get('save_as') == 'json' or os.path.exists(result[0])):
-                    for exporter in exporters:
-                        bot.debug('Exporting list to ' + exporter.name)
-                        exporter._save_text_list(name, result)
-
-            # Case 2. The result is a string
-            elif isinstance(result, str):
-                
-                # if it's a path to a file, ignore it.
-                if not(os.path.exists(result)):
-                    exporter._save_text(result)
-            
-            # Case 3. The result is a dictionary, ignore it for now.
     
     def finish_runs(self, results):
         '''finish runs should take a dictionary of results, with keys as the
@@ -961,6 +844,8 @@ class Watcher(object):
 Watcher.remove_setting = remove_setting
 Watcher.get_setting = get_setting
 Watcher.get_section = get_section
+Watcher.has_setting = has_setting
+Watcher.has_section = has_section
 Watcher.set_setting = set_setting
 Watcher.remove_section = remove_section
 Watcher.print_section = print_section
@@ -976,6 +861,9 @@ Watcher.get_job = get_job
 Watcher.clear_schedule = clear_schedule
 Watcher.schedule = schedule
 
-# Data
-
+# Exporters
+Watcher.add_exporter = add_exporter
+Watcher.get_exporter = get_exporter
+Watcher._add_exporter = _add_exporter
 Watcher.export_dict = export_dict
+Watcher.export_runs = export_runs

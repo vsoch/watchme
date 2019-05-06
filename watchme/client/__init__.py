@@ -14,6 +14,7 @@ from watchme.logger import bot
 from watchme.defaults import ( 
     WATCHME_WATCHER, 
     WATCHME_TASK_TYPES, 
+    WATCHME_EXPORTERS,
     WATCHME_DEFAULT_TYPE
 )
 import watchme
@@ -132,33 +133,53 @@ def get_parser():
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
 
-    create.add_argument('--exporter', dest="exporter",
-                         help="an exporter to send the data",
-                         default=None)
+
+    # add task
+
+    add_task = subparsers.add_parser("add-task",
+                                     help="add a task to a watcher.")
+
+    add_task.add_argument('watcher', nargs=1,
+                          help='the watcher to add to')
+
+    add_task.add_argument('task', nargs=1,
+                          help='the name of the task to add.')
+
+    add_task.add_argument('--type', dest="watcher_type",
+                         choices=WATCHME_TASK_TYPES, 
+                         default=WATCHME_DEFAULT_TYPE)
+
+    add_task.add_argument('--active', dest="active",
+                         choices=["true", "false"], 
+                         default="true")
+
+    add_task.add_argument('--force', dest="force", 
+                         help="force overwrite a task, if already exists.", 
+                         default=False, action='store_true')
 
 
-    # add
+    # add exporter
 
-    add = subparsers.add_parser("add",
-                                 help="add a task to a watcher.")
+    add_exporter = subparsers.add_parser("add-exporter",
+                                         help="add an exporter to a watcher.")
 
-    add.add_argument('watcher', nargs=1,
-                     help='the watcher to add to')
+    add_exporter.add_argument('watcher', nargs=1,
+                              help='the watcher to add to')
 
-    add.add_argument('task', nargs=1,
-                     help='the name of the task to add. Must start with task')
+    add_exporter.add_argument('name', nargs=1,
+                              help='the name of the exporter to add.')
 
-    add.add_argument('--type', dest="watcher_type",
-                     choices=WATCHME_TASK_TYPES, 
-                     default=WATCHME_DEFAULT_TYPE)
+    add_exporter.add_argument('--type', dest="exporter_type",
+                             choices=WATCHME_EXPORTERS, 
+                             default=WATCHME_EXPORTERS[0])
 
-    add.add_argument('--active', dest="active",
-                     choices=["true", "false"], 
-                     default="true")
+    add_exporter.add_argument('--active', dest="active",
+                             choices=["true", "false"], 
+                             default="true")
 
-    add.add_argument('--force', dest="force", 
-                     help="force overwrite a task, if already exists.", 
-                     default=False, action='store_true')
+    add_exporter.add_argument('--force', dest="force", 
+                             help="force overwrite an exporter, if already exists.", 
+                             default=False, action='store_true')
 
 
     # inspect
@@ -332,7 +353,8 @@ def main():
         sys.exit(0)
 
     if args.command == "activate": from .activate import main
-    elif args.command == "add": from .add import main
+    elif args.command == "add-task": from .addtask import main
+    elif args.command == "add-exporter": from .exporter import main
     elif args.command == "edit": from .edit import main
     elif args.command == "export": from .export import main
     elif args.command == "create": from .create import main
