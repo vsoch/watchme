@@ -31,6 +31,7 @@ from .data import (
     export_runs,
     get_exporter,
     add_exporter,
+    has_exporter,
     remove_exporter,
     remove_task_exporter,
     _add_exporter,
@@ -873,6 +874,7 @@ Watcher.schedule = schedule
 Watcher.add_exporter = add_exporter
 Watcher.add_task_exporter = add_task_exporter
 Watcher.get_exporter = get_exporter
+Watcher.has_exporter = has_exporter
 Watcher._add_exporter = _add_exporter
 Watcher.remove_exporter = remove_exporter
 Watcher.remove_task_exporter = remove_task_exporter

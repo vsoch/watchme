@@ -98,6 +98,77 @@ def export_dict(self, task,
                           base=args.base)
 
 
+def push(self, task, exporter,
+               name=None,
+               filename=None,
+               push_json=False,
+               push_all=True,
+               from_commit=None,
+               to_commit=None,
+               base=None):
+    '''Manually push a watcher task data file to an exporter endpoint.
+
+       Parameters
+       ==========
+       task: the task folder for the watcher to look in
+       exporter: the exporter to use
+       name: the name of the watcher, defaults to the client's
+       push_json: provide json to the exporter to push.
+       push_all: export all data (and not just the last timepoint)
+       from_commit: the commit to start at
+       to_commit: the commit to go to
+       filename: the filename to filter to. Includes all files if not specified.
+    '''
+    if name == None:
+        name = self.name
+
+    if base == None:
+        base = self.base
+
+    # Quit early if the task isn't there
+    if not self.has_task(task):
+        bot.exit('%s is not a valid task for %s' % (task, name))
+
+    # Also quit if the exporter isn't there
+    if not self.has_exporter(exporter):
+        bot.exit('%s is not a valid exporter for task %s' % (exporter, task))
+
+    repo = os.path.join(base, self.name)
+    if not os.path.exists(repo):
+        bot.exit('%s does not exist.' % repo)
+
+    filepath = os.path.join(base, self.name, task, filename)
+
+    # Ensure that the filename exists in the repository
+    if not os.path.exists(filepath):
+        bot.exit('%s does not exist for watcher %s' %(filepath, name))
+
+    # Now filepath must be relative to the repo
+    filepath = os.path.join(task, filename)
+
+    commits = get_commits(repo=repo,
+                          from_commit=from_commit, 
+                          to_commit=to_commit,
+                          grep="EXPORT results %s" % task,
+                          filename=filepath)
+
+    # Keep lists of commits, dates, content    
+    result = {'commits': [], 'dates': [], 'content': []}
+
+    bot.warning("Function not yet written")
+    # Empty content (or other) returns None
+#    for commit in commits:
+#        content = git_show(repo=repo, commit=commit, filename=filepath)
+
+#        if export_json is True:
+#            content = json.loads(content)
+
+#        result['content'].append(content)
+#        result['dates'].append(git_date(repo=repo, commit=commit))
+#        result['commits'].append(commit)
+    return result
+
+
 # Exporter Functions
 
 def add_exporter(self, name, exporter_type, params, tasks, force=False, active="true"):
@@ -307,6 +378,14 @@ def get_exporter(self, name):
 
     return exporter
 
+
+def has_exporter(self, name):
+    '''returns True or False to indicate if the watcher has a specific exporter
+    '''
+    self.load_config()
+    if self.has_section(name) and name.startswith('exporter'):
+        return True
+    return False
 
 
 def export_runs(self, results):

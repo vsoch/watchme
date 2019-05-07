@@ -21,9 +21,10 @@ def main(args, extra):
     name = args.watcher[0]
     task = args.task[0]
     exporter = args.exporter[0]
+    filename = args.filename[0]
 
     # Example command to show task- and exporter-
-    example = 'watchme push watcher task-reddit exporter-pushgateway'
+    example = 'watchme push <watcher> <task> <exporter> <filename>'
 
     if not task.startswith('task'):
         bot.exit('Task name must start with "task", e.g., %s' % example)
@@ -35,9 +36,12 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base, create=False) 
 
     bot.info("push is not written yet.")
+
     # Push to the exporter (not the default git)
-    #result = watcher.push(task=task,
-    #                      exporter=exporter,
-    #                      name=name,
-    #                      export_json=args.json,
-    #                      base=args.base)
+    result = watcher.push(task=task,
+                          exporter=exporter,
+                          filename=filename,
+                          name=name,
+                          push_all=args.all,
+                          push_json=args.json,
+                          base=args.base)

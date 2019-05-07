@@ -108,13 +108,16 @@ def get_parser():
                                   help="push data to an extra exporter")
 
     push.add_argument('watcher', nargs=1,
-                      help='the watcher export data from')
+                      help='the watcher to push data for')
 
     push.add_argument('task', nargs=1,
                        help='the name of the task to push data for')
 
     push.add_argument('exporter', nargs=1,
                        help='the name of the exporter to push to')
+
+    push.add_argument('filename', nargs=1,
+                       help='the name of the file to export data from.')
 
     push.add_argument('--all', dest="all", 
                       help="instead of last timepoint, push all temporal data.", 
