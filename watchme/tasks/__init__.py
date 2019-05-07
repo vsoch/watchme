@@ -107,6 +107,75 @@ class TaskBase(object):
         bot.error('Cannot find function.')
 
 
+# Save Entrypoint
+
+    def write_results(self, result, repo):
+        '''an entrypoint function for a general task. By default, we parse
+           results based on the result type. Any particular subclass of the
+           TaskBase can modify or extend these functions.
+
+           Parameters
+           ==========
+           result: the result object to parse
+           repo: the repo base (watcher.repo)
+        '''
+        files = []
+
+        # Case 1. The result is a list
+        if isinstance(result, list):
+            # Get rid of Nones, if the user accidentally added
+            result = [r for r in result if r]
+
+            if len(result) == 0:
+                bot.error('%s returned empty list of results.' % name)
+
+            # json output is specified
+            elif self.params.get('save_as') == 'json':
+                bot.debug('Saving single list as one json...')
+                files.append(self._save_json(result, repo))
+
+            elif self.params.get('save_as') == 'json':
+                bot.debug('Saving single list as multiple json...')
+                files += self._save_json_list(result, repo)
+
+            # Otherwise, sniff for list of paths
+            elif os.path.exists(result[0]):
+                bot.debug('Found list of paths...')
+                files += self._save_files_list(result, repo)
+
+            # Finally, assume just writing text to file
+            else:
+                bot.debug('Saving content from list to file...')
+                files += self._save_text_list(result, repo)
+
+        # Case 2. The result is a string
+        elif isinstance(result, str):
+
+            # if it's a path to a file, just save to repository
+            if os.path.exists(result):
+                files.append(self._save_file(result, repo))
+
+            # Otherwise, it's a string that needs to be saved to file
+            else:
+                files.append(self._save_text(result, repo))
+
+        # Case 3. The result is a dictionary
+        elif isinstance(result, dict):
+            files.append(self._save_json(result,repo))
+
+        elif result == None:
+            bot.error('Result for task %s is None' % self.name)
+
+        elif hasattr(self, '_write_results'):
+            return self._write_results(result)
+
+        else:
+            bot.error('Unsupported result format %s' % type(result))
+
+        # Get rid of None results (don't check excessively for None above)
+        files = [f for f in files if f]
+        return files
+
 
 # Saving
 

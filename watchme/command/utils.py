@@ -8,7 +8,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.defaults import WATCHME_BASE_DIR
+from watchme.defaults import (
+    WATCHME_BASE_DIR, 
+    WATCHME_TASK_TYPES
+)
+
 from watchme.utils import ( get_tmpdir, run_command )
 from watchme.logger import bot
 
@@ -54,6 +58,13 @@ def list_watcher(watcher, base=None):
         bot.info('\n  '.join(files))
     else:
         bot.exit('%s does not exist.' % base)
+
+def list_watcher_types():
+    '''list the exporter options provided by watchme
+    '''
+    bot.custom(prefix="watchme:", message="watcher task types", color="CYAN")
+    bot.info('\n  '.join(WATCHME_TASK_TYPES))
+
 
 def clone_watcher(repo, base=None, name=None):
     '''clone a watcher from Github (or other version control with git)

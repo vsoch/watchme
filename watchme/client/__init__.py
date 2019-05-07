@@ -112,7 +112,7 @@ def get_parser():
 
     # add
 
-    add = subparsers.add_parser("add",
+    add = subparsers.add_parser("add-task",
                                  help="add a task to a watcher.")
 
     add.add_argument('watcher', nargs=1,
@@ -150,6 +150,10 @@ def get_parser():
 
     ls = subparsers.add_parser("list",
                                help="list all watchers at a base")
+
+    ls.add_argument('--watchers', dest="watchers", 
+                     help="list watchers available", 
+                     default=False, action='store_true')
 
     # protect and freeze
 
@@ -305,7 +309,7 @@ def main():
         sys.exit(0)
 
     if args.command == "activate": from .activate import main
-    elif args.command == "add": from .add import main
+    elif args.command == "add-task": from .add import main
     elif args.command == "edit": from .edit import main
     elif args.command == "export": from .export import main
     elif args.command == "create": from .create import main

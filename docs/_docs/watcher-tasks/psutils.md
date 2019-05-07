@@ -11,7 +11,7 @@ basic python environment. If your python installation doesn't have the `psutil`
 module, install as follows:
 
 ```bash
-pip install watchme[psutils]
+pip install watchme[watcher-psutils]
 ```
 
 Next, create a watcher for your tasks to live under:

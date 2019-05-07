@@ -12,14 +12,14 @@ from watchme import get_watcher
 from watchme.logger import bot
 
 def main(args, extra):
-    '''activate one or more watchers
+    '''add a task for a watcher
     '''    
     # Required - will print help if not provided
     name = args.watcher[0]
     task = args.task[0]
 
     if not task.startswith('task'):
-        example = 'watchme add watcher task-cpu func@cpu_task type@psutils'
+        example = 'watchme add-task watcher task-cpu func@cpu_task type@psutils'
         bot.exit('Task name must start with "task", e.g., %s' % example)
 
     # Exit if the user doesn't provide any parameters
