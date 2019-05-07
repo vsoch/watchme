@@ -9,6 +9,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
+from watchme.logger import bot
+
 class ExporterBase(object):
 
     required_params = []
@@ -64,3 +66,7 @@ class ExporterBase(object):
             if param not in self.params:
                 bot.error('Missing required parameter: %s' % param)
                 self.valid = False
+
+        # If the exporter has some custom validation, do it here
+        if self.valid is True and hasattr(self, "_validate"):
+            self._validate()

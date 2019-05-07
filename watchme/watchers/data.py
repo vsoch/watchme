@@ -9,6 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
+from watchme.defaults import WATCHME_EXPORTERS
 from watchme.utils import ( 
     which, 
     get_user
@@ -16,10 +17,12 @@ from watchme.utils import (
 from watchme.command import (
     get_commits,
     git_show,
-    git_date
+    git_date,
+    git_commit
 )
-import os
 import json
+import os
+import re
 
 # Default (git) Data Exports
 
@@ -87,16 +90,15 @@ def export_dict(self, task,
     return result
 
 
+    # Push to the exporter (not the default git)
+    result = watcher.push(task=task,
+                          exporter=exporter,
+                          name=name,
+                          export_json=args.json,
+                          base=args.base)
+
+
 # Exporter Functions
-
-    # Add the exporter, optionally with tasks                  
-    watcher.add_exporter(exporter=exporter,
-                         exporter_type=exporter_type,
-                         params=params,
-                         tasks=tasks,
-                         force=args.force,
-                         active=args.active)
-
 
 def add_exporter(self, name, exporter_type, params, tasks, force=False, active="true"):
     '''add an exporter, meaning an extra plugin to push data to a remote.
@@ -114,30 +116,51 @@ def add_exporter(self, name, exporter_type, params, tasks, force=False, active="
     if not name.startswith('exporter'):
         bot.exit('Exporter name must start with "exporter" (e.g., exporter-grafana)')
 
-    # Ensure it's a valid type
-    if exporter_type not in WATCHME_EXPORTERS:
-        bot.exit('%s is not a valid type: %s' % WATCHME_EXPORTERS)
+    self.load_config()
 
-    # Validate variables provided for task
-    if task_type.startswith('pushgateway'):
-        from watchme.exporters.pushgateway import Exporter
+    # If it already exists and the user isn't recreating, don't add it again.
+    if name in self.config.sections() and exporter_type == None:
+        exporter = self.get_exporter(name)
 
+    # Otherwise, this is creation of a new exporter
     else:
-        bot.exit('exporter_type %s not installed' % exporter_type)
 
-    # Convert list to dictionary
-    params = self._get_params_dict(params)
+        # Ensure it's a valid type
+        if exporter_type not in WATCHME_EXPORTERS:
+            bot.exit('%s is not a valid type: %s' % WATCHME_EXPORTERS)
 
-    # Creating the exporter will validate parameters
-    exporter = Exporter(name, params=params)
+        # Validate variables provided for task
+        if exporter_type.startswith('pushgateway'):
+            from watchme.exporters.pushgateway import Exporter
+
+        else:
+            bot.exit('exporter_type %s not installed' % exporter_type)
+
+        # Convert list to dictionary
+        params = self._get_params_dict(params)
+
+        # Creating the exporter will validate parameters
+        exporter = Exporter(name, params=params)
+
 
     # Exit if the exporter is not valid
     if not exporter.valid:
-        bot.exit('%s is not valid, will not be added.' % exporter)
+        bot.exit('%s is not valid, will not be added.' % exporter.name)
 
-    # Write to file (all tasks get active = True added, and type)
-    self._add_exporter(exporter, force, active, tasks)
+    # Add the exporter to the config
+    if exporter_type != None:
+        self._add_exporter(exporter, force, active)
 
+    # Add tasks to it
+    for task in tasks:
+        self.add_task_exporter(task, exporter.name)
+
+    # Save all changes
+    self.save()
+
+    # Commit changes
+    git_commit(repo=self.repo, task=self.name,
+               message="ADD exporter %s" % exporter.name)
 
 
 def _add_exporter(self, exporter, force=False, active='true', tasks=[]):
@@ -150,7 +173,7 @@ def _add_exporter(self, exporter, force=False, active='true', tasks=[]):
 
        Parameters
        ==========
-       task: the Task object to add, should have a name and params and
+       exporter: the Task object to add, should have a name and params and
              be child of watchme.tasks.TaskBase
        force: if task already exists, overwrite
        active: add the task as active (default "true")
@@ -163,29 +186,88 @@ def _add_exporter(self, exporter, force=False, active='true', tasks=[]):
     # Don't overwrite a section that already exists
     if exporter.name in self.config.sections():
         if not force:
-            bot.exit('%s exists, use --force to overwrite.' % task.name)
+            bot.exit('%s exists, use --force to overwrite.' % exporter.name)
         self.remove_section(exporter.name, save=False)
 
     # Add the new section
     self.config[exporter.name] = exporter.export_params(active=active)
     self.print_section(exporter.name)
 
-    # Add the exporter to any tasks
-    for task in tasks:
-        if task in self.config.sections():
-            exporters = self.get_setting(task, "exporters", default=[])
-            if exporter.name not in exporters:
-                exporters.append(exporter.name)
-                self.set_setting(task, "exporters", exporters)
-        else:
-            bot.warning("Task %s not found installed, skipping adding exporter to it." % task)
-
     # Save all changes
     self.save()
 
-    # Commit changes
-    git_commit(repo=self.repo, task=self.name,
-               message="ADD exporter %s" % exporter.name)
+
+def add_task_exporter(self, task, name):
+    '''append an exporter to a task exporters list, if it isn't already 
+       included. Since the configparser supports strings, the list
+       of exporters is a list of comma separated values.
+ 
+       Parameters
+       ==========
+       task: the name of the task to add the exporter to
+       name: the name of the exporter to add, if not already there
+    '''
+    if task in self.config.sections():
+        exporters = self.get_setting(task, "exporters", default="")
+        exporters = [e for e in exporters.split(',') if e]
+        if name not in exporters:
+            exporters.append(name)
+            self.set_setting(task, "exporters", ','.join(exporters))
+    else:
+        bot.warning("Task %s not found installed, skipping adding exporter to it." % task)
+
+
+def remove_task_exporter(self, task, name):
+    '''remove an exporter from a task exporters list
+ 
+       Parameters
+       ==========
+       task: the name of the task to add the exporter to
+       name: the name of the exporter to add, if not already there
+    '''
+    if task in self.config.sections():
+        exporters = self.get_setting(task, "exporters", default="")
+
+        if name in exporters:
+            bot.info("Removing %s from %s" %(name, task))
+            exporters = re.sub(exporters, name, "").strip(",")
+
+            # If no more exporters, remove the param entirely
+            if len(exporters) == 0:
+                self.remove_setting(task, 'exporters')
+
+            # Otherwise, update the shorter list
+            else:
+                self.set_setting(task, 'exporters', exporters)
+            self.save()
+
+    else:
+        bot.warning("Task %s not found installed, skipping removing exporter from it." % task)
+
+
+def remove_exporter(self, name):
+    '''remove a an exporter from the watcher repo, if it exists, along with
+       any tasks that it is added to.
+
+       Parameters
+       ==========
+       name: the name of the exporter to remove
+    '''
+    if self.get_section(name) != None:
+        if self.is_frozen():
+            bot.exit('watcher is frozen, unfreeze first.')
+        self.remove_section(name)
+
+        # Remove the exporter from any tasks
+        for task in self.get_tasks(quiet=True, active=False):
+            self.remove_task_exporter(task.name, name)
+
+        bot.info('%s removed successfully.' % name)
+        git_commit(self.repo, self.name, "REMOVE exporter %s" % name)
+
+    else:
+        bot.warning('Exporter %s does not exist.' % name)
+
 
 # Get Exporters
 
@@ -245,8 +327,9 @@ def export_runs(self, results):
         task = self.get_task(name, save=True)
 
         # Get exporters added to task
-        exporters = self.get_setting(task.name, 'exporters', [])
-            
+        exporters = self.get_setting(task.name, 'exporters', "")
+        exporters = exporters.split(",")            
+
         # Validate each exporter exists and is active, then run.
         for exporter in exporters:
 
@@ -284,7 +367,7 @@ def export_runs(self, results):
 
                 # Only save if the export type is not json, and the result is a text string
                 elif not task.params.get('save_as') == 'json' and not os.path.exists(result[0]):
-                    bot.debug('Exporting list to ' + client.name)
+                    bot.info('Exporting list to ' + client.name)
                     client._save_text_list(name, result)
 
             # Case 2. The result is a string
@@ -292,6 +375,7 @@ def export_runs(self, results):
                 
                 # Only export if it's not a file path (so it's a string)
                 if not(os.path.exists(result)):
+                    bot.info('Exporting text to ' + client.name)
                     client._save_text(result)
             
             # Case 3. The result is a dictionary or a file, ignore for now.

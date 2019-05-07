@@ -22,8 +22,8 @@ def main(args, extra):
 
     # Are we adding an extra task or exporter?
     if not exporter.startswith('exporter'):
-        bot.error('Exporter name must start with exporter-<name>')
-        bot.exit('watchme add-exporter watcher exporter-pushgateway task1 task2 task3')
+        bot.error('Exporter name must start with exporter-<name>, found %s' % exporter)
+        bot.exit('watchme add-exporter <watcher> <exporter> task-a task-b task-c')
 
     # Extra parameters are parameters for the exporter, or task names
     if extra == None:
@@ -47,7 +47,10 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base, create=False) 
 
     # Double check the exporter type
-    if exporter_type not in WATCHME_EXPORTERS:
+    if exporter_type == None:
+        bot.warning("exporter_type not defined, assumed existing.")
+
+    elif exporter_type not in WATCHME_EXPORTERS:
         choices = ','.join(WATCHME_EXPORTERS)
         bot.exit("%s is not a valid exporter, %s" %(exporter_type, choices))
 

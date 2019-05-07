@@ -12,5 +12,7 @@ navigation:
   url: watchers/
 - name: Examples
   url: examples/
+- name: Exporters
+  url: exporters/
 - name: Contributing
   url: contributing/

@@ -171,7 +171,7 @@ def get_parser():
 
     add_exporter.add_argument('--type', dest="exporter_type",
                              choices=WATCHME_EXPORTERS, 
-                             default=WATCHME_EXPORTERS[0])
+                             default=None)
 
     add_exporter.add_argument('--active', dest="active",
                              choices=["true", "false"], 
@@ -198,6 +198,14 @@ def get_parser():
 
     ls = subparsers.add_parser("list",
                                help="list all watchers at a base")
+
+    ls.add_argument('--exporters', dest="exporters", 
+                     help="list exporters available", 
+                     default=False, action='store_true')
+
+    ls.add_argument('--watchers', dest="watchers", 
+                     help="list watchers available", 
+                     default=False, action='store_true')
 
     # protect and freeze
 

@@ -31,7 +31,11 @@ from .data import (
     export_runs,
     get_exporter,
     add_exporter,
-    _add_exporter
+    remove_exporter,
+    remove_task_exporter,
+    _add_exporter,
+    add_task_exporter,
+    push
 )
 
 from .settings import (
@@ -585,7 +589,7 @@ class Watcher(object):
 
         return task
 
-    def _task_selected(self, task, regexp=None):
+    def _task_selected(self, task, regexp=None, active=True):
         '''check if a task is active and (if defined) passes user provided
            task names or regular expressions.
 
@@ -593,6 +597,7 @@ class Watcher(object):
            ==========
            task: the task object to check
            regexp: an optional regular expression (or name) to check
+           active: a task is selected if it's active (default True)
         '''
         selected = True
 
@@ -601,8 +606,8 @@ class Watcher(object):
             selected = False
 
         # Is the task not active (undefined is active)?
-        active = task.params.get('active', 'true')
-        if active == "false":
+        is_active = task.params.get('active', 'true')
+        if is_active == "false" and active == True:
             bot.info('Task %s is not active.' % task)
             selected = False
 
@@ -614,7 +619,7 @@ class Watcher(object):
 
         return selected
 
-    def get_tasks(self, regexp=None):
+    def get_tasks(self, regexp=None, quiet=False, active=True):
         '''get the tasks for a watcher, possibly matching a regular expression.
            A list of dictionaries is returned, each holding the parameters for
            a task. "uri" will hold the task (folder) name, active
@@ -623,6 +628,8 @@ class Watcher(object):
            ==========
            regexp: if supplied, the user wants to run only tasks that match
                    a particular pattern
+           quiet: If quiet, don't print the number of tasks found
+           active: only return active tasks (default True)
         '''
         self.load_config()
 
@@ -634,10 +641,11 @@ class Watcher(object):
 
             # Check that the task should be run, and is valid
             if task != None:
-                if self._task_selected(task, regexp) and task.valid:
+                if self._task_selected(task, regexp, active) and task.valid:
                     tasks.append(task)
 
-        bot.info('Found %s contender tasks.' % len(tasks))
+        if quiet == False:
+            bot.info('Found %s contender tasks.' % len(tasks))
         return tasks
 
 
@@ -863,7 +871,11 @@ Watcher.schedule = schedule
 
 # Exporters
 Watcher.add_exporter = add_exporter
+Watcher.add_task_exporter = add_task_exporter
 Watcher.get_exporter = get_exporter
 Watcher._add_exporter = _add_exporter
+Watcher.remove_exporter = remove_exporter
+Watcher.remove_task_exporter = remove_task_exporter
 Watcher.export_dict = export_dict
 Watcher.export_runs = export_runs
+Watcher.push = push

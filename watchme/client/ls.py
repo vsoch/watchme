@@ -10,16 +10,31 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.command import (
     get_watchers,
-    list_watcher
+    list_watcher,
+    list_exporters,
+    list_watcher_types
 )
 from watchme.logger import bot
 
 def main(args, extra):
     '''list installed watchers
     '''    
-    if extra == None:
-        get_watchers(args.base)
+    # The user wants to list exporters
+    if args.exporters == True:
+        list_exporters()
+
+    elif args.watchers == True:
+        list_watcher_types()
+
+    # Otherwise, we are listing installed watchers and tasks
     else:
-        for watcher in extra:
-            list_watcher(watcher, args.base)
+
+        # If no watchers provided, list the watchers
+        if extra == None:
+            get_watchers(args.base)
+
+        # Otherwise, list the tasks of the watcher
+        else:
+            for watcher in extra:
+                list_watcher(watcher, args.base)
 

@@ -26,10 +26,16 @@ class Exporter(ExporterBase):
             bot.error("pip install watchme[exporter-pushgateway]")
             return
 
-        self.type = 'pushgateway'
-        self.registry = CollectorRegistry()
-        
+        self.type = 'pushgateway'        
         super(Exporter, self).__init__(name, params, **kwargs)
+        self.registry = CollectorRegistry()
+
+    def _validate(self):
+        '''this function is called after the ExporterBase validate (checking
+           for required params) to ensure that the url param starts with http.
+        '''
+        if not self.params['url'].startswith('http'):
+            bot.exit("url must start with http, found %s" % self.params['url'])
 
     def _save_text_list(self, name, results):
         '''for a list of general text results, send them to a pushgateway.
