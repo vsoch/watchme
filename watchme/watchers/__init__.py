@@ -552,7 +552,7 @@ class Watcher(object):
             return True
         return False
 
-    def get_task(self, name, save=False):
+    def get_task(self, name):
         '''get a particular task, based on the name. This is where each type
            of class should check the "type" parameter from the config, and
            import the correct Task class.
@@ -560,7 +560,6 @@ class Watcher(object):
            Parameters
            ==========
            name: the name of the task to load
-           save: if saving, will be True
         '''
         self.load_config()
 
@@ -586,7 +585,7 @@ class Watcher(object):
                 bot.exit('Type %s not properly set up in get_task' % task_type)
 
             # if not valid, will return None
-            task = Task(name, params, _save=save)
+            task = Task(name, params)
 
         return task
 
@@ -756,8 +755,7 @@ class Watcher(object):
         else:
             # or print results to the screen
             print(json.dumps(results, indent=4))
-    
-    
+        
     def finish_runs(self, results):
         '''finish runs should take a dictionary of results, with keys as the
            folder name, and for each, depending on the result type,
@@ -771,65 +769,15 @@ class Watcher(object):
         '''
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
-            task = self.get_task(name, save=True)
-
-            # Files to be added via Git after
-            files = []
+            task = self.get_task(name)
 
             # Ensure that the task folder exists
             if not os.path.exists(task_folder):
                 mkdir_p(task_folder)
                 git_add(self.repo, task_folder)
 
-            # Case 1. The result is a list
-            if isinstance(result, list):
-                # Get rid of Nones, if the user accidentally added
-                result = [r for r in result if r]
-
-                if len(result) == 0:
-                    bot.error('%s returned empty list of results.' % name)
-
-                # json output is specified
-                elif task.params.get('save_as') == 'json':
-                    bot.debug('Saving single list as one json...')
-                    files.append(task._save_json(result, self.repo))
-
-                elif task.params.get('save_as') == 'json':
-                    bot.debug('Saving single list as multiple json...')
-                    files += task._save_json_list(result, self.repo)
-
-                # Otherwise, sniff for list of paths
-                elif os.path.exists(result[0]):
-                    bot.debug('Found list of paths...')
-                    files += task._save_files_list(result, self.repo)
-
-                # Finally, assume just writing text to file
-                else:
-                    bot.debug('Saving content from list to file...')
-                    files += task._save_text_list(result, self.repo)
-                    
-            # Case 2. The result is a string
-            elif isinstance(result, str):
-                # if it's a path to a file, just save to repository
-                if os.path.exists(result):
-                    files.append(task._save_file(result, self.repo))
-
-                # Otherwise, it's a string that needs to be saved to file
-                else:
-                    files.append(task._save_text(result, self.repo))
-
-            # Case 3. The result is a dictionary
-            elif isinstance(result, dict):
-                files.append(task._save_json(result, self.repo))
-
-            elif result == None:
-                bot.error('Result for task %s is None' % name)
-
-            else:
-                bot.error('Unsupported result format %s' % type(result))
-
-            # Get rid of None results (don't check excessively for None above)
-            files = [f for f in files if f]
+            # Files to be added to the repo via git after
+            files = task.write_results(result, self.repo)
 
             # Add files to git, and commit
             files.append(write_timestamp(repo=self.repo, task=name))
@@ -871,6 +819,7 @@ Watcher.clear_schedule = clear_schedule
 Watcher.schedule = schedule
 
 # Exporters
+
 Watcher.add_exporter = add_exporter
 Watcher.add_task_exporter = add_task_exporter
 Watcher.get_exporter = get_exporter

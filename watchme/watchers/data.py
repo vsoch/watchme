@@ -101,8 +101,7 @@ def export_dict(self, task,
 def push(self, task, exporter,
                name=None,
                filename=None,
-               push_json=False,
-               push_all=True,
+               export_json=False,
                from_commit=None,
                to_commit=None,
                base=None):
@@ -113,60 +112,39 @@ def push(self, task, exporter,
        task: the task folder for the watcher to look in
        exporter: the exporter to use
        name: the name of the watcher, defaults to the client's
-       push_json: provide json to the exporter to push.
+       export_json: read the filename data as json (not text)
        push_all: export all data (and not just the last timepoint)
        from_commit: the commit to start at
        to_commit: the commit to go to
        filename: the filename to filter to. Includes all files if not specified.
     '''
-    if name == None:
-        name = self.name
-
-    if base == None:
-        base = self.base
-
-    # Quit early if the task isn't there
-    if not self.has_task(task):
-        bot.exit('%s is not a valid task for %s' % (task, name))
-
-    # Also quit if the exporter isn't there
+    # Quit if the exporter isn't there
     if not self.has_exporter(exporter):
         bot.exit('%s is not a valid exporter for task %s' % (exporter, task))
 
-    repo = os.path.join(base, self.name)
-    if not os.path.exists(repo):
-        bot.exit('%s does not exist.' % repo)
+    # Get the exporter, ensure still valid.
+    exporter = self.get_exporter(exporter)
+    task_instance = self.get_task(task)
 
-    filepath = os.path.join(base, self.name, task, filename)
+    if task_instance == None:
+        bot.exit("Task %s does not exist." % task)
 
-    # Ensure that the filename exists in the repository
-    if not os.path.exists(filepath):
-        bot.exit('%s does not exist for watcher %s' %(filepath, name))
+    if exporter.valid is False:
+        bot.exit("Exporter %s is not valid." % exporter.name)
 
-    # Now filepath must be relative to the repo
-    filepath = os.path.join(task, filename)
+    # Make sure the exporter is added to the task
+    if exporter.name not in task_instance.params.get('exporters', ''):
+        bot.exit("Exporter %s is not added to task %s" %(exporter.name, task))
 
-    commits = get_commits(repo=repo,
-                          from_commit=from_commit, 
-                          to_commit=to_commit,
-                          grep="EXPORT results %s" % task,
-                          filename=filepath)
+    result = self.export_dict(task=task_instance.name,
+                              filename=filename, 
+                              name=name,
+                              export_json=export_json,
+                              from_commit=from_commit,
+                              to_commit=to_commit,
+                              base=base)
 
-    # Keep lists of commits, dates, content    
-    result = {'commits': [], 'dates': [], 'content': []}
-
-    bot.warning("Function not yet written")
-    # Empty content (or other) returns None
-#    for commit in commits:
-#        content = git_show(repo=repo, commit=commit, filename=filepath)
-
-#        if export_json is True:
-#            content = json.loads(content)
-
-#        result['content'].append(content)
-#        result['dates'].append(git_date(repo=repo, commit=commit))
-#        result['commits'].append(commit)
-    return result
+    exporter.push(result, task_instance)
 
 
 # Exporter Functions
@@ -403,11 +381,11 @@ def export_runs(self, results):
     '''
     for name, result in results.items():
 
-        task = self.get_task(name, save=True)
+        task = self.get_task(name)
 
         # Get exporters added to task
         exporters = self.get_setting(task.name, 'exporters', "")
-        exporters = exporters.split(",")            
+        exporters = [e for e in exporters.split(",") if e]  
 
         # Validate each exporter exists and is active, then run.
         for exporter in exporters:
@@ -432,29 +410,13 @@ def export_runs(self, results):
 
             # A client with "None" indicates a dependency is likely missing          
             if client == None:
-                bot.warning("Check dependencies for %s.." % exporter) 
+                bot.warning("Exporter %s does not exist, or check dependencies for it." % exporter) 
                 continue
 
-            # Case 1. The result is a list
-            if isinstance(result, list):
-                
-                # Get rid of Nones, if the user accidentally added
-                result = [r for r in result if r]
+            # If we get here, save the result. True = success, False = Fail, None = NA
+            result = client.export(result, task)
 
-                if len(result) == 0:
-                    bot.error('%s returned empty list of results.' % name)
-
-                # Only save if the export type is not json, and the result is a text string
-                elif not task.params.get('save_as') == 'json' and not os.path.exists(result[0]):
-                    bot.info('Exporting list to ' + client.name)
-                    client._save_text_list(name, result)
-
-            # Case 2. The result is a string
-            elif isinstance(result, str):
-                
-                # Only export if it's not a file path (so it's a string)
-                if not(os.path.exists(result)):
-                    bot.info('Exporting text to ' + client.name)
-                    client._save_text(result)
-            
-            # Case 3. The result is a dictionary or a file, ignore for now.
+            # If exporter fails, remove it for the task.
+            if result == False:
+                bot.warning("Issue with export of %s, removing exporter %s." % (task.name, exporter))
+                self.remove_task_exporter(task.name, exporter)

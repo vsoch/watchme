@@ -99,3 +99,17 @@ $ watchme run <watcher> <task>
 
 If an exporter doesn't run successfully, it will be disabled for the task.
 This is in case you forget about it.
+
+
+## Push Manually
+
+Optionally, you can choose to push data to an exporter manually.
+This will ignore if the exporter is active, and only check that it's 
+defined for the task and is valid.
+
+```bash
+$ watchme push <watcher> <exporter> <task> <filename>
+```
+
+If you want to customize how the export works (e.g., what commits)
+then you can use the python functions directly.

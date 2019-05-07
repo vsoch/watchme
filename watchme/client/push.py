@@ -35,13 +35,10 @@ def main(args, extra):
     # Get the watcher to interact with, must already exist
     watcher = get_watcher(name, base=args.base, create=False) 
 
-    bot.info("push is not written yet.")
-
     # Push to the exporter (not the default git)
     result = watcher.push(task=task,
                           exporter=exporter,
                           filename=filename,
                           name=name,
-                          push_all=args.all,
-                          push_json=args.json,
+                          export_json=args.json,
                           base=args.base)

@@ -37,16 +37,64 @@ class Exporter(ExporterBase):
         if not self.params['url'].startswith('http'):
             bot.exit("url must start with http, found %s" % self.params['url'])
 
+# Push Functions
+
+    def push(self, result, task):
+        '''push dummy function, expects the dictionary with commits, dates,
+           and results. Since pushgateway only takes numbers, we parse the
+           list of content.
+        '''
+        if "content" in result:
+            return self._save_text_list(task.name, result['content'])
+
+
+# Export Functions
+
+    def export(self, result, task):
+        '''the export function is the entrypoint to export data for an
+           exporter. Based on the data type, we call any number of supporting
+           functions. If True is returned, the data is exported. If False is
+           returned, there was an error. If None is returned, there is no
+           exporter defined for the data type.
+        '''
+        # Case 1. The result is a list
+        if isinstance(result, list):
+                
+            # Get rid of Nones, if the user accidentally added
+            result = [r for r in result if r]
+
+            if len(result) == 0:
+                bot.error('%s returned empty list of results.' % name)
+
+            # Only save if the export type is not json, and the result is a text string
+            elif not task.params.get('save_as') == 'json' and not os.path.exists(result[0]):
+                bot.info('Exporting list to ' + client.name)
+                return self._save_text_list(task.name, result)
+                
+        # Case 2. The result is a string
+        elif isinstance(result, str):
+                
+            # Only export if it's not a file path (so it's a string)
+            if not(os.path.exists(result)):
+                bot.info('Exporting text to ' + client.name)
+                return self._save_text(result)
+
+        # Case 3. The result is a dictionary or a file, ignore for now.               
+        else:
+            bot.warning('Files/dictionary are not currently supported for export')
+
     def _save_text_list(self, name, results):
         '''for a list of general text results, send them to a pushgateway.
- 
+           for any error, the calling function should return False immediately.
+    
            Parameters
            ==========
            results: list of string results to write to the pushgateway
         '''
         for r in range(len(results)):
-            self._write_to_pushgateway(results[r])
-
+            if not self._write_to_pushgateway(results[r]):
+                return False
+        return True
 
     def _save_text(self, result):
         '''exports the text to the exporter
@@ -55,8 +103,7 @@ class Exporter(ExporterBase):
            ==========
            result: the result object to save, not a path to a file in this case
         '''
-        self._write_to_pushgateway(result)
-
+        return self._write_to_pushgateway(result)
 
     def _write_to_pushgateway(self, result):
         ''' writes data to the pushgateway
@@ -66,15 +113,15 @@ class Exporter(ExporterBase):
            result: the result object to save
         '''
         from prometheus_client import Gauge, push_to_gateway
-        g = Gauge(self.name.replace('-', ':'), '', registry=self.registry)
-        g.set(result)
         
         try:
+            g = Gauge(self.name.replace('-', ':'), '', registry=self.registry)
+            g.set(result)
             push_to_gateway(self.params['url'], 
                             job='watchme', 
                             registry=self.registry)
         except:
             bot.error('An exception occurred while trying to export data using %s' % self.name)
+            return False
 
-            #TODO: disable task, and add a --test command
-            #TODO: need commands to add/remove exporters from a task
+        return True

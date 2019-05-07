@@ -43,6 +43,27 @@ class ExporterBase(object):
             self.params[key] = value
 
 
+    def push(self, result):
+        '''push dummy function, optional for subclass to implement.
+        '''
+        bot.warning('push is not implemented for %s' % self.type)
+
+
+    def export(self, result, task):
+        '''the export function is the entrypoint to export data for an
+           exporter. Based on the data type, we call any number of supporting
+           functions. If True is returned, the data is exported. If False is
+           returned, there was an error. If None is returned, there is no
+           exporter defined for the data type.
+
+           Parameters
+           ==========
+           result: the result object to export, a string, list, dict, or file
+           task: the task object associated.
+        '''
+        bot.warning('export is not implemented for %s' % self.type)
+
+
     def export_params(self, active="true"):
         '''export parameters, meaning returning a dictionary of the task
            parameters plus the addition of the task type and active status.

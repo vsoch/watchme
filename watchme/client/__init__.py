@@ -119,10 +119,6 @@ def get_parser():
     push.add_argument('filename', nargs=1,
                        help='the name of the file to export data from.')
 
-    push.add_argument('--all', dest="all", 
-                      help="instead of last timepoint, push all temporal data.", 
-                      default=False, action='store_true')
-
     push.add_argument('--json', dest="json", 
                       help="signal to load the file as json", 
                       default=False, action='store_true')
