@@ -172,7 +172,7 @@ The configuration commands will vary based on the kind of task you want to add,
 and here is a quick example of adding a task to watch a url (the default task):
 
 ```bash
-$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases
+$ watchme add-task watcher task-singularity-release url@https://github.com/sylabs/singularity/releases
 [task-singularity-release]
 url  = https://github.com/sylabs/singularity/releases
 active  = true
@@ -207,7 +207,7 @@ The task is active by default (after you set up its schedule) and you can disabl
 this with --active false:
 
 ```bash
-$ watchme add watcher task-singularity-release url@https://github.com/sylabs/singularity/releases --active false
+$ watchme add-task watcher task-singularity-release url@https://github.com/sylabs/singularity/releases --active false
 ```
 
 The reason we save these parameters in the repo is that if you put it under version
@@ -639,5 +639,4 @@ $ watchme export system task-cpu vanessa-thinkpad-t460s_vanessa.json  --json
 
 ## Licenses
 
-This code is licensed under the Affero GPL, version 3.0 or later [LICENSE](LICENSE).
-The SIF Header format is licesed by [Sylabs](https://github.com/sylabs/sif/blob/master/pkg/sif/sif.go).
+This code is licensed under the Mozilla, version 2.0 or later [LICENSE](LICENSE).

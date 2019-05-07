@@ -20,4 +20,3 @@ def main(args, extra):
 
     for watcher in watchers:
         create_watcher(watcher)
-    

@@ -10,15 +10,15 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
 from setuptools import setup, find_packages
-import codecs
 import os
 
 ################################################################################
 # HELPER FUNCTIONS #############################################################
 ################################################################################
 
+
 def get_lookup():
-    '''get version by way of singularity.version, returns a 
+    '''get version by way of singularity.version, returns a
     lookup dictionary with several global variables without
     needing to import singularity
     '''
@@ -28,12 +28,13 @@ def get_lookup():
         exec(filey.read(), lookup)
     return lookup
 
+
 # Read in requirements
 def get_requirements(lookup=None, key="INSTALL_REQUIRES"):
     '''get_requirements reads in requirements and versions from
     the lookup obtained with get_lookup'''
 
-    if lookup == None:
+    if lookup is None:
         lookup = get_lookup()
 
     install_requires = []
@@ -41,19 +42,19 @@ def get_requirements(lookup=None, key="INSTALL_REQUIRES"):
         module_name = module[0]
         module_meta = module[1]
         if "exact_version" in module_meta:
-            dependency = "%s==%s" %(module_name,module_meta['exact_version'])
+            dependency = "%s==%s" % (module_name, module_meta['exact_version'])
         elif "min_version" in module_meta:
-            if module_meta['min_version'] == None:
+            min_version = module_meta['min_version']
+            if min_version is None:
                 dependency = module_name
             else:
-                dependency = "%s>=%s" %(module_name,module_meta['min_version'])
+                dependency = "%s>=%s" % (module_name, min_version)
         install_requires.append(dependency)
     return install_requires
 
 
-
 # Make sure everything is relative to setup.py
-install_path = os.path.dirname(os.path.abspath(__file__)) 
+install_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(install_path)
 
 # Get version information from the lookup
@@ -76,8 +77,13 @@ with open('README.md') as filey:
 
 if __name__ == "__main__":
 
+    # Install all exporters and/or watchers
     INSTALL_REQUIRES = get_requirements(lookup)
-    URLS_DYNAMIC = get_requirements(lookup,'INSTALL_URLS_DYNAMIC')
+    INSTALL_ALL = get_requirements(lookup, 'INSTALL_ALL')
+    WATCHERS = get_requirements(lookup, 'INSTALL_WATCHERS')
+
+    # Watchers
+    URLS_DYNAMIC = get_requirements(lookup, 'INSTALL_URLS_DYNAMIC')
     PSUTILS = get_requirements(lookup, 'INSTALL_PSUTILS')
 
     setup(name=NAME,
@@ -86,7 +92,7 @@ if __name__ == "__main__":
           author_email=AUTHOR_EMAIL,
           maintainer=AUTHOR,
           maintainer_email=AUTHOR_EMAIL,
-          packages=find_packages(), 
+          packages=find_packages(),
           include_package_data=True,
           zip_safe=False,
           url=PACKAGE_URL,
@@ -96,11 +102,12 @@ if __name__ == "__main__":
           keywords=KEYWORDS,
           setup_requires=["pytest-runner"],
           tests_require=["pytest"],
-          install_requires = INSTALL_REQUIRES,
+          install_requires=INSTALL_REQUIRES,
           extras_require={
-              'all': [INSTALL_REQUIRES],
-              'urls-dynamic': [URLS_DYNAMIC],
-              'psutils': [PSUTILS]
+              'all': [INSTALL_ALL],
+              'watchers': [WATCHERS],
+              'watcher-urls-dynamic': [URLS_DYNAMIC],
+              'watcher-psutils': [PSUTILS]
           },
           classifiers=[
               'Intended Audience :: Science/Research',
@@ -113,4 +120,4 @@ if __name__ == "__main__":
               'Programming Language :: Python :: 3',
           ],
 
-          entry_points = {'console_scripts': [ 'watchme=watchme.client:main' ] })
+          entry_points={'console_scripts': ['watchme=watchme.client:main']})

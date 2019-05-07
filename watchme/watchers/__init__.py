@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.logger import ( bot, RobotNamer )
+from watchme.logger import (bot, RobotNamer)
 from watchme.version import __version__
 from watchme.defaults import (
     WATCHME_BASE_DIR,
@@ -32,12 +32,14 @@ from .data import (
 
 from .settings import (
     get_setting,
-    set_setting,
     get_section,
+    has_setting,
+    has_section,
     print_section,
     print_add_task,
     remove_setting,
-    remove_section
+    remove_section,
+    set_setting
 )
 
 from .schedule import (
@@ -114,7 +116,7 @@ class Watcher(object):
         # If the watcher doesn't exist and we need to create:
         if not os.path.exists(self.repo) or not os.path.exists(self.configfile):
             if create is True:
-                create_watcher(self.name)   
+                create_watcher(self.name)
             else:
                 bot.exit('Watcher %s does not exist. Use watchme create.' % self.name)
 
@@ -139,7 +141,7 @@ class Watcher(object):
         '''
 
         if not self.has_task(name):
-            bot.exit('%s is not a task defined by %s' %(name, self.name))
+            bot.exit('%s is not a task defined by %s' % (name, self.name))
 
         if action not in ['update', 'add', 'remove']:
             bot.exit('Action must be update, add, or remove')
@@ -149,7 +151,7 @@ class Watcher(object):
 
         # Add, and it doesn't exist so it's okay
         if action == "add" and key not in self.config[name]:
-            bot.info('Adding %s:%s to %s' %(key, value, name))
+            bot.info('Adding %s:%s to %s' % (key, value, name))
             self.set_setting(name, key, value)
 
         # Already exists, encourage user to update
@@ -158,7 +160,7 @@ class Watcher(object):
 
         # Update, and it's a valid choice
         elif action == 'update' and key in self.config[name]:
-            bot.info('Updating %s to %s in %s' %(key, value, name))
+            bot.info('Updating %s to %s in %s' % (key, value, name))
             self.set_setting(name, key, value)
 
         # Update, and it's not a valid choice
@@ -167,7 +169,7 @@ class Watcher(object):
 
         # Remove, and it's a valid choice
         elif action == "remove" and key in self.config[name]:
-            bot.info('Removing %s' % key )
+            bot.info('Removing %s' % key)
             del self.config[name][key]
 
         # Remove, and it's not a valid choice
@@ -198,7 +200,7 @@ class Watcher(object):
            it will be written with a default active status set to false.
         '''
         if not hasattr(self, 'config'):
-           
+
             # Load the configuration file if it exists (will exit if not found)
             if self.configfile != None:
                 self.config = read_config(self.configfile)
@@ -224,7 +226,7 @@ class Watcher(object):
         for pair in pairs:
             if "@" not in pair:
                 bot.exit('incorrectly formatted param, must be key@value')
-            key,value = pair.split('@', 1)
+            key, value = pair.split('@', 1)
             key = key.lower()
 
             # All tasks are not allowed to have default params
@@ -249,8 +251,8 @@ class Watcher(object):
            params: list of parameters to be validated (key@value)
            force: if task already exists, overwrite
            active: add the task as active (default "true")
-           
         '''
+
         # Check again, in case user calling from client
         if not task.startswith('task'):
             bot.exit('Task name must start with "task" (e.g., task-reddit)')
@@ -322,7 +324,8 @@ class Watcher(object):
             git_add(self.repo, task.name)
 
         # Commit changes
-        git_commit(repo=self.repo, task=self.name, message="ADD task %s" % task.name)
+        git_commit(repo=self.repo, task=self.name,
+                   message="ADD task %s" % task.name)
 
 # Delete
 
@@ -344,7 +347,7 @@ class Watcher(object):
             bot.info('Removing watcher %s' % self.name)
             shutil.rmtree(repo)
         else:
-            bot.exit("%s:%s doesn't exist" %(self.name, repo))
+            bot.exit("%s:%s doesn't exist" % (self.name, repo))
 
 
     def remove_task(self, task):
@@ -552,7 +555,7 @@ class Watcher(object):
         return False
 
 
-    def get_task(self, name, save=False):
+    def get_task(self, name):
         '''get a particular task, based on the name. This is where each type
            of class should check the "type" parameter from the config, and
            import the correct Task class.
@@ -560,7 +563,6 @@ class Watcher(object):
            Parameters
            ==========
            name: the name of the task to load
-           save: if saving, will be True
         '''
         self.load_config()
 
@@ -586,12 +588,12 @@ class Watcher(object):
                 bot.exit('Type %s not properly set up in get_task' % task_type)
 
             # if not valid, will return None
-            task = Task(name, params, _save=save)
+            task = Task(name, params)
 
         return task
 
 
-    def _task_selected(self, task, regexp=None):
+    def _task_selected(self, task, regexp=None, active=True):
         '''check if a task is active and (if defined) passes user provided
            task names or regular expressions.
 
@@ -599,6 +601,7 @@ class Watcher(object):
            ==========
            task: the task object to check
            regexp: an optional regular expression (or name) to check
+           active: a task is selected if it's active (default True)
         '''
         selected = True 
 
@@ -607,8 +610,8 @@ class Watcher(object):
             selected = False
 
         # Is the task not active (undefined is active)?
-        active = task.params.get('active', 'true')
-        if active == "false":
+        is_active = task.params.get('active', 'true')
+        if is_active == "false" and active == True:
             bot.info('Task %s is not active.' % task)
             selected = False
         
@@ -621,7 +624,7 @@ class Watcher(object):
         return selected
 
 
-    def get_tasks(self, regexp=None):
+    def get_tasks(self, regexp=None, quiet=False, active=True):
         '''get the tasks for a watcher, possibly matching a regular expression.
            A list of dictionaries is returned, each holding the parameters for
            a task. "uri" will hold the task (folder) name, active
@@ -630,6 +633,8 @@ class Watcher(object):
            ==========
            regexp: if supplied, the user wants to run only tasks that match
                    a particular pattern
+           quiet: If quiet, don't print the number of tasks found
+           active: only return active tasks (default True)
         '''
         self.load_config()
 
@@ -641,10 +646,11 @@ class Watcher(object):
 
             # Check that the task should be run, and is valid
             if task != None:
-                if self._task_selected(task, regexp) and task.valid:
+                if self._task_selected(task, regexp, active) and task.valid:
                     tasks.append(task)
 
-        bot.info('Found %s contender tasks.' % len(tasks))
+        if quiet == False:
+            bot.info('Found %s contender tasks.' % len(tasks))
         return tasks   
 
 
@@ -686,7 +692,7 @@ class Watcher(object):
             else:
                 bot.info('Running %s' % prefix)
             results[task.name] = task.run()
-            progress+=1
+            progress += 1
 
         return results
 
@@ -770,83 +776,30 @@ class Watcher(object):
         '''
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
-            task = self.get_task(name, save=True)
-
-            # Files to be added via Git after
-            files = []
+            task = self.get_task(name)
 
             # Ensure that the task folder exists
             if not os.path.exists(task_folder):
                 mkdir_p(task_folder)
                 git_add(self.repo, task_folder)
 
-            # Case 1. The result is a list
-            if isinstance(result, list):           
-
-                # Get rid of Nones, if the user accidentally added
-                result = [r for r in result if r]
-
-                if len(result) == 0:
-                    bot.error('%s returned empty list of results.' % name)
-
-                # json output is specified
-                elif task.params.get('save_as') == 'json':
-                    bot.debug('Saving single list as one json...')
-                    files.append(task._save_json(result, self.repo))
-
-                elif task.params.get('save_as') == 'json':
-                    bot.debug('Saving single list as multiple json...')
-                    files += task._save_json_list(result, self.repo)
-
-                # Otherwise, sniff for list of paths
-                elif os.path.exists(result[0]):
-                    bot.debug('Found list of paths...')
-                    files += task._save_files_list(result, self.repo)     
-
-                # Finally, assume just writing text to file
-                else:
-                    bot.debug('Saving content from list to file...')
-                    files += task._save_text_list(result, self.repo)     
-
-            # Case 2. The result is a string
-            elif isinstance(result, str):
-
-                # if it's a path to a file, just save to repository
-                if os.path.exists(result):
-                    files.append(task._save_file(result, self.repo))
-
-                # Otherwise, it's a string that needs to be saved to file
-                else:
-                    files.append(task._save_text(result, self.repo))
-
-            # Case 3. The result is a dictionary
-            elif isinstance(result, dict):
-                files.append(task._save_json(result, self.repo))
-
-            elif result == None:
-                bot.error('Result for task %s is None' % name)
-
-            else:
-                bot.error('Unsupported result format %s' % type(result))
-
-            # Get rid of None results (don't check excessively for None above)
-            files = [f for f in files if f]
+            # Files to be added to the repo via git after
+            files = task.write_results(result, self.repo)
 
             # Add files to git, and commit
             files.append(write_timestamp(repo=self.repo, task=name))
             git_add(repo=self.repo, files=files)
-            git_commit(repo=self.repo, 
-                       task=self.name, 
+            git_commit(repo=self.repo,
+                       task=self.name,
                        message="ADD results %s" % name)
-
 
 # Identification
 
     def __repr__(self):
-        return "[watcher|%s]" %self.name
+        return "[watcher|%s]" % self.name
 
     def __str__(self):
-        return "[watcher|%s]" %self.name
+        return "[watcher|%s]" % self.name
 
 
 # Settings
@@ -854,6 +807,8 @@ class Watcher(object):
 Watcher.remove_setting = remove_setting
 Watcher.get_setting = get_setting
 Watcher.get_section = get_section
+Watcher.has_setting = has_setting
+Watcher.has_section = has_section
 Watcher.set_setting = set_setting
 Watcher.remove_section = remove_section
 Watcher.print_section = print_section

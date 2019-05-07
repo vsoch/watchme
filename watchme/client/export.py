@@ -15,7 +15,7 @@ import json
 import os
 
 def main(args, extra):
-    '''activate one or more watchers
+    '''export temporal data for a watcher
     '''    
     # Required - will print help if not provided
     name = args.watcher[0]
@@ -23,7 +23,7 @@ def main(args, extra):
     filename = args.filename[0]
 
     if not task.startswith('task'):
-        example = 'watchme add watcher task-reddit url@https://www.reddit.com'
+        example = 'watchme export watcher task-reddit result.txt'
         bot.exit('Task name must start with "task", e.g., %s' % example)
 
     # Use the output file, or a temporary file
