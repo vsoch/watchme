@@ -24,7 +24,7 @@ Now let's walk through each of the tasks. If you aren't familiar with how
 to add a task and otherwise manage them, see the [getting started]({{ site.baseurl }}/getting-started/)
 docs. Here are the functions exposed by the results group:
 
- - [From Environment](#the-from-env-task)
+ - [From Environment](#1-the-from-env-task)
 
 ## Add a Task
 
@@ -76,7 +76,7 @@ $ watchme run results-watcher task-hpc-job
 ```
 
 The task will find the environment variables, and then save the results to
-the GitHub repository according to the environment variable name under
+the git repository according to the environment variable name under
 the task folder. In this case we would see:
 
 ```
@@ -87,12 +87,16 @@ task-hpc-job/
 └── weight
 ```
 
-How cool is that! You could use this so that each timepoint represents
-a single database entry (and for example, export a `WATCHMEENV_ID` to
-provide an identifier for the unit) or you could have each environment
-variable coincide with the same measurment, perhaps changing over time. 
-Take a look at the git log too - you'll see that every change and entry
-is recorded for you, and ready to push to GitHub to share.
+Where the content of density is "0.45" and the content of weight is "32",
+respectively. If we push again, git will save our previous values, and
+the files will be updated with the current. We can push to GitHub to immediately
+share this data as a temporal database (a single entry representing one
+metric changing over time) or a collection of results (each timepoint
+with multiple variables coinciding with one entity).
+
+How cool is that! If each commit timepoint with some number of results files 
+represents a single database entry, you would want to export a `WATCHMEENV_ID` to
+provide an identifier for the unit.
 
 The cool thing about this task is that you likely wouldn't want to schedule it
 to run, you would have it run after or during some job or process that you
