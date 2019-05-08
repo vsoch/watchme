@@ -12,7 +12,7 @@ from watchme import get_watcher
 from watchme.logger import bot
 
 def main(args, extra):
-    '''activate one or more watchers
+    '''remove tasks or exporters from a watcher, or delete the entire watcher
     '''    
     # Required - will print help if not provided
     name = args.watcher[0]
@@ -26,10 +26,26 @@ def main(args, extra):
 
         # Exit if the user doesn't provide any tasks to remove
         if extra == None:
-            bot.exit('Provide tasks to remove, or --delete for entire watcher.')
+            bot.exit('Provide tasks or exporters to remove, or --delete for entire watcher.')
     
-        for task in extra:
+        # Case 1: one argument indicates removing an entire task or exporter
+        if len(extra) == 1:
      
-            # Remove the task, if it exists
-            watcher.remove_task(task)
+            section = extra[0]
 
+            # Remove the task or exporter, if it exists
+            if section.startswith('task'):
+                watcher.remove_task(section)
+
+            elif section.startswith('exporter'):
+                watcher.remove_exporter(section)
+
+            else:
+                bot.error("Task and exporters must begin with (task|exporter)-")
+
+        # Case 2: two arguments indicate removing an exporter from a task
+        elif len(extra) == 2:
+            
+            # Allow the user to specify either order
+            extra.sort()               # task, exporter
+            watcher.remove_task_exporter(extra[1], extra[0])

@@ -9,7 +9,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.defaults import (
-    WATCHME_BASE_DIR, 
+    WATCHME_BASE_DIR,
+    WATCHME_EXPORTERS,
     WATCHME_TASK_TYPES
 )
 
@@ -58,6 +59,14 @@ def list_watcher(watcher, base=None):
         bot.info('\n  '.join(files))
     else:
         bot.exit('%s does not exist.' % base)
+
+
+def list_exporters():
+    '''list the exporter options provided by watchme
+    '''
+    bot.custom(prefix="watchme:", message="exporters", color="CYAN")
+    bot.info('\n  '.join(WATCHME_EXPORTERS))
+
 
 def list_watcher_types():
     '''list the exporter options provided by watchme

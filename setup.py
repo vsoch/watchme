@@ -81,10 +81,14 @@ if __name__ == "__main__":
     INSTALL_REQUIRES = get_requirements(lookup)
     INSTALL_ALL = get_requirements(lookup, 'INSTALL_ALL')
     WATCHERS = get_requirements(lookup, 'INSTALL_WATCHERS')
+    EXPORTERS = get_requirements(lookup, 'INSTALL_EXPORTERS')
 
     # Watchers
     URLS_DYNAMIC = get_requirements(lookup, 'INSTALL_URLS_DYNAMIC')
     PSUTILS = get_requirements(lookup, 'INSTALL_PSUTILS')
+
+    # Exporters
+    PUSHGATEWAY = get_requirements(lookup, 'INSTALL_PUSHGATEWAY')
 
     setup(name=NAME,
           version=VERSION,
@@ -106,8 +110,10 @@ if __name__ == "__main__":
           extras_require={
               'all': [INSTALL_ALL],
               'watchers': [WATCHERS],
+              'exporters': [EXPORTERS],
               'watcher-urls-dynamic': [URLS_DYNAMIC],
-              'watcher-psutils': [PSUTILS]
+              'watcher-psutils': [PSUTILS],
+              'exporter-pushgateway': [PUSHGATEWAY],
           },
           classifiers=[
               'Intended Audience :: Science/Research',

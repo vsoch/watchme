@@ -10,8 +10,8 @@ order: 1
 
 The only dependency for watchme is to have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 and [crontab](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-on-a-vps) on your system. Git is used for version control of the pages you are watching, and crontab is
-used for scheduling your watches. If you want to install a custom watcher type, 
-see [installing extras](#installing-extras) below.
+used for scheduling your watches. If you want to install a custom exporter or
+watcher, see [installing extras](#installing-extras) below.
 
 ## Install
 
@@ -76,6 +76,18 @@ To install all watchers only:
 
 ```bash
 $ pip install watchme[watchers]
+```
+
+To install all exporters only:
+
+```bash
+$ pip install watchme[exporters]
+```
+
+To install a specific exporter:
+
+```bash
+$ pip install watchme[exporter-pushgateway]
 ```
 
 or a specific watcher task group:

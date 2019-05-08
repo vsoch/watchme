@@ -14,6 +14,7 @@ from watchme.logger import bot
 from watchme.defaults import ( 
     WATCHME_WATCHER, 
     WATCHME_TASK_TYPES, 
+    WATCHME_EXPORTERS,
     WATCHME_DEFAULT_TYPE
 )
 import watchme
@@ -101,6 +102,27 @@ def get_parser():
                          help="the output file (json) to export the data",
                          default=None)
 
+    # push (intended for exporters)
+
+    push = subparsers.add_parser("push",
+                                  help="push data to an extra exporter")
+
+    push.add_argument('watcher', nargs=1,
+                      help='the watcher to push data for')
+
+    push.add_argument('task', nargs=1,
+                       help='the name of the task to push data for')
+
+    push.add_argument('exporter', nargs=1,
+                       help='the name of the exporter to push to')
+
+    push.add_argument('filename', nargs=1,
+                       help='the name of the file to export data from.')
+
+    push.add_argument('--json', dest="json", 
+                      help="signal to load the file as json", 
+                      default=False, action='store_true')
+
 
     # create
 
@@ -110,28 +132,53 @@ def get_parser():
     create.add_argument('watchers', nargs="*",
                         help='watchers to create (default: single watcher)')
 
-    # add
 
-    add = subparsers.add_parser("add-task",
-                                 help="add a task to a watcher.")
+    # add task
 
-    add.add_argument('watcher', nargs=1,
-                     help='the watcher to add to')
+    add_task = subparsers.add_parser("add-task",
+                                     help="add a task to a watcher.")
 
-    add.add_argument('task', nargs=1,
-                     help='the name of the task to add. Must start with task')
+    add_task.add_argument('watcher', nargs=1,
+                          help='the watcher to add to')
 
-    add.add_argument('--type', dest="watcher_type",
-                     choices=WATCHME_TASK_TYPES, 
-                     default=WATCHME_DEFAULT_TYPE)
+    add_task.add_argument('task', nargs=1,
+                          help='the name of the task to add.')
 
-    add.add_argument('--active', dest="active",
-                     choices=["true", "false"], 
-                     default="true")
+    add_task.add_argument('--type', dest="watcher_type",
+                         choices=WATCHME_TASK_TYPES, 
+                         default=WATCHME_DEFAULT_TYPE)
 
-    add.add_argument('--force', dest="force", 
-                     help="force overwrite a task, if already exists.", 
-                     default=False, action='store_true')
+    add_task.add_argument('--active', dest="active",
+                         choices=["true", "false"], 
+                         default="true")
+
+    add_task.add_argument('--force', dest="force", 
+                         help="force overwrite a task, if already exists.", 
+                         default=False, action='store_true')
+
+
+    # add exporter
+
+    add_exporter = subparsers.add_parser("add-exporter",
+                                         help="add an exporter to a watcher.")
+
+    add_exporter.add_argument('watcher', nargs=1,
+                              help='the watcher to add to')
+
+    add_exporter.add_argument('name', nargs=1,
+                              help='the name of the exporter to add.')
+
+    add_exporter.add_argument('--type', dest="exporter_type",
+                             choices=WATCHME_EXPORTERS, 
+                             default=None)
+
+    add_exporter.add_argument('--active', dest="active",
+                             choices=["true", "false"], 
+                             default="true")
+
+    add_exporter.add_argument('--force', dest="force", 
+                             help="force overwrite an exporter, if already exists.", 
+                             default=False, action='store_true')
 
 
     # inspect
@@ -150,6 +197,10 @@ def get_parser():
 
     ls = subparsers.add_parser("list",
                                help="list all watchers at a base")
+
+    ls.add_argument('--exporters', dest="exporters", 
+                     help="list exporters available", 
+                     default=False, action='store_true')
 
     ls.add_argument('--watchers', dest="watchers", 
                      help="list watchers available", 
@@ -309,7 +360,8 @@ def main():
         sys.exit(0)
 
     if args.command == "activate": from .activate import main
-    elif args.command == "add-task": from .add import main
+    elif args.command == "add-task": from .addtask import main
+    elif args.command == "add-exporter": from .exporter import main
     elif args.command == "edit": from .edit import main
     elif args.command == "export": from .export import main
     elif args.command == "create": from .create import main
@@ -319,6 +371,7 @@ def main():
     elif args.command == "inspect": from .inspect import main
     elif args.command == "list": from .ls import main
     elif args.command == "protect": from .protect import main
+    elif args.command == "push": from .push import main
     elif args.command == "remove": from .remove import main
     elif args.command == "run": from .run import main
     elif args.command == "schedule": from .schedule import main

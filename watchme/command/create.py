@@ -27,7 +27,7 @@ def create_watcher(name=None, watcher_type=None, base=None):
        name: the watcher to create, uses default or WATCHME_WATCHER
        watcher_type: the type of watcher to create. defaults to 
                      WATCHER_DEFAULT_TYPE
-        base: The watcher base to use (defaults to $HOME/.watchme)
+       base: The watcher base to use (defaults to $HOME/.watchme)
     '''
     if name == None:
         name = WATCHME_WATCHER
