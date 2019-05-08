@@ -265,9 +265,11 @@ class Watcher(object):
         if task_type.startswith('url'):
             from .urls import Task
 
-        # Validate variables provided for task
         elif task_type == 'psutils':
             from .psutils import Task
+
+        elif task_type == 'results':
+            from .results import Task
 
         else:
             bot.exit('task_type %s not properly added to Watcher' % task_type)
@@ -583,6 +585,9 @@ class Watcher(object):
 
             elif task_type == 'psutils':
                 from .psutils import Task
+
+            elif task_type == 'results':
+                from .results import Task
 
             else:
                 bot.exit('Type %s not properly set up in get_task' % task_type)
