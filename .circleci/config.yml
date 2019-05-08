@@ -36,7 +36,7 @@ install_python_3: &install_python_3
        fi
 
 install_python_2: &install_python_2
-  name: install Python 3.5 dependencies
+  name: install Python 2 dependencies
   command: | 
       ls $HOME
       if [ ! -d "/home/circleci/conda" ]; then
