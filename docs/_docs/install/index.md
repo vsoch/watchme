@@ -90,7 +90,7 @@ To install a specific exporter:
 $ pip install watchme[exporter-pushgateway]
 ```
 
-or a watcher:
+or a specific watcher task group:
 
 ```bash
 $ pip install watchme[watcher-urls-dynamic]

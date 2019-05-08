@@ -41,14 +41,14 @@ from .data import (
 
 from .settings import (
     get_setting,
-    set_setting,
+    get_section,
     has_setting,
     has_section,
-    get_section,
     print_section,
     print_add_task,
     remove_setting,
-    remove_section
+    remove_section,
+    set_setting
 )
 
 from .schedule import (
@@ -255,8 +255,8 @@ class Watcher(object):
            params: list of parameters to be validated (key@value)
            force: if task already exists, overwrite
            active: add the task as active (default "true")
-
         '''
+
         # Check again, in case user calling from client
         if not task.startswith('task'):
             bot.exit('Task name must start with "task" (e.g., task-reddit)')
@@ -353,6 +353,7 @@ class Watcher(object):
             shutil.rmtree(repo)
         else:
             bot.exit("%s:%s doesn't exist" % (self.name, repo))
+
 
     def remove_task(self, task):
         '''remove a task from the watcher repo, if it exists, and the
@@ -552,6 +553,7 @@ class Watcher(object):
             return True
         return False
 
+
     def get_task(self, name):
         '''get a particular task, based on the name. This is where each type
            of class should check the "type" parameter from the config, and
@@ -588,6 +590,7 @@ class Watcher(object):
             task = Task(name, params)
 
         return task
+
 
     def _task_selected(self, task, regexp=None, active=True):
         '''check if a task is active and (if defined) passes user provided
@@ -646,7 +649,7 @@ class Watcher(object):
 
         if quiet == False:
             bot.info('Found %s contender tasks.' % len(tasks))
-        return tasks
+        return tasks   
 
 
 # Running Tasks
@@ -785,7 +788,6 @@ class Watcher(object):
             git_commit(repo=self.repo,
                        task=self.name,
                        message="ADD results %s" % name)
-
 
 # Identification
 

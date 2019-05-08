@@ -107,17 +107,17 @@ class TaskBase(object):
         bot.error('Cannot find function.')
 
 
-# Global Save function to write results
+# Save Entrypoint
 
     def write_results(self, result, repo):
         '''an entrypoint function for a general task. By default, we parse
            results based on the result type. Any particular subclass of the
            TaskBase can modify or extend these functions.
 
-            Parameters
-            ==========
-            result: the result object to parse
-            repo: the repo base (watcher.repo)
+           Parameters
+           ==========
+           result: the result object to parse
+           repo: the repo base (watcher.repo)
         '''
         files = []
 
@@ -147,7 +147,7 @@ class TaskBase(object):
             else:
                 bot.debug('Saving content from list to file...')
                 files += self._save_text_list(result, repo)
-                    
+
         # Case 2. The result is a string
         elif isinstance(result, str):
 

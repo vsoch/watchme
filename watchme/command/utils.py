@@ -13,6 +13,7 @@ from watchme.defaults import (
     WATCHME_EXPORTERS,
     WATCHME_TASK_TYPES
 )
+
 from watchme.utils import ( get_tmpdir, run_command )
 from watchme.logger import bot
 
@@ -65,6 +66,7 @@ def list_exporters():
     '''
     bot.custom(prefix="watchme:", message="exporters", color="CYAN")
     bot.info('\n  '.join(WATCHME_EXPORTERS))
+
 
 def list_watcher_types():
     '''list the exporter options provided by watchme

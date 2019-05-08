@@ -96,10 +96,11 @@ def print_section(self, section):
     else:
         bot.exit('%s is not a valid section.' % section)
 
+
 def get_setting(self, section, name, default=None):
     '''return a setting from the config, if defined. Otherwise return
        default (None or set by user)
-
+       
        Parameters
        ==========
        section: the section in the config, defaults to self.name
@@ -121,7 +122,6 @@ def get_setting(self, section, name, default=None):
 
 def has_setting(self, section, name):
     '''return a boolean if a config has a setting (or not)
-
        Parameters
        ==========
        section: the section in the config, defaults to self.name
@@ -139,14 +139,12 @@ def has_setting(self, section, name):
 
 def has_section(self, section):
     '''return a boolean if a config has a section (e.g., a task or exporter)
-
        Parameters
        ==========
        section: the section in the config
     ''' 
     self.load_config()
     return section in self.config
-
 
 def set_setting(self, section, key, value):
     '''set a key value pair in a section, if the section exists. Returns

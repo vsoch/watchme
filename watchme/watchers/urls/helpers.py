@@ -12,6 +12,7 @@ import os
 import re
 import tempfile
 import requests
+import re
 
 # Helper functions
 

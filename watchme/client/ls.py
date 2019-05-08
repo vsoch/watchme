@@ -37,4 +37,3 @@ def main(args, extra):
         else:
             for watcher in extra:
                 list_watcher(watcher, args.base)
-
