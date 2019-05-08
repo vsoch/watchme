@@ -127,7 +127,7 @@ class TaskBase(object):
             result = [r for r in result if r]
 
             if len(result) == 0:
-                bot.error('%s returned empty list of results.' % name)
+                bot.error('%s returned empty list of results.' % self.name)
 
             # json output is specified
             elif self.params.get('save_as') == 'json':
@@ -203,6 +203,7 @@ class TaskBase(object):
 
         return files
 
+
     def _save_text(self, result, repo, file_name=None):
         '''save a general text object to file.
  
@@ -216,6 +217,7 @@ class TaskBase(object):
         destination = os.path.join(task_folder, file_name)
         write_file(destination, result)
         return destination
+
 
     def _save_file(self, result, repo, file_name=None):
         '''for a result that exists, move the file to final destination.
@@ -238,6 +240,7 @@ class TaskBase(object):
             return os.path.join(name, file_name)
 
         bot.warning('%s does not exist.' % result)
+
         
     def _save_json(self, result, repo, file_name=None):
         '''for a result that is a dictionary or list, save as json
@@ -251,6 +254,23 @@ class TaskBase(object):
         write_json(result, destination)
         return destination
 
+
+    def _save_files_list(self, results, repo):
+        '''If the user provides already existing files, we simply move them
+           into the task folder in the repository.
+ 
+           Parameters
+           ==========
+           results: the results to save, should a list of files
+        '''
+        files = []
+        for result in results:
+            filename = os.path.basename(result)
+            filename = os.path.join(repo, self.name, filename)
+            shutil.move(result, filename) 
+            files.append(filename)
+
+        return files
 
     def _save_json_list(self, results, repo):
         '''A wrapper around save json for a list, handles file naming.
