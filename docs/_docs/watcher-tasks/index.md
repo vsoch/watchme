@@ -14,3 +14,4 @@ We just have support for watching web urls, task type "urls":
 
  - [urls]({{ site.baseurl }}/watchers/urls/) to watch for changes in web content
  - [psutils]({{ site.baseurl }}/watchers/psutils) to monitor system, sensors, python, and network
+ - [results]({{ site.baseurl }}/watchers/results) to record results

@@ -58,7 +58,7 @@ WATCHME_WORKERS = int(getenv('WATCHME_WORKERS', 9))
 # The types of valid watchers (currently only urls). Corresponds with
 # a folder under "main/watchers"
 WATCHME_EXPORTERS = ['pushgateway']
-WATCHME_TASK_TYPES = ['urls', 'url', 'psutils']
+WATCHME_TASK_TYPES = ['urls', 'url', 'psutils', 'results']
 WATCHME_DEFAULT_TYPE = "urls"
 
 # Parameters not allowed for task clients, set by TaskBase
