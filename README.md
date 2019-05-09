@@ -3,6 +3,7 @@
 ![docs/assets/img/logo_small.gif](docs/assets/img/logo_small.gif)
 
 [![DOI](https://zenodo.org/badge/177837425.svg)](https://zenodo.org/badge/latestdoi/177837425)
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01388/status.svg)](https://doi.org/10.21105/joss.01388)
 [![CircleCI](https://circleci.com/gh/vsoch/watchme.svg?style=svg)](https://circleci.com/gh/vsoch/watchme)
 
 
