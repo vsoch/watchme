@@ -46,6 +46,8 @@ class Task(TaskBase):
             from .tasks import cpu_task as func
         elif name == 'memory_task':
             from .tasks import memory_task as func
+        elif name == 'monitor_pid_task':
+            from .tasks import monitor_pid_task as func
         elif name == 'net_task':
             from .tasks import net_task as func
         elif name == 'python_task':

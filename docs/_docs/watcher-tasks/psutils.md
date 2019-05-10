@@ -24,13 +24,14 @@ Now let's walk through each of the tasks. If you aren't familiar with how
 to add a task and otherwise manage them, see the [getting started]({{ site.baseurl }}/getting-started/)
 docs. Here are the functions exposed by psutils:
 
- - [CPU Task](#the-cpu-task)
- - [Memory Task](#the-memory-task)
- - [Network Task](#the-network-task)
- - [Python Task](#the-python-task)
- - [Sensors Task](#the-sensors-task)
- - [System Task](#the-system-task)
- - [Users Task](#the-users-task)
+ - [Monitor Pid Task](#1-the-monitor-pid-task)
+ - [CPU Task](#2-the-cpu-task)
+ - [Memory Task](#3-the-memory-task)
+ - [Network Task](#4-the-network-task)
+ - [Python Task](#5-the-python-task)
+ - [Sensors Task](#6-the-sensors-task)
+ - [System Task](#7-the-system-task)
+ - [Users Task](#8-the-users-task)
 
 
 ## Add a Task
@@ -62,7 +63,112 @@ You shouldn't need to define a `file_name` parameter, as it will be set automati
 be your host plus username. However, you are free to set this parameter to change this 
 value.
 
-### 1. The CPU Task
+
+### 1. The Monitor Pid Task
+
+This task is useful for monitoring a specific process. You can run it as a
+task (discussed first) or a decorator to a function to enable continuous monitoring.
+Either way, you will want to create your watcher first:
+
+```bash
+$ watchme create system
+```
+
+#### Run as a Task
+
+To run as a task, you will want to provide `func@monitor_pid_task` when you create the task. 
+You are also required to add a pid, and this can be a number, or the name of the process.
+Either way, likely you would be running this for a long running
+process, and in the case of providing an integer, you would need to update
+the pid of the process when you restart your computer. Here is an example
+adding a process name I know will be running when my computer starts:
+
+```bash
+$ watchme add-task system task-monitor-slack --type psutils func@monitor_pid_task pid@slack
+[task-monitor-slack]
+func  = monitor_pid_task
+pid  = slack
+active  = true
+type  = psutils
+```
+
+You can also add a parameter called "skip", including one or more (comma separate)
+indices in the results to skip.
+
+```bash
+$ watchme add-task system task-monitor-slack --type psutils func@monitor_pid_task pid@slack skip@cpu_freq,cpu_percent
+```
+
+By default, you'll get a lot of data! You should skip those you don't need:
+
+ - cmdline
+ - cpu_num
+ - memory_percent
+ - cwd
+ - nice
+ - username
+ - pid
+ - create_time
+ - memory_full_info
+ - terminal
+ - connections
+ - gids
+ - status
+ - cpu_times
+ - name
+ - ppid
+ - num_ctx_switches
+ - cpu_percent
+ - cpu_affinity
+ - num_fds
+ - exe
+ - uids
+ - ionice
+ - io_counters
+ - open_files
+ - num_threads
+
+
+We purposefully don't include the environment (environ) because it tends to not change,
+and more importantly, we want to not expose sensitive information. If you want
+to add this back in, you can do that:
+
+```bash
+$ watchme add system task-monitor-slack --type psutils func@monitor_pid_task pid@slack include@environ
+```
+
+We don't show threads because it would make the data too big, but we do include `num_threads`.
+
+To test out the task, you can do the following:
+
+```bash
+$ watchme run system task-monitor-slack --test
+```
+
+#### Use as a Decorator
+
+Although this isn't reproducible (you wouldn't write this into a watchme 
+configuration file), it's useful to use watchme to monitor system resources
+for a python function over time. For this reason, we provide a decorator!
+It uses the same task function, but with a different invocation.
+
+
+```python
+from watchme.watchers.psutils.decorators import monitor_resources
+
+@monitor_resources('decorator', seconds=3)
+def myfunc():
+    long_list = []
+    for i in range(100):
+        long_list = long_list + (i*10)*['pancakes']
+        sleep 10
+```
+
+The first argument is the name of the watcher (e.g., system) and the remainder
+(skip, include) are the same as on the command line. Your running function
+will produce the process id, so you don't need to provide it.
+
+### 2. The CPU Task
 
 This task will report basic cpu parameters. You add it by selection of the
 parameter `func@cpu_task`
@@ -97,7 +203,7 @@ $ watchme add system task-cpu --type psutils func@cpu_task skip@cpu_freq,cpu_per
 For more information on the psutil functions for cpu, see [here](https://psutil.readthedocs.io/en/latest/#cpu).
 
 
-### 2. The Memory Task
+### 3. The Memory Task
 
 This task will report stats on virtual memory. You add it by selection of the
 parameter `func@memory_task`
@@ -117,7 +223,7 @@ just don't run the task.
 For more information on the psutil functions for memory, see [here](https://psutil.readthedocs.io/en/latest/#memory).
 
 
-### 3. The Networking Task
+### 4. The Networking Task
 
 This task will report a bunch of network statistics. This is one that you might want to be
 careful with, since it exports a lot of your host networking information that might be sensitive
@@ -152,7 +258,7 @@ net_task()
 For more information on the psutil functions for networking, see [here](https://psutil.readthedocs.io/en/latest/#network).
 
 
-### 4. The Python Task
+### 5. The Python Task
 
 This task will report information about install location, modules, and version
 of the Python running the task. To set up this task:
@@ -179,7 +285,7 @@ Most of these functions fall under `psutil.os` and `psutil.os.sys`. There are qu
 a few, so if you think something is missing please [open an issue]({{ site.repo }}/issues).
 
 
-### 5. The Sensors Task
+### 6. The Sensors Task
 
 This is one of the coolest! You can actually use psutil to get information on your
 system fans, temperature, and even battery. Set up the task like this:
@@ -202,7 +308,7 @@ See the [sensors](https://psutil.readthedocs.io/en/latest/#sensors) documentatio
 for details on what is included.
 
 
-### 6. The System Task
+### 7. The System Task
 
 The system task will provide (basic) system information. This is another task
 that if you see something missing (that you think should be there) you should
@@ -231,7 +337,7 @@ See the [system](https://psutil.readthedocs.io/en/latest/#other-system-info) doc
 for details on what is included. A lot of these params are taken from `psutil.sys`.
 
 
-### 7. The Users Task
+### 8. The Users Task
 
 The last is the user task, which will export active users on the system. It's 
 likely that this task result won't change over time.
