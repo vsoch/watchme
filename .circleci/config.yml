@@ -54,6 +54,7 @@ test_watchme: &test_watchme
         cd ~/repo/watchme/tests
         $HOME/conda/bin/python -m unittest test_client
         $HOME/conda/bin/python -m unittest test_utils
+        export PATH=$HOME/conda/bin:$PATH
         /bin/bash test_client.sh
         /bin/bash test_watchers.sh
 
