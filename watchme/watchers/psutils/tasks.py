@@ -252,9 +252,10 @@ def sensors_task(**kwargs):
 
     # battery
     battery = psutil.sensors_battery()
-    result['sensors_battery'] = {'percent': battery.percent,
-                                 'secsleft': str(battery.secsleft),
-                                 'power_plugged': battery.power_plugged}
+    if battery != None:
+        result['sensors_battery'] = {'percent': battery.percent,
+                                     'secsleft': str(battery.secsleft),
+                                     'power_plugged': battery.power_plugged}
 
     # fans
     for name, entry in psutil.sensors_fans().items():

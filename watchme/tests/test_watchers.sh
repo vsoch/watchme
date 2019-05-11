@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo
 echo "************** START: test_watchers.sh **********************"
 
 # Include help functions

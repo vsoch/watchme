@@ -19,7 +19,7 @@ install_watchme: &install_watchme
   name: install watchme
   command: |
      $HOME/conda/bin/pip uninstall watchme --yes || echo "Not installed"
-     $HOME/conda/bin/python setup.py install
+     $HOME/conda/bin/pip install .[all]
 
 
 install_python_3: &install_python_3

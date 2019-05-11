@@ -3,6 +3,7 @@
 # Include help functions
 . helpers.sh
 
+echo
 echo "************** START: test_client.sh **********************"
 
 # Create temporary testing directory
