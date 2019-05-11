@@ -9,7 +9,9 @@ order: 1
 You should first [install]({{ site.baseurl }}/install/) watchme.
 This will place the executable `watchme` in your bin folder, which is the client
 for setting up and running a watcher. You can jump into setting up your first
-watcher below:
+watcher below. If you are interested in using the watchme decorator to monitor
+resource usage of a function, see the [psutils](http://localhost:4000/watchme/watchers/psutils/#1-the-monitor-pid-task)
+page.
 
 ## Setup
 
