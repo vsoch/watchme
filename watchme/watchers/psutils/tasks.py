@@ -8,13 +8,131 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.utils import generate_temporary_file
+from subprocess import (
+    check_output, 
+    CalledProcessError
+)
 from watchme.logger import bot
 import os
-import tempfile
-import requests
 import psutil
 
+def monitor_pid_task(**kwargs):
+    '''monitor a specific process. This function can be used as a task, or
+       is (most likely used) for the psutils.decorators. A pid parameter
+       is required.
+
+       Parameters
+       ==========
+       skip: an optional list of (comma separated) fields to skip. Can be in
+             net_io_counters,net_connections,net_if_address,net_if_stats
+       pid: the process id or name (required)
+    '''
+    pid = kwargs.get('pid', None)
+
+    bot.debug(kwargs)
+
+    # Helper function to get list from one,two,three
+    def get_list(name):
+        csv_list = kwargs.get(name, '')
+        return [x for x in csv_list.split(',') if x]
+
+    # A comma separated list of parameters to skip
+    skip = get_list('skip')
+    include = get_list('include')
+    only = get_list('only')
+
+    # Only continue given that argument is provided
+    if pid == None:   
+        bot.warning("A 'pid' parameter is required to use the monitor_pid_task function.")
+        return pid
+
+    # The user is allowed to provide a process name, or a number
+    try:
+        pid = int(pid)
+    except ValueError:
+        pid = _get_pid(pid)
+
+    # But if it's stil no good (None) we exit.
+    if pid == None:
+        bot.warning("'pid' must be a running process or process name.")
+        return pid
+
+    ps = psutil.Process(pid)
+    bot.debug(ps)
+
+    results = {}
+
+    for key, val in ps.as_dict().items():
+
+        # First priority goes to a custom set
+        if len(only) > 0 and key in only:
+            bot.debug('skipping %s' % key)
+            continue 
+
+        # The user requested to skip
+        elif key in skip or key in ['threads']:
+            continue
+
+        # Keep count of threads
+        elif key in ["open_files"]:
+            results[key] = len(val)
+
+        # Don't risk exposing sensitive information
+        elif key == "environ":
+            if key in include:
+                results[key] = val
+
+        # Skip over ones that are too detailed
+        elif key in ['memory_maps']:
+            continue
+
+        # I assume this included all that are in pmem too
+        elif isinstance(val, psutil._pslinux.pfullmem):
+            results[key] = {"rss": val.rss,
+                            "vms": val.vms,
+                            "shared": val.shared,
+                            "text": val.text,
+                            "lib": val.lib,
+                            "data": val.data,
+                            "dirty": val.dirty,
+                            "uss": val.uss,
+                            "pss": val.pss,
+                            "swap": val.swap}
+
+        elif isinstance(val, psutil._common.pgids) or isinstance(val, psutil._common.puids):
+            results[key] = {"real": val.real,
+                            "effetive":val.effective,
+                            "saved": val.saved}
+
+        elif isinstance(val, psutil._common.pcputimes):
+            results[key] = {"user": val.user,
+                            "system": val.system,
+                            "children_user": val.children_user,
+                            "children_system": val.children_system}
+
+        elif isinstance(val, psutil._common.pctxsw):
+            results[key] = {"voluntary": val.voluntary,
+                            "involuntary":val.involuntary}
+
+        elif isinstance(val, psutil._common.pionice):
+            results[key] = {"ioclass":val.ioclass.name,
+                            "value": val.value}
+
+        # pfullmem (first above) should cover this
+        elif isinstance(val, psutil._pslinux.pmem):
+            continue
+
+        elif isinstance(val, psutil._pslinux.pio):
+            results[key] = {"read_count": val.read_count,
+                            "write_count": val.write_count,
+                            "read_bytes": val.read_bytes,
+                            "write_bytes": val.write_bytes,
+                            "read_chars": val.read_chars,
+                            "write_chars": val.write_chars}
+        else:
+            results[key] = val
+
+    return results
 
 def cpu_task(**kwargs):
     '''Get variables about the cpu of the host. No parameters are required.
@@ -134,9 +252,10 @@ def sensors_task(**kwargs):
 
     # battery
     battery = psutil.sensors_battery()
-    result['sensors_battery'] = {'percent': battery.percent,
-                                 'secsleft': str(battery.secsleft),
-                                 'power_plugged': battery.power_plugged}
+    if battery != None:
+        result['sensors_battery'] = {'percent': battery.percent,
+                                     'secsleft': str(battery.secsleft),
+                                     'power_plugged': battery.power_plugged}
 
     # fans
     for name, entry in psutil.sensors_fans().items():
@@ -267,3 +386,23 @@ def _filter_result(result, skip):
             del result[key]
 
     return result
+
+
+def _get_pid(name):
+    '''used to get the pid of a process, by name
+       
+       Parameters
+       ==========
+       name: the name of the process to get.
+    '''
+    try:
+        pid = check_output(["pidof", name])
+        pid = pid.decode('utf-8').strip('\n').split(' ') 
+        if len(pid) > 1:
+            bot.warning("More than one pid found for %s, using first." % name)
+        pid = int(pid[0])
+
+    except CalledProcessError:
+        bot.error("%s does not exist." % name)
+        pid = None
+    return pid

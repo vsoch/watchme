@@ -9,7 +9,9 @@ order: 1
 You should first [install]({{ site.baseurl }}/install/) watchme.
 This will place the executable `watchme` in your bin folder, which is the client
 for setting up and running a watcher. You can jump into setting up your first
-watcher below:
+watcher below. If you are interested in using the watchme decorator to monitor
+resource usage of a function, see the [psutils](http://localhost:4000/watchme/watchers/psutils/#1-the-monitor-pid-task)
+page.
 
 ## Setup
 
@@ -302,27 +304,35 @@ watcher
 purpleair
 ```
 
-You can also list files for a particular watcher folder:
+You can also list task folders and other files for a particular watcher:
 
 ```bash
-$ watchme list purpleair
-task: /home/vanessa/.watchme/purpleair
-README.md
+$ watchme list github
+watcher: /tmp/tmp.QG2Tuusrrb/github
+data
+  task-vsoch-scif
+  task-singularity
+  task-spack
+  README.md
   .git
+  task-sregistry
+  task-spython
+  task-sregistry-cli
+  task-expfactory
   watchme.cfg
 ```
 
-And logically, you can then inspect further with [inspect](#how-do-i-inspect-my-watchers).
-Here is a trick to loop through them all:
+or finally, if you add a specific task folder, you can list the contents there.
 
 ```bash
-$ for watcher in $(watchme list) 
-do
-    echo "===================="
-    echo "Inspecting $watcher"
-    watchme inspect $watcher
-done
+$ watchme list github task-spython
+task: /tmp/tmp.QG2Tuusrrb/github/task-spython
+TIMESTAMP
+  result.json
 ```
+
+If you are interested in the configurations in watchme.cfg, then you can 
+inspect further with [inspect](#how-do-i-inspect-my-watchers).
 
 ### How do I protect or freeze my watcher?
 

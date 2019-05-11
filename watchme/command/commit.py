@@ -170,6 +170,9 @@ def git_clone(repo, name=None, base=None, force=False):
 
     # Move the repository there
     shutil.move(tmpdir, dest)
+
+    # Ensure we don't sign gpg key
+    run_command("git --git-dir=%s/.git config commit.gpgsign false" % dest)
     bot.info('Added watcher %s' % name)
     
 

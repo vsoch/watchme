@@ -22,9 +22,9 @@ def main(args, extra):
     task = args.task[0]
     filename = args.filename[0]
 
-    if not task.startswith('task'):
+    if not task.startswith('task') and not task.startswith('decorator'):
         example = 'watchme export watcher task-reddit result.txt'
-        bot.exit('Task name must start with "task", e.g., %s' % example)
+        bot.exit('Task name must start with "task" or "decorator": %s' % example)
 
     # Use the output file, or a temporary file
     out = args.out

@@ -25,4 +25,3 @@ def main(args, extra):
 
     # Clone the watcher, and optionally just one task
     git_clone(repo=repo, base=args.base, name=extra, force=args.force)
-

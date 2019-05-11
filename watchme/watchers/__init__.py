@@ -545,6 +545,31 @@ class Watcher(object):
         return False
 
 
+# Get a Decorator
+
+    def get_decorator(self, name):
+        '''instantiate a task object for a decorator. Decorators must start
+           with "decorator-" and since they are run on the fly, we don't
+           find them in the config.
+
+           Parameters
+           ==========
+           name: the name of the task to load
+        '''
+
+        task = None
+
+        # Only psutils has decorators
+        if name.startswith('decorator-psutils'):
+            from .psutils import Task
+
+        else:
+            bot.exit('Type %s is not recognized in get_decorator' % name)
+
+        task = Task(name)
+        return task
+
+
 # Get and Prepare Tasks
 
     def has_task(self, name):
@@ -621,9 +646,9 @@ class Watcher(object):
             selected = False
         
         # The user wants to search for a custom task name
-        if regexp != None:
-            if not re.search(regexp, task):
-                bot.info('Task %s is selected to run.' % task)
+        if regexp != None and task != None:
+            if not re.search(regexp, task.name):
+                bot.info('Task %s is not selected to run.' % task)
                 selected = False
 
         return selected
@@ -754,7 +779,7 @@ class Watcher(object):
             bot.exit('Watcher %s is not active.' % self.name)
 
         # Step 2: get the tasks associated with the run, a list of param dicts
-        tasks = self.get_tasks()
+        tasks = self.get_tasks(regexp=regexp)
 
         # Step 3: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
@@ -779,9 +804,23 @@ class Watcher(object):
            results: a dictionary of tasks, with keys as the task name, and
                     values as the result.
         '''
+        if results == None:
+            return
+
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
-            task = self.get_task(name)
+
+            if name.startswith('task'):
+                task = self.get_task(name)
+ 
+            # A decorator is run on the fly (not in config)
+            elif name.startswith('decorator'):
+                task = self.get_decorator(name)
+
+            # We only allow tasks and decorators
+            else:
+                bot.warning('%s is not task or decorator, skipping.' % name)
+                continue
 
             # Ensure that the task folder exists
             if not os.path.exists(task_folder):

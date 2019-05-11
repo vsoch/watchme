@@ -19,7 +19,7 @@ install_watchme: &install_watchme
   name: install watchme
   command: |
      $HOME/conda/bin/pip uninstall watchme --yes || echo "Not installed"
-     $HOME/conda/bin/python setup.py install
+     $HOME/conda/bin/pip install .[all]
 
 
 install_python_3: &install_python_3
@@ -48,12 +48,21 @@ install_python_2: &install_python_2
            echo "Miniconda 2 is already installed, continuing to build."
        fi
 
-test_watchme: &test_watchme
-  name: Test WatchMe
+test_watchme_python: &test_watchme_python
+  name: Test WatchMe Python
   command: |
         cd ~/repo/watchme/tests
         $HOME/conda/bin/python -m unittest test_client
         $HOME/conda/bin/python -m unittest test_utils
+
+test_watchme_bash: &test_watchme_bash
+  name: Test WatchMe Client
+  command: |
+        cd ~/repo/watchme/tests
+        export PATH=$HOME/conda/bin:$PATH
+        /bin/bash test_client.sh
+        /bin/bash test_watchers.sh
+
 
 jobs:
   test-watchme-python-3:
@@ -69,8 +78,9 @@ jobs:
       - save_cache:
           paths:
             - /home/circleci/conda
-          key: v1-dependencies        
-      - run: *test_watchme
+          key: v1-dependencies
+      - run: *test_watchme_python
+      - run: *test_watchme_bash
 
   test-watchme-python-2:
     machine: true
@@ -86,4 +96,5 @@ jobs:
           paths:
             - /home/circleci/conda
           key: v1-dependencies        
-      - run: *test_watchme
+      - run: *test_watchme_python
+      - run: *test_watchme_bash

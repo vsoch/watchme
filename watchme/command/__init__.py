@@ -26,6 +26,7 @@ from .commit import (
 )
 from .utils import (
     get_watchers,
+    list_task,
     list_watcher,
     list_watcher_types
 )

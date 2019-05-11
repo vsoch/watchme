@@ -25,6 +25,7 @@ INSTALL_REQUIRES = (
 
 INSTALL_URLS_DYNAMIC = (
     ('beautifulsoup4', {'min_version': '4.6.0'}),
+    ('lxml', {'min_version': '4.1.1'}),
 )
 
 INSTALL_PSUTILS = (

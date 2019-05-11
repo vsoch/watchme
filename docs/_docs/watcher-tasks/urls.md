@@ -20,7 +20,7 @@ You would then want to add a task to it. The general format to add a task looks
 like this:
 
 ```bash
-$ watchme add <watcher> task-<name> key1@value1 key2@value2
+$ watchme add-task <watcher> task-<name> key1@value1 key2@value2
 ```
 
 The key and value pairs are going to vary based on the watcher, however
@@ -37,7 +37,7 @@ A urls task has the following parameters shared across functions.
 |------|----------|---------|---------|-----------|
 | url  | Yes     |undefined|url@https://www.reddit.com/r/hpc| validated starts with http |
 | func | No    |get_task |func@download_task| must be defined in tasks.py |
-
+| regex | No    |undefined |regex@[0-9]+| if text, filter to regular expression |
 
 #### Task Headers
 
@@ -57,7 +57,7 @@ do that. The following task loops through 7 pages of Pusheen dolls, and collects
 from the result of selection page elements by the .money class.
 
 ```bash
-$ watchme add pusheen task-pusheencom url@https://shop.pusheen.com/collections/pusheen func@get_url_selection get_text@true selection@.money url_param_page@1,2,3,4,5,6,7
+$ watchme add-task pusheen task-pusheencom url@https://shop.pusheen.com/collections/pusheen func@get_url_selection get_text@true selection@.money url_param_page@1,2,3,4,5,6,7
 ```
 
 Specifically, note how we specified the "page" parameter for the url, with commas separated each call separately.
@@ -94,15 +94,15 @@ This task will watch for changes at an entire URL, meaning tracking the entire p
 For example, here is a page I wanted to watch for changes:
 
 ```bash
-$ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/
-[task-harvard-hpc]
-url  = https://www.rc.fas.harvard.edu/about/people/
+$ watchme add-task watcher task-get url@https://httpbin.org/get
+[task-get]
+url  = https://httpbin.org/get
 active  = true
 type  = urls
 ```
 
-In the above, we added the task "task-harvard-hpc" to the watcher called "watcher"
-and we defined the parameter "url" to be `https://www.rc.fas.harvard.edu/about/people/`.
+In the above, we added the task "task-get" to the watcher called "watcher"
+and we defined the parameter "url" to be `https://httpbin.org/get`.
 As a confirmation that the task was added, the configuration is printed to the screen.
 This task is appropriate for content that you want returned as a string, and then
 saved to a text file to the repository. By default, it will be saved as result.txt.
@@ -110,14 +110,21 @@ If you want to customize the extension (e.g., get a json object and save as resu
 specify the save_as parameter:
 
 ```bash
-$ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@json
+$ watchme add-task watcher task-get url@https://httpbin.org/get save_as@json
 ```
 
-The following custom parameters can be added:
+If you anticipate a list of results and want to save to separate jsons (one per entry)
+then specify save_as@jsons
+
+```bash
+$ watchme add-task watcher task-get url@https://httpbin.org/get save_as@jsons
+```
+
+Thus, the following custom parameters can be added:
 
 | Name | Required | Default | Example | Notes|
 |------|----------|---------|---------|-----------|
-| save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
+| save_as | No | unset |save_as@json| default saves to text, or can be specified as json/jsons. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 | url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
 | header_* | No | unset | header_Accept@json | Define 1 or headers |
@@ -132,7 +139,7 @@ This task will post to get changes from a URL, ideal for watching restful API
 endpoints. For example, here is a page I wanted to watch for changes:
 
 ```bash
-$ watchme add watcher task-api-post url@https://httpbin.org/post file_name@post-latest.json func@post_task
+$ watchme add-task watcher task-api-post url@https://httpbin.org/post file_name@post-latest.json func@post_task
 
 [task-api-post]
 url  = https://httpbin.org/post
@@ -169,7 +176,7 @@ to track changes over time. You can do this by using the urls type watcher and
 specifying the variable func to be "download_task":
 
 ```bash
-$ watchme add watcher task-download url@https://httpbin.org/image/png func@download_task file_name@image.png
+$ watchme add-task watcher task-download url@https://httpbin.org/image/png func@download_task file_name@image.png
 [task-download]
 url  = https://httpbin.org/image/png
 func  = download_task
@@ -203,7 +210,7 @@ to define this as the selection:
 
 ```bash
 $ watchme create air-quality
-$ watchme add air-quality task-air-oakland url@http://aqicn.org/city/california/alameda/oakland-west func@get_url_selection selection@#aqiwgtvalue file_name@oakland.txt get_text@true
+$ watchme add-task air-quality task-air-oakland url@http://aqicn.org/city/california/alameda/oakland-west func@get_url_selection selection@#aqiwgtvalue file_name@oakland.txt get_text@true
 [task-air-oakland]
 url  = http://aqicn.org/city/california/alameda/oakland-west
 func  = get_url_selection
@@ -261,8 +268,8 @@ $ cat /home/vanessa/.watchme/watcher/watchme.cfg
 [watcher]
 active = false
 
-[task-harvard-hpc]
-url  = https://www.rc.fas.harvard.edu/about/people/
+[task-get]
+url  = https://httpbin.org/get
 active  = true
 type  = urls
 ```

@@ -50,8 +50,8 @@ def export_dict(self, task,
         base = self.base
 
     # Quit early if the task isn't there
-    if not self.has_task(task):
-        bot.exit('%s is not a valid task for %s' % (task, name))
+    if not self.has_task(task) and not name.startswith('decorator'):
+        bot.exit('%s is not a valid task or decorator for %s' % (task, name))
 
     repo = os.path.join(base, self.name)
     if not os.path.exists(repo):
@@ -82,7 +82,13 @@ def export_dict(self, task,
         if export_json is True:
             content = json.loads(content)
 
-        result['content'].append(content)
+        # If it's a list, add it to content
+        if isinstance(content, list):
+            result['content'] += content
+        # Otherwise, append
+        else:
+            result['content'].append(content)
+
         result['dates'].append(git_date(repo=repo, commit=commit))
         result['commits'].append(commit)
     return result

@@ -170,10 +170,12 @@
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">get_params</span><span class="p">,</span> 
     <span class="n">get_results</span><span class="p">,</span> 
-    <span class="n">get_headers</span>
+    <span class="n">get_headers</span><span class="p">,</span>
+    <span class="n">parse_success_response</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="k">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -187,6 +189,10 @@
 
 <span class="sd">       REQUIRED:</span>
 <span class="sd">           url: a url to return the page for</span>
+
+<span class="sd">       OPTIONAL</span>
+<span class="sd">           regex: a regular expression to search the text for (not used w/ json)</span>
+<span class="sd">           save_as: return the result to save as json</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">paramsets</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -196,16 +202,9 @@
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="n">save_as</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span>
 
-            <span class="c1"># Returning the result as json will detect dictionary, and save json</span>
-            <span class="k">if</span> <span class="n">save_as</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-            <span class="c1"># Otherwise, we return text</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
-
+            <span class="c1"># Parse the response per the user&#39;s request</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">parse_success_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
@@ -238,18 +237,14 @@
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
 
-            <span class="n">save_as</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">)</span>
-
-            <span class="c1"># Returning the result as json will detect dictionary, and save json</span>
-            <span class="k">if</span> <span class="n">save_as</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-            <span class="c1"># Otherwise, we return text</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+            <span class="c1"># Parse the response per the user&#39;s request</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">parse_success_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
 
     <span class="c1"># Return None if no results found</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -336,6 +331,9 @@
     <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;get_text&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">get_text</span> <span class="o">=</span> <span class="kc">True</span>
 
+    <span class="c1"># Are we searching for a regular expression in the result?</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;regex&#39;</span><span class="p">)</span>
+
     <span class="c1"># Does the user want to get one or more attributes?</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">attributes</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
@@ -355,7 +353,8 @@
                                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                                <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                               <span class="n">get_text</span><span class="o">=</span><span class="n">get_text</span><span class="p">)</span>
+                               <span class="n">get_text</span><span class="o">=</span><span class="n">get_text</span><span class="p">,</span>
+                               <span class="n">regex</span><span class="o">=</span><span class="n">regex</span><span class="p">)</span>
 
     <span class="c1"># No results</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -407,7 +406,7 @@
       <script type="text/javascript" src="../../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../../assets/language_data.js"></script>
 
   
 

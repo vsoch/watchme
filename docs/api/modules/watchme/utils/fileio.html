@@ -165,17 +165,17 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">import</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pwd</span>
-<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+
+
 
 <span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
 
@@ -184,11 +184,11 @@
 <div class="viewcode-block" id="get_userhome"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_userhome">[docs]</a><span class="k">def</span> <span class="nf">get_userhome</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;get the user home based on the effective uid</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">5</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_user"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_user">[docs]</a><span class="k">def</span> <span class="nf">get_user</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;return the active user&#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">get_userhome</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="get_host"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.fileio.get_host">[docs]</a><span class="k">def</span> <span class="nf">get_host</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;return the hostname&#39;&#39;&#39;</span>
@@ -366,7 +366,7 @@
       <script type="text/javascript" src="../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
 
   
 

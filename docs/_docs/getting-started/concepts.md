@@ -24,9 +24,16 @@ Cool!
 ### Watcher Types
 
 So far, we've talked about looking for changes in "pages," or websites. 
-This is the default watcher type, however we have plans to add other kinds of 
-watchers as we think of them. When there are other watchers that you can choose 
-from, you will be able to specify the kind when you create a new watcher.
+This is the default watcher type, however there are other kinds of 
+tasks that a watcher might run. When you create a new watcher, you can
+specify the type with the `--type` argument.
+
+### Decorators
+
+A watchme decorator is a monitor that can be used to run some task over
+one of your python functions. For example, the `psutils` watcher type
+has a decorator to record resource information about a running process (your
+function) while it's running.
 
 > Where should I go next?
 

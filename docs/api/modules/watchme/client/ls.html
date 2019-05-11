@@ -165,19 +165,28 @@
 
 <span class="kn">from</span> <span class="nn">watchme.command</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">get_watchers</span><span class="p">,</span>
-    <span class="n">list_watcher</span>
+    <span class="n">list_watcher</span><span class="p">,</span>
+    <span class="n">list_watcher_types</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../source/watchme.client.html#watchme.client.ls.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">extra</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;list installed watchers</span>
-<span class="sd">    &#39;&#39;&#39;</span>    
-    <span class="k">if</span> <span class="n">extra</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">get_watchers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">watcher</span> <span class="ow">in</span> <span class="n">extra</span><span class="p">:</span>
-            <span class="n">list_watcher</span><span class="p">(</span><span class="n">watcher</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span></div>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">watchers</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">list_watcher_types</span><span class="p">()</span>
 
+    <span class="c1"># Otherwise, we are listing installed watchers and tasks</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># If no watchers provided, list the watchers</span>
+        <span class="k">if</span> <span class="n">extra</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">get_watchers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+
+        <span class="c1"># Otherwise, list the tasks of the watcher</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">watcher</span> <span class="ow">in</span> <span class="n">extra</span><span class="p">:</span>
+                <span class="n">list_watcher</span><span class="p">(</span><span class="n">watcher</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">base</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -223,7 +232,7 @@
       <script type="text/javascript" src="../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
 
   
 

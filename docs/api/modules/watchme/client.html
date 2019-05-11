@@ -265,7 +265,7 @@
 
     <span class="c1"># add</span>
 
-    <span class="n">add</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;add&quot;</span><span class="p">,</span>
+    <span class="n">add</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;add-task&quot;</span><span class="p">,</span>
                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add a task to a watcher.&quot;</span><span class="p">)</span>
 
     <span class="n">add</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -303,6 +303,10 @@
 
     <span class="n">ls</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span>
                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list all watchers at a base&quot;</span><span class="p">)</span>
+
+    <span class="n">ls</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--watchers&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;watchers&quot;</span><span class="p">,</span> 
+                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list watchers available&quot;</span><span class="p">,</span> 
+                     <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
 
     <span class="c1"># protect and freeze</span>
 
@@ -458,7 +462,7 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;activate&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.activate</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.add</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;add-task&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.add</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;edit&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.edit</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;export&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.export</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.create</span> <span class="k">import</span> <span class="n">main</span>
@@ -530,7 +534,7 @@
       <script type="text/javascript" src="../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../assets/language_data.js"></script>
 
   
 

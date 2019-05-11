@@ -170,16 +170,16 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../source/watchme.client.html#watchme.client.export.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">extra</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;activate one or more watchers</span>
+    <span class="sd">&#39;&#39;&#39;export temporal data for a watcher</span>
 <span class="sd">    &#39;&#39;&#39;</span>    
     <span class="c1"># Required - will print help if not provided</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">watcher</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">task</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">task</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
-        <span class="n">example</span> <span class="o">=</span> <span class="s1">&#39;watchme add watcher task-reddit url@https://www.reddit.com&#39;</span>
-        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Task name must start with &quot;task&quot;, e.g., </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">example</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;decorator&#39;</span><span class="p">):</span>
+        <span class="n">example</span> <span class="o">=</span> <span class="s1">&#39;watchme export watcher task-reddit result.txt&#39;</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Task name must start with &quot;task&quot; or &quot;decorator&quot;: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">example</span><span class="p">)</span>
 
     <span class="c1"># Use the output file, or a temporary file</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">out</span>
@@ -250,7 +250,7 @@
       <script type="text/javascript" src="../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
 
   
 
