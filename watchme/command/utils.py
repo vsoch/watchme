@@ -52,12 +52,44 @@ def list_watcher(watcher, base=None):
         base = WATCHME_BASE_DIR
 
     repo = os.path.join(base, watcher)
-    if os.path.exists(repo):
-        files = os.listdir(repo)
-        bot.custom(prefix="task:", message="%s" % repo, color="CYAN")
+    return _general_list(repo, 'watcher', base)
+
+
+def list_task(watcher, task, base=None):
+    '''list the contents (result files) of a task folder beloning to a watcher.
+
+       Parameters
+       ==========
+       watcher: the watcher folder to use
+       task: the task folder within
+       base: the watchme base, defaults to $HOME/.watchme
+    '''
+    if base == None:
+        base = WATCHME_BASE_DIR
+
+    task_folder = os.path.join(base, watcher, task)
+    return _general_list(task_folder, 'task', base)
+
+
+def _general_list(path, prefix='path', base=None):
+    '''a shared function for listing (and returning) files.
+
+       Parameters
+       ==========
+       path: the full path to list, if it exists
+       prefix: a prefix to print for the type
+       base: the watchme base, defaults to $HOME/.watchme
+    '''
+    if base == None:
+        base = WATCHME_BASE_DIR
+
+    if os.path.exists(path):
+        files = os.listdir(path)
+        bot.custom(prefix="%s:" % prefix, message="%s" % path, color="CYAN")
         bot.info('\n  '.join(files))
     else:
         bot.exit('%s does not exist.' % base)
+
 
 def list_watcher_types():
     '''list the exporter options provided by watchme

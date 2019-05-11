@@ -54,6 +54,8 @@ test_watchme: &test_watchme
         cd ~/repo/watchme/tests
         $HOME/conda/bin/python -m unittest test_client
         $HOME/conda/bin/python -m unittest test_utils
+        /bin/bash test_client.sh
+        /bin/bash test_watchers.sh
 
 jobs:
   test-watchme-python-3:

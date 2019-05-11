@@ -40,7 +40,7 @@ Remember that we are going to be added tasks to our watcher, "system" above.
 The general format to add a task looks like this:
 
 ```bash
-$ watchme add <watcher> <task-name> key1@value1 key2@value2
+$ watchme add-task <watcher> <task-name> key1@value1 key2@value2
 ```
 
 The key and value pairs are going to vary based on the watcher task.
@@ -274,7 +274,7 @@ This task will report basic cpu parameters. You add it by selection of the
 parameter `func@cpu_task`
 
 ```bash
-$ watchme add system task-cpu --type psutils func@cpu_task
+$ watchme add-task system task-cpu --type psutils func@cpu_task
 [watcher|system]
 [task-cpu]
 func  = cpu_task
@@ -297,7 +297,7 @@ will be retrieved (and you can remove any with the comma separated list "skip."
 For example, to skip the first two, you would add the watcher like this:
 
 ```bash
-$ watchme add system task-cpu --type psutils func@cpu_task skip@cpu_freq,cpu_percent
+$ watchme add-task system task-cpu --type psutils func@cpu_task skip@cpu_freq,cpu_percent
 ```
 
 For more information on the psutil functions for cpu, see [here](https://psutil.readthedocs.io/en/latest/#cpu).
@@ -309,7 +309,7 @@ This task will report stats on virtual memory. You add it by selection of the
 parameter `func@memory_task`
 
 ```bash
-$ watchme add system task-memory --type psutils func@memory_task
+$ watchme add-task system task-memory --type psutils func@memory_task
 [task-memory]
 func  = memory_task
 active  = true
@@ -332,7 +332,7 @@ the different parameters here first. stats on virtual memory. You add it by sele
 parameter `func@net_task`. In the example below, I'm going to skip 'net_if_address' and "net_connections"
 
 ```bash
-$ watchme add system task-network --type psutils func@net_task skip@net_connections,net_if_address
+$ watchme add-task system task-network --type psutils func@net_task skip@net_connections,net_if_address
 [task-network]
 func  = net_task
 skip  = net_connections,net_if_address
@@ -364,7 +364,7 @@ This task will report information about install location, modules, and version
 of the Python running the task. To set up this task:
 
 ```bash
-$ watchme add system task-python --type psutils func@python_task
+$ watchme add-task system task-python --type psutils func@python_task
 [task-python]
 func  = python_task
 active  = true
@@ -391,7 +391,7 @@ This is one of the coolest! You can actually use psutil to get information on yo
 system fans, temperature, and even battery. Set up the task like this:
 
 ```bash
-$ watchme add system task-sensors --type psutils func@sensors_task
+$ watchme add-task system task-sensors --type psutils func@sensors_task
 [task-sensors]
 func  = sensors_task
 active  = true
@@ -415,7 +415,7 @@ that if you see something missing (that you think should be there) you should
 [open an issue]({{ site.repo }}/issues). Here is how to add the task:
 
 ```bash
-$ watchme add system task-system --type psutils func@system_task
+$ watchme add-task system task-system --type psutils func@system_task
 [task-system]
 func  = system_task
 active  = true
@@ -443,7 +443,7 @@ The last is the user task, which will export active users on the system. It's
 likely that this task result won't change over time.
 
 ```bash
-$ watchme add system task-users --type psutils func@users_task
+$ watchme add-task system task-users --type psutils func@users_task
 [task-users]
 func  = users_task
 active  = true
