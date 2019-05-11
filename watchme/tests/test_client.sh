@@ -78,7 +78,7 @@ runTest 0 $output watchme run github task-spython --test
 runTest 0 $output watchme run github task-expfactory
 runTest 0 $output watchme run github task-expfactory --no-progress
 runTest 0 $output watchme run github task-expfactory --serial
-runTest 1 $output watchme run github task-doesntexist
+runTest 0 $output watchme run github task-doesntexist
 
 echo "Finish testing basic client"
 rm -rf ${tmpdir}
