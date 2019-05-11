@@ -161,7 +161,7 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="p">(</span> <span class="n">bot</span><span class="p">,</span> <span class="n">RobotNamer</span> <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">RobotNamer</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">watchme.version</span> <span class="k">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">WATCHME_BASE_DIR</span><span class="p">,</span>
@@ -185,12 +185,14 @@
 
 <span class="kn">from</span> <span class="nn">.settings</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">get_setting</span><span class="p">,</span>
-    <span class="n">set_setting</span><span class="p">,</span>
     <span class="n">get_section</span><span class="p">,</span>
+    <span class="n">has_setting</span><span class="p">,</span>
+    <span class="n">has_section</span><span class="p">,</span>
     <span class="n">print_section</span><span class="p">,</span>
     <span class="n">print_add_task</span><span class="p">,</span>
     <span class="n">remove_setting</span><span class="p">,</span>
-    <span class="n">remove_section</span>
+    <span class="n">remove_section</span><span class="p">,</span>
+    <span class="n">set_setting</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.schedule</span> <span class="k">import</span> <span class="p">(</span>
@@ -267,7 +269,7 @@
         <span class="c1"># If the watcher doesn&#39;t exist and we need to create:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">create</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">create_watcher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>   
+                <span class="n">create_watcher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Watcher </span><span class="si">%s</span><span class="s1"> does not exist. Use watchme create.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -292,7 +294,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_task</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a task defined by </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a task defined by </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">]:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Action must be update, add, or remove&#39;</span><span class="p">)</span>
@@ -302,7 +304,7 @@
 
         <span class="c1"># Add, and it doesn&#39;t exist so it&#39;s okay</span>
         <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Adding </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Adding </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Already exists, encourage user to update</span>
@@ -311,7 +313,7 @@
 
         <span class="c1"># Update, and it&#39;s a valid choice</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;update&#39;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Updating </span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Updating </span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_setting</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Update, and it&#39;s not a valid choice</span>
@@ -320,7 +322,7 @@
 
         <span class="c1"># Remove, and it&#39;s a valid choice</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;remove&quot;</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span> <span class="p">)</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
 
         <span class="c1"># Remove, and it&#39;s not a valid choice</span>
@@ -329,7 +331,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Watcher.has_section"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.has_section">[docs]</a>    <span class="k">def</span> <span class="nf">has_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns True or False to indicate if the watcher has a specified</span>
 <span class="sd">           section. To get a task, use self.has_task.</span>
 
@@ -341,7 +343,7 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> not found for watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
 
 <div class="viewcode-block" id="Watcher.load_config"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.load_config">[docs]</a>    <span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -351,7 +353,7 @@
 <span class="sd">           it will be written with a default active status set to false.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">):</span>
-           
+
             <span class="c1"># Load the configuration file if it exists (will exit if not found)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">)</span>
@@ -377,7 +379,7 @@
         <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;incorrectly formatted param, must be key@value&#39;</span><span class="p">)</span>
-            <span class="n">key</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
             <span class="c1"># All tasks are not allowed to have default params</span>
@@ -402,8 +404,8 @@
 <span class="sd">           params: list of parameters to be validated (key@value)</span>
 <span class="sd">           force: if task already exists, overwrite</span>
 <span class="sd">           active: add the task as active (default &quot;true&quot;)</span>
-<span class="sd">           </span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="c1"># Check again, in case user calling from client</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Task name must start with &quot;task&quot; (e.g., task-reddit)&#39;</span><span class="p">)</span>
@@ -416,9 +418,11 @@
         <span class="k">if</span> <span class="n">task_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">):</span>
             <span class="kn">from</span> <span class="nn">.urls</span> <span class="k">import</span> <span class="n">Task</span>
 
-        <span class="c1"># Validate variables provided for task</span>
         <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;psutils&#39;</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
+
+        <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;results&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Task</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;task_type </span><span class="si">%s</span><span class="s1"> not properly added to Watcher&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>
@@ -475,7 +479,8 @@
             <span class="n">git_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># Commit changes</span>
-        <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;ADD task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                   <span class="n">message</span><span class="o">=</span><span class="s2">&quot;ADD task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <span class="c1"># Delete</span>
 
@@ -497,7 +502,7 @@
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing watcher </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2"> doesn&#39;t exist&quot;</span> <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span></div>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2"> doesn&#39;t exist&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Watcher.remove_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.remove_task">[docs]</a>    <span class="k">def</span> <span class="nf">remove_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
@@ -693,6 +698,31 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
+<span class="c1"># Get a Decorator</span>
+
+<div class="viewcode-block" id="Watcher.get_decorator"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_decorator">[docs]</a>    <span class="k">def</span> <span class="nf">get_decorator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;instantiate a task object for a decorator. Decorators must start</span>
+<span class="sd">           with &quot;decorator-&quot; and since they are run on the fly, we don&#39;t</span>
+<span class="sd">           find them in the config.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the task to load</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Only psutils has decorators</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;decorator-psutils&#39;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> is not recognized in get_decorator&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">task</span></div>
+
+
 <span class="c1"># Get and Prepare Tasks</span>
 
 <div class="viewcode-block" id="Watcher.has_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.has_task">[docs]</a>    <span class="k">def</span> <span class="nf">has_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -705,7 +735,7 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="Watcher.get_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Watcher.get_task"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_task">[docs]</a>    <span class="k">def</span> <span class="nf">get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;get a particular task, based on the name. This is where each type</span>
 <span class="sd">           of class should check the &quot;type&quot; parameter from the config, and</span>
 <span class="sd">           import the correct Task class.</span>
@@ -713,7 +743,6 @@
 <span class="sd">           Parameters</span>
 <span class="sd">           ==========</span>
 <span class="sd">           name: the name of the task to load</span>
-<span class="sd">           save: if saving, will be True</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
 
@@ -735,16 +764,19 @@
             <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;psutils&#39;</span><span class="p">:</span>
                 <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
 
+            <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;results&#39;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Task</span>
+
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> not properly set up in get_task&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>
 
             <span class="c1"># if not valid, will return None</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">_save</span><span class="o">=</span><span class="n">save</span><span class="p">)</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">task</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_task_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_task_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;check if a task is active and (if defined) passes user provided</span>
 <span class="sd">           task names or regular expressions.</span>
 
@@ -752,6 +784,7 @@
 <span class="sd">           ==========</span>
 <span class="sd">           task: the task object to check</span>
 <span class="sd">           regexp: an optional regular expression (or name) to check</span>
+<span class="sd">           active: a task is selected if it&#39;s active (default True)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">selected</span> <span class="o">=</span> <span class="kc">True</span> 
 
@@ -760,8 +793,8 @@
             <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># Is the task not active (undefined is active)?</span>
-        <span class="n">active</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">active</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+        <span class="n">is_active</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_active</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span> <span class="ow">and</span> <span class="n">active</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is not active.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
             <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
         
@@ -774,7 +807,7 @@
         <span class="k">return</span> <span class="n">selected</span>
 
 
-<div class="viewcode-block" id="Watcher.get_tasks"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Watcher.get_tasks"><a class="viewcode-back" href="../../source/watchme.watchers.html#watchme.watchers.Watcher.get_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;get the tasks for a watcher, possibly matching a regular expression.</span>
 <span class="sd">           A list of dictionaries is returned, each holding the parameters for</span>
 <span class="sd">           a task. &quot;uri&quot; will hold the task (folder) name, active</span>
@@ -783,6 +816,8 @@
 <span class="sd">           ==========</span>
 <span class="sd">           regexp: if supplied, the user wants to run only tasks that match</span>
 <span class="sd">                   a particular pattern</span>
+<span class="sd">           quiet: If quiet, don&#39;t print the number of tasks found</span>
+<span class="sd">           active: only return active tasks (default True)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
 
@@ -794,10 +829,11 @@
 
             <span class="c1"># Check that the task should be run, and is valid</span>
             <span class="k">if</span> <span class="n">task</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_selected</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="p">)</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_selected</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
-        <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%s</span><span class="s1"> contender tasks.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">quiet</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%s</span><span class="s1"> contender tasks.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">tasks</span>   </div>
 
 
@@ -839,7 +875,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Running </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">prefix</span><span class="p">)</span>
             <span class="n">results</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-            <span class="n">progress</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">progress</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">return</span> <span class="n">results</span></div>
 
@@ -923,83 +959,41 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="c1"># Files to be added via Git after</span>
-            <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">):</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+ 
+            <span class="c1"># A decorator is run on the fly (not in config)</span>
+            <span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;decorator&#39;</span><span class="p">):</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_decorator</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="c1"># We only allow tasks and decorators</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not task or decorator, skipping.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">continue</span>
 
             <span class="c1"># Ensure that the task folder exists</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">task_folder</span><span class="p">):</span>
                 <span class="n">mkdir_p</span><span class="p">(</span><span class="n">task_folder</span><span class="p">)</span>
                 <span class="n">git_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task_folder</span><span class="p">)</span>
 
-            <span class="c1"># Case 1. The result is a list</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>           
-
-                <span class="c1"># Get rid of Nones, if the user accidentally added</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span> <span class="k">if</span> <span class="n">r</span><span class="p">]</span>
-
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> returned empty list of results.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
-
-                <span class="c1"># json output is specified</span>
-                <span class="k">elif</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
-                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as one json...&#39;</span><span class="p">)</span>
-                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
-
-                <span class="k">elif</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
-                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as multiple json...&#39;</span><span class="p">)</span>
-                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_json_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>
-
-                <span class="c1"># Otherwise, sniff for list of paths</span>
-                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Found list of paths...&#39;</span><span class="p">)</span>
-                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_files_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>     
-
-                <span class="c1"># Finally, assume just writing text to file</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving content from list to file...&#39;</span><span class="p">)</span>
-                    <span class="n">files</span> <span class="o">+=</span> <span class="n">task</span><span class="o">.</span><span class="n">_save_text_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>     
-
-            <span class="c1"># Case 2. The result is a string</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
-                <span class="c1"># if it&#39;s a path to a file, just save to repository</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_file</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
-
-                <span class="c1"># Otherwise, it&#39;s a string that needs to be saved to file</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_text</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
-
-            <span class="c1"># Case 3. The result is a dictionary</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">))</span>
-
-            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Result for task </span><span class="si">%s</span><span class="s1"> is None&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
-
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unsupported result format </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
-
-            <span class="c1"># Get rid of None results (don&#39;t check excessively for None above)</span>
-            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">f</span><span class="p">]</span>
+            <span class="c1"># Files to be added to the repo via git after</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">)</span>
 
             <span class="c1"># Add files to git, and commit</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">write_timestamp</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
             <span class="n">git_add</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
-            <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> 
-                       <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> 
+            <span class="n">git_commit</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span>
+                       <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;ADD results </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
-
 
 <span class="c1"># Identification</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+        <span class="k">return</span> <span class="s2">&quot;[watcher|</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <span class="c1"># Settings</span>
@@ -1007,6 +1001,8 @@
 <span class="n">Watcher</span><span class="o">.</span><span class="n">remove_setting</span> <span class="o">=</span> <span class="n">remove_setting</span>
 <span class="n">Watcher</span><span class="o">.</span><span class="n">get_setting</span> <span class="o">=</span> <span class="n">get_setting</span>
 <span class="n">Watcher</span><span class="o">.</span><span class="n">get_section</span> <span class="o">=</span> <span class="n">get_section</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">has_setting</span> <span class="o">=</span> <span class="n">has_setting</span>
+<span class="n">Watcher</span><span class="o">.</span><span class="n">has_section</span> <span class="o">=</span> <span class="n">has_section</span>
 <span class="n">Watcher</span><span class="o">.</span><span class="n">set_setting</span> <span class="o">=</span> <span class="n">set_setting</span>
 <span class="n">Watcher</span><span class="o">.</span><span class="n">remove_section</span> <span class="o">=</span> <span class="n">remove_section</span>
 <span class="n">Watcher</span><span class="o">.</span><span class="n">print_section</span> <span class="o">=</span> <span class="n">print_section</span>
@@ -1070,7 +1066,7 @@
       <script type="text/javascript" src="../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../assets/language_data.js"></script>
 
   
 

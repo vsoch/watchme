@@ -92,6 +92,14 @@ active  = true
 type  = psutils
 ```
 
+If you choose a process name, remember that different processes can have the same
+name (for example, think about the case of having multiple Python interpreters open!)
+This means that watchme will select the first in the list that it finds. If you
+have preference for a specific one, then it's recommended that you provide the
+process id directly.
+
+##### Customize
+
 You can also add a parameter called "skip", including one or more (comma separate)
 indices in the results to skip.
 
@@ -145,6 +153,9 @@ To test out the task, you can do the following:
 $ watchme run system task-monitor-slack --test
 ```
 
+You'll see the results.json print to the screen! When it's time to use the
+watcher, you can [active and schedule it](#verify-the-addition).
+
 #### Use as a Decorator
 
 Although this isn't reproducible (you wouldn't write this into a watchme 
@@ -155,18 +166,100 @@ It uses the same task function, but with a different invocation.
 
 ```python
 from watchme.watchers.psutils.decorators import monitor_resources
+from time import sleep
 
 @monitor_resources('decorator', seconds=3)
 def myfunc():
     long_list = []
     for i in range(100):
         long_list = long_list + (i*10)*['pancakes']
-        sleep 10
+        print("i is %s, sleeping 10 seconds" % i)
+        sleep(10)
 ```
 
-The first argument is the name of the watcher (e.g., system) and the remainder
-(skip, include) are the same as on the command line. Your running function
-will produce the process id, so you don't need to provide it.
+The first argument is the name of the watcher (e.g., system) and you are also allowed
+to specify the following arguments (not shown):
+
+ - include: a list of keys to add back in (e.g., "environ")
+ - skip: a list of keys to skip (see section above for default)
+ - create: create the watcher if it doesn't exist (default is False, must exist)
+ - only: forget about include/skip, **only** include these fields
+ - name: if you want to call the result folder something other than the function name
+
+Why don't you need specify a pid? Your running function will produce the 
+process id, so you don't need to provide it. Let's run this script, you can get 
+the full thing [from the gist here](https://gist.github.com/vsoch/19957205764ab12a153ddbecd837ffb3).
+
+```bash
+$ python test_psutils_decorator.py
+Calling myfunc with 2 iters
+Generating a long list, pause is 2 and iters is 2
+i is 0, sleeping 2 seconds
+i is 1, sleeping 2 seconds
+Result list has length 10
+```
+
+Great! So it ran for the watcher we created called `decorator`, but where
+are the results? Let's take a look in our watcher folder:
+
+```bash
+~/.watchme/decorator$ tree
+.
+├── decorator-psutils-myfunc
+│   ├── result.json
+│   └── TIMESTAMP
+├── task-monitor-slack
+│   ├── result.json
+│   └── TIMESTAMP
+└── watchme.cfg
+
+2 directories, 5 files
+```
+
+In addition to the task that we ran, "task-monitor-slack," we also have
+results in a new "decorator-psutils-myfunc" folder. You've guessed it right -
+the decorator namespace creates folders of the format `decorator-psutils-<name>`,
+where name is the name of the function, or a "name" parameter you provide to the
+decorator.
+
+> What is a result?
+
+Remember that we are monitoring our function every 3 seconds, so for a function
+that lasts about 10, we might hit it about 3 times. How would we export that data?
+Like this:
+
+```bash
+$ watchme export system decorator-psutils-myfunc result.json --json
+```
+
+We ask for `--json` because we know the result is provided in json.
+For the above export, we will find three commits, each with a commit id,
+timestamp, and full result:
+
+```
+git log --all --oneline --pretty=tformat:"%H" --grep "ADD results" 7a7cb5535c96e06433af9c47485ba253137e580f..03b793dfe708c310f32526041775ec38449ccd54 -- decorator-psutils-myfunc/result.json
+{
+    "commits": [
+        "03b793dfe708c310f32526041775ec38449ccd54",
+        "71012b7f2b5d247318b2dcf187ee2c823ad7ef63",
+        "e1d06f86eac18cc6d54d3c8a62aeede7f8b85bac"
+    ],
+    "dates": [
+        "2019-05-11 12:31:49 -0400",
+        "2019-05-11 12:31:20 -0400",
+        "2019-05-11 12:28:45 -0400"
+    ],
+    "content": [
+        {
+            "cpu_percent": 0.0,
+            "cpu_num": 3,
+...
+```
+
+And each entry coincides with one collection of data during the task run. You
+can plot different metrics over time to see the change in the process resource
+usage. If you are interested in what a (default) output will look like,
+see the [gist here](https://gist.github.com/vsoch/19957205764ab12a153ddbecd837ffb3#file-result-json).
 
 ### 2. The CPU Task
 

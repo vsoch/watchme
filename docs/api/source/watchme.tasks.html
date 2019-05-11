@@ -189,7 +189,7 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <dl class="class">
 <dt id="watchme.tasks.worker.Workers">
 <em class="property">class </em><code class="descclassname">watchme.tasks.worker.</code><code class="descname">Workers</code><span class="sig-paren">(</span><em>workers=None</em>, <em>show_progress=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="watchme.tasks.worker.Workers.end">
 <code class="descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.end" title="Permalink to this definition">¶</a></dt>
@@ -200,18 +200,14 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descname">run</code><span class="sig-paren">(</span><em>funcs</em>, <em>tasks</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>run will send a list of tasks, a tuple with arguments, through a function.
 the arguments should be ordered correctly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</li>
-<li><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</p></li>
+<li><p><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -246,7 +242,7 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <dl class="class">
 <dt id="watchme.tasks.TaskBase">
 <em class="property">class </em><code class="descclassname">watchme.tasks.</code><code class="descname">TaskBase</code><span class="sig-paren">(</span><em>name</em>, <em>params={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.export_params">
 <code class="descname">export_params</code><span class="sig-paren">(</span><em>active='true'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.export_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.export_params" title="Permalink to this definition">¶</a></dt>
@@ -271,14 +267,11 @@ the watcher. This will return the raw result.</p>
 <dt id="watchme.tasks.TaskBase.set_params">
 <code class="descname">set_params</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>iterate through parameters, set into dictionary.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -287,6 +280,22 @@ the watcher. This will return the raw result.</p>
 <dd><p>validate the parameters set for the Task. Exit if there are any
 errors. Ensure required parameters are defined, and have correct
 values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.tasks.TaskBase.write_results">
+<code class="descname">write_results</code><span class="sig-paren">(</span><em>result</em>, <em>repo</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.write_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.write_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>an entrypoint function for a general task. By default, we parse
+results based on the result type. Any particular subclass of the
+TaskBase can modify or extend these functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>the result object to parse</em>)</p></li>
+<li><p><strong>repo</strong> (<em>the repo base (watcher.repo)</em>)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -347,7 +356,7 @@ values.</p>
       <script type="text/javascript" src="../assets/jquery.js"></script>
       <script type="text/javascript" src="../assets/underscore.js"></script>
       <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../assets/language_data.js"></script>
 
   
 

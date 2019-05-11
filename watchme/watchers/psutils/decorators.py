@@ -12,32 +12,39 @@ from multiprocessing import (
     Process, 
     Queue
 )
+from functools import wraps
 from watchme.logger import bot
 from watchme.watchers.psutils import Task
 from watchme import get_watcher
-import functools
 from time import sleep
 import os
 
 
 class ProcessRunner():
 
-    def __init__(self, seconds=3, skip=[], include=[]):
+    def __init__(self, seconds=3, skip=[], include=[], only=[]):
         self.process = None
         self.seconds = seconds
         self.queue = Queue()
-        self.set_custom(skip, include)
         self.timepoints = []
 
-    def set_custom(self, skip, include):
-        '''add list of variables to skip (task expects comma separated string)'''
-        if isinstance(skip, list):
-            skip = ','.join(skip)
-        self.skip = skip
+        # Ensure we have csv lists
+        self.only = self._parse_custom(only)
+        self.skip = self._parse_custom(skip)
+        self.include = self._parse_custom(include)
 
-        if isinstance(include, list):
-            include = ','.join(include)
-        self.include = include
+    def _parse_custom(self, listy):
+        '''parse an actual list (['one','two','three']) into 
+           a csv list. If we don't have a list, ignore and assume already
+           parsed that way.
+ 
+           Parameters
+           ==========
+           listy: the actual list
+        '''
+        if isinstance(listy, list):
+            listy = ','.join(listy)
+        return listy
 
     @staticmethod
     def _wrapper(func, queue, args, kwargs):
@@ -55,7 +62,9 @@ class ProcessRunner():
         # Parameters for the pid, and to skip sections of results
         params = {"skip": self.skip,
                   "pid": self.process.pid,
-                  "include": self.include}
+                  "include": self.include,
+                  "only": self.only,
+                  'func': 'monitor_pid_task'}
 
         # This particular decorator doesn't take input params
         task = Task("monitor_pid_task", params=params)
@@ -66,8 +75,10 @@ class ProcessRunner():
 
         # collect resources, then sleep
         while self.process.is_alive():
-            self.timepoints = self.timepoints + function(params)
-            sleep(seconds)
+
+            # Function returns dictionary, we append to list of timepoints
+            self.timepoints.append(function(**params))
+            sleep(self.seconds)
 
         # Get the result, and the timepoints
         result = self.queue.get()
@@ -75,41 +86,61 @@ class ProcessRunner():
         return result
 
 
-def monitor_resources(watcher, seconds=3, skip=[]):
+def monitor_resources(*args, **kwargs):
     '''a decorator to monitor a function every 3 (or user specified) seconds. 
        We include one or more task names that include data we want to extract.
        we get the pid of the running function, and then use the
-       monitor_pid_task from psutils to watch it.
+       monitor_pid_task from psutils to watch it. The functools "wraps"
+       ensures that the (fargs, fkwargs) are passed from the calling function
+       despite the wrapper. The following parameters can be provided to
+       "monitor resources"
 
        Parameters
        ==========
        watcher: the watcher instance to use, used to save data to a "task"
                 folder that starts with "decorator-<name<"
        seconds: how often to collect data during the run.
+       only: ignore skip and include, only include this custom subset
        skip: Fields in the result to skip (list).
+       include: Fields in the result to include back in (list).
+       create: whether to create the watcher on the fly (default False, must
+               exist)
+       name: the suffix of the decorator-psutils-<name> folder. If not provided,
+             defaults to the function name
     '''
-    # Get a watcher to save results to
-    watcher = get_watcher(watcher, create=False)
+    def inner(func):
 
-    # Define the wrapper function
-    def decorator_monitor_resources(func):
-        @functools.wraps(func)
-        def wrapper_monitor_resources(*args, **kwargs):
+        @wraps(func)
+        def wrapper(*fargs, **fkwargs):
 
             # Typically the task folder is the index, so we will create
             # indices that start with decorator-<task>
-            results = {}
+            result = None
+
+            # The watcher is required, first keyword argument
+            if len(args) == 0:
+                bot.error("A watcher name is required for the psutils decorator.")
+                return result
+
+            # Get a watcher to save results to
+            watcher = get_watcher(args[0], create=kwargs.get('create', False))
 
             # Start the function
-            runner = ProcessRunner(seconds=seconds, skip=skip, include=include)
-            runner.run(func, args, kwargs)
+            runner = ProcessRunner(seconds=kwargs.get('seconds', 3),
+                                   skip=kwargs.get('skip', []),
+                                   include=kwargs.get('include', []),
+                                   only=kwargs.get('only', []))
+
+            runner.run(func, *fargs, **fkwargs)
             result = runner.wait()
 
             # Save results (finishing runs) - key is folder created
-            results['decorator-%s' % func.__name__] = runner.timepoints
+            name = kwargs.get('name', func.__name__)
+            key = 'decorator-psutils-%s' % name
+            results = {key: runner.timepoints}
             watcher.finish_runs(results)
             
             # Return function result to the user
             return result
-        return wrapper_monitor_resources
-    return decorator_monitor_resources
+        return wrapper
+    return inner

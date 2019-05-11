@@ -198,28 +198,22 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descclassname">watchme.command.commit.</code><code class="descname">get_earliest_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#get_earliest_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.get_earliest_commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the earliest commit for a repository. This is intended to be used
 when in the present working directory</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repo</strong> (<em>the repository path to get the commit from</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>the repository path to get the commit from</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.command.commit.get_latest_commit">
 <code class="descclassname">watchme.command.commit.</code><code class="descname">get_latest_commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/commit.html#get_latest_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.commit.get_latest_commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the latest commit for a repository in the present working directory</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repo</strong> (<em>the repository path to get the commit from</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>the repository path to get the commit from</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -239,19 +233,15 @@ it first.</p>
 on name variable) to the base. The same applies for force.</p>
 <p>dest provided: the repo is cloned to the destination, if it doesn’t exist
 and/or force is True.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>the name of the watcher to add</em>)</li>
-<li><strong>base</strong> (<em>the base of the watcher (defaults to $HOME/.watchme</em>)</li>
-<li><strong>force</strong> (<em>remove first if already exists</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>the name of the watcher to add</em>)</p></li>
+<li><p><strong>base</strong> (<em>the base of the watcher (defaults to $HOME/.watchme</em>)</p></li>
+<li><p><strong>force</strong> (<em>remove first if already exists</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -294,36 +284,29 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descclassname">watchme.command.create.</code><code class="descname">create_watcher</code><span class="sig-paren">(</span><em>name=None</em>, <em>watcher_type=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/create.html#create_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.create.create_watcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a watcher, meaning a folder with a configuration and
 initialized git repo.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</li>
-<li><strong>watcher_type</strong> (<em>the type of watcher to create. defaults to</em>) – WATCHER_DEFAULT_TYPE</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</p></li>
+<li><p><strong>watcher_type</strong> (<em>the type of watcher to create. defaults to</em>) –              WATCHER_DEFAULT_TYPE
+base: The watcher base to use (defaults to $HOME/.watchme)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.command.create.create_watcher_base">
 <code class="descclassname">watchme.command.create.</code><code class="descname">create_watcher_base</code><span class="sig-paren">(</span><em>name=None</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/create.html#create_watcher_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.create.create_watcher_base" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a watch base and default repo, if it doesn’t already exist.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</li>
-<li><strong>base</strong> (<em>the watcher base, defaults to WATCHME_BASE_DIR</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>the watcher to create, uses default or WATCHME_WATCHER</em>)</p></li>
+<li><p><strong>base</strong> (<em>the watcher base, defaults to WATCHME_BASE_DIR</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -341,19 +324,15 @@ meaning that we clone to a temporary folder, and then move
 to a new folder. By default, the user gets all tasks associated
 with the watcher, along with the git folder so that removing
 is also done with version control.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>repo</strong> (<em>the repository to clone</em>)</li>
-<li><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</li>
-<li><strong>name</strong> (<em>a new name for the watcher, if a rename is desired.</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>the repository to clone</em>)</p></li>
+<li><p><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</p></li>
+<li><p><strong>name</strong> (<em>a new name for the watcher, if a rename is desired.</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -361,28 +340,28 @@ is also done with version control.</p>
 <code class="descclassname">watchme.command.utils.</code><code class="descname">get_watchers</code><span class="sig-paren">(</span><em>base=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#get_watchers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.get_watchers" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the watchers installed at a base. If base is not defined,
 the default base is used.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.command.utils.list_watcher">
 <code class="descclassname">watchme.command.utils.</code><code class="descname">list_watcher</code><span class="sig-paren">(</span><em>watcher</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#list_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.list_watcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the contents (tasks) of a single watcher.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>base</strong> (<em>the watchme base, defaults to $HOME/.watchme</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.command.utils.list_watcher_types">
+<code class="descclassname">watchme.command.utils.</code><code class="descname">list_watcher_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/command/utils.html#list_watcher_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.command.utils.list_watcher_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the exporter options provided by watchme</p>
 </dd></dl>
 
 </div>
@@ -448,7 +427,7 @@ with this file, You can obtain one at <a class="reference external" href="http:/
       <script type="text/javascript" src="../assets/jquery.js"></script>
       <script type="text/javascript" src="../assets/underscore.js"></script>
       <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../assets/language_data.js"></script>
 
   
 

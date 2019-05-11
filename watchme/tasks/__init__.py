@@ -123,20 +123,22 @@ class TaskBase(object):
 
         # Case 1. The result is a list
         if isinstance(result, list):
+
             # Get rid of Nones, if the user accidentally added
             result = [r for r in result if r]
 
             if len(result) == 0:
                 bot.error('%s returned empty list of results.' % self.name)
 
-            # json output is specified
-            elif self.params.get('save_as') == 'json':
-                bot.debug('Saving single list as one json...')
-                files.append(self._save_json(result, repo))
-
-            elif self.params.get('save_as') == 'json':
+            # multiple jsons save specified, regardless
+            elif self.params.get('save_as') == 'jsons':
                 bot.debug('Saving single list as multiple json...')
                 files += self._save_json_list(result, repo)
+
+            # json output is specified by the user or we find dict results
+            elif self.params.get('save_as') == 'json' or isinstance(result[0], dict):
+                bot.debug('Saving single list as one json...')
+                files.append(self._save_json(result, repo))
 
             # Otherwise, sniff for list of paths
             elif os.path.exists(result[0]):

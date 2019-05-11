@@ -199,19 +199,15 @@ the watched to check for changes at some frequency, and update the files.</p>
 <dt id="watchme.utils.fileio.generate_temporary_file">
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">generate_temporary_file</code><span class="sig-paren">(</span><em>folder=None</em>, <em>prefix='watchme'</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#generate_temporary_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.generate_temporary_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>write a temporary file, in base directory with a particular extension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>folder</strong> (<em>the base directory to write in.</em>)</li>
-<li><strong>prefix</strong> (<em>the prefix to use</em>)</li>
-<li><strong>ext</strong> (<em>the extension to use.</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> (<em>the base directory to write in.</em>)</p></li>
+<li><p><strong>prefix</strong> (<em>the prefix to use</em>)</p></li>
+<li><p><strong>ext</strong> (<em>the extension to use.</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -225,19 +221,15 @@ the watched to check for changes at some frequency, and update the files.</p>
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_tmpdir</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>create=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_tmpdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_tmpdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>get a temporary directory for an operation. If SREGISTRY_TMPDIR
 is set, return that. Otherwise, return the output of tempfile.mkdtemp</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>prefix</strong> (<em>Given a need for a sandbox (or similar), we will need to</em>)</li>
-<li><strong>create a subfolder *within* the SREGISTRY_TMPDIR.</strong></li>
-<li><strong>create</strong> (<em>boolean to determine if we should create folder (True)</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> (<em>Given a need for a sandbox (or similar), we will need to</em>)</p></li>
+<li><p><strong>create a subfolder *within* the SREGISTRY_TMPDIR.</strong></p></li>
+<li><p><strong>create</strong> (<em>boolean to determine if we should create folder (True)</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -290,19 +282,15 @@ and properly close the file</p>
 <dt id="watchme.utils.fileio.write_json">
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">write_json</code><span class="sig-paren">(</span><em>json_obj</em>, <em>filename</em>, <em>mode='w'</em>, <em>print_pretty=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.write_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>write_json will (optionally,pretty print) a json object to file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>json_obj</strong> (<em>the dict to print to json</em>)</li>
-<li><strong>filename</strong> (<em>the output file to write to</em>)</li>
-<li><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_obj</strong> (<em>the dict to print to json</em>)</p></li>
+<li><p><strong>filename</strong> (<em>the output file to write to</em>)</p></li>
+<li><p><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -317,18 +305,14 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">choice_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>choices=None</em>, <em>choice=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#choice_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.choice_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ask the user for a prompt, and only return when one of the requested
 options is provided.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>prompt</strong> (<em>the prompt to ask the user</em>)</li>
-<li><strong>choices</strong> (<em>a list of choices that are valid, defaults to [Y/N/y/n]</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p></li>
+<li><p><strong>choices</strong> (<em>a list of choices that are valid, defaults to [Y/N/y/n]</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -336,14 +320,11 @@ options is provided.</p>
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">confirm_prompt</code><span class="sig-paren">(</span><em>prompt</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#confirm_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.confirm_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around choice_prompt, but ask the user specifically for a
 yes / no response that is converted to boolean for the calling agent.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prompt</strong> (<em>the prompt to ask the user</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -363,37 +344,29 @@ that must be returned as boolean</p>
 <dt id="watchme.utils.terminal.regexp_prompt">
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">regexp_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>regexp='.'</em>, <em>answer=''</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#regexp_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.regexp_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ask the user for a text entry that matches a regular expression</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>prompt</strong> (<em>the prompt to ask the user</em>)</li>
-<li><strong>regexp</strong> (<em>the regular expression to match. defaults to anything.</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p></li>
+<li><p><strong>regexp</strong> (<em>the regular expression to match. defaults to anything.</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.utils.terminal.run_command">
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">run_command</code><span class="sig-paren">(</span><em>cmd</em>, <em>sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.run_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>run_command uses subprocess to send a command to the terminal.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</li>
-<li><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</li>
-<li><strong>if none specified, will alert that command failed.</strong></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</p></li>
+<li><p><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</p></li>
+<li><p><strong>if none specified, will alert that command failed.</strong></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -461,7 +434,7 @@ that must be returned as boolean</p>
       <script type="text/javascript" src="../assets/jquery.js"></script>
       <script type="text/javascript" src="../assets/underscore.js"></script>
       <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../assets/language_data.js"></script>
 
   
 

@@ -251,10 +251,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid section.&#39;</span> <span class="o">%</span> <span class="n">section</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="get_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.get_setting">[docs]</a><span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;return a setting from the environment (first priority) and then</span>
-<span class="sd">       secrets (second priority) if one can be found. If not, return None.</span>
 
+<div class="viewcode-block" id="get_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.get_setting">[docs]</a><span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return a setting from the config, if defined. Otherwise return</span>
+<span class="sd">       default (None or set by user)</span>
+<span class="sd">       </span>
 <span class="sd">       Parameters</span>
 <span class="sd">       ==========</span>
 <span class="sd">       section: the section in the config, defaults to self.name</span>
@@ -274,6 +275,31 @@
     <span class="k">return</span> <span class="n">setting</span></div>
 
 
+<div class="viewcode-block" id="has_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.has_setting">[docs]</a><span class="k">def</span> <span class="nf">has_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return a boolean if a config has a setting (or not)</span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the section in the config, defaults to self.name</span>
+<span class="sd">       name: they key (index) of the setting to look up</span>
+<span class="sd">    &#39;&#39;&#39;</span> 
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+
+    <span class="n">exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]:</span>
+            <span class="n">exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">exists</span></div>
+
+
+<div class="viewcode-block" id="has_section"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.has_section">[docs]</a><span class="k">def</span> <span class="nf">has_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;return a boolean if a config has a section (e.g., a task or exporter)</span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       section: the section in the config</span>
+<span class="sd">    &#39;&#39;&#39;</span> 
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span></div>
 
 <div class="viewcode-block" id="set_setting"><a class="viewcode-back" href="../../../source/watchme.watchers.html#watchme.watchers.settings.set_setting">[docs]</a><span class="k">def</span> <span class="nf">set_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;set a key value pair in a section, if the section exists. Returns</span>
@@ -300,7 +326,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">section</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
         <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">section</span></div>
 </pre></div>
@@ -348,7 +374,7 @@
       <script type="text/javascript" src="../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
 
   
 

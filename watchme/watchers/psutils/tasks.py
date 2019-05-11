@@ -16,7 +16,6 @@ from watchme.logger import bot
 import os
 import psutil
 
-
 def monitor_pid_task(**kwargs):
     '''monitor a specific process. This function can be used as a task, or
        is (most likely used) for the psutils.decorators. A pid parameter
@@ -30,13 +29,17 @@ def monitor_pid_task(**kwargs):
     '''
     pid = kwargs.get('pid', None)
 
-    # A comma separated list of parameters to skip
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    bot.debug(kwargs)
 
-    # Or add back in
-    include = kwargs.get('include', '')
-    include = include.split(',')
+    # Helper function to get list from one,two,three
+    def get_list(name):
+        csv_list = kwargs.get(name, '')
+        return [x for x in csv_list.split(',') if x]
+
+    # A comma separated list of parameters to skip
+    skip = get_list('skip')
+    include = get_list('include')
+    only = get_list('only')
 
     # Only continue given that argument is provided
     if pid == None:   
@@ -55,22 +58,29 @@ def monitor_pid_task(**kwargs):
         return pid
 
     ps = psutil.Process(pid)
+    bot.debug(ps)
 
     results = {}
 
     for key, val in ps.as_dict().items():
 
+        # First priority goes to a custom set
+        if len(only) > 0 and key in only:
+            bot.debug('skipping %s' % key)
+            continue 
+
         # The user requested to skip
-        if key in skip or key in ['threads']:
+        elif key in skip or key in ['threads']:
             continue
 
         # Keep count of threads
-        if key in ["open_files"]:
+        elif key in ["open_files"]:
             results[key] = len(val)
 
         # Don't risk exposing sensitive information
-        elif key in ["environ"] and key in include:
-            results[key] = val
+        elif key == "environ":
+            if key in include:
+                results[key] = val
 
         # Skip over ones that are too detailed
         elif key in ['memory_maps']:
@@ -106,9 +116,9 @@ def monitor_pid_task(**kwargs):
 
         elif isinstance(val, psutil._common.pionice):
             results[key] = {"ioclass":val.ioclass.name,
-                            "value": val.value}       
+                            "value": val.value}
 
-       # pfullmem (first above) should cover this
+        # pfullmem (first above) should cover this
         elif isinstance(val, psutil._pslinux.pmem):
             continue
 

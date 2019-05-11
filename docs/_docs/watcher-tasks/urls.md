@@ -113,11 +113,18 @@ specify the save_as parameter:
 $ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@json
 ```
 
-The following custom parameters can be added:
+If you anticipate a list of results and want to save to separate jsons (one per entry)
+then specify save_as@jsons
+
+```bash
+$ watchme add watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@jsons
+```
+
+Thus, the following custom parameters can be added:
 
 | Name | Required | Default | Example | Notes|
 |------|----------|---------|---------|-----------|
-| save_as | No | unset |save_as@json| default saves to text, or can be specified as json. |
+| save_as | No | unset |save_as@json| default saves to text, or can be specified as json/jsons. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 | url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
 | header_* | No | unset | header_Accept@json | Define 1 or headers |

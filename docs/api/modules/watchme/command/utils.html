@@ -161,7 +161,11 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="n">WATCHME_BASE_DIR</span>
+<span class="kn">from</span> <span class="nn">watchme.defaults</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">WATCHME_BASE_DIR</span><span class="p">,</span> 
+    <span class="n">WATCHME_TASK_TYPES</span>
+<span class="p">)</span>
+
 <span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="p">(</span> <span class="n">get_tmpdir</span><span class="p">,</span> <span class="n">run_command</span> <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
 
@@ -207,6 +211,13 @@
         <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="list_watcher_types"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.list_watcher_types">[docs]</a><span class="k">def</span> <span class="nf">list_watcher_types</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;list the exporter options provided by watchme</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;watchme:&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;watcher task types&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">WATCHME_TASK_TYPES</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="clone_watcher"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.clone_watcher">[docs]</a><span class="k">def</span> <span class="nf">clone_watcher</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;clone a watcher from Github (or other version control with git)</span>
@@ -313,7 +324,7 @@
       <script type="text/javascript" src="../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
 
   
 

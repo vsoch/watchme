@@ -165,13 +165,131 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="n">generate_temporary_file</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">check_output</span><span class="p">,</span> 
+    <span class="n">CalledProcessError</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">psutil</span>
 
+<div class="viewcode-block" id="monitor_pid_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.monitor_pid_task">[docs]</a><span class="k">def</span> <span class="nf">monitor_pid_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;monitor a specific process. This function can be used as a task, or</span>
+<span class="sd">       is (most likely used) for the psutils.decorators. A pid parameter</span>
+<span class="sd">       is required.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">       pid: the process id or name (required)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Helper function to get list from one,two,three</span>
+    <span class="k">def</span> <span class="nf">get_list</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">csv_list</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csv_list</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
+
+    <span class="c1"># A comma separated list of parameters to skip</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">get_list</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+    <span class="n">include</span> <span class="o">=</span> <span class="n">get_list</span><span class="p">(</span><span class="s1">&#39;include&#39;</span><span class="p">)</span>
+    <span class="n">only</span> <span class="o">=</span> <span class="n">get_list</span><span class="p">(</span><span class="s1">&#39;only&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Only continue given that argument is provided</span>
+    <span class="k">if</span> <span class="n">pid</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>   
+        <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;A &#39;pid&#39; parameter is required to use the monitor_pid_task function.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pid</span>
+
+    <span class="c1"># The user is allowed to provide a process name, or a number</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">_get_pid</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+
+    <span class="c1"># But if it&#39;s stil no good (None) we exit.</span>
+    <span class="k">if</span> <span class="n">pid</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&#39;pid&#39; must be a running process or process name.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pid</span>
+
+    <span class="n">ps</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="c1"># First priority goes to a custom set</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">only</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">only</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;skipping </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">continue</span> 
+
+        <span class="c1"># The user requested to skip</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skip</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;threads&#39;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Keep count of threads</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;open_files&quot;</span><span class="p">]:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="c1"># Don&#39;t risk exposing sensitive information</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;environ&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">include</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="c1"># Skip over ones that are too detailed</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;memory_maps&#39;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># I assume this included all that are in pmem too</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_pslinux</span><span class="o">.</span><span class="n">pfullmem</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">rss</span><span class="p">,</span>
+                            <span class="s2">&quot;vms&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">vms</span><span class="p">,</span>
+                            <span class="s2">&quot;shared&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">shared</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                            <span class="s2">&quot;lib&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">lib</span><span class="p">,</span>
+                            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                            <span class="s2">&quot;dirty&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">dirty</span><span class="p">,</span>
+                            <span class="s2">&quot;uss&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">uss</span><span class="p">,</span>
+                            <span class="s2">&quot;pss&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">pss</span><span class="p">,</span>
+                            <span class="s2">&quot;swap&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">swap</span><span class="p">}</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">pgids</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">puids</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+                            <span class="s2">&quot;effetive&quot;</span><span class="p">:</span><span class="n">val</span><span class="o">.</span><span class="n">effective</span><span class="p">,</span>
+                            <span class="s2">&quot;saved&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">saved</span><span class="p">}</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">pcputimes</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                            <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">system</span><span class="p">,</span>
+                            <span class="s2">&quot;children_user&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">children_user</span><span class="p">,</span>
+                            <span class="s2">&quot;children_system&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">children_system</span><span class="p">}</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">pctxsw</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;voluntary&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">voluntary</span><span class="p">,</span>
+                            <span class="s2">&quot;involuntary&quot;</span><span class="p">:</span><span class="n">val</span><span class="o">.</span><span class="n">involuntary</span><span class="p">}</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_common</span><span class="o">.</span><span class="n">pionice</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ioclass&quot;</span><span class="p">:</span><span class="n">val</span><span class="o">.</span><span class="n">ioclass</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+
+        <span class="c1"># pfullmem (first above) should cover this</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_pslinux</span><span class="o">.</span><span class="n">pmem</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">psutil</span><span class="o">.</span><span class="n">_pslinux</span><span class="o">.</span><span class="n">pio</span><span class="p">):</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;read_count&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">read_count</span><span class="p">,</span>
+                            <span class="s2">&quot;write_count&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">write_count</span><span class="p">,</span>
+                            <span class="s2">&quot;read_bytes&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">,</span>
+                            <span class="s2">&quot;write_bytes&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">,</span>
+                            <span class="s2">&quot;read_chars&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">read_chars</span><span class="p">,</span>
+                            <span class="s2">&quot;write_chars&quot;</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">write_chars</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
 
 <div class="viewcode-block" id="cpu_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.cpu_task">[docs]</a><span class="k">def</span> <span class="nf">cpu_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Get variables about the cpu of the host. No parameters are required.</span>
@@ -424,6 +542,26 @@
             <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;used to get the pid of a process, by name</span>
+<span class="sd">       </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       name: the name of the process to get.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;pidof&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">])</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> 
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;More than one pid found for </span><span class="si">%s</span><span class="s2">, using first.&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">except</span> <span class="n">CalledProcessError</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> does not exist.&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">pid</span>
 </pre></div>
 
            </div>
@@ -469,7 +607,7 @@
       <script type="text/javascript" src="../../../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../../assets/language_data.js"></script>
 
   
 

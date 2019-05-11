@@ -260,6 +260,77 @@
         <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot find function.&#39;</span><span class="p">)</span></div>
 
 
+<span class="c1"># Save Entrypoint</span>
+
+<div class="viewcode-block" id="TaskBase.write_results"><a class="viewcode-back" href="../../source/watchme.tasks.html#watchme.tasks.TaskBase.write_results">[docs]</a>    <span class="k">def</span> <span class="nf">write_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;an entrypoint function for a general task. By default, we parse</span>
+<span class="sd">           results based on the result type. Any particular subclass of the</span>
+<span class="sd">           TaskBase can modify or extend these functions.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           result: the result object to parse</span>
+<span class="sd">           repo: the repo base (watcher.repo)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Case 1. The result is a list</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+            <span class="c1"># Get rid of Nones, if the user accidentally added</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span> <span class="k">if</span> <span class="n">r</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> returned empty list of results.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="c1"># multiple jsons save specified, regardless</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;jsons&#39;</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as multiple json...&#39;</span><span class="p">)</span>
+                <span class="n">files</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_json_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">)</span>
+
+            <span class="c1"># json output is specified by the user or we find dict results</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_as&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving single list as one json...&#39;</span><span class="p">)</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+
+            <span class="c1"># Otherwise, sniff for list of paths</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Found list of paths...&#39;</span><span class="p">)</span>
+                <span class="n">files</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_files_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">)</span>
+
+            <span class="c1"># Finally, assume just writing text to file</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Saving content from list to file...&#39;</span><span class="p">)</span>
+                <span class="n">files</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_text_list</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">)</span>
+
+        <span class="c1"># Case 2. The result is a string</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="c1"># if it&#39;s a path to a file, just save to repository</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+
+            <span class="c1"># Otherwise, it&#39;s a string that needs to be saved to file</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_text</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+
+        <span class="c1"># Case 3. The result is a dictionary</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">repo</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Result for task </span><span class="si">%s</span><span class="s1"> is None&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_write_results&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_results</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unsupported result format </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+
+        <span class="c1"># Get rid of None results (don&#39;t check excessively for None above)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">f</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">files</span></div>
+
 
 <span class="c1"># Saving</span>
 
@@ -287,6 +358,7 @@
 
         <span class="k">return</span> <span class="n">files</span>
 
+
     <span class="k">def</span> <span class="nf">_save_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;save a general text object to file.</span>
 <span class="sd"> </span>
@@ -300,6 +372,7 @@
         <span class="n">destination</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">task_folder</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
         <span class="n">write_file</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">destination</span>
+
 
     <span class="k">def</span> <span class="nf">_save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;for a result that exists, move the file to final destination.</span>
@@ -322,6 +395,7 @@
             <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
 
         <span class="n">bot</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">result</span><span class="p">)</span>
+
         
     <span class="k">def</span> <span class="nf">_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;for a result that is a dictionary or list, save as json</span>
@@ -335,6 +409,23 @@
         <span class="n">write_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">destination</span>
 
+
+    <span class="k">def</span> <span class="nf">_save_files_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">repo</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If the user provides already existing files, we simply move them</span>
+<span class="sd">           into the task folder in the repository.</span>
+<span class="sd"> </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           results: the results to save, should a list of files</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> 
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">files</span>
 
     <span class="k">def</span> <span class="nf">_save_json_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">repo</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;A wrapper around save json for a list, handles file naming.</span>
@@ -415,7 +506,7 @@
       <script type="text/javascript" src="../../assets/jquery.js"></script>
       <script type="text/javascript" src="../../assets/underscore.js"></script>
       <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../assets/language_data.js"></script>
 
   
 

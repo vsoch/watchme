@@ -545,6 +545,31 @@ class Watcher(object):
         return False
 
 
+# Get a Decorator
+
+    def get_decorator(self, name):
+        '''instantiate a task object for a decorator. Decorators must start
+           with "decorator-" and since they are run on the fly, we don't
+           find them in the config.
+
+           Parameters
+           ==========
+           name: the name of the task to load
+        '''
+
+        task = None
+
+        # Only psutils has decorators
+        if name.startswith('decorator-psutils'):
+            from .psutils import Task
+
+        else:
+            bot.exit('Type %s is not recognized in get_decorator' % name)
+
+        task = Task(name)
+        return task
+
+
 # Get and Prepare Tasks
 
     def has_task(self, name):
@@ -781,7 +806,18 @@ class Watcher(object):
         '''
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
-            task = self.get_task(name)
+
+            if name.startswith('task'):
+                task = self.get_task(name)
+ 
+            # A decorator is run on the fly (not in config)
+            elif name.startswith('decorator'):
+                task = self.get_decorator(name)
+
+            # We only allow tasks and decorators
+            else:
+                bot.warning('%s is not task or decorator, skipping.' % name)
+                continue
 
             # Ensure that the task folder exists
             if not os.path.exists(task_folder):
