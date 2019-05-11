@@ -333,16 +333,6 @@ TIMESTAMP
 
 If you are interested in the configurations in watchme.cfg, then you can 
 inspect further with [inspect](#how-do-i-inspect-my-watchers).
-Here is a trick to loop through them all:
-
-```bash
-$ for watcher in $(watchme list) 
-do
-    echo "===================="
-    echo "Inspecting $watcher"
-    watchme inspect $watcher
-done
-```
 
 ### How do I protect or freeze my watcher?
 

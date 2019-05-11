@@ -24,9 +24,10 @@ runTest 0 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.f
 runTest 255 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/
 runTest 0 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ --force
 runTest 0 $output test -d "$tmpdir/watcher/task-harvard-hpc"
-runTest 0 $output watchme run watcher task-harvard --test
+runTest 0 $output watchme run watcher task-harvard-hpc --test
 runTest 0 $output watchme activate watcher
-runTest 0 $output watchme run watcher task-harvard
+runTest 0 $output watchme run watcher task-harvard-hpc
+ls "$tmpdir/watcher/task-harvard-hpc/"
 runTest 0 $output test -f "$tmpdir/watcher/task-harvard-hpc/result.txt"
 runTest 0 $output test -f "$tmpdir/watcher/task-harvard-hpc/TIMESTAMP"
 

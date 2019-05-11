@@ -646,9 +646,9 @@ class Watcher(object):
             selected = False
         
         # The user wants to search for a custom task name
-        if regexp != None:
-            if not re.search(regexp, task):
-                bot.info('Task %s is selected to run.' % task)
+        if regexp != None and task != None:
+            if not re.search(regexp, task.name):
+                bot.info('Task %s is not selected to run.' % task)
                 selected = False
 
         return selected
@@ -779,7 +779,7 @@ class Watcher(object):
             bot.exit('Watcher %s is not active.' % self.name)
 
         # Step 2: get the tasks associated with the run, a list of param dicts
-        tasks = self.get_tasks()
+        tasks = self.get_tasks(regexp=regexp)
 
         # Step 3: Run the tasks. This means preparing a list of funcs/params,
         # and then submitting with multiprocessing
@@ -804,6 +804,9 @@ class Watcher(object):
            results: a dictionary of tasks, with keys as the task name, and
                     values as the result.
         '''
+        if results == None:
+            return
+
         for name, result in results.items():
             task_folder = os.path.join(self.repo, name)
 

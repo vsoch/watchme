@@ -57,13 +57,6 @@ runTest 0 $output watchme list
 runTest 0 $output watchme list github
 runTest 0 $output watchme list github task-sregistry
 
-$ for watcher in $(watchme list) 
-do
-    echo "===================="
-    echo "Inspecting $watcher"
-    runTest 0 $output watchme inspect $watcher
-done
-
 echo "#### Testing watchme protect and freeze"
 runTest 0 $output watchme protect watchme-github-repos on
 runTest 255 $output watchme remove watchme-github-repos --delete
