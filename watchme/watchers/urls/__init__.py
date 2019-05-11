@@ -57,4 +57,5 @@ class Task(TaskBase):
         else:
             func = None
 
+        bot.debug('function name is %s' % name)
         return func

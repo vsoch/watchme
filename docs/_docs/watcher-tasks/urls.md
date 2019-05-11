@@ -94,15 +94,15 @@ This task will watch for changes at an entire URL, meaning tracking the entire p
 For example, here is a page I wanted to watch for changes:
 
 ```bash
-$ watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/
-[task-harvard-hpc]
-url  = https://www.rc.fas.harvard.edu/about/people/
+$ watchme add-task watcher task-get url@https://httpbin.org/get
+[task-get]
+url  = https://httpbin.org/get
 active  = true
 type  = urls
 ```
 
-In the above, we added the task "task-harvard-hpc" to the watcher called "watcher"
-and we defined the parameter "url" to be `https://www.rc.fas.harvard.edu/about/people/`.
+In the above, we added the task "task-get" to the watcher called "watcher"
+and we defined the parameter "url" to be `https://httpbin.org/get`.
 As a confirmation that the task was added, the configuration is printed to the screen.
 This task is appropriate for content that you want returned as a string, and then
 saved to a text file to the repository. By default, it will be saved as result.txt.
@@ -110,14 +110,14 @@ If you want to customize the extension (e.g., get a json object and save as resu
 specify the save_as parameter:
 
 ```bash
-$ watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@json
+$ watchme add-task watcher task-get url@https://httpbin.org/get save_as@json
 ```
 
 If you anticipate a list of results and want to save to separate jsons (one per entry)
 then specify save_as@jsons
 
 ```bash
-$ watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ save_as@jsons
+$ watchme add-task watcher task-get url@https://httpbin.org/get save_as@jsons
 ```
 
 Thus, the following custom parameters can be added:
@@ -268,8 +268,8 @@ $ cat /home/vanessa/.watchme/watcher/watchme.cfg
 [watcher]
 active = false
 
-[task-harvard-hpc]
-url  = https://www.rc.fas.harvard.edu/about/people/
+[task-get]
+url  = https://httpbin.org/get
 active  = true
 type  = urls
 ```

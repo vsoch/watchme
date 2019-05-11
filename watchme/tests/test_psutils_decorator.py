@@ -10,7 +10,7 @@ from time import sleep
 # - to have somewhat of an impact on system resources we make a long list
 # - we test to ensure that something is returned ("Hello!")
 
-@monitor_resources('decorator', seconds=3)
+@monitor_resources('system', seconds=3)
 def myfunc(iters, pause):
     long_list = []
     print("Generating a long list, pause is %s and iters is %s" % (pause, iters))

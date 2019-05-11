@@ -20,22 +20,22 @@ echo "#### Testing urls tasks..."
 
 echo "get task..."
 runTest 255 $output watchme add-task watcher task-missing-param
-runTest 0 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/
-runTest 255 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/
-runTest 0 $output watchme add-task watcher task-harvard-hpc url@https://www.rc.fas.harvard.edu/about/people/ --force
-runTest 0 $output test -d "$tmpdir/watcher/task-harvard-hpc"
-runTest 0 $output watchme run watcher task-harvard-hpc --test
+runTest 0 $output watchme add-task watcher task-get url@https://httpbin.org/get
+runTest 255 $output watchme add-task watcher task-get url@https://httpbin.org/get
+runTest 0 $output watchme add-task watcher task-get url@https://httpbin.org/get --force
+runTest 0 $output test -d "$tmpdir/watcher/task-get"
+runTest 0 $output watchme run watcher task-get --test
 runTest 0 $output watchme activate watcher
-runTest 0 $output watchme run watcher task-harvard-hpc
-ls "$tmpdir/watcher/task-harvard-hpc/"
-runTest 0 $output test -f "$tmpdir/watcher/task-harvard-hpc/result.txt"
-runTest 0 $output test -f "$tmpdir/watcher/task-harvard-hpc/TIMESTAMP"
+runTest 0 $output watchme run watcher task-get
+ls "$tmpdir/watcher/task-get/"
+runTest 0 $output test -f "$tmpdir/watcher/task-get/result.json"
+runTest 0 $output test -f "$tmpdir/watcher/task-get/TIMESTAMP"
 
 echo "post task"
 runTest 0 $output watchme add-task watcher task-api-post url@https://httpbin.org/post file_name@post-latest.json func@post_task
 runTest 0 $output watchme run watcher task-api-post --test
 runTest 0 $output watchme run watcher task-api-post
-runTest 0 $output test -f "$tmpdir/watcher/task-api-post/result.json"
+runTest 0 $output test -f "$tmpdir/watcher/task-api-post/post-latest.json"
 runTest 0 $output test -f "$tmpdir/watcher/task-api-post/TIMESTAMP"
 
 echo "download task"
@@ -46,10 +46,10 @@ runTest 0 $output test -f "$tmpdir/watcher/task-download/image.png"
 runTest 0 $output test -f "$tmpdir/watcher/task-download/TIMESTAMP"
 
 echo "get_url_selection task"
-runTest 0 $output watchme add-task task-air-oakland url@http://aqicn.org/city/california/alameda/oakland-west func@get_url_selection selection@#aqiwgtvalue file_name@oakland.txt get_text@true regex@[0-9]+
+runTest 0 $output watchme add-task watcher task-air-oakland url@http://aqicn.org/city/california/alameda/oakland-west func@get_url_selection selection@#aqiwgtvalue file_name@oakland.txt get_text@true regex@[0-9]+
 runTest 0 $output watchme run watcher task-air-oakland --test
 runTest 0 $output watchme run watcher task-air-oakland
-runTest 0 $output test -f "$tmpdir/watcher/task-air-oakland/result-0.txt"
+runTest 0 $output test -f "$tmpdir/watcher/task-air-oakland/oakland.txt"
 runTest 0 $output test -f "$tmpdir/watcher/task-air-oakland/TIMESTAMP"
 
 echo "#### Testing psutils tasks..."
@@ -74,9 +74,9 @@ done
 
 echo "#### Testing psutils decorator..."
 runTest 0 $output python test_psutils_decorator.py
-runTest 0 $output test -d "$tmpdir/watcher/decorator-psutils-myfunc"
-runTest 0 $output test -f "$tmpdir/watcher/decorator-psutils-myfunc/result.json"
-runTest 0 $output test -f "$tmpdir/watcher/decorator-psutils-myfunc/TIMESTAMP"
+runTest 0 $output test -d "$tmpdir/system/decorator-psutils-myfunc"
+runTest 0 $output test -f "$tmpdir/system/decorator-psutils-myfunc/result.json"
+runTest 0 $output test -f "$tmpdir/system/decorator-psutils-myfunc/TIMESTAMP"
 
 echo "#### Testing results task..."
 
@@ -94,5 +94,5 @@ runTest 0 $output test -f "$tmpdir/results-watcher/task-hpc-job/density"
 runTest 0 $output test -f "$tmpdir/results-watcher/task-hpc-job/weight"
 runTest 0 $output test -f "$tmpdir/results-watcher/task-hpc-job/TIMESTAMP"
 
-echo "Finish testing basic client"
+echo "Finish testing watchers!"
 rm -rf ${tmpdir}
