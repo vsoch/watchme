@@ -158,17 +158,23 @@ watcher, you can [active and schedule it](#verify-the-addition).
 
 #### Use as a Decorator
 
-Although this isn't reproducible (you wouldn't write this into a watchme 
-configuration file), it's useful to use watchme to monitor system resources
-for a python function over time. For this reason, we provide a decorator!
-It uses the same task function, but with a different invocation.
+Although the parameters are not stored in the `watchme.cfg`, if you use
+the decorator to run the same task, the .git repository is still used
+as a database, and you can collect data to monitor your different Python
+functions on the fly. Specifically, the decorator is going to use
+multiprocessing to run your function, and then watch it via the process id (pid).
+You get to choose how often (in seconds) you want to record metrics like
+memory, io counters, and cpu, and threads. See [here](https://gist.github.com/vsoch/19957205764ab12a153ddbecd837ffb3#file-result-json) 
+for an example of default output for one timepoint.
+This decorator function uses the same task function, that we discussed first,
+but with a different invocation.
 
 
 ```python
 from watchme.watchers.psutils.decorators import monitor_resources
 from time import sleep
 
-@monitor_resources('decorator', seconds=3)
+@monitor_resources('system', seconds=3)
 def myfunc():
     long_list = []
     for i in range(100):
@@ -187,8 +193,9 @@ to specify the following arguments (not shown):
  - name: if you want to call the result folder something other than the function name
 
 Why don't you need specify a pid? Your running function will produce the 
-process id, so you don't need to provide it. Let's run this script, you can get 
+process id, so you don't need to provide it. Let's run this script. You can get 
 the full thing [from the gist here](https://gist.github.com/vsoch/19957205764ab12a153ddbecd837ffb3).
+You'll notice in the gist example we demonstrate "myfunc" taking arguments too.
 
 ```bash
 $ python test_psutils_decorator.py
@@ -199,11 +206,11 @@ i is 1, sleeping 2 seconds
 Result list has length 10
 ```
 
-Great! So it ran for the watcher we created called `decorator`, but where
+Great! So it ran for the watcher we created called `system`, but where
 are the results? Let's take a look in our watcher folder:
 
 ```bash
-~/.watchme/decorator$ tree
+~/.watchme/system$ tree
 .
 ├── decorator-psutils-myfunc
 │   ├── result.json
@@ -225,8 +232,8 @@ decorator.
 > What is a result?
 
 Remember that we are monitoring our function every 3 seconds, so for a function
-that lasts about 10, we might hit it about 3 times. How would we export that data?
-Like this:
+that lasts about 10, we will record process metrics three times. 
+How would we export that data? Like this:
 
 ```bash
 $ watchme export system decorator-psutils-myfunc result.json --json
