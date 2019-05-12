@@ -29,7 +29,7 @@ class ProcessRunner():
         self.timepoints = []
 
         # Export seconds to the environment
-        os.environ["WATCHMEENV_SECONDS"] = self.seconds
+        os.environ["WATCHMEENV_SECONDS"] = str(self.seconds)
 
         # Ensure we have csv lists
         self.only = self._parse_custom(only)
