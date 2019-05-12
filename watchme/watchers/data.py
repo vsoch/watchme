@@ -50,7 +50,7 @@ def export_dict(self, task,
         base = self.base
 
     # Quit early if the task isn't there
-    if not self.has_task(task) and not name.startswith('decorator'):
+    if not self.has_task(task) and not task.startswith('decorator'):
         bot.exit('%s is not a valid task or decorator for %s' % (task, name))
 
     repo = os.path.join(base, self.name)

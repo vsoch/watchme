@@ -12,6 +12,7 @@ from subprocess import (
     check_output, 
     CalledProcessError
 )
+from watchme.utils import get_watchme_env
 from watchme.logger import bot
 import os
 import psutil
@@ -63,6 +64,11 @@ def monitor_pid_task(**kwargs):
     results = {}
 
     for key, val in ps.as_dict().items():
+
+        # If val is None, don't include
+        if val == None:
+            bot.debug('skipping %s, None' % key)
+            continue
 
         # First priority goes to a custom set
         if len(only) > 0 and key in only:
@@ -131,6 +137,10 @@ def monitor_pid_task(**kwargs):
                             "write_chars": val.write_chars}
         else:
             results[key] = val
+
+    # Add any environment variables prefixed wit WATCHMEENV_
+    environ = get_watchme_env()
+    results.update(environ)
 
     return results
 
@@ -222,8 +232,13 @@ def memory_task(**kwargs):
     '''
 
     result = {}
+
     # gives an object with many fields
     result['virtual_memory'] = dict(psutil.virtual_memory()._asdict())
+
+    # Add any environment variables prefixed wit WATCHMEENV_
+    environ = get_watchme_env()
+    result.update(environ)
 
     return result
 
@@ -235,6 +250,11 @@ def users_task(**kwargs):
     result = {'users': []}
     for user in psutil.users():
         result['users'].append(dict(user._asdict()))
+
+    # Add any environment variables prefixed wit WATCHMEENV_
+    environ = get_watchme_env()
+    result.update(environ)
+
     return result
 
 
@@ -374,13 +394,18 @@ def disk_task(**kwargs):
 
 def _filter_result(result, skip):
     '''a helper function to filter a dictionary based on a list of keys to 
-       skip.
+       skip. We also add variables from the environment.
     
        Parameters
        ==========
        result: a dictionary of results
        skip: a list of keys to remove/filter from the result.
     '''
+
+    # Add any environment variables prefixed wit WATCHMEENV_
+    environ = get_watchme_env()
+    result.update(environ)
+
     for key in skip:
         if key in result:
             del result[key]
