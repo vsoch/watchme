@@ -37,7 +37,7 @@ def from_env_task(**kwargs):
     tmpdir = get_tmpdir()
 
     # First extract variables from the environment
-    environ = get_watchme_env("WATCHMEENV_")
+    environ = get_watchme_env()
     for key, value in environ.items():
  
         # Write the result to file (don't include extension)

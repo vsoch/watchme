@@ -147,9 +147,6 @@ def convert2boolean(arg):
         return arg.lower() in ("yes", "true", "t", "1", "y")
     return arg
 
-import os
-import re
-
 
 def get_watchme_env(prefix="WATCHMEENV_"):
     '''get any environment variables that start with WATCMEENV_, return the
