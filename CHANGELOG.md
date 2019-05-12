@@ -13,7 +13,8 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
- - Adding decorator for system (psutils) monitorin (0.0.19)
+ - Custom WATCHME_ENV variables added to monitoring decorator/task (0.0.20)
+ - Adding decorator for system (psutils) monitoring (0.0.19)
  - Reorganizing task functions to belong with TaskBase (0.0.17)
  - Adding option for regular expression for URL wachers, user agent header (0.0.16)
  - requests is missing from install dependencies (0.0.15)

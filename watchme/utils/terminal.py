@@ -136,6 +136,8 @@ def run_command(cmd, sudo=False):
     return output
 
 
+# Environment
+
 def convert2boolean(arg):
     '''
     convert2boolean is used for environmental variables
@@ -144,3 +146,29 @@ def convert2boolean(arg):
     if not isinstance(arg, bool):
         return arg.lower() in ("yes", "true", "t", "1", "y")
     return arg
+
+import os
+import re
+
+
+def get_watchme_env(prefix="WATCHMEENV_"):
+    '''get any environment variables that start with WATCMEENV_, return the
+       dictionary to the user.
+    '''
+    environ = {}
+
+    # First extract variables from the environment
+    for key, value in os.environ.items():
+
+        # Variables that are specified, or start with WATCHMEENV included
+        if key.startswith(prefix):
+
+            # Replace the WATCHMEENV_ if present
+            key = re.sub("^%s" % prefix, "", key)
+
+            # Don't include empty strings
+            if value not in ["", None]:
+
+                environ[key] = value
+
+    return environ

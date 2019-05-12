@@ -12,6 +12,7 @@ from subprocess import (
     check_output, 
     CalledProcessError
 )
+from watchme.utils import get_watchme_env
 from watchme.logger import bot
 import os
 import psutil
@@ -132,6 +133,10 @@ def monitor_pid_task(**kwargs):
         else:
             results[key] = val
 
+    # Add any environment variables prefixed wit WATCHMENV_
+    environ = get_watchme_env()
+    results.update(environ)
+
     return results
 
 def cpu_task(**kwargs):
@@ -222,8 +227,13 @@ def memory_task(**kwargs):
     '''
 
     result = {}
+
     # gives an object with many fields
     result['virtual_memory'] = dict(psutil.virtual_memory()._asdict())
+
+    # Add any environment variables prefixed wit WATCHMENV_
+    environ = get_watchme_env()
+    result.update(environ)
 
     return result
 
@@ -235,6 +245,11 @@ def users_task(**kwargs):
     result = {'users': []}
     for user in psutil.users():
         result['users'].append(dict(user._asdict()))
+
+    # Add any environment variables prefixed wit WATCHMENV_
+    environ = get_watchme_env()
+    result.update(environ)
+
     return result
 
 
@@ -374,13 +389,18 @@ def disk_task(**kwargs):
 
 def _filter_result(result, skip):
     '''a helper function to filter a dictionary based on a list of keys to 
-       skip.
+       skip. We also add variables from the environment.
     
        Parameters
        ==========
        result: a dictionary of results
        skip: a list of keys to remove/filter from the result.
     '''
+
+    # Add any environment variables prefixed wit WATCHMENV_
+    environ = get_watchme_env()
+    result.update(environ)
+
     for key in skip:
         if key in result:
             del result[key]

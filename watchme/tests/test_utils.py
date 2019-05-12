@@ -66,7 +66,6 @@ class TestUtils(unittest.TestCase):
         result=print_json({1:1})
         self.assertEqual('{\n    "1": 1\n}', result)
 
-
     def test_get_installdir(self):
         '''get install directory should return the base of where singularity
         is installed

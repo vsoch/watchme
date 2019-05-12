@@ -60,6 +60,7 @@ test_watchme_bash: &test_watchme_bash
   command: |
         cd ~/repo/watchme/tests
         export PATH=$HOME/conda/bin:$PATH
+        /bin/bash test_utils.sh
         /bin/bash test_client.sh
         /bin/bash test_watchers.sh
 
