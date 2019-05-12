@@ -138,7 +138,7 @@ def monitor_pid_task(**kwargs):
         else:
             results[key] = val
 
-    # Add any environment variables prefixed wit WATCHMENV_
+    # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
     results.update(environ)
 
@@ -236,7 +236,7 @@ def memory_task(**kwargs):
     # gives an object with many fields
     result['virtual_memory'] = dict(psutil.virtual_memory()._asdict())
 
-    # Add any environment variables prefixed wit WATCHMENV_
+    # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
     result.update(environ)
 
@@ -251,7 +251,7 @@ def users_task(**kwargs):
     for user in psutil.users():
         result['users'].append(dict(user._asdict()))
 
-    # Add any environment variables prefixed wit WATCHMENV_
+    # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
     result.update(environ)
 
@@ -402,7 +402,7 @@ def _filter_result(result, skip):
        skip: a list of keys to remove/filter from the result.
     '''
 
-    # Add any environment variables prefixed wit WATCHMENV_
+    # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
     result.update(environ)
 

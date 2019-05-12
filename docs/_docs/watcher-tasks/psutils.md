@@ -59,8 +59,8 @@ Also note that for all of the tasks below, you need to select the type of task w
 ### Task Environment
 
 For any task, if you have a variable exporter to the environment that starts
-with `WATCHMENV_`, it will be found and added to the result. For example,
-`WATCHMENV_result_id=123` will be saved to the results dictionary with key
+with `WATCHMEENV_`, it will be found and added to the result. For example,
+`WATCHMEENV_result_id=123` will be saved to the results dictionary with key
 "result_id" set to "123."
 
 
