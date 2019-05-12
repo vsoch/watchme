@@ -97,7 +97,7 @@ def generate_watcher_config(path, watcher_type=None):
     config['watcher']['type'] = watcher_type
 
     # Save to file
-    write_config(configfile, config)
+    write_config(watcher_config, config)
 
 # CONFIG HELPERS ###############################################################
 
