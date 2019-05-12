@@ -65,6 +65,11 @@ def monitor_pid_task(**kwargs):
 
     for key, val in ps.as_dict().items():
 
+        # If val is None, don't include
+        if val == None:
+            bot.debug('skipping %s, None' % key)
+            continue
+
         # First priority goes to a custom set
         if len(only) > 0 and key in only:
             bot.debug('skipping %s' % key)
