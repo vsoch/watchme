@@ -403,11 +403,17 @@ By default, when a task is added, it is active.
 
 Typically, you would schedule your watcher with a cron job, and then forget about it.
 However, you are also able to run the watcher manually, if you so desire (to test 
-or otherwise.) To do this, simply run:
+or otherwise.) To run manually:
 
 ```bash
 # watchme run <watcher>
 $ watchme run watcher
+```
+
+or to run as a test (not saving data):
+
+```bash
+$ watchme run watcher --test
 ```
 
 where "watcher" corresponds with the watcher name. When this is done, if the watcher
