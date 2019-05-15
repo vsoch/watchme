@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - Print of task should be "add-task" (0.0.21)
  - Custom WATCHME_ENV variables added to monitoring decorator/task (0.0.20)
  - Adding decorator for system (psutils) monitoring (0.0.19)
  - Reorganizing task functions to belong with TaskBase (0.0.17)
