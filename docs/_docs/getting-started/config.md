@@ -49,7 +49,7 @@ protected = "on"
 If the parameter is missing or defined with value "off", both coincide with 
 not protected.
 
-### Froen
+### Frozen
 
 If you want to freeze the configuration entirely, you should freeze it. This
 means that you cannot delete the watcher folder, or edit anything in the
