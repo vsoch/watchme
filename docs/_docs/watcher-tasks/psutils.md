@@ -222,7 +222,12 @@ $ watchme monitor sleep 2 --only cmdline
 ```
 
 Notice that your custom environment variables are not skipped, only those
-in the content of the default parameters. ANd there you have it! With these methods to monitor any process on the fly at
+in the content of the default parameters.  Here is a rundown of all of what
+is discussed above:
+
+<script id="asciicast-247000" src="https://asciinema.org/a/247000.js" data-speed="2" async></script>
+
+And there you have it! With these methods to monitor any process on the fly at
 a particular interval, you are good to go! 
 
 
