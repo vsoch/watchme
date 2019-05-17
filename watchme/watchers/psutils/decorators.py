@@ -77,7 +77,7 @@ class ProcessRunner(DecoratorBase):
         self.queue = Queue
 
         # Handles setting the seconds, skip, include, and only parameters
-        super(TerminalRunner, self).__init__(**kwargs)
+        super(ProcessRunner, self).__init__(**kwargs)
 
     @staticmethod
     def _wrapper(func, queue, args, kwargs):
