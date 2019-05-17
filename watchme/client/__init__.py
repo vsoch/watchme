@@ -155,6 +155,39 @@ def get_parser():
                      help="list watchers available", 
                      default=False, action='store_true')
 
+
+    # monitor
+
+    monitor = subparsers.add_parser("monitor",
+                                    help="terminal process monitor (akin to time)")
+
+    monitor.add_argument('watcher', nargs="?",
+                         help='the watcher to run (if save desired)')
+
+    monitor.add_argument('--name', dest="name", 
+                         help="a custom name for the output folder (decorator-<name>)", 
+                         default=None, type=str)
+
+    monitor.add_argument('--skip', dest="skip", 
+                         help="keys in result to skip", 
+                         default=None, type=str)
+
+    monitor.add_argument('--only', dest="only", 
+                         help="only include these values", 
+                         default=None, type=str)
+
+    monitor.add_argument('--include', dest="include", 
+                         help="keys in result to add back in (environ)", 
+                         default=None, type=str)
+
+    monitor.add_argument('--seconds', '-s', dest="seconds", 
+                         help="interval (seconds) to monitor at", 
+                         default=3, type=int)
+
+    monitor.add_argument('--test', dest="test", 
+                         help="run monitor in test mode (for a decorator, no save)", 
+                         default=False, action='store_true')
+
     # protect and freeze
 
     protect = subparsers.add_parser("protect",
@@ -318,6 +351,7 @@ def main():
     elif args.command == "init": from .init import main
     elif args.command == "inspect": from .inspect import main
     elif args.command == "list": from .ls import main
+    elif args.command == "monitor": from .monitor import main
     elif args.command == "protect": from .protect import main
     elif args.command == "remove": from .remove import main
     elif args.command == "run": from .run import main

@@ -71,8 +71,11 @@ def monitor_pid_task(**kwargs):
             continue
 
         # First priority goes to a custom set
-        if len(only) > 0 and key in only:
-            bot.debug('skipping %s' % key)
+        if len(only) > 0:
+            if key in only:
+                results[key] = val
+            else:
+                bot.debug('skipping %s' % key)
             continue 
 
         # The user requested to skip
