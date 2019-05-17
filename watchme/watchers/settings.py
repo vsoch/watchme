@@ -68,7 +68,7 @@ def print_add_task(self, task):
     self.load_config()
 
     if task in self.config:
-        command = "watchme add %s" % task
+        command = "watchme add-task %s" % task
         for key in self.config[task]:
             value = self.config[task][key]
             command = "%s %s@%s" %(command, key, value)
