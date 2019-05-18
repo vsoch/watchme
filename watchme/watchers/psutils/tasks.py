@@ -95,7 +95,7 @@ def monitor_pid_task(**kwargs):
         elif key in skip or key in ['threads']:
             continue
 
-        # Keep count of threads
+        # Keep count of openfiles
         elif key in ["open_files"]:
             results[key] = len(val)
 
