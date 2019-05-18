@@ -12,6 +12,7 @@ from watchme.logger import bot
 from watchme.command import get_watchers
 from watchme import get_watcher
 from watchme.watchers.psutils.decorators import TerminalRunner
+import json
 
 def main(args, extra):
     '''monitor a task (from the command line), meaning wrapping it with
@@ -42,7 +43,7 @@ def main(args, extra):
 
     # If we don't have a watcher, print to terminal
     if watcher is None or args.test is True:
-        print(timepoints)
+        print(json.dumps(timepoints))
 
     # Otherwise save to watcher task folder
     else:
