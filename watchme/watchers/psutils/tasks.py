@@ -67,7 +67,7 @@ def monitor_pid_task(**kwargs):
 
         if key == "connections":
             connections = []
-            for net in value:
+            for net in val:
                 entry = {'fd': net.fd,
                          'family': str(net.family),
                          'type': str(net.type),
@@ -76,7 +76,7 @@ def monitor_pid_task(**kwargs):
                          'raddr': net.raddr,
                          'status': net.status}
                 connections.append(entry)
-            value = connections       
+            val = connections       
  
         # If val is None, don't include
         if val == None:
