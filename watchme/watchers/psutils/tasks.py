@@ -64,6 +64,11 @@ def monitor_pid_task(**kwargs):
     results = {}
 
     for key, val in ps.as_dict().items():
+ 
+        # If val is None, don't include
+        if val == None:
+            bot.debug('skipping %s, None' % key)
+            continue
 
         if key == "connections":
             connections = []
@@ -77,14 +82,9 @@ def monitor_pid_task(**kwargs):
                          'status': net.status}
                 connections.append(entry)
             val = connections       
- 
-        # If val is None, don't include
-        if val == None:
-            bot.debug('skipping %s, None' % key)
-            continue
 
         # First priority goes to a custom set
-        elif len(only) > 0:
+        if len(only) > 0:
             if key in only:
                 results[key] = val
             else:
