@@ -54,6 +54,7 @@ test_watchme_python: &test_watchme_python
         cd ~/repo/watchme/tests
         $HOME/conda/bin/python -m unittest test_client
         $HOME/conda/bin/python -m unittest test_utils
+        $HOME/conda/bin/python -m unittest test_decorators
 
 test_watchme_bash: &test_watchme_bash
   name: Test WatchMe Client

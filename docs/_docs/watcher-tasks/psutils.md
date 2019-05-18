@@ -89,7 +89,7 @@ within Python or the command line. First, let's take a look at running from
 within Python. We are going to use a `TerminalRunner` to run the command:
 
 ```python
-from watchme.watchers.decorators import TerminalRunner
+from watchme.watchers.psutils.decorators import TerminalRunner
 runner = TerminalRunner('sleep 5')
 runner.run()
 timepoints = runner.wait()
