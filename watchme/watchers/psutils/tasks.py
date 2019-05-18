@@ -65,13 +65,26 @@ def monitor_pid_task(**kwargs):
 
     for key, val in ps.as_dict().items():
 
+        if key == "connections":
+            connections = []
+            for net in value:
+                entry = {'fd': net.fd,
+                         'family': str(net.family),
+                         'type': str(net.type),
+                         'laddr_ip': net.laddr.ip,
+                         'laddr_port': net.laddr.port,
+                         'raddr': net.raddr,
+                         'status': net.status}
+                connections.append(entry)
+            value = connections       
+ 
         # If val is None, don't include
         if val == None:
             bot.debug('skipping %s, None' % key)
             continue
 
         # First priority goes to a custom set
-        if len(only) > 0:
+        elif len(only) > 0:
             if key in only:
                 results[key] = val
             else:
@@ -323,7 +336,7 @@ def net_task(**kwargs):
     result['net_if_stats'] = {}
 
     for net in psutil.net_connections():
-        net_result = {'df': net.fd,
+        net_result = {'fd': net.fd,
                       'family': str(net.family),
                       'type': str(net.type),
                       'laddr_ip': net.laddr.ip,
