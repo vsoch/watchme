@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - But with printing output to screen for monitor (should be json) (0.0.23)
  - Adding terminal monitor command group (0.0.22)
  - Print of task should be "add-task" (0.0.21)
  - Custom WATCHME_ENV variables added to monitoring decorator/task (0.0.20)
