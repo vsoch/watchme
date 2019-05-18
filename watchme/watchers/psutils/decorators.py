@@ -15,39 +15,69 @@ from multiprocessing import (
 from functools import wraps
 from watchme.logger import bot
 from watchme.watchers.psutils import Task
+from watchme.tasks.decorators import DecoratorBase
 from watchme import get_watcher
 from time import sleep
 import os
+import shlex
+import subprocess
+import threading
 
 
-class ProcessRunner():
+class TerminalRunner(DecoratorBase):
 
-    def __init__(self, seconds=3, skip=[], include=[], only=[]):
+    def __init__(self, cmd, **kwargs):
+        self.cmd = shlex.split(cmd)
         self.process = None
-        self.seconds = seconds
-        self.queue = Queue()
-        self.timepoints = []
 
-        # Export seconds to the environment
-        os.environ["WATCHMEENV_SECONDS"] = str(self.seconds)
+        # Handles setting the skip, include, and only parameters
+        super(TerminalRunner, self).__init__(**kwargs)
 
-        # Ensure we have csv lists
-        self.only = self._parse_custom(only)
-        self.skip = self._parse_custom(skip)
-        self.include = self._parse_custom(include)
-
-    def _parse_custom(self, listy):
-        '''parse an actual list (['one','two','three']) into 
-           a csv list. If we don't have a list, ignore and assume already
-           parsed that way.
- 
-           Parameters
-           ==========
-           listy: the actual list
+    def run(self):
+        '''run the user provided function
         '''
-        if isinstance(listy, list):
-            listy = ','.join(listy)
-        return listy
+        try:
+            self.process = subprocess.Popen(self.cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+        except FileNotFoundError:
+            self.cmd.pop(0)
+            self.process = subprocess.Popen(self.cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+
+    def wait(self):
+        '''wait should monitor the running task. run should be called first.
+        '''
+        # Parameters for the pid, and to skip sections of results
+        params = {"skip": self.skip,
+                  "pid": self.process.pid,
+                  "include": self.include,
+                  "only": self.only,
+                  'func': 'monitor_pid_task'}
+
+        # This particular decorator doesn't take input params
+        task = Task("monitor_pid_task", params=params)
+
+        # Export parameters and functions            
+        function = task.export_func()
+        params = task.export_params()
+
+        # collect resources, then sleep
+        while self.process.poll() == None:
+
+            # Function returns dictionary, we append to list of timepoints
+            self.timepoints.append(function(**params))
+            sleep(self.seconds)
+
+        # Get the timepoints
+        return self.timepoints
+
+
+class ProcessRunner(DecoratorBase):
+
+    def __init__(self, **kwargs):
+        self.process = None
+        self.queue = Queue()
+
+        # Handles setting the seconds, skip, include, and only parameters
+        super(ProcessRunner, self).__init__(**kwargs)
 
     @staticmethod
     def _wrapper(func, queue, args, kwargs):
@@ -55,12 +85,16 @@ class ProcessRunner():
         queue.put(ret)
 
     def run(self, func, *args, **kwargs):
+        '''run the user provided function
+        '''
         args2 = [func, self.queue, args, kwargs]
         p = Process(target=self._wrapper, args=args2)
         self.process = p
         p.start()
 
     def wait(self):
+        '''watch should monitor the running task. run should be called first.
+        '''
 
         # Parameters for the pid, and to skip sections of results
         params = {"skip": self.skip,

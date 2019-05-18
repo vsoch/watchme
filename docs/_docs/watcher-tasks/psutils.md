@@ -82,6 +82,155 @@ Either way, you will want to create your watcher first:
 $ watchme create system
 ```
 
+#### Run on the Fly, Python
+
+It's most likely you want to run and monitor a command on the fly, either from
+within Python or the command line. First, let's take a look at running from
+within Python. We are going to use a `TerminalRunner` to run the command:
+
+```python
+from watchme.watchers.psutils.decorators import TerminalRunner
+runner = TerminalRunner('sleep 5')
+runner.run()
+timepoints = runner.wait()
+```
+
+You'll get a list of timepoints, collected at intervals of 3 seconds! Here
+is the top of the first:
+
+```python
+[{'SECONDS': '3',
+  'cmdline': ['sleep', '5'],
+  'connections': [],
+  'cpu_affinity': [0, 1, 2, 3],
+  'cpu_num': 1,
+  'cpu_percent': 0.0,
+  'cpu_times': {'children_system': 0.0,
+...
+```
+
+Do you need to add data to the structure? Just export it with prefix `WATCHMEENV_*`
+
+```python
+os.environ['WATCHMEENV_AVOCADO'] = '5'
+```
+
+and it will appear in the result!
+
+```python
+ {'AVOCADO': '5',
+  'SECONDS': '3',
+  'cmdline': ['sleep', '5'],
+  'connections': [],
+  'cpu_affinity': [0, 1, 2, 3],
+  'cpu_num': 3,
+...
+```
+
+If you want to skip fields, include fields, or use "only" a subset of the keys
+returned in the default result, you can define lists for `only`, `include`,
+and `skip` to the `TerminalRunner` directly (optional).
+
+#### Run on the Fly, Command Line
+
+If you choose, the same function can be run via the watchme command line client.
+If you provide no additional arguments, it will print the data structure to
+the screen:
+
+```bash
+$ watchme monitor sleep 2
+[{'cpu_percent': 0.0, 'io_counters': {'read_count': 6, 'write_count': 0, 'read_bytes': 0, 'write_bytes': 0, 'read_chars': 1948, 'write_chars': 0}, 'cmdline': ['sleep', '2'], 'name': 'sleep', 'ppid': 26261, 'cwd': '/home/vanessa/Desktop/watchme', 'open_files': 0, 'ionice': {'ioclass': 'IOPRIO_CLASS_NONE', 'value': 4}, 'exe': '/bin/sleep', 'create_time': 1558125191.98, 'num_threads': 1, 'status': 'sleeping', 'pid': 26264, 'memory_full_info': {'rss': 663552, 'vms': 7467008, 'shared': 589824, 'text': 28672, 'lib': 0, 'data': 323584, 'dirty': 0, 'uss': 118784, 'pss': 133120, 'swap': 0}, 'gids': {'real': 1000, 'effetive': 1000, 'saved': 1000}, 'num_fds': 3, 'num_ctx_switches': {'voluntary': 1, 'involuntary': 1}, 'memory_percent': 0.00317349248332839, 'nice': 0, 'cpu_affinity': [0, 1, 2, 3], 'cpu_times': {'user': 0.0, 'system': 0.0, 'children_user': 0.0, 'children_system': 0.0}, 'connections': [], 'terminal': '/dev/pts/18', 'cpu_num': 1, 'uids': {'real': 1000, 'effetive': 1000, 'saved': 1000}, 'username': 'vanessa', 'SECONDS': '3'}]
+```
+
+Want to add an environment variable? The same applies - you can export `WATCHMEENV_*` and they
+will be added to results.
+
+```bash
+$ export WATCHMEENV_AVOCADOS=3
+$ watchme monitor sleep 2
+[{'ppid': 26273, 'username': 'vanessa', 'cmdline': ['sleep', '2'], 'gids': {'real': 1000, 'effetive': 1000, 'saved': 1000}, 'io_counters': {'read_count': 6, 'write_count': 0, 'read_bytes': 0, 'write_bytes': 0, 'read_chars': 1948, 'write_chars': 0}, 'cpu_num': 3, 'nice': 0, 'ionice': {'ioclass': 'IOPRIO_CLASS_NONE', 'value': 4}, 'pid': 26276, 'num_ctx_switches': {'voluntary': 1, 'involuntary': 0}, 'status': 'sleeping', 'name': 'sleep', 'create_time': 1558125219.84, 'cpu_affinity': [0, 1, 2, 3], 'num_fds': 3, 'cpu_times': {'user': 0.0, 'system': 0.0, 'children_user': 0.0, 'children_system': 0.0}, 'open_files': 0, 'cpu_percent': 0.0, 'uids': {'real': 1000, 'effetive': 1000, 'saved': 1000}, 'memory_full_info': {'rss': 700416, 'vms': 7467008, 'shared': 626688, 'text': 28672, 'lib': 0, 'data': 323584, 'dirty': 0, 'uss': 118784, 'pss': 133120, 'swap': 0}, 'memory_percent': 0.0033497976212910788, 'connections': [], 'cwd': '/home/vanessa/Desktop/watchme', 'num_threads': 1, 'exe': '/bin/sleep', 'terminal': '/dev/pts/18', 'AVOCADOS': '3', 'SECONDS': '3'}]
+```
+
+If you want to save to a watcher, then provide the watcher name as the first argument.
+For example, here we run a task on the fly, and save the result to the watcher "decorator."
+Since we don't provide a `--name` argument, the name defaults to a derivation of the command run.
+
+```bash
+$ watchme monitor decorators sleep 2
+$ WATCHMEENV_AVOCADOS=3 watchme monitor decorator sleep 2
+```
+
+List the folders in the watcher named "decorator" to see the newly added result:
+
+
+```bash
+$ watchme list decorator
+watcher: /home/vanessa/.watchme/decorator
+task-monitor-slack
+  decorator-psutils-sleep-2
+  .git
+  decorator-psutils-noenv
+  decorator-psutils-myfunc
+  watchme.cfg
+```
+
+And then use export to export the data!
+
+```bash
+$ watchme export decorator decorator-psutils-sleep-2 result.json --json
+git log --all --oneline --pretty=tformat:"%H" --grep "ADD results" 7a7cb5535c96e06433af9c47485ba253137e580f..b8f155c66819a646405cd710eca150396118fe7c -- decorator-psutils-sleep-2/result.json
+{
+    "commits": [
+        "b8f155c66819a646405cd710eca150396118fe7c"
+    ],
+    "dates": [
+        "2019-05-17 16:47:19 -0400"
+    ],
+    "content": [
+        {
+            "memory_full_info": {
+                "rss": 688128,
+                "vms": 7467008,
+                "shared": 614400,
+                "text": 28672,
+                "lib": 0,
+                "data": 323584,
+...
+```
+
+For both of the command line above, you can define `--name` to give
+a custom name, or `--seconds` to set the interval at which to collect metrics
+(default is 3).
+
+```bash
+$ watchme monitor sleep 2 --seconds 1
+```
+
+And along with the interactive Python version, you can optionally specify
+a comma separated value string of keys to include, skip, or only use.
+Here we skip two fields:
+
+```bash
+$ watchme monitor sleep 2 --skip memory_full_info,cmdline
+```
+
+And here we only care about the command line:
+
+```bash
+$ watchme monitor sleep 2 --only cmdline
+[{'cmdline': ['sleep', '2'], 'SECONDS': '3'}]
+```
+
+Notice that your custom environment variables are not skipped, only those
+in the content of the default parameters.  Here is a rundown of all of what
+is discussed above:
+
+<script id="asciicast-247000" src="https://asciinema.org/a/247000.js" data-speed="2" async></script>
+
+And there you have it! With these methods to monitor any process on the fly at
+a particular interval, you are good to go! 
+
+
 #### Run as a Task
 
 To run as a task, you will want to provide `func@monitor_pid_task` when you create the task. 

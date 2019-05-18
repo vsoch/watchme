@@ -81,5 +81,17 @@ runTest 0 $output watchme run github task-expfactory --no-progress
 runTest 0 $output watchme run github task-expfactory --serial
 runTest 0 $output watchme run github task-doesntexist
 
+echo "#### Testing watchme monitor"
+runTest 0 $output watchme monitor sleep 2
+runTest 0 $output watchme monitor github sleep 2
+runTest 0 $output test -d "$tmpdir/github/decorator-psutils-sleep-2"
+runTest 0 $output test -f "$tmpdir/github/decorator-psutils-sleep-2/result.json"
+runTest 0 $output test -f "$tmpdir/github/decorator-psutils-sleep-2/TIMESTAMP"
+runTest 0 $output watchme monitor github sleep 2 --name avocado
+runTest 0 $output test -d "$tmpdir/github/decorator-psutils-avocado"
+runTest 0 $output test -f "$tmpdir/github/decorator-psutils-avocado/result.json"
+runTest 0 $output test -f "$tmpdir/github/decorator-psutils-avocado/TIMESTAMP"
+
+
 echo "Finish testing basic client"
 rm -rf ${tmpdir}
