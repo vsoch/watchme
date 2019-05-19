@@ -12,7 +12,6 @@ workflows:
   build_without_publishing_job:
     jobs:
 
-      # This first job is for opendrift, Python 3 without OIL
       - docker-publish/publish:
           image: vanessa/watchme
           dockerfile: docker/Dockerfile
@@ -37,7 +36,6 @@ workflows:
                    echo "vanessa/watchme:v${DOCKER_TAG}"
                    echo "vanessa/watchme:py3-v${DOCKER_TAG}"
 
-      # opendrift with Python 2 without OIL
       - docker-publish/publish:
           image: vanessa/watchme
           dockerfile: docker/Dockerfile.py2
@@ -97,7 +95,7 @@ workflows:
                 name: Publish Docker Containers with Python Version 2
                 command: |
                    # Here we preview the Docker Tag
-                   for string in $(cat opendrift/version.py | grep __version__); do
+                   for string in $(cat watchme/version.py | grep __version__); do
                           DOCKER_TAG="${string//\"}"
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
