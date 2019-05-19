@@ -2,7 +2,7 @@ FROM continuumio/miniconda3
 
 # docker build -t vanessa/watchme .
 
-RUN apt-get update && apt-get install -y git && \
+RUN apt-get update && apt-get install -y git gcc && \
     mkdir -p /code
 ADD . /code
 WORKDIR /code
