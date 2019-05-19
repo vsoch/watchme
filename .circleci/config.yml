@@ -101,8 +101,7 @@ workflows:
                           DOCKER_TAG="${string//\"}"
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
-                   docker tag vanessa/watchme:latest vanessa/watchme:py2-v${DOCKER_TAG}
-                   docker tag vanessa/watchme:latest vanessa/watchme:v${DOCKER_TAG}
+                   docker tag vanessa/watchme:py2 vanessa/watchme:py2-v${DOCKER_TAG}
 
   test:
     jobs:
