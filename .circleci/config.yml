@@ -3,6 +3,103 @@ version: 2.1
 
 workflows:
   version: 2
+
+  # This workflow will be run on all branches but master (to test)
+  build_without_publishing_job:
+    jobs:
+
+      # This first job is for opendrift, Python 3 without OIL
+      - docker-publish/publish:
+          image: vanessa/watchme
+          dockerfile: docker/Dockerfile
+          deploy: false
+          tag: latest
+          filters:
+            branches:
+              ignore: 
+                - master
+          after_build:
+            - run:
+                name: Preview Containers that will be Deployed
+                command: |
+                   # Here we preview the Docker Tag
+                   for string in $(cat watchme/version.py | grep __version__); do
+                          DOCKER_TAG="${string//\"}"
+                   done
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   echo "This build will deploy the following containers:"
+                   echo "vanessa/watchme:latest"
+                   echo "vanessa/watchme:py3"
+                   echo "vanessa/watchme:v${DOCKER_TAG}"
+                   echo "vanessa/watchme:py3-v${DOCKER_TAG}"
+
+      # opendrift with Python 2 without OIL
+      - docker-publish/publish:
+          image: vanessa/watchme
+          dockerfile: docker/Dockerfile.py2
+          deploy: false
+          tag: py2
+          filters:
+            branches:
+              ignore: 
+                - master
+          after_build:
+            - run:
+                name: Preview Containers that will be Deployed
+                command: |
+                   # Here we preview the Docker Tag
+                   for string in $(cat watchme/version.py | grep __version__); do
+                          DOCKER_TAG="${string//\"}"
+                   done
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   echo "This build will deploy the following containers:"
+                   echo "vanessa/watchme:py2"
+                   echo "vanessa/watchme:py2-${DOCKER_TAG}"
+
+
+  # This workflow will deploy images on merge to master only
+  docker_with_lifecycle:
+    jobs:
+
+      - docker-publish/publish:
+          image: vanessa/watchme
+          dockerfile: docker/Dockerfile
+          tag: latest
+          filters:
+            branches:
+             only: master
+          after_build:
+            - run:
+                name: Publish Docker Containers with Python Version 3
+                command: |
+                   # Here we preview the Docker Tag
+                   for string in $(cat watchme/version.py | grep __version__); do
+                          DOCKER_TAG="${string//\"}"
+                   done
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   docker tag vanessa/watchme:latest vanessa/watchme:v${DOCKER_TAG}
+                   docker tag vanessa/watchme:latest vanessa/watchme:py3-v${DOCKER_TAG}
+                   docker tag vanessa/watchme:latest vanessa/watchme:py3
+
+      - docker-publish/publish:
+          image: vanessa/watchme
+          dockerfile: docker/Dockerfile.py2
+          tag: py2
+          filters:
+            branches:
+             only: master
+          after_build:
+            - run:
+                name: Publish Docker Containers with Python Version 2
+                command: |
+                   # Here we preview the Docker Tag
+                   for string in $(cat opendrift/version.py | grep __version__); do
+                          DOCKER_TAG="${string//\"}"
+                   done
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   docker tag vanessa/watchme:latest vanessa/watchme:py2-v${DOCKER_TAG}
+                   docker tag vanessa/watchme:latest vanessa/watchme:v${DOCKER_TAG}
+
   test:
     jobs:
       - test-watchme-python-3:

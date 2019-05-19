@@ -1,0 +1,10 @@
+FROM continuumio/miniconda3
+
+# docker build -t vanessa/watchme .
+
+RUN apt-get update && apt-get install -y git && \
+    mkdir -p /code
+ADD . /code
+WORKDIR /code
+RUN pip install .[all]
+ENTRYPOINT ["watchme"]
