@@ -1,6 +1,10 @@
 # CircleCI build config to test different versions of Singuarity
 version: 2.1
 
+orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/docker-publish
+  docker-publish: circleci/docker-publish@0.1.3
+
 workflows:
   version: 2
 
