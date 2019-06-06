@@ -132,6 +132,7 @@ install_python_3: &install_python_3
        else
            echo "Miniconda 3 is already installed, continuing to build."
        fi
+       $HOME/conda/bin/pip install pylint
 
 install_python_2: &install_python_2
   name: install Python 3.5 dependencies
@@ -145,6 +146,7 @@ install_python_2: &install_python_2
        else
            echo "Miniconda 2 is already installed, continuing to build."
        fi
+       $HOME/conda/bin/pip install pylint
 
 test_watchme_python: &test_watchme_python
   name: Test WatchMe Python
@@ -166,9 +168,8 @@ test_watchme_bash: &test_watchme_bash
 run_linter: &run_linter
   name: run linter
   command: |
-     pip install pylint
      cd ~/repo
-     pylint watchme
+     $HOME/conda/bin/pylint watchme
 
 jobs:
   test-watchme-python-3:
