@@ -156,14 +156,7 @@ class TaskBase(object):
 
         # Case 2. The result is a string
         elif isinstance(result, str):
-
-            # if it's a path to a file, just save to repository
-            if os.path.exists(result):
-                files.append(self._save_file(result, repo))
-
-            # Otherwise, it's a string that needs to be saved to file
-            else:
-                files.append(self._save_text(result, repo))
+            files = self._save_str_result(files, result, repo)
 
         # Case 3. The result is a dictionary
         elif isinstance(result, dict):
@@ -175,8 +168,14 @@ class TaskBase(object):
         elif hasattr(self, '_write_results'):
             return self._write_results(result)
 
+        # If it's unicode, try encoding, and then fail (repetitive)
         else:
-            bot.error('Unsupported result format %s' % type(result))
+            try:
+                result = result.encode('utf-8')
+                files = self._save_str_result(files, result, repo)
+
+            except:
+                bot.error('Unsupported result format %s' % type(result))
 
         # Get rid of None results (don't check excessively for None above)
         files = [f for f in files if f]
@@ -184,6 +183,26 @@ class TaskBase(object):
 
 
 # Saving
+
+    def _save_str_result(self, files, result, repo):
+        '''a helper function to return a list of files with added string
+           results. We do this twice in the saving function.
+
+           Parameters
+           ==========
+           files: the list of files to save (returned at the end)
+           result: the result object to parse, should be string
+           repo: the repo to write it to.
+        '''
+        # if it's a path to a file, just save to repository
+        if os.path.exists(result):
+            files.append(self._save_file(result, repo))
+
+        # Otherwise, it's a string that needs to be saved to file
+        else:
+            files.append(self._save_text(result, repo))
+
+        return files
 
 
     def _save_list(self, results, repo, func, file_name):
