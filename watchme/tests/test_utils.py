@@ -92,7 +92,7 @@ class TestUtils(unittest.TestCase):
              False,
              False
         ]
-        for i, input_val in range(user_input):
+        for i, input_val in enumerate(user_input):
             with patch('builtins.input', side_effect=input_val):
                 response = confirm_prompt("Please confirm this thing.")
             self.assertEqual(response, expected_responses[i])
