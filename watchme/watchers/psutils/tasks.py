@@ -223,8 +223,11 @@ def system_task(**kwargs):
     result['platform'] = psutil.os.sys.platform
     result['api_version'] = psutil.os.sys.api_version
     result['maxsize'] = psutil.os.sys.maxsize
-    result['bits_per_digit'] = psutil.os.sys.int_info.bits_per_digit
-    result['sizeof_digit'] = psutil.os.sys.int_info.sizeof_digit
+
+    # Python 2 doesn't have these fields
+    if hasattr(psutil.os.sys, 'int_info'):
+        result['bits_per_digit'] = psutil.os.sys.int_info.bits_per_digit
+        result['sizeof_digit'] = psutil.os.sys.int_info.sizeof_digit
  
     vinfo = psutil.os.sys.version_info
     result['version_info'] = {'major': vinfo.major,
@@ -235,12 +238,16 @@ def system_task(**kwargs):
 
     result['sep'] = psutil.os.sep
     uname = psutil.os.uname()
-    result['uname'] = {'sysname': uname.sysname,
-                       'nodename': uname.nodename,
-                       'version': uname.version,
-                       'release': uname.release,
-                       'machine': uname.machine}
-
+    
+    # Python 2 returns a tuple 
+    if not hasattr(uname, 'sysname'):
+        result['uname'] = uname
+    else:
+        result['uname'] = {'sysname': uname.sysname,
+                           'nodename': uname.nodename,
+                           'version': uname.version,
+                           'release': uname.release,
+                           'machine': uname.machine}
 
     return _filter_result(result, skip)
 
