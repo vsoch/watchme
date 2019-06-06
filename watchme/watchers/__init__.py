@@ -202,7 +202,7 @@ class Watcher(object):
         if not hasattr(self, 'config'):
 
             # Load the configuration file if it exists (will exit if not found)
-            if self.configfile != None:
+            if self.configfile is not None:
                 self.config = read_config(self.configfile)
 
             # The watcher section is added by default, args for the watcher
@@ -360,7 +360,7 @@ class Watcher(object):
            ==========
            task: the name of the task to remove
         '''
-        if self.get_section(task) != None:
+        if self.get_section(task) is not None:
             if self.is_frozen():
                 bot.exit('watcher is frozen, unfreeze first.')
             self.remove_section(task)
@@ -512,7 +512,7 @@ class Watcher(object):
             message = "DEACTIVATE"
 
         # Add the task name
-        if name != None:
+        if name is not None:
             message = "%s task %s" %(message, name)
 
         bot.info('[%s|%s] active: %s' % (name, self.name, status)) 
@@ -646,7 +646,7 @@ class Watcher(object):
             selected = False
         
         # The user wants to search for a custom task name
-        if regexp != None and task != None:
+        if regexp is not None and task is not None:
             if not re.search(regexp, task.name):
                 bot.info('Task %s is not selected to run.' % task)
                 selected = False
@@ -675,7 +675,7 @@ class Watcher(object):
             task = self.get_task(section)
 
             # Check that the task should be run, and is valid
-            if task != None:
+            if task is not None:
                 if self._task_selected(task, regexp, active) and task.valid:
                     tasks.append(task)
 

@@ -290,7 +290,7 @@ def sensors_task(**kwargs):
 
     # battery
     battery = psutil.sensors_battery()
-    if battery != None:
+    if battery is not None:
         result['sensors_battery'] = {'percent': battery.percent,
                                      'secsleft': str(battery.secsleft),
                                      'power_plugged': battery.power_plugged}

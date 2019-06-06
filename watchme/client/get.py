@@ -19,7 +19,7 @@ def main(args, extra):
     repo = args.repo[0]
     
     # If a custom name is provided, add it
-    if extra != None:
+    if extra is not None:
         extra = extra.pop(0)
 
     # Clone the watcher, and optionally just one task

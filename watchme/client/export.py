@@ -43,7 +43,7 @@ def main(args, extra):
                                  export_json=args.json,
                                  base=args.base)
 
-    if result != None:
+    if result is not None:
 
         if out is None:
             print(json.dumps(result, indent=4))

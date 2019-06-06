@@ -95,7 +95,7 @@ class TaskBase(object):
     def _validate(self):
         '''validation function intended to be implemented by subclass.
         '''
-        pass
+        return
 
 
 # Run Single Task
@@ -106,7 +106,7 @@ class TaskBase(object):
         '''
         params = self.export_params()
         func = self.export_func()
-        if func != None:
+        if func is not None:
             return func(**params)
         bot.error('Cannot find function.')
 

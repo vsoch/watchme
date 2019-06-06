@@ -78,7 +78,7 @@ def update_schedule(self, minute=12, hour='*', month='*', day='*'):
     job = self.get_job(must_exist=True)
 
     # Update the job if found
-    if job != None:
+    if job is not None:
         return self.schedule(minute=minute,
                              hour=hour,
                              month=month, 

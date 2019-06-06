@@ -168,7 +168,7 @@ def get_url_selection(url, **kwargs):
 
     # Does the user want to get text?
     get_text = False
-    if kwargs.get('get_text') != None:
+    if kwargs.get('get_text') is not None:
         get_text = True
 
     # Are we searching for a regular expression in the result?
@@ -176,7 +176,7 @@ def get_url_selection(url, **kwargs):
 
     # Does the user want to get one or more attributes?
     attributes = kwargs.get('attributes', None)
-    if attributes != None:
+    if attributes is not None:
         attributes = attributes.split(',') 
 
     # User can pass a parameter like url_param_<name>

@@ -200,13 +200,13 @@ def get_commits(repo, from_commit=None, to_commit=None, grep=None, filename=None
         to_commit = get_latest_commit()
 
     # A regular expression to search for (and filter commits)
-    if grep != None:
+    if grep is not None:
         command = "%s --grep \"ADD results\"" % command
 
     # Add the commit range
     command = "%s %s..%s" % (command, from_commit, to_commit)
 
-    if filename != None:
+    if filename is not None:
         command = "%s -- %s" %(command, filename)
 
     bot.info(command)

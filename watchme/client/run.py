@@ -19,7 +19,7 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base, create=False)
     
     # If a set of task names or regular expressions are provided:
-    if extra != None:
+    if extra is not None:
         extra = "(%s)" % '|'.join(extra)
 
     # Run the watcher, providing regular expressions to match tasks

@@ -75,7 +75,7 @@ def generate_temporary_file(folder=None, prefix='watchme', ext=None):
     tmp = '%s/%s.%s' %(folder, prefix, tmp)
 
     # Does the user want an extension?
-    if ext != None:
+    if ext is not None:
         tmp = "%s.%s" %(tmp, ext)
 
     return tmp

@@ -101,7 +101,7 @@ def get_headers(kwargs):
             name = key.replace('header_', '', 1)
 
             # The header is defined with a value
-            if value != None:
+            if value is not None:
                 headers[name] = value
 
             # If the user wants to remove the User-Agent (or any) header
@@ -155,7 +155,7 @@ def get_results(url,
         for entry in soup.select(selector):
 
             # Does the user want to get attributes
-            if attributes != None:
+            if attributes is not None:
                 [results.append(entry.get(x)) for x in attributes] # pylint: disable=expression-not-assigned
 
             # Second priority for regular expression on text
