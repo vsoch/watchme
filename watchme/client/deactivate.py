@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme import get_watcher
-from watchme.logger import bot
 
 def main(args, extra):
     '''deactivate one or more watchers
@@ -19,9 +18,8 @@ def main(args, extra):
     watcher = get_watcher(watcher, base=args.base)
         
     # The user is deactivating the entire watcher
-    if extra == None:
+    if extra is None:
         watcher.deactivate()       
     else:
         for name in extra:
             watcher.deactivate(name)
-

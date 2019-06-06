@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
-import os
 
 
 def remove_setting(self, section, name, save=True):
@@ -111,7 +110,7 @@ def get_setting(self, section, name, default=None):
 
     setting = None
     if section in self.config:
-         if name.lower() in self.config[section]:
+        if name.lower() in self.config[section]:
             setting = self.config[section][name.lower()]
 
     if setting is None and default is not None:
@@ -131,7 +130,7 @@ def has_setting(self, section, name):
 
     exists = False
     if section in self.config:
-         if name.lower() in self.config[section]:
+        if name.lower() in self.config[section]:
             exists = True
 
     return exists

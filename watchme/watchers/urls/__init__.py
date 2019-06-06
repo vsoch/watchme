@@ -18,7 +18,10 @@ class Task(TaskBase):
 
     required_params = ['url']
 
-    def __init__(self, name, params={}, **kwargs): 
+    def __init__(self, name, params=None, **kwargs): 
+
+        if params is None:
+            params = {}
 
         self.type = 'urls'
 

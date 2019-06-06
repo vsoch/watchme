@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.command import git_clone
-from watchme.logger import bot
 
 def main(args, extra):
     '''get a watcher using git, meaning clone to a temporary location and then

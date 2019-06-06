@@ -25,11 +25,10 @@ def main(args, extra):
     else:
 
         # Exit if the user doesn't provide any tasks to remove
-        if extra == None:
+        if extra is None:
             bot.exit('Provide tasks to remove, or --delete for entire watcher.')
     
         for task in extra:
      
             # Remove the task, if it exists
             watcher.remove_task(task)
-

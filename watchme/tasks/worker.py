@@ -15,8 +15,6 @@ import itertools
 import time
 import signal
 import sys
-import re
-import os
 
 
 class Workers(object):
@@ -50,14 +48,14 @@ class Workers(object):
                   tuple of arguments to process
         '''
         # Number of tasks must == number of functions
-        assert(len(funcs)==len(tasks))
+        assert len(funcs)==len(tasks)
 
         # Keep track of some progress for the user
         progress = 1
         total = len(tasks)
 
         # if we don't have tasks, don't run
-        if len(tasks) == 0:
+        if not tasks:
             return
 
         # results will also have the same key to look up
@@ -101,8 +99,8 @@ class Workers(object):
             pool.terminate()
             sys.exit(1)
 
-        except Exception as e:
-            bot.error(e)
+        except:
+            bot.exit('Error running task.')
 
         return finished
 

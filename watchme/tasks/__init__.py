@@ -19,7 +19,11 @@ import os
 
 class TaskBase(object):
 
-    def __init__(self, name, params={}, **kwargs):
+    def __init__(self, name, params=None, **kwargs):
+
+        # If params not defined, create as dict
+        if params is None:
+            params = {}
 
         # Ensure subclass was created correctly
         for req in ['required_params', 'type', 'export_func']:
@@ -165,7 +169,7 @@ class TaskBase(object):
         elif isinstance(result, dict):
             files.append(self._save_json(result,repo))
 
-        elif result == None:
+        elif result is None:
             bot.error('Result for task %s is None' % self.name)
 
         elif hasattr(self, '_write_results'):
@@ -197,8 +201,7 @@ class TaskBase(object):
         file_name, ext = os.path.splitext(file_name)
         files = []
 
-        for r in range(len(results)):
-            result = results[r]
+        for r, result in enumerate(results):
             filename = "%s-%s%s" %(file_name, str(r), ext)
             saved = func(result, repo, filename)
             files.append(saved)
@@ -294,7 +297,7 @@ class TaskBase(object):
            results: list of paths to a file, those not existing are skipped
            repo: the repository base with the task folder
         '''
-        file_name = self.params.get('file_name', os.path.basename(result))
+        file_name = self.params.get('file_name', os.path.basename(results))
         return self._save_list(results, repo, self._save_file, file_name)
 
 

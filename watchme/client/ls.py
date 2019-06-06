@@ -19,14 +19,14 @@ from watchme.logger import bot
 def main(args, extra):
     '''list installed watchers
     '''
-    if args.watchers == True:
+    if args.watchers is True:
         list_watcher_types()
 
     # Otherwise, we are listing installed watchers and tasks
     else:
 
         # If no watchers provided, list the watchers
-        if extra == None:
+        if extra is None:
             get_watchers(args.base)
 
         # One argument is the name of a watcher

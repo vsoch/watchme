@@ -31,7 +31,6 @@ class TestUtils(unittest.TestCase):
         '''
         print("Testing utils.write_file")
         from watchme.utils import write_file
-        import json
         tmpfile = tempfile.mkstemp()[1]
         os.remove(tmpfile)
         write_file(tmpfile,"mocos!")
@@ -48,7 +47,7 @@ class TestUtils(unittest.TestCase):
         bad_json = {"IWuvWaffles?'}":[{True}, "2", 3]}
         tmpfile = tempfile.mkstemp()[1]
         os.remove(tmpfile)        
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError):
             write_json(bad_json, tmpfile)
 
         print("...Case 2: Providing good json")        
@@ -93,8 +92,8 @@ class TestUtils(unittest.TestCase):
              False,
              False
         ]
-        for i in range(len(user_input)):
-            with patch('builtins.input', side_effect=user_input[i]):
+        for i, input_val in range(user_input):
+            with patch('builtins.input', side_effect=input_val):
                 response = confirm_prompt("Please confirm this thing.")
             self.assertEqual(response, expected_responses[i])
 

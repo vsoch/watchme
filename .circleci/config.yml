@@ -120,31 +120,37 @@ install_watchme: &install_watchme
      $HOME/conda/bin/pip install .[all]
 
 
-install_python_3: &install_python_3
-  name: install Python 3.5 dependencies
-  command: | 
-      ls $HOME
-      if [ ! -d "/home/circleci/conda" ]; then
-          wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-          /bin/bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/conda
-          export PATH=$HOME/conda/bin:$PATH
-          $HOME/conda/bin/python setup.py install
-       else
-           echo "Miniconda 3 is already installed, continuing to build."
-       fi
+commands:
+  install_python:
+    parameters:
+      python:
+        type: integer
+        description: "Python version: 2 or 3"
+    steps:
+      - run: |
+          PYTHON_VERSION="<< parameters.python >>"
+          CONDA_PATH="$HOME/conda/Python${PYTHON_VERSION}"
+          echo 'export PATH="'"$CONDA_PATH"'/bin:$PATH"' >> "$BASH_ENV"
+          source "$BASH_ENV"
+          if [ ! -d "$CONDA_PATH" ]; then
+              CONDA_SCRIPT=Miniconda${PYTHON_VERSION}-latest-Linux-x86_64.sh
+              wget https://repo.anaconda.com/miniconda/$CONDA_SCRIPT
+              /bin/bash $CONDA_SCRIPT -b -p $CONDA_PATH
+          else
+              echo "Miniconda is already installed, continuing to build."
+          fi
+          python --version
+          [ $(python -c'import sys;print(sys.version_info.major)') -eq $PYTHON_VERSION ]
 
-install_python_2: &install_python_2
-  name: install Python 3.5 dependencies
-  command: | 
-      ls $HOME
-      if [ ! -d "/home/circleci/conda" ]; then
-          wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
-          /bin/bash Miniconda2-latest-Linux-x86_64.sh -b -p $HOME/conda
-          export PATH=$HOME/conda/bin:$PATH
-          $HOME/conda/bin/python setup.py install
-       else
-           echo "Miniconda 2 is already installed, continuing to build."
-       fi
+          pip install --upgrade pylint pytest
+
+
+run_linter: &run_linter
+  name: run linter
+  command: |
+     cd /tmp/src
+     pylint watchme
+
 
 test_watchme_python: &test_watchme_python
   name: Test WatchMe Python
@@ -165,7 +171,13 @@ test_watchme_bash: &test_watchme_bash
 
 
 jobs:
-  test-watchme-python-3:
+  test-watchme-python: &base_job
+    name: "Watchme With Python 3"
+    parameters:
+        python:
+          type: integer
+          description: "Python version: 2 or 3"
+          default: 3
     machine: true
     working_directory: ~/repo
     steps:
@@ -173,7 +185,9 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies
-      - run: *install_python_3
+      - install_dependencies:
+          python: << parameters.python >>
+      - run: *install_python
       - run: *install_watchme
       - save_cache:
           paths:
@@ -183,18 +197,6 @@ jobs:
       - run: *test_watchme_bash
 
   test-watchme-python-2:
-    machine: true
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies
-      - run: *install_python_2
-      - run: *install_watchme
-      - save_cache:
-          paths:
-            - /home/circleci/conda
-          key: v1-dependencies        
-      - run: *test_watchme_python
-      - run: *test_watchme_bash
+      <<: *base_job
+      name: "Watchme With Python 2"
+      python: 2

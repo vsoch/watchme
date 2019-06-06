@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 
-from watchme.logger import bot
 from subprocess import (
     Popen,
     PIPE,
@@ -71,8 +70,6 @@ def regexp_prompt(prompt, regexp='.', answer=''):
     get_input = getattr(__builtins__, 'raw_input', input)
     while not re.search(regexp, answer):
         answer = get_input(prompt + ': ').strip()
-        # If the option isn't valid, this is shown next
-        message = "Your entry must match the regular expression %s" % regexp    
 
     return answer
 

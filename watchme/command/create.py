@@ -29,10 +29,10 @@ def create_watcher(name=None, watcher_type=None, base=None):
                      WATCHER_DEFAULT_TYPE
         base: The watcher base to use (defaults to $HOME/.watchme)
     '''
-    if name == None:
+    if name is None:
         name = WATCHME_WATCHER
 
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     # Create the repository folder
@@ -64,10 +64,10 @@ def create_watcher_base(name=None, base=None):
        name: the watcher to create, uses default or WATCHME_WATCHER
        base: the watcher base, defaults to WATCHME_BASE_DIR
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
-    if name == None:
+    if name is None:
         name = WATCHME_WATCHER
 
     if not os.path.exists(base):

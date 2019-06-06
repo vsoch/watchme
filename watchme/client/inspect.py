@@ -9,8 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme import get_watcher
-from watchme.logger import bot
-from watchme.command import get_watchers
 
 
 def main(args, extra):

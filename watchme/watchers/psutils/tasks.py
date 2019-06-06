@@ -14,7 +14,6 @@ from subprocess import (
 )
 from watchme.utils import get_watchme_env
 from watchme.logger import bot
-import os
 import psutil
 
 def monitor_pid_task(**kwargs):
@@ -43,7 +42,7 @@ def monitor_pid_task(**kwargs):
     only = get_list('only')
 
     # Only continue given that argument is provided
-    if pid == None:   
+    if pid is None:   
         bot.warning("A 'pid' parameter is required to use the monitor_pid_task function.")
         return pid
 
@@ -54,7 +53,7 @@ def monitor_pid_task(**kwargs):
         pid = _get_pid(pid)
 
     # But if it's stil no good (None) we exit.
-    if pid == None:
+    if pid is None:
         bot.warning("'pid' must be a running process or process name.")
         return pid
 
@@ -66,7 +65,7 @@ def monitor_pid_task(**kwargs):
     for key, val in ps.as_dict().items():
  
         # If val is None, don't include
-        if val == None:
+        if val is None:
             bot.debug('skipping %s, None' % key)
             continue
 
@@ -137,8 +136,11 @@ def monitor_pid_task(**kwargs):
                             "involuntary":val.involuntary}
 
         elif isinstance(val, psutil._common.pionice):
-            results[key] = {"ioclass":val.ioclass.name,
-                            "value": val.value}
+            results[key] = {"value": val.value}
+
+            # Older Python version (2) doesn't have attribute
+            if hasattr(val.ioclass, 'name'):
+                results[key]["ioclass"] = val.ioclass.name
 
         # pfullmem (first above) should cover this
         elif isinstance(val, psutil._pslinux.pmem):
@@ -306,11 +308,11 @@ def sensors_task(**kwargs):
     for name, entry in psutil.sensors_temperatures().items():
         entries = []
         for e in entry:
-           temp = {'label': e.label,
-                   'current': e.current,
-                   'high': e.high,
-                   'critical': e.critical}
-           entries.append(temp)
+            temp = {'label': e.label,
+                    'current': e.current,
+                    'high': e.high,
+                    'critical': e.critical}
+            entries.append(temp)
         result['sensors_temperatures'][name] = entries
 
     return _filter_result(result, skip)

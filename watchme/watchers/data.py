@@ -9,10 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
-from watchme.utils import ( 
-    which, 
-    get_user
-)
 from watchme.command import (
     get_commits,
     git_show,
@@ -43,10 +39,10 @@ def export_dict(self, task,
        grep: the expression to match (not used if None)
        filename: the filename to filter to. Includes all files if not specified.
     '''
-    if name == None:
+    if name is None:
         name = self.name
 
-    if base == None:
+    if base is None:
         base = self.base
 
     # Quit early if the task isn't there

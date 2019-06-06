@@ -19,7 +19,10 @@ class Task(TaskBase):
 
     required_params = []
 
-    def __init__(self, name, params={}, **kwargs): 
+    def __init__(self, name, params=None, **kwargs): 
+
+        if params is None:
+            params = {}
 
         self.type = 'psutils'
 

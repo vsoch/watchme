@@ -8,7 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.logger import bot
 from watchme.command import get_watchers
 from watchme import get_watcher
 from watchme.watchers.psutils.decorators import TerminalRunner
@@ -48,7 +47,7 @@ def main(args, extra):
     # Otherwise save to watcher task folder
     else:
         name = args.name
-        if name == None:
+        if name is None:
             name = command.replace(' ', '-')
         name = 'decorator-psutils-%s' % name
         watcher.finish_runs({name: timepoints})

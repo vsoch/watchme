@@ -105,7 +105,7 @@ class Watcher(object):
             base: the base folder of watcher repos. Uses $HOME/.watchme default
             create: create the watcher if it doesn't exist (default is False)
         '''
-        if base == None:
+        if base is None:
             base = WATCHME_BASE_DIR
 
         # Does the watcher exist?
@@ -146,7 +146,7 @@ class Watcher(object):
         if action not in ['update', 'add', 'remove']:
             bot.exit('Action must be update, add, or remove')
 
-        if action in ['update', 'add'] and value == None:
+        if action in ['update', 'add'] and value is None:
             bot.exit('A value must be provided for the %s action' % action)
 
         # Add, and it doesn't exist so it's okay
@@ -391,7 +391,7 @@ class Watcher(object):
                            to create them.
         '''
         self.load_config()
-        if tasks == None:
+        if tasks is None:
             tasks = self.config.sections()
 
         # If the user supplied one task:
@@ -492,7 +492,7 @@ class Watcher(object):
         # Load the configuration, if not loaded
         self.load_config()
 
-        if name == None:
+        if name is None:
             name = 'watcher'
 
         # Cut out early if section not in config
@@ -538,7 +538,7 @@ class Watcher(object):
         '''determine if the watcher is active by reading from the config directly
            if a task name is provided, check the active status of the task
         '''
-        if task == None:
+        if task is None:
             task = 'watcher'
         if self.get_setting(task, 'active', default='true') == "true":
             return True
@@ -636,12 +636,12 @@ class Watcher(object):
         selected = True 
 
         # A task can be None if it wasn't found
-        if task == None:
+        if task is None:
             selected = False
 
         # Is the task not active (undefined is active)?
         is_active = task.params.get('active', 'true')
-        if is_active == "false" and active == True:
+        if is_active == "false" and active:
             bot.info('Task %s is not active.' % task)
             selected = False
         
@@ -679,7 +679,7 @@ class Watcher(object):
                 if self._task_selected(task, regexp, active) and task.valid:
                     tasks.append(task)
 
-        if quiet == False:
+        if not quiet:
             bot.info('Found %s contender tasks.' % len(tasks))
         return tasks   
 
@@ -771,11 +771,9 @@ class Watcher(object):
            show_progress: if True, show progress bar instead of task information
                           (defaults to True)
         '''
-        # Step 0: Each run session is given a fun name
-        run_id = RobotNamer().generate()
 
         # Step 1: determine if the watcher is active.
-        if self.is_active() == False and test is False:
+        if not self.is_active() and not test:
             bot.exit('Watcher %s is not active.' % self.name)
 
         # Step 2: get the tasks associated with the run, a list of param dicts
@@ -804,7 +802,7 @@ class Watcher(object):
            results: a dictionary of tasks, with keys as the task name, and
                     values as the result.
         '''
-        if results == None:
+        if results is None:
             return
 
         for name, result in results.items():

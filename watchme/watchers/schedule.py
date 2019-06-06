@@ -9,8 +9,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme.logger import bot
+from watchme.utils import which
 from crontab import CronTab
-from watchme.utils import ( which, get_user )
 
 # Scheduling
 
@@ -20,7 +20,7 @@ def remove_schedule(self, name=None, quiet=False):
        name. By default, we use the watcher instance name, however you
        can specify a custom name if desired.
     '''
-    if name == None:
+    if name is None:
         name = self.name
 
     cron = self.get_crontab()
@@ -40,7 +40,7 @@ def remove_schedule(self, name=None, quiet=False):
 def has_schedule(self, must_exist=False):
     '''determine if a watcher already has a schedule, as a warning to the user.
     '''
-    if self.get_job(must_exist=False) == None:
+    if self.get_job(must_exist=False) is None:
         return False
     return True
 
@@ -55,7 +55,7 @@ def get_job(self, must_exist=True):
     job = job[0]
 
     # Return None, or the actual cron job
-    if job == None and must_exist == True:
+    if job is None and must_exist:
         bot.warning('%s does not have a cron job configured' % self.name)
     
     return job
@@ -163,7 +163,7 @@ def schedule(self,
     command = '%s run %s' % (whereis, self.name)
     comment = 'watchme-%s' % self.name
 
-    if job == None:
+    if job is None:
         job  = cron.new(command=command, comment=comment)
 
     # Set the time, and then write the job to file

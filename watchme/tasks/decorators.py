@@ -13,7 +13,12 @@ import os
 
 class DecoratorBase(object):
 
-    def __init__(self, seconds=3, skip=[], include=[], only=[]):
+    def __init__(self, seconds=3, skip=None, include=None, only=None):
+ 
+        # Replace Nones with lists
+        only = none_to_list(only)
+        include = none_to_list(include)
+        skip = none_to_list(skip)
 
         self.seconds = seconds
         self.timepoints = []
@@ -35,7 +40,7 @@ class DecoratorBase(object):
            ==========
            listy: the actual list
         '''
-        if listy == None:
+        if listy is None:
             listy = []
         if isinstance(listy, list):
             listy = ','.join(listy)
@@ -50,3 +55,11 @@ class DecoratorBase(object):
     def wait(self, *args, **kwargs):
         '''wait should be run after run to monitor the process being run.'''
         bot.exit('wait function must be implemented by subclass.')
+
+
+def none_to_list(value):
+    '''a helper so that function args can be None, and updated to a list.
+    '''
+    if not value:
+        value = []
+    return value
