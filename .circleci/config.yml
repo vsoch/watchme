@@ -151,7 +151,7 @@ install_python_2: &install_python_2
        else
            echo "Miniconda 2 is already installed, continuing to build."
        fi
-       $HOME/conda/Python2/bin/pip install mock
+       $HOME/conda/Python2/bin/pip install mock future
 
 
 test_watchme_python: &test_watchme_python
