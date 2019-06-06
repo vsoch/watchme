@@ -18,10 +18,8 @@ from watchme.watchers.psutils import Task
 from watchme.tasks.decorators import DecoratorBase
 from watchme import get_watcher
 from time import sleep
-import os
 import shlex
 import subprocess
-import threading
 
 
 class TerminalRunner(DecoratorBase):
@@ -60,7 +58,7 @@ class TerminalRunner(DecoratorBase):
         params = task.export_params()
 
         # collect resources, then sleep
-        while self.process.poll() == None:
+        while self.process.poll() is None:
 
             # Function returns dictionary, we append to list of timepoints
             self.timepoints.append(function(**params))
@@ -155,7 +153,7 @@ def monitor_resources(*args, **kwargs):
             result = None
 
             # The watcher is required, first keyword argument
-            if len(args) == 0:
+            if not args:
                 bot.error("A watcher name is required for the psutils decorator.")
                 return result
 

@@ -139,11 +139,11 @@ def git_clone(repo, name=None, base=None, force=False):
        base: the base of the watcher (defaults to $HOME/.watchme
        force: remove first if already exists
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     # Derive the repository name
-    if name == None:
+    if name is None:
         name = os.path.basename(repo).replace('.git', '')
 
     # First clone to temporary directory
@@ -192,21 +192,21 @@ def get_commits(repo, from_commit=None, to_commit=None, grep=None, filename=None
     command = 'git log --all --oneline --pretty=tformat:"%H"' 
 
     # The earliest commit
-    if from_commit == None:
+    if from_commit is None:
         from_commit = get_earliest_commit()
 
     # The latest commit
-    if to_commit == None:
+    if to_commit is None:
         to_commit = get_latest_commit()
 
     # A regular expression to search for (and filter commits)
-    if grep != None:
+    if grep is not None:
         command = "%s --grep \"ADD results\"" % command
 
     # Add the commit range
     command = "%s %s..%s" % (command, from_commit, to_commit)
 
-    if filename != None:
+    if filename is not None:
         command = "%s -- %s" %(command, filename)
 
     bot.info(command)

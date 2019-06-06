@@ -14,7 +14,6 @@ from subprocess import (
 )
 from watchme.utils import get_watchme_env
 from watchme.logger import bot
-import os
 import psutil
 
 def monitor_pid_task(**kwargs):
@@ -43,7 +42,7 @@ def monitor_pid_task(**kwargs):
     only = get_list('only')
 
     # Only continue given that argument is provided
-    if pid == None:   
+    if pid is None:   
         bot.warning("A 'pid' parameter is required to use the monitor_pid_task function.")
         return pid
 
@@ -54,7 +53,7 @@ def monitor_pid_task(**kwargs):
         pid = _get_pid(pid)
 
     # But if it's stil no good (None) we exit.
-    if pid == None:
+    if pid is None:
         bot.warning("'pid' must be a running process or process name.")
         return pid
 
@@ -66,7 +65,7 @@ def monitor_pid_task(**kwargs):
     for key, val in ps.as_dict().items():
  
         # If val is None, don't include
-        if val == None:
+        if val is None:
             bot.debug('skipping %s, None' % key)
             continue
 
@@ -137,8 +136,11 @@ def monitor_pid_task(**kwargs):
                             "involuntary":val.involuntary}
 
         elif isinstance(val, psutil._common.pionice):
-            results[key] = {"ioclass":val.ioclass.name,
-                            "value": val.value}
+            results[key] = {"value": val.value}
+
+            # Older Python version (2) doesn't have attribute
+            if hasattr(val.ioclass, 'name'):
+                results[key]["ioclass"] = val.ioclass.name
 
         # pfullmem (first above) should cover this
         elif isinstance(val, psutil._pslinux.pmem):
@@ -221,8 +223,11 @@ def system_task(**kwargs):
     result['platform'] = psutil.os.sys.platform
     result['api_version'] = psutil.os.sys.api_version
     result['maxsize'] = psutil.os.sys.maxsize
-    result['bits_per_digit'] = psutil.os.sys.int_info.bits_per_digit
-    result['sizeof_digit'] = psutil.os.sys.int_info.sizeof_digit
+
+    # Python 2 doesn't have these fields
+    if hasattr(psutil.os.sys, 'int_info'):
+        result['bits_per_digit'] = psutil.os.sys.int_info.bits_per_digit
+        result['sizeof_digit'] = psutil.os.sys.int_info.sizeof_digit
  
     vinfo = psutil.os.sys.version_info
     result['version_info'] = {'major': vinfo.major,
@@ -233,12 +238,16 @@ def system_task(**kwargs):
 
     result['sep'] = psutil.os.sep
     uname = psutil.os.uname()
-    result['uname'] = {'sysname': uname.sysname,
-                       'nodename': uname.nodename,
-                       'version': uname.version,
-                       'release': uname.release,
-                       'machine': uname.machine}
-
+    
+    # Python 2 returns a tuple 
+    if not hasattr(uname, 'sysname'):
+        result['uname'] = uname
+    else:
+        result['uname'] = {'sysname': uname.sysname,
+                           'nodename': uname.nodename,
+                           'version': uname.version,
+                           'release': uname.release,
+                           'machine': uname.machine}
 
     return _filter_result(result, skip)
 
@@ -288,7 +297,7 @@ def sensors_task(**kwargs):
 
     # battery
     battery = psutil.sensors_battery()
-    if battery != None:
+    if battery is not None:
         result['sensors_battery'] = {'percent': battery.percent,
                                      'secsleft': str(battery.secsleft),
                                      'power_plugged': battery.power_plugged}
@@ -306,11 +315,11 @@ def sensors_task(**kwargs):
     for name, entry in psutil.sensors_temperatures().items():
         entries = []
         for e in entry:
-           temp = {'label': e.label,
-                   'current': e.current,
-                   'high': e.high,
-                   'critical': e.critical}
-           entries.append(temp)
+            temp = {'label': e.label,
+                    'current': e.current,
+                    'high': e.high,
+                    'critical': e.critical}
+            entries.append(temp)
         result['sensors_temperatures'][name] = entries
 
     return _filter_result(result, skip)

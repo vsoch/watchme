@@ -19,7 +19,11 @@ import os
 
 class TaskBase(object):
 
-    def __init__(self, name, params={}, **kwargs):
+    def __init__(self, name, params=None, **kwargs):
+
+        # If params not defined, create as dict
+        if params is None:
+            params = {}
 
         # Ensure subclass was created correctly
         for req in ['required_params', 'type', 'export_func']:
@@ -91,7 +95,7 @@ class TaskBase(object):
     def _validate(self):
         '''validation function intended to be implemented by subclass.
         '''
-        pass
+        return
 
 
 # Run Single Task
@@ -102,7 +106,7 @@ class TaskBase(object):
         '''
         params = self.export_params()
         func = self.export_func()
-        if func != None:
+        if func is not None:
             return func(**params)
         bot.error('Cannot find function.')
 
@@ -152,27 +156,26 @@ class TaskBase(object):
 
         # Case 2. The result is a string
         elif isinstance(result, str):
-
-            # if it's a path to a file, just save to repository
-            if os.path.exists(result):
-                files.append(self._save_file(result, repo))
-
-            # Otherwise, it's a string that needs to be saved to file
-            else:
-                files.append(self._save_text(result, repo))
+            files = self._save_str_result(files, result, repo)
 
         # Case 3. The result is a dictionary
         elif isinstance(result, dict):
             files.append(self._save_json(result,repo))
 
-        elif result == None:
+        elif result is None:
             bot.error('Result for task %s is None' % self.name)
 
         elif hasattr(self, '_write_results'):
             return self._write_results(result)
 
+        # If it's unicode, try encoding, and then fail (repetitive)
         else:
-            bot.error('Unsupported result format %s' % type(result))
+            try:
+                result = result.encode('utf-8')
+                files = self._save_str_result(files, result, repo)
+
+            except:
+                bot.error('Unsupported result format %s' % type(result))
 
         # Get rid of None results (don't check excessively for None above)
         files = [f for f in files if f]
@@ -180,6 +183,26 @@ class TaskBase(object):
 
 
 # Saving
+
+    def _save_str_result(self, files, result, repo):
+        '''a helper function to return a list of files with added string
+           results. We do this twice in the saving function.
+
+           Parameters
+           ==========
+           files: the list of files to save (returned at the end)
+           result: the result object to parse, should be string
+           repo: the repo to write it to.
+        '''
+        # if it's a path to a file, just save to repository
+        if os.path.exists(result):
+            files.append(self._save_file(result, repo))
+
+        # Otherwise, it's a string that needs to be saved to file
+        else:
+            files.append(self._save_text(result, repo))
+
+        return files
 
 
     def _save_list(self, results, repo, func, file_name):
@@ -197,8 +220,7 @@ class TaskBase(object):
         file_name, ext = os.path.splitext(file_name)
         files = []
 
-        for r in range(len(results)):
-            result = results[r]
+        for r, result in enumerate(results):
             filename = "%s-%s%s" %(file_name, str(r), ext)
             saved = func(result, repo, filename)
             files.append(saved)
@@ -294,7 +316,7 @@ class TaskBase(object):
            results: list of paths to a file, those not existing are skipped
            repo: the repository base with the task folder
         '''
-        file_name = self.params.get('file_name', os.path.basename(result))
+        file_name = self.params.get('file_name', os.path.basename(results))
         return self._save_list(results, repo, self._save_file, file_name)
 
 

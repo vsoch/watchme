@@ -3,6 +3,8 @@ footer:
   url: changelog
 - name: Python API
   url: api
+- name: GitHub
+  external_url: https://www.github.com/vsoch/watchme
 navigation:
 - name: Installation
   url: install/

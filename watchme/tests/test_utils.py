@@ -6,7 +6,6 @@
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from unittest.mock import patch
 import unittest
 import tempfile
 import shutil
@@ -31,7 +30,6 @@ class TestUtils(unittest.TestCase):
         '''
         print("Testing utils.write_file")
         from watchme.utils import write_file
-        import json
         tmpfile = tempfile.mkstemp()[1]
         os.remove(tmpfile)
         write_file(tmpfile,"mocos!")
@@ -48,7 +46,7 @@ class TestUtils(unittest.TestCase):
         bad_json = {"IWuvWaffles?'}":[{True}, "2", 3]}
         tmpfile = tempfile.mkstemp()[1]
         os.remove(tmpfile)        
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError):
             write_json(bad_json, tmpfile)
 
         print("...Case 2: Providing good json")        
@@ -75,28 +73,6 @@ class TestUtils(unittest.TestCase):
         whereami = get_installdir()
         print(whereami)
         self.assertTrue(whereami.endswith('watchme'))
-
-    def test_prompts(self):
-        '''test user inputs and prompts'''
-        from watchme.utils import confirm_prompt
-
-        print('Testing utils.confirm_prompt')
-        user_input = [
-            'Y',
-            'y',
-            'n',
-            'N',
-        ]
-        expected_responses = [
-             True,
-             True,
-             False,
-             False
-        ]
-        for i in range(len(user_input)):
-            with patch('builtins.input', side_effect=user_input[i]):
-                response = confirm_prompt("Please confirm this thing.")
-            self.assertEqual(response, expected_responses[i])
 
     def test_terminal(self):
 

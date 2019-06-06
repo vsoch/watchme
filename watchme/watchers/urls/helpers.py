@@ -8,8 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-import os
-import tempfile
 import requests
 import re
 
@@ -29,8 +27,7 @@ def get_params(kwargs, key='url_param_'):
     params = {}
 
     names = [x for x in kwargs if x.startswith(key)]
-    for n in range(len(names)):
-        name = names[n]
+    for _, name in enumerate(names):
 
         # Params are split by commas, with index corresponding to list index
         paramlist = kwargs.get(name).split(',')
@@ -39,7 +36,7 @@ def get_params(kwargs, key='url_param_'):
         name = name.replace(key, '', 1)
 
         # Update the dictionary of dictionaries
-        for i in range(len(paramlist)):
+        for i, _ in enumerate(paramlist):
 
             # Add the index to the dicionary (will be turned in list later)
             if i not in params:
@@ -104,11 +101,11 @@ def get_headers(kwargs):
             name = key.replace('header_', '', 1)
 
             # The header is defined with a value
-            if value != None:
+            if value is not None:
                 headers[name] = value
 
             # If the user wants to remove the User-Agent (or any) header
-            elif value == None and name in headers:
+            elif value is None and name in headers:
                 del headers[name]
 
     return headers
@@ -118,9 +115,9 @@ def get_results(url,
                 selector,
                 func=None,
                 attributes=None,
-                params={},
+                params=None,
                 get_text=False,
-                headers={},
+                headers=None,
                 regex=None):
 
     '''given a url, a function, an optional selector, optional attributes, 
@@ -139,7 +136,13 @@ def get_results(url,
     '''
     from bs4 import BeautifulSoup
 
-    if func == None:
+    if params is None:
+        params = {}
+
+    if headers is None:
+        headers = {}
+
+    if func is None:
         func = requests.get
 
     response = func(url, params=params, headers=headers)
@@ -152,8 +155,8 @@ def get_results(url,
         for entry in soup.select(selector):
 
             # Does the user want to get attributes
-            if attributes != None:
-                [results.append(entry.get(x)) for x in attributes]
+            if attributes is not None:
+                [results.append(entry.get(x)) for x in attributes] # pylint: disable=expression-not-assigned
 
             # Second priority for regular expression on text
             elif regex not in [None, ""]:
@@ -161,7 +164,7 @@ def get_results(url,
                 results.append(match.group())
 
             # Does the user want to get text?
-            elif get_text == True:
+            elif get_text:
                 results.append(entry.text)
 
             # Otherwise, return the entire thing

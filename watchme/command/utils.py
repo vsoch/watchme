@@ -19,7 +19,6 @@ from watchme.logger import bot
 import os
 import re
 import shutil
-import sys
 
 def get_watchers(base=None, quiet=False):
     '''list the watchers installed at a base. If base is not defined,
@@ -29,12 +28,12 @@ def get_watchers(base=None, quiet=False):
        ==========
        base: the watchme base, defaults to $HOME/.watchme
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     if os.path.exists(base):
         watchers = os.listdir(base)
-        if quiet == False:
+        if not quiet:
             bot.info('\n'.join(watchers))
         return watchers
     else:
@@ -48,7 +47,7 @@ def list_watcher(watcher, base=None):
        ==========
        base: the watchme base, defaults to $HOME/.watchme
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     repo = os.path.join(base, watcher)
@@ -64,7 +63,7 @@ def list_task(watcher, task, base=None):
        task: the task folder within
        base: the watchme base, defaults to $HOME/.watchme
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     task_folder = os.path.join(base, watcher, task)
@@ -80,7 +79,7 @@ def _general_list(path, prefix='path', base=None):
        prefix: a prefix to print for the type
        base: the watchme base, defaults to $HOME/.watchme
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     if os.path.exists(path):
@@ -111,7 +110,7 @@ def clone_watcher(repo, base=None, name=None):
        base: the watchme base, defaults to $HOME/.watchme
        name: a new name for the watcher, if a rename is desired.
     '''    
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     # clone_watcher(repo=repo, base=args.base, name=extra)
@@ -122,7 +121,7 @@ def clone_watcher(repo, base=None, name=None):
         bot.exit('Please provide a valid url to git repository')
 
     # if the name is None, use the repo name
-    if name == None:
+    if name is None:
         name = os.path.basename(repo) 
 
     # Ensure we aren't overwriting

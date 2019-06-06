@@ -8,7 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 '''
 
-from watchme.utils import generate_temporary_file
 from watchme.logger import bot
 from .helpers import (
     get_params, 
@@ -16,9 +15,7 @@ from .helpers import (
     get_headers,
     parse_success_response
 )
-from requests.exceptions import HTTPError
 import os
-import re
 import tempfile
 import requests
 
@@ -52,7 +49,7 @@ def get_task(url, **kwargs):
 
     results = [x for x in results if x]
  
-    if len(results) == 0:
+    if not results:
         results = None
 
     return results
@@ -90,7 +87,7 @@ def post_task(url, **kwargs):
     results = [x for x in results if x]
 
     # Return None if no results found
-    if len(results) == 0:
+    if not results:
         results = None
 
     return results
@@ -165,13 +162,13 @@ def get_url_selection(url, **kwargs):
     selector = kwargs.get('selection', None)
     headers = get_headers(kwargs)
 
-    if selector == None:
+    if selector is None:
         bot.error('You must define the selection (e.g., selection@.main')
         return results
 
     # Does the user want to get text?
     get_text = False
-    if kwargs.get('get_text') != None:
+    if kwargs.get('get_text') is not None:
         get_text = True
 
     # Are we searching for a regular expression in the result?
@@ -179,7 +176,7 @@ def get_url_selection(url, **kwargs):
 
     # Does the user want to get one or more attributes?
     attributes = kwargs.get('attributes', None)
-    if attributes != None:
+    if attributes is not None:
         attributes = attributes.split(',') 
 
     # User can pass a parameter like url_param_<name>
@@ -200,7 +197,7 @@ def get_url_selection(url, **kwargs):
                                regex=regex)
 
     # No results
-    if len(results) == 0:
+    if not results:
         results = None
 
     return results

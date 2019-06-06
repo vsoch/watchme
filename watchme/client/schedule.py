@@ -18,7 +18,7 @@ def main(args, extra):
     name = args.watcher[0]
 
     # Exit if the user doesn't provide a time
-    if extra == None:
+    if extra is None:
         bot.exit('Please provide a time frame (@daily, @hourly, @weekly, etc.)')
               
     # Determine the time to use

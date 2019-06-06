@@ -12,9 +12,6 @@ the watched to check for changes at some frequency, and update the files.
 
 '''
 
-import os
-import sys
-
 import sys
 import time
 import threading
@@ -40,7 +37,7 @@ class Spinner:
             for cursor in '<^>v': yield cursor
 
     def select_generator(self, generator):
-        if generator == None:
+        if generator is None:
             generator = choice(['cursor',
                                 'arrow',
                                 'balloons'])

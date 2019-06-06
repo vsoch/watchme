@@ -18,8 +18,9 @@
                                         {% for link in site.data.links.footer %}
 
 				<ul>
-					<li class="nav-item top-level {% if page.url == link.url %}current{% endif %}">
-						<a href="{{ site.baseurl }}/{{ link.url }}/">{{ link.name }}</a>
+                                        {% if link.url %}<li class="nav-item top-level {% if page.url == link.url %}current{% endif %}">
+				            <a href="{{ site.baseurl }}/{{ link.url }}/">{{ link.name }}</a>{% else %}<li class="nav-item top-level">
+ <a href="{{ link.external_url }}/">{{ link.name }}</a>{% endif %}
 					</li>
 				</ul>
 					{% endfor %}

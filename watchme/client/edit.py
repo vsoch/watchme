@@ -23,7 +23,7 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base) 
 
     # Exit if the user doesn't provide a time
-    if extra == None:
+    if extra is None:
         bot.exit('Please provide one or more items to %s' % action)
 
     key = extra[0]

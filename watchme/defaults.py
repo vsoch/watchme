@@ -12,8 +12,8 @@ the watched to check for changes at some frequency, and update the files.
 
 '''
 
+from watchme.logger import bot
 from watchme.utils import get_userhome
-import tempfile
 import os
 import sys
 
@@ -35,11 +35,11 @@ def getenv(variable_key, default=None, required=False, silent=True):
     '''
     variable = os.environ.get(variable_key, default)
     if variable is None and required:
-        bot.error("Cannot find environment variable %s, exiting." %variable_key)
+        bot.error("Cannot find environment variable %s, exiting." % variable_key)
         sys.exit(1)
 
     if not silent and variable is not None:
-            bot.verbose("%s found as %s" %(variable_key,variable))
+        bot.verbose("%s found as %s" %(variable_key,variable))
 
     return variable
 

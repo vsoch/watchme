@@ -16,7 +16,6 @@ import errno
 import os
 import tempfile
 import json
-import io
 import socket
 import shutil
 import sys
@@ -70,13 +69,13 @@ def generate_temporary_file(folder=None, prefix='watchme', ext=None):
        ext: the extension to use.
 
     '''        
-    if folder == None:
+    if folder is None:
         folder = tempfile.gettempdir()
     tmp = next(tempfile._get_candidate_names())
     tmp = '%s/%s.%s' %(folder, prefix, tmp)
 
     # Does the user want an extension?
-    if ext != None:
+    if ext is not None:
         tmp = "%s.%s" %(tmp, ext)
 
     return tmp

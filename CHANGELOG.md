@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - adding linting, cleaning up an error for psutils watcher (0.0.26)
  - loop values should be checked for None first (0.0.25)
  - Connections aren't being parsed (0.0.24)
  - But with printing output to screen for monitor (should be json) (0.0.23)

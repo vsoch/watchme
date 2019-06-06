@@ -23,17 +23,17 @@ def main(args, extra):
         bot.exit('Task name must start with "task", e.g., %s' % example)
 
     # Exit if the user doesn't provide any parameters
-    if extra == None:
+    if extra is None:
         bot.exit('Please provide parameters to add to your watcher (key@value)')
               
     # Type can also be an argument
     watcher_type = args.watcher_type
     params = []
     for param in extra:
-       if param.startswith('type@'):
-           watcher_type = param.replace('type@', '')
-       else:
-           params.append(param)
+        if param.startswith('type@'):
+            watcher_type = param.replace('type@', '')
+        else:
+            params.append(param)
 
     # Get the watcher to interact with, must already exist
     watcher = get_watcher(name, base=args.base, create=False) 

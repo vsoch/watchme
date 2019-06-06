@@ -56,7 +56,7 @@ class ProgressBar(object):
         self.etadelta =      time.time()
         self.etadisp =       self.format_time(self.eta)
         self.last_progress = 0
-        if (self.expected_size):
+        if self.expected_size:
             self.show(0)
 
     def show(self, progress, count=None):
@@ -106,7 +106,7 @@ def bar(it, label='', width=32, hide=None, empty_char=BAR_EMPTY_CHAR,
 
     count = len(it) if expected_size is None else expected_size
 
-    with Bar(label=label, width=width, hide=hide, empty_char=BAR_EMPTY_CHAR,
+    with ProgressBar(label=label, width=width, hide=hide, empty_char=BAR_EMPTY_CHAR,
              filled_char=BAR_FILLED_CHAR, expected_size=count, every=every) \
             as bar:
         for i, item in enumerate(it):

@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme import get_watcher
-from watchme.logger import bot
 
 def main(args, extra):
     '''run a watcher, optionally supplying one or more regular expressions to
@@ -20,7 +19,7 @@ def main(args, extra):
     watcher = get_watcher(name, base=args.base, create=False)
     
     # If a set of task names or regular expressions are provided:
-    if extra != None:
+    if extra is not None:
         extra = "(%s)" % '|'.join(extra)
 
     # Run the watcher, providing regular expressions to match tasks
@@ -28,4 +27,3 @@ def main(args, extra):
                 parallel=not args.serial, 
                 test=args.test,
                 show_progress=not args.no_progress)
-

@@ -42,11 +42,11 @@ def _get_config(name):
 def get_configfile(name, base=None):
     '''return the full path to a specific watcher configuration
     '''
-    if base == None:
+    if base is None:
         base = WATCHME_BASE_DIR
 
     configfile = os.path.join(base, name, 'watchme.cfg')
-    check_exists(filename)
+    check_exists(configfile)
     return configfile
     
 
@@ -87,7 +87,7 @@ def generate_watcher_config(path, watcher_type=None):
         shutil.copyfile(configfile, watcher_config)
 
     # Complete generation includes the watcher type
-    if watcher_type == None:
+    if watcher_type is None:
         watcher_type = WATCHME_DEFAULT_TYPE
     
     # The template config has the section, but just in case

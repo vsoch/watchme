@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme import get_watcher
-from watchme.utils import ( write_json, generate_temporary_file )
+from watchme.utils import write_json
 from watchme.logger import bot
 import json
 import os
@@ -43,9 +43,9 @@ def main(args, extra):
                                  export_json=args.json,
                                  base=args.base)
 
-    if result != None:
+    if result is not None:
 
-        if out == None:
+        if out is None:
             print(json.dumps(result, indent=4))
         else:
             write_json(result, out)

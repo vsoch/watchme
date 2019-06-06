@@ -11,7 +11,6 @@ from watchme.command import create_watcher
 import unittest
 import tempfile
 import shutil
-import json
 import os
 
 

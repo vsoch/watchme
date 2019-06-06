@@ -116,32 +116,38 @@ workflows:
 install_watchme: &install_watchme
   name: install watchme
   command: |
-     $HOME/conda/bin/pip uninstall watchme --yes || echo "Not installed"
-     $HOME/conda/bin/pip install .[all]
+     source "$BASH_ENV"
+     pip uninstall watchme --yes || echo "Not installed"
+     pip install .[all]
 
 
 install_python_3: &install_python_3
   name: install Python 3.5 dependencies
   command: | 
       ls $HOME
-      if [ ! -d "/home/circleci/conda" ]; then
+      CONDA_PATH="$HOME/conda/Python3"
+      echo 'export PATH="'"$CONDA_PATH"'/bin:$PATH"' >> "$BASH_ENV"
+      source "$BASH_ENV"
+      if [ ! -d "${CONDA_PATH}" ]; then
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-          /bin/bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/conda
-          export PATH=$HOME/conda/bin:$PATH
-          $HOME/conda/bin/python setup.py install
+          /bin/bash Miniconda3-latest-Linux-x86_64.sh -b -p $CONDA_PATH
+          $HOME/conda/Python3/bin/python setup.py install
        else
            echo "Miniconda 3 is already installed, continuing to build."
        fi
+       $HOME/conda/Python3/bin/pip install pylint
 
 install_python_2: &install_python_2
   name: install Python 3.5 dependencies
   command: | 
       ls $HOME
-      if [ ! -d "/home/circleci/conda" ]; then
+      CONDA_PATH="$HOME/conda/Python2"
+      echo 'export PATH="'"$CONDA_PATH"'/bin:$PATH"' >> "$BASH_ENV"
+      source "$BASH_ENV"
+      if [ ! -d "${CONDA_PATH}" ]; then
           wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
-          /bin/bash Miniconda2-latest-Linux-x86_64.sh -b -p $HOME/conda
-          export PATH=$HOME/conda/bin:$PATH
-          $HOME/conda/bin/python setup.py install
+          /bin/bash Miniconda2-latest-Linux-x86_64.sh -b -p ${CONDA_PATH}
+          $HOME/conda/Python2/bin/python setup.py install
        else
            echo "Miniconda 2 is already installed, continuing to build."
        fi
@@ -149,20 +155,27 @@ install_python_2: &install_python_2
 test_watchme_python: &test_watchme_python
   name: Test WatchMe Python
   command: |
+        source "$BASH_ENV"
         cd ~/repo/watchme/tests
-        $HOME/conda/bin/python -m unittest test_client
-        $HOME/conda/bin/python -m unittest test_utils
-        $HOME/conda/bin/python -m unittest test_decorators
+        python -m unittest test_client
+        python -m unittest test_utils
+        python -m unittest test_decorators
 
 test_watchme_bash: &test_watchme_bash
   name: Test WatchMe Client
   command: |
+        source "$BASH_ENV"
         cd ~/repo/watchme/tests
-        export PATH=$HOME/conda/bin:$PATH
         /bin/bash test_utils.sh
         /bin/bash test_client.sh
         /bin/bash test_watchers.sh
 
+run_linter: &run_linter
+  name: run linter
+  command: |
+     cd ~/repo
+     source "$BASH_ENV"
+     pylint watchme
 
 jobs:
   test-watchme-python-3:
@@ -174,6 +187,7 @@ jobs:
           keys:
           - v1-dependencies
       - run: *install_python_3
+      - run: *run_linter
       - run: *install_watchme
       - save_cache:
           paths:

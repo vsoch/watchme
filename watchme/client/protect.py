@@ -9,7 +9,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
 
 from watchme import get_watcher
-from watchme.logger import bot
 
 def main(args, extra):
     '''protect or freeze a watcher, or disable.
