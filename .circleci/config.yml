@@ -206,7 +206,6 @@ jobs:
           keys:
           - v1-dependencies
       - run: *install_python_2
-      - run: *run_linter
       - run: *install_watchme
       - save_cache:
           paths:
