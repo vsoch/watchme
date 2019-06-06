@@ -18,62 +18,6 @@ import os
 import re
 import shlex
 
-
-# User Prompts
-
-def confirm_prompt(prompt):
-    '''A wrapper around choice_prompt, but ask the user specifically for a
-       yes / no response that is converted to boolean for the calling agent.
-
-       Parameters
-       ==========
-       prompt: the prompt to ask the user    
-    '''
-    choice = choice_prompt(prompt, choices = ["Y", "N", "y", "n"])
-    return convert2boolean(choice)
-
-
-def choice_prompt(prompt, choices=None, choice=None):
-    '''Ask the user for a prompt, and only return when one of the requested
-       options is provided.
-
-       Parameters
-       ==========
-       prompt: the prompt to ask the user
-       choices: a list of choices that are valid, defaults to [Y/N/y/n]
-    
-    '''
-    if not choices:
-        choices = ["y", "n", "Y", "N"]
-
-    print(prompt)
-    get_input = getattr(__builtins__, 'raw_input', input)
-    pretty_choices = '/'.join(choices)
-    message = 'Please enter your choice [%s] : ' %(pretty_choices)
-    while choice not in choices:
-        choice = get_input(message).strip()
-
-        # If the option isn't valid, this is shown next
-        message = "Please enter a valid option in [%s]" %(pretty_choices)    
-    return choice
-
-
-def regexp_prompt(prompt, regexp='.', answer=''):
-    '''Ask the user for a text entry that matches a regular expression
-
-       Parameters
-       ==========
-       prompt: the prompt to ask the user
-       regexp: the regular expression to match. defaults to anything.
-    
-    '''
-    get_input = getattr(__builtins__, 'raw_input', input)
-    while not re.search(regexp, answer):
-        answer = get_input(prompt + ': ').strip()
-
-    return answer
-
-
 # Terminal Commands
 
 def which(software, strip_newline=True):

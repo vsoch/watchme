@@ -6,11 +6,6 @@
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-try:
-    from unittest.mock import patch
-except:
-    from mock import patch
-
 import unittest
 import tempfile
 import shutil
@@ -78,28 +73,6 @@ class TestUtils(unittest.TestCase):
         whereami = get_installdir()
         print(whereami)
         self.assertTrue(whereami.endswith('watchme'))
-
-    def test_prompts(self):
-        '''test user inputs and prompts'''
-        from watchme.utils import confirm_prompt
-
-        print('Testing utils.confirm_prompt')
-        user_input = [
-            'Y',
-            'y',
-            'n',
-            'N',
-        ]
-        expected_responses = [
-             True,
-             True,
-             False,
-             False
-        ]
-        for i, input_val in enumerate(user_input):
-            with patch('builtins.input', side_effect=input_val):
-                response = confirm_prompt("Please confirm this thing.")
-            self.assertEqual(response, expected_responses[i])
 
     def test_terminal(self):
 
