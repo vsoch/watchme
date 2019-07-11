@@ -14,7 +14,7 @@ from .pynvml import (
     nvmlInit, 
     nvmlShutdown
 )
-import pynvml
+from watchme.watchers.gpu import pynvml
 
 def gpu_task(**kwargs):
     '''Get variables about the gpu of the host. No parameters are required.
@@ -42,11 +42,11 @@ def gpu_task(**kwargs):
              'nvml_unit_count': pynvml.nvmlUnitGetCount}
 
     for name, func in funcs.items():
-        #try:
-        results[name] = func()
-        #except:
-        #    bot.error('Issue with %s' % name)
-        nvmlInit()
+        try:
+            results[name] = func()
+        except:
+            bot.error('Issue with %s' % name)
+            nvmlInit()
 
     # Look at individual devices
     funcs = {
