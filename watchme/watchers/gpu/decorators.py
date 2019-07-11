@@ -60,7 +60,7 @@ def monitor_gpu(*args, **kwargs):
                                    only=kwargs.get('only', []))
 
             runner.run(func, *fargs, **fkwargs)
-            result = runner.wait(func.__name__)
+            result = runner.wait("gpu_task")
 
             # Save results (finishing runs) - key is folder created
             name = kwargs.get('name', func.__name__)
