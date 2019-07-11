@@ -180,22 +180,22 @@ def gpu_task(**kwargs):
     nvmlShutdown()
 
     results['devices'] = devices
-    return _filter_result(result, skip)
+    return _filter_result(results, skip)
 
 
-def _filter_result(result, skip):
+def _filter_result(results, skip):
     '''a helper function to filter a dictionary based on a list of keys to 
        skip. We also add variables from the environment.
     
        Parameters
        ==========
-       result: a dictionary of results
+       results: a dictionary of results
        skip: a list of keys to remove/filter from the result.
     '''
 
     # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
-    result.update(environ)
+    results.update(environ)
 
     for key in skip:
         if key in result:
