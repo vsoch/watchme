@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="watchme.utils package" href="watchme.utils.html" />
     <link rel="prev" title="watchme.logger package" href="watchme.logger.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -200,14 +202,18 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descname">run</code><span class="sig-paren">(</span><em>funcs</em>, <em>tasks</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>run will send a list of tasks, a tuple with arguments, through a function.
 the arguments should be ordered correctly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</p></li>
-<li><p><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</li>
+<li><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -241,7 +247,7 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.tasks.TaskBase">
-<em class="property">class </em><code class="descclassname">watchme.tasks.</code><code class="descname">TaskBase</code><span class="sig-paren">(</span><em>name</em>, <em>params={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">watchme.tasks.</code><code class="descname">TaskBase</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.export_params">
@@ -267,11 +273,14 @@ the watcher. This will return the raw result.</p>
 <dt id="watchme.tasks.TaskBase.set_params">
 <code class="descname">set_params</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>iterate through parameters, set into dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -288,14 +297,18 @@ values.</p>
 <dd><p>an entrypoint function for a general task. By default, we parse
 results based on the result type. Any particular subclass of the
 TaskBase can modify or extend these functions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>result</strong> (<em>the result object to parse</em>)</p></li>
-<li><p><strong>repo</strong> (<em>the repo base (watcher.repo)</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>result</strong> (<em>the result object to parse</em>)</li>
+<li><strong>repo</strong> (<em>the repo base (watcher.repo)</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -314,7 +327,7 @@ TaskBase can modify or extend these functions.</p>
         <a href="watchme.utils.html" class="btn btn-neutral float-right" title="watchme.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="watchme.logger.html" class="btn btn-neutral" title="watchme.logger package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="watchme.logger.html" class="btn btn-neutral float-left" title="watchme.logger package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -323,7 +336,7 @@ TaskBase can modify or extend these functions.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -340,33 +353,16 @@ TaskBase can modify or extend these functions.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

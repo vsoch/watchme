@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -172,7 +174,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 
 <div class="viewcode-block" id="get_watchers"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.get_watchers">[docs]</a><span class="k">def</span> <span class="nf">get_watchers</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;list the watchers installed at a base. If base is not defined,</span>
@@ -182,12 +183,12 @@
 <span class="sd">       ==========</span>
 <span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
 
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
         <span class="n">watchers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">quiet</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">watchers</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">watchers</span>
     <span class="k">else</span><span class="p">:</span>
@@ -201,16 +202,48 @@
 <span class="sd">       ==========</span>
 <span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
 
     <span class="n">repo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">watcher</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
-        <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;task:&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">repo</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_general_list</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="list_task"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.list_task">[docs]</a><span class="k">def</span> <span class="nf">list_task</span><span class="p">(</span><span class="n">watcher</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;list the contents (result files) of a task folder beloning to a watcher.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       watcher: the watcher folder to use</span>
+<span class="sd">       task: the task folder within</span>
+<span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">watcher</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_general_list</span><span class="p">(</span><span class="n">task_folder</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_general_list</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;a shared function for listing (and returning) files.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       path: the full path to list, if it exists</span>
+<span class="sd">       prefix: a prefix to print for the type</span>
+<span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span></div>
+        <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> does not exist.&#39;</span> <span class="o">%</span> <span class="n">base</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="list_watcher_types"><a class="viewcode-back" href="../../../source/watchme.command.html#watchme.command.utils.list_watcher_types">[docs]</a><span class="k">def</span> <span class="nf">list_watcher_types</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;list the exporter options provided by watchme</span>
@@ -232,7 +265,7 @@
 <span class="sd">       base: the watchme base, defaults to $HOME/.watchme</span>
 <span class="sd">       name: a new name for the watcher, if a rename is desired.</span>
 <span class="sd">    &#39;&#39;&#39;</span>    
-    <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
 
     <span class="c1"># clone_watcher(repo=repo, base=args.base, name=extra)</span>
@@ -243,7 +276,7 @@
         <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Please provide a valid url to git repository&#39;</span><span class="p">)</span>
 
     <span class="c1"># if the name is None, use the repo name</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> 
 
     <span class="c1"># Ensure we aren&#39;t overwriting</span>
@@ -291,7 +324,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -308,33 +341,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

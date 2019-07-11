@@ -182,7 +182,6 @@ List the folders in the watcher named "decorators" to see the newly added result
 
 ```bash
 $ watchme list decorators
-$ watchme list decorators
 watcher: /home/users/vsochat/.watchme/decorators
   decorator-gpu-sleep-5
   .git

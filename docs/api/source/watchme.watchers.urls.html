@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="CHANGELOG" href="../changelog.html" />
     <link rel="prev" title="watchme.watchers.psutils package" href="watchme.watchers.psutils.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -196,15 +198,19 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">download_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#download_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.download_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to get a url. By default, we return
 the raw response.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>REQUIRED</strong> – url: a url to download (stream)</p></li>
-<li><p><strong>OPTIONAL</strong> – write_format: to change from default “w”
-disable_ssl_check: set to anything to not verify (not recommended)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>REQUIRED</strong> – url: a url to download (stream)</li>
+<li><strong>OPTIONAL</strong> – write_format: to change from default “w”
+disable_ssl_check: set to anything to not verify (not recommended)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -212,37 +218,47 @@ disable_ssl_check: set to anything to not verify (not recommended)</p></li>
 <code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">get_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to get a url. By default, we return
 the raw response.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>REQUIRED</strong> – url: a url to return the page for</p></li>
-<li><p><strong>OPTIONAL</strong> – regex: a regular expression to search the text for (not used w/ json)
-save_as: return the result to save as json</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>REQUIRED</strong> – url: a url to return the page for</li>
+<li><strong>OPTIONAL</strong> – regex: a regular expression to search the text for (not used w/ json)
+save_as: return the result to save as json</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.get_url_selection">
 <code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">get_url_selection</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_url_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_url_selection" title="Permalink to this definition">¶</a></dt>
 <dd><p>select some content from a page dynamically, using selenium.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kwargs</strong> (<em>a dictionary of key, value pairs provided by the user</em>)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<em>a dictionary of key, value pairs provided by the user</em>)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.post_task">
 <code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">post_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#post_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.post_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to post to. By default, we return json.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>REQUIRED</strong> – url: a url to post to</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>REQUIRED</strong> – url: a url to post to</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -254,7 +270,7 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.watchers.urls.Task">
-<em class="property">class </em><code class="descclassname">watchme.watchers.urls.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">watchme.watchers.urls.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
 <dl class="method">
 <dt id="watchme.watchers.urls.Task.export_func">
@@ -288,7 +304,7 @@ already provided in the client.</p>
         <a href="../changelog.html" class="btn btn-neutral float-right" title="CHANGELOG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="watchme.watchers.psutils.html" class="btn btn-neutral" title="watchme.watchers.psutils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="watchme.watchers.psutils.html" class="btn btn-neutral float-left" title="watchme.watchers.psutils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -297,7 +313,7 @@ already provided in the client.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -314,33 +330,16 @@ already provided in the client.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

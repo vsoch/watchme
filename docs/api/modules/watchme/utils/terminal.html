@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -162,7 +164,6 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 
-<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">Popen</span><span class="p">,</span>
     <span class="n">PIPE</span><span class="p">,</span>
@@ -171,64 +172,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">shlex</span>
-
-
-<span class="c1"># User Prompts</span>
-
-<div class="viewcode-block" id="confirm_prompt"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.terminal.confirm_prompt">[docs]</a><span class="k">def</span> <span class="nf">confirm_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;A wrapper around choice_prompt, but ask the user specifically for a</span>
-<span class="sd">       yes / no response that is converted to boolean for the calling agent.</span>
-
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       prompt: the prompt to ask the user    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">choice</span> <span class="o">=</span> <span class="n">choice_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">convert2boolean</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="choice_prompt"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.terminal.choice_prompt">[docs]</a><span class="k">def</span> <span class="nf">choice_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choice</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Ask the user for a prompt, and only return when one of the requested</span>
-<span class="sd">       options is provided.</span>
-
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       prompt: the prompt to ask the user</span>
-<span class="sd">       choices: a list of choices that are valid, defaults to [Y/N/y/n]</span>
-<span class="sd">    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">choices</span><span class="p">:</span>
-        <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">]</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
-    <span class="n">get_input</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">,</span> <span class="s1">&#39;raw_input&#39;</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span>
-    <span class="n">pretty_choices</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Please enter your choice [</span><span class="si">%s</span><span class="s1">] : &#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">pretty_choices</span><span class="p">)</span>
-    <span class="k">while</span> <span class="n">choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
-        <span class="n">choice</span> <span class="o">=</span> <span class="n">get_input</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-        <span class="c1"># If the option isn&#39;t valid, this is shown next</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Please enter a valid option in [</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">pretty_choices</span><span class="p">)</span>    
-    <span class="k">return</span> <span class="n">choice</span></div>
-
-
-<div class="viewcode-block" id="regexp_prompt"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.terminal.regexp_prompt">[docs]</a><span class="k">def</span> <span class="nf">regexp_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">regexp</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">answer</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Ask the user for a text entry that matches a regular expression</span>
-
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       prompt: the prompt to ask the user</span>
-<span class="sd">       regexp: the regular expression to match. defaults to anything.</span>
-<span class="sd">    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">get_input</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">,</span> <span class="s1">&#39;raw_input&#39;</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">answer</span><span class="p">):</span>
-        <span class="n">answer</span> <span class="o">=</span> <span class="n">get_input</span><span class="p">(</span><span class="n">prompt</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="c1"># If the option isn&#39;t valid, this is shown next</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Your entry must match the regular expression </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">regexp</span>    
-
-    <span class="k">return</span> <span class="n">answer</span></div>
-
 
 <span class="c1"># Terminal Commands</span>
 
@@ -289,6 +232,8 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
+<span class="c1"># Environment</span>
+
 <div class="viewcode-block" id="convert2boolean"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.terminal.convert2boolean">[docs]</a><span class="k">def</span> <span class="nf">convert2boolean</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    convert2boolean is used for environmental variables</span>
@@ -297,6 +242,29 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arg</span></div>
+
+
+<div class="viewcode-block" id="get_watchme_env"><a class="viewcode-back" href="../../../source/watchme.utils.html#watchme.utils.terminal.get_watchme_env">[docs]</a><span class="k">def</span> <span class="nf">get_watchme_env</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;WATCHMEENV_&quot;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;get any environment variables that start with WATCMEENV_, return the</span>
+<span class="sd">       dictionary to the user.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">environ</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># First extract variables from the environment</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="c1"># Variables that are specified, or start with WATCHMEENV included</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+
+            <span class="c1"># Replace the WATCHMEENV_ if present</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;^</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">prefix</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+            <span class="c1"># Don&#39;t include empty strings</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+
+                <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">environ</span></div>
 </pre></div>
 
            </div>
@@ -309,7 +277,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -326,33 +294,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

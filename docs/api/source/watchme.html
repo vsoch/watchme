@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="watchme.client package" href="watchme.client.html" />
     <link rel="prev" title="Welcome to WatchMe Python documentation!" href="../index.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -272,15 +274,19 @@ the watched to check for changes at some frequency, and update the files.</p>
 <code class="descclassname">watchme.defaults.</code><code class="descname">getenv</code><span class="sig-paren">(</span><em>variable_key</em>, <em>default=None</em>, <em>required=False</em>, <em>silent=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/defaults.html#getenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.defaults.getenv" title="Permalink to this definition">¶</a></dt>
 <dd><p>attempt to get an environment variable. If the variable
 is not found, None is returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>variable_key</strong> (<em>the variable name</em>)</p></li>
-<li><p><strong>required</strong> (<em>exit with error if not found</em>)</p></li>
-<li><p><strong>silent</strong> (<em>Do not print debugging information for variable</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variable_key</strong> (<em>the variable name</em>)</li>
+<li><strong>required</strong> (<em>exit with error if not found</em>)</li>
+<li><strong>silent</strong> (<em>Do not print debugging information for variable</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -298,17 +304,21 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <code class="descclassname">watchme.</code><code class="descname">get_watcher</code><span class="sig-paren">(</span><em>name='watcher'</em>, <em>base=None</em>, <em>create=False</em>, <em>quiet=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme.html#get_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.get_watcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the correct watcher depending on the environment variable
 WATCHME_WATCHER or default to “watcher”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>the name of the watcher, will be made all lowercase</em>)</p></li>
-<li><p><strong>base</strong> (<em>the watcher base, if not defined, will use WATCHER_BASE_DIR envar</em>)</p></li>
-<li><p><strong>create</strong> (<em>if the watcher folder doesn’t exist, create it (default False)</em>) – for all interactions with a watcher other than create, we should
-exit if the watcher the user wants doesn’t exist.</p></li>
-<li><p><strong>quiet</strong> (<em>if True, suppress most output about the client (e.g. speak)</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>the name of the watcher, will be made all lowercase</em>)</li>
+<li><strong>base</strong> (<em>the watcher base, if not defined, will use WATCHER_BASE_DIR envar</em>)</li>
+<li><strong>create</strong> (<em>if the watcher folder doesn’t exist, create it (default False)</em>) – for all interactions with a watcher other than create, we should
+exit if the watcher the user wants doesn’t exist.</li>
+<li><strong>quiet</strong> (<em>if True, suppress most output about the client (e.g. speak)</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -325,7 +335,7 @@ exit if the watcher the user wants doesn’t exist.</p></li>
         <a href="watchme.client.html" class="btn btn-neutral float-right" title="watchme.client package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Welcome to WatchMe Python documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to WatchMe Python documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -334,7 +344,7 @@ exit if the watcher the user wants doesn’t exist.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -351,33 +361,16 @@ exit if the watcher the user wants doesn’t exist.</p></li>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

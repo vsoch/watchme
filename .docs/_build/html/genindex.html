@@ -18,32 +18,34 @@
   
 
   
+  <script type="text/javascript" src="assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="assets/documentation_options.js"></script>
+        <script type="text/javascript" src="assets/jquery.js"></script>
+        <script type="text/javascript" src="assets/underscore.js"></script>
+        <script type="text/javascript" src="assets/doctools.js"></script>
+        <script type="text/javascript" src="assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -132,7 +134,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li></li>
+      <li>Index</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -209,8 +211,6 @@
 </li>
       <li><a href="source/watchme.config.html#watchme.config.check_exists">check_exists() (in module watchme.config)</a>
 </li>
-      <li><a href="source/watchme.utils.html#watchme.utils.terminal.choice_prompt">choice_prompt() (in module watchme.utils.terminal)</a>
-</li>
       <li><a href="source/watchme.watchers.html#watchme.watchers.schedule.clear_schedule">clear_schedule() (in module watchme.watchers.schedule)</a>
 
       <ul>
@@ -221,16 +221,14 @@
 </li>
       <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.configfile">configfile (watchme.watchers.Watcher attribute)</a>
 </li>
-      <li><a href="source/watchme.utils.html#watchme.utils.terminal.confirm_prompt">confirm_prompt() (in module watchme.utils.terminal)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/watchme.logger.html#watchme.logger.message.convert2boolean">convert2boolean() (in module watchme.logger.message)</a>
 
       <ul>
         <li><a href="source/watchme.utils.html#watchme.utils.terminal.convert2boolean">(in module watchme.utils.terminal)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/watchme.utils.html#watchme.utils.fileio.copyfile">copyfile() (in module watchme.utils.fileio)</a>
 </li>
       <li><a href="source/watchme.watchers.psutils.html#watchme.watchers.psutils.tasks.cpu_task">cpu_task() (in module watchme.watchers.psutils.tasks)</a>
@@ -375,8 +373,6 @@
         <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.get_setting">(watchme.watchers.Watcher method)</a>
 </li>
       </ul></li>
-      <li><a href="source/watchme.client.html#watchme.client.get_subparsers">get_subparsers() (in module watchme.client)</a>
-</li>
       <li><a href="source/watchme.watchers.urls.html#watchme.watchers.urls.tasks.get_task">get_task() (in module watchme.watchers.urls.tasks)</a>
 
       <ul>
@@ -400,6 +396,8 @@
       <li><a href="source/watchme.html#watchme.get_watcher">get_watcher() (in module watchme)</a>
 </li>
       <li><a href="source/watchme.command.html#watchme.command.utils.get_watchers">get_watchers() (in module watchme.command.utils)</a>
+</li>
+      <li><a href="source/watchme.utils.html#watchme.utils.terminal.get_watchme_env">get_watchme_env() (in module watchme.utils.terminal)</a>
 </li>
       <li><a href="source/watchme.html#watchme.defaults.getenv">getenv() (in module watchme.defaults)</a>
 </li>
@@ -474,6 +472,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.list">list() (watchme.watchers.Watcher method)</a>
+</li>
+      <li><a href="source/watchme.command.html#watchme.command.utils.list_task">list_task() (in module watchme.command.utils)</a>
 </li>
       <li><a href="source/watchme.command.html#watchme.command.utils.list_watcher">list_watcher() (in module watchme.command.utils)</a>
 </li>
@@ -591,8 +591,6 @@
 </li>
       <li><a href="source/watchme.utils.html#watchme.utils.fileio.read_json">read_json() (in module watchme.utils.fileio)</a>
 </li>
-      <li><a href="source/watchme.utils.html#watchme.utils.terminal.regexp_prompt">regexp_prompt() (in module watchme.utils.terminal)</a>
-</li>
       <li><a href="source/watchme.watchers.html#watchme.watchers.schedule.remove_schedule">remove_schedule() (in module watchme.watchers.schedule)</a>
 
       <ul>
@@ -611,10 +609,10 @@
         <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.remove_setting">(watchme.watchers.Watcher method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.remove_task">remove_task() (watchme.watchers.Watcher method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/watchme.watchers.html#watchme.watchers.Watcher.repo">repo (watchme.watchers.Watcher attribute)</a>
 </li>
       <li><a href="source/watchme.watchers.psutils.html#watchme.watchers.psutils.Task.required_params">required_params (watchme.watchers.psutils.Task attribute)</a>
@@ -723,15 +721,13 @@
 </li>
       <li><a href="source/watchme.tests.html#watchme.tests.test_utils.TestUtils.test_files">test_files() (watchme.tests.test_utils.TestUtils method)</a>
 </li>
-      <li><a href="source/watchme.tests.html#watchme.tests.test_client.TestClient.test_freeze">test_freeze() (watchme.tests.test_client.TestClient method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/watchme.tests.html#watchme.tests.test_client.TestClient.test_freeze">test_freeze() (watchme.tests.test_client.TestClient method)</a>
+</li>
       <li><a href="source/watchme.tests.html#watchme.tests.test_utils.TestUtils.test_get_installdir">test_get_installdir() (watchme.tests.test_utils.TestUtils method)</a>
 </li>
       <li><a href="source/watchme.tests.html#watchme.tests.test_utils.TestUtils.test_mkdir">test_mkdir() (watchme.tests.test_utils.TestUtils method)</a>
-</li>
-      <li><a href="source/watchme.tests.html#watchme.tests.test_utils.TestUtils.test_prompts">test_prompts() (watchme.tests.test_utils.TestUtils method)</a>
 </li>
       <li><a href="source/watchme.tests.html#watchme.tests.test_client.TestClient.test_schedule">test_schedule() (watchme.tests.test_client.TestClient method)</a>
 </li>
@@ -918,7 +914,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -935,33 +931,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="assets/jquery.js"></script>
-      <script type="text/javascript" src="assets/underscore.js"></script>
-      <script type="text/javascript" src="assets/doctools.js"></script>
-      <script type="text/javascript" src="assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

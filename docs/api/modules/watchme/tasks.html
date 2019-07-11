@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -172,7 +174,11 @@
 
 <div class="viewcode-block" id="TaskBase"><a class="viewcode-back" href="../../source/watchme.tasks.html#watchme.tasks.TaskBase">[docs]</a><span class="k">class</span> <span class="nc">TaskBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="c1"># If params not defined, create as dict</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Ensure subclass was created correctly</span>
         <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;required_params&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;export_func&#39;</span><span class="p">]:</span>
@@ -244,7 +250,7 @@
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;validation function intended to be implemented by subclass.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">pass</span>
+        <span class="k">return</span>
 
 
 <span class="c1"># Run Single Task</span>
@@ -255,7 +261,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_params</span><span class="p">()</span>
         <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_func</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">func</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
         <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Cannot find function.&#39;</span><span class="p">)</span></div>
 
@@ -305,27 +311,26 @@
 
         <span class="c1"># Case 2. The result is a string</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
-            <span class="c1"># if it&#39;s a path to a file, just save to repository</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
-
-            <span class="c1"># Otherwise, it&#39;s a string that needs to be saved to file</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_text</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_str_result</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">)</span>
 
         <span class="c1"># Case 3. The result is a dictionary</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_json</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">repo</span><span class="p">))</span>
 
-        <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Result for task </span><span class="si">%s</span><span class="s1"> is None&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_write_results&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_results</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
+        <span class="c1"># If it&#39;s unicode, try encoding, and then fail (repetitive)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unsupported result format </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_str_result</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unsupported result format </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 
         <span class="c1"># Get rid of None results (don&#39;t check excessively for None above)</span>
         <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">f</span><span class="p">]</span>
@@ -333,6 +338,26 @@
 
 
 <span class="c1"># Saving</span>
+
+    <span class="k">def</span> <span class="nf">_save_str_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;a helper function to return a list of files with added string</span>
+<span class="sd">           results. We do this twice in the saving function.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           files: the list of files to save (returned at the end)</span>
+<span class="sd">           result: the result object to parse, should be string</span>
+<span class="sd">           repo: the repo to write it to.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># if it&#39;s a path to a file, just save to repository</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+
+        <span class="c1"># Otherwise, it&#39;s a string that needs to be saved to file</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_text</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">files</span>
 
 
     <span class="k">def</span> <span class="nf">_save_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
@@ -350,8 +375,7 @@
         <span class="n">file_name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
         <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)):</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">ext</span><span class="p">)</span>
             <span class="n">saved</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">saved</span><span class="p">)</span>
@@ -447,7 +471,7 @@
 <span class="sd">           results: list of paths to a file, those not existing are skipped</span>
 <span class="sd">           repo: the repository base with the task folder</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_name&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_name&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_list</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_file</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
 
 
@@ -473,7 +497,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -490,33 +514,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

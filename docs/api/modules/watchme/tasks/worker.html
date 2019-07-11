@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -170,8 +172,6 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 
 <div class="viewcode-block" id="Workers"><a class="viewcode-back" href="../../../source/watchme.tasks.html#watchme.tasks.worker.Workers">[docs]</a><span class="k">class</span> <span class="nc">Workers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -205,14 +205,14 @@
 <span class="sd">                  tuple of arguments to process</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># Number of tasks must == number of functions</span>
-        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">funcs</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">funcs</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
 
         <span class="c1"># Keep track of some progress for the user</span>
         <span class="n">progress</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
 
         <span class="c1"># if we don&#39;t have tasks, don&#39;t run</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tasks</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="c1"># results will also have the same key to look up</span>
@@ -256,8 +256,8 @@
             <span class="n">pool</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Error running task.&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">finished</span></div></div>
 
@@ -286,7 +286,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -303,33 +303,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

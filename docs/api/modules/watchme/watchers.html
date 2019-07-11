@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -258,7 +260,7 @@
 <span class="sd">            base: the base folder of watcher repos. Uses $HOME/.watchme default</span>
 <span class="sd">            create: create the watcher if it doesn&#39;t exist (default is False)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">base</span> <span class="o">=</span> <span class="n">WATCHME_BASE_DIR</span>
 
         <span class="c1"># Does the watcher exist?</span>
@@ -299,7 +301,7 @@
         <span class="k">if</span> <span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">]:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Action must be update, add, or remove&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;A value must be provided for the </span><span class="si">%s</span><span class="s1"> action&#39;</span> <span class="o">%</span> <span class="n">action</span><span class="p">)</span>
 
         <span class="c1"># Add, and it doesn&#39;t exist so it&#39;s okay</span>
@@ -355,7 +357,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">):</span>
 
             <span class="c1"># Load the configuration file if it exists (will exit if not found)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configfile</span><span class="p">)</span>
 
             <span class="c1"># The watcher section is added by default, args for the watcher</span>
@@ -513,7 +515,7 @@
 <span class="sd">           ==========</span>
 <span class="sd">           task: the name of the task to remove</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_frozen</span><span class="p">():</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;watcher is frozen, unfreeze first.&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_section</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
@@ -544,7 +546,7 @@
 <span class="sd">                           to create them.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">tasks</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tasks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">()</span>
 
         <span class="c1"># If the user supplied one task:</span>
@@ -645,7 +647,7 @@
         <span class="c1"># Load the configuration, if not loaded</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;watcher&#39;</span>
 
         <span class="c1"># Cut out early if section not in config</span>
@@ -665,7 +667,7 @@
             <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;DEACTIVATE&quot;</span>
 
         <span class="c1"># Add the task name</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> task </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">|</span><span class="si">%s</span><span class="s1">] active: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span> 
@@ -691,7 +693,7 @@
         <span class="sd">&#39;&#39;&#39;determine if the watcher is active by reading from the config directly</span>
 <span class="sd">           if a task name is provided, check the active status of the task</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">task</span> <span class="o">=</span> <span class="s1">&#39;watcher&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -789,19 +791,19 @@
         <span class="n">selected</span> <span class="o">=</span> <span class="kc">True</span> 
 
         <span class="c1"># A task can be None if it wasn&#39;t found</span>
-        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># Is the task not active (undefined is active)?</span>
         <span class="n">is_active</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">is_active</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span> <span class="ow">and</span> <span class="n">active</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_active</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span> <span class="ow">and</span> <span class="n">active</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is not active.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
             <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
         
         <span class="c1"># The user wants to search for a custom task name</span>
-        <span class="k">if</span> <span class="n">regexp</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
-                <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is selected to run.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">regexp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Task </span><span class="si">%s</span><span class="s1"> is not selected to run.&#39;</span> <span class="o">%</span> <span class="n">task</span><span class="p">)</span>
                 <span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="n">selected</span>
@@ -828,11 +830,11 @@
             <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
 
             <span class="c1"># Check that the task should be run, and is valid</span>
-            <span class="k">if</span> <span class="n">task</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task_selected</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">regexp</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">quiet</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%s</span><span class="s1"> contender tasks.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">tasks</span>   </div>
 
@@ -924,15 +926,13 @@
 <span class="sd">           show_progress: if True, show progress bar instead of task information</span>
 <span class="sd">                          (defaults to True)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># Step 0: Each run session is given a fun name</span>
-        <span class="n">run_id</span> <span class="o">=</span> <span class="n">RobotNamer</span><span class="p">()</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 
         <span class="c1"># Step 1: determine if the watcher is active.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">test</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">test</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Watcher </span><span class="si">%s</span><span class="s1"> is not active.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># Step 2: get the tasks associated with the run, a list of param dicts</span>
-        <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">()</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">(</span><span class="n">regexp</span><span class="o">=</span><span class="n">regexp</span><span class="p">)</span>
 
         <span class="c1"># Step 3: Run the tasks. This means preparing a list of funcs/params,</span>
         <span class="c1"># and then submitting with multiprocessing</span>
@@ -957,6 +957,9 @@
 <span class="sd">           results: a dictionary of tasks, with keys as the task name, and</span>
 <span class="sd">                    values as the result.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">task_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
@@ -1033,7 +1036,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -1050,33 +1053,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

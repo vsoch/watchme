@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="watchme.watchers.urls package" href="watchme.watchers.urls.html" />
     <link rel="prev" title="watchme.watchers package" href="watchme.watchers.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -195,25 +197,32 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <dt id="watchme.watchers.psutils.tasks.cpu_task">
 <code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">cpu_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#cpu_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.cpu_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get variables about the cpu of the host. No parameters are required.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.disk_task">
 <code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">disk_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#disk_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.disk_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for disks on the host</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>disk_usage</strong> (<em>an optional path to get disk usage for.</em>)</p></li>
-<li><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>disk_usage</strong> (<em>an optional path to get disk usage for.</em>)</li>
+<li><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -228,36 +237,46 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 <dd><p>monitor a specific process. This function can be used as a task, or
 is (most likely used) for the psutils.decorators. A pid parameter
 is required.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p></li>
-<li><p><strong>pid</strong> (<em>the process id or name (required)</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</li>
+<li><strong>pid</strong> (<em>the process id or name (required)</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.net_task">
 <code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">net_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#net_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.net_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for networking on the host</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.python_task">
 <code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">python_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#python_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.python_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get modules, version, etc. about currently running python</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -270,11 +289,14 @@ is required.</p>
 <dt id="watchme.watchers.psutils.tasks.system_task">
 <code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">system_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#system_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.system_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get basic system info, unlikely to change.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -292,7 +314,7 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.watchers.psutils.Task">
-<em class="property">class </em><code class="descclassname">watchme.watchers.psutils.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">watchme.watchers.psutils.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
 <dl class="method">
 <dt id="watchme.watchers.psutils.Task.export_func">
@@ -326,7 +348,7 @@ already provided in the client.</p>
         <a href="watchme.watchers.urls.html" class="btn btn-neutral float-right" title="watchme.watchers.urls package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="watchme.watchers.html" class="btn btn-neutral" title="watchme.watchers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="watchme.watchers.html" class="btn btn-neutral float-left" title="watchme.watchers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -335,7 +357,7 @@ already provided in the client.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -352,33 +374,16 @@ already provided in the client.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

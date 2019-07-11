@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="watchme.watchers package" href="watchme.watchers.html" />
     <link rel="prev" title="watchme.tasks package" href="watchme.tasks.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -199,15 +201,19 @@ the watched to check for changes at some frequency, and update the files.</p>
 <dt id="watchme.utils.fileio.generate_temporary_file">
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">generate_temporary_file</code><span class="sig-paren">(</span><em>folder=None</em>, <em>prefix='watchme'</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#generate_temporary_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.generate_temporary_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>write a temporary file, in base directory with a particular extension.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder</strong> (<em>the base directory to write in.</em>)</p></li>
-<li><p><strong>prefix</strong> (<em>the prefix to use</em>)</p></li>
-<li><p><strong>ext</strong> (<em>the extension to use.</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>folder</strong> (<em>the base directory to write in.</em>)</li>
+<li><strong>prefix</strong> (<em>the prefix to use</em>)</li>
+<li><strong>ext</strong> (<em>the extension to use.</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -221,15 +227,19 @@ the watched to check for changes at some frequency, and update the files.</p>
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">get_tmpdir</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>create=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#get_tmpdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.get_tmpdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>get a temporary directory for an operation. If SREGISTRY_TMPDIR
 is set, return that. Otherwise, return the output of tempfile.mkdtemp</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prefix</strong> (<em>Given a need for a sandbox (or similar), we will need to</em>)</p></li>
-<li><p><strong>create a subfolder *within* the SREGISTRY_TMPDIR.</strong></p></li>
-<li><p><strong>create</strong> (<em>boolean to determine if we should create folder (True)</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>prefix</strong> (<em>Given a need for a sandbox (or similar), we will need to</em>)</li>
+<li><strong>create a subfolder *within* the SREGISTRY_TMPDIR.</strong></li>
+<li><strong>create</strong> (<em>boolean to determine if we should create folder (True)</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -282,15 +292,19 @@ and properly close the file</p>
 <dt id="watchme.utils.fileio.write_json">
 <code class="descclassname">watchme.utils.fileio.</code><code class="descname">write_json</code><span class="sig-paren">(</span><em>json_obj</em>, <em>filename</em>, <em>mode='w'</em>, <em>print_pretty=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/fileio.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.fileio.write_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>write_json will (optionally,pretty print) a json object to file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>json_obj</strong> (<em>the dict to print to json</em>)</p></li>
-<li><p><strong>filename</strong> (<em>the output file to write to</em>)</p></li>
-<li><p><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>json_obj</strong> (<em>the dict to print to json</em>)</li>
+<li><strong>filename</strong> (<em>the output file to write to</em>)</li>
+<li><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -300,33 +314,6 @@ and properly close the file</p>
 <p>This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
-<dl class="function">
-<dt id="watchme.utils.terminal.choice_prompt">
-<code class="descclassname">watchme.utils.terminal.</code><code class="descname">choice_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>choices=None</em>, <em>choice=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#choice_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.choice_prompt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ask the user for a prompt, and only return when one of the requested
-options is provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p></li>
-<li><p><strong>choices</strong> (<em>a list of choices that are valid, defaults to [Y/N/y/n]</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="watchme.utils.terminal.confirm_prompt">
-<code class="descclassname">watchme.utils.terminal.</code><code class="descname">confirm_prompt</code><span class="sig-paren">(</span><em>prompt</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#confirm_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.confirm_prompt" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper around choice_prompt, but ask the user specifically for a
-yes / no response that is converted to boolean for the calling agent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="function">
 <dt id="watchme.utils.terminal.convert2boolean">
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">convert2boolean</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#convert2boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.convert2boolean" title="Permalink to this definition">¶</a></dt>
@@ -341,32 +328,29 @@ that must be returned as boolean</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="watchme.utils.terminal.regexp_prompt">
-<code class="descclassname">watchme.utils.terminal.</code><code class="descname">regexp_prompt</code><span class="sig-paren">(</span><em>prompt</em>, <em>regexp='.'</em>, <em>answer=''</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#regexp_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.regexp_prompt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ask the user for a text entry that matches a regular expression</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prompt</strong> (<em>the prompt to ask the user</em>)</p></li>
-<li><p><strong>regexp</strong> (<em>the regular expression to match. defaults to anything.</em>)</p></li>
-</ul>
-</dd>
-</dl>
+<dt id="watchme.utils.terminal.get_watchme_env">
+<code class="descclassname">watchme.utils.terminal.</code><code class="descname">get_watchme_env</code><span class="sig-paren">(</span><em>prefix='WATCHMEENV_'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#get_watchme_env"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.get_watchme_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>get any environment variables that start with <a href="#id1"><span class="problematic" id="id2">WATCMEENV_</span></a>, return the
+dictionary to the user.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.utils.terminal.run_command">
 <code class="descclassname">watchme.utils.terminal.</code><code class="descname">run_command</code><span class="sig-paren">(</span><em>cmd</em>, <em>sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/utils/terminal.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.utils.terminal.run_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>run_command uses subprocess to send a command to the terminal.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</p></li>
-<li><p><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</p></li>
-<li><p><strong>if none specified, will alert that command failed.</strong></p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</li>
+<li><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</li>
+<li><strong>if none specified, will alert that command failed.</strong></li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -392,7 +376,7 @@ that must be returned as boolean</p>
         <a href="watchme.watchers.html" class="btn btn-neutral float-right" title="watchme.watchers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="watchme.tasks.html" class="btn btn-neutral" title="watchme.tasks package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="watchme.tasks.html" class="btn btn-neutral float-left" title="watchme.tasks package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -401,7 +385,7 @@ that must be returned as boolean</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -418,33 +402,16 @@ that must be returned as boolean</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="assets/documentation_options.js"></script>
+        <script type="text/javascript" src="assets/jquery.js"></script>
+        <script type="text/javascript" src="assets/underscore.js"></script>
+        <script type="text/javascript" src="assets/doctools.js"></script>
+        <script type="text/javascript" src="assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="watchme.watchers.urls package" href="source/watchme.watchers.urls.html" /> 
-
-  
-  <script src="assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -155,31 +157,39 @@
            <div itemprop="articleBody">
             
   <div class="section" id="changelog">
-<span id="changelog"></span><h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>This is a manually generated log to track changes to the repository for each release.
 Each section should include general headers such as <strong>Implemented enhancements</strong>
 and <strong>Merged pull requests</strong>. All closed issued and bug fixes should be
 represented by the pull requests that fixed them.
 Critical items to know are:</p>
 <ul class="simple">
-<li><p>renamed commands</p></li>
-<li><p>deprecated / removed commands</p></li>
-<li><p>changed defaults</p></li>
-<li><p>backward incompatible changes</p></li>
-<li><p>changed behaviour</p></li>
+<li>renamed commands</li>
+<li>deprecated / removed commands</li>
+<li>changed defaults</li>
+<li>backward incompatible changes</li>
+<li>changed behaviour</li>
 </ul>
 <div class="section" id="master">
-<span id="master"></span><h2><a class="reference external" href="https://github.com/vsoch/watchme/tree/master">master</a><a class="headerlink" href="#master" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference external" href="https://github.com/vsoch/watchme/tree/master">master</a><a class="headerlink" href="#master" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Adding decorator for system (psutils) monitorin (0.0.18)</p></li>
-<li><p>Reorganizing task functions to belong with TaskBase (0.0.17)</p></li>
-<li><p>Adding option for regular expression for URL wachers, user agent header (0.0.16)</p></li>
-<li><p>requests is missing from install dependencies (0.0.15)</p></li>
-<li><p>small bug fixes (0.0.14)</p></li>
-<li><p>added headers, params, and json args for post and get urls. (0.0.13)</p></li>
-<li><p>added ability to specify URL params for Get and Get with selector functions (0.0.12)</p></li>
-<li><p>first beta release of watchme, all commands and docs (0.0.11)</p></li>
-<li><p>adding changelog, and original skeleton for client  (0.0.1)</p></li>
+<li>addition of GPU task, including terminal and process monitor (0.0.27)</li>
+<li>adding linting, cleaning up an error for psutils watcher (0.0.26)</li>
+<li>loop values should be checked for None first (0.0.25)</li>
+<li>Connections aren’t being parsed (0.0.24)</li>
+<li>But with printing output to screen for monitor (should be json) (0.0.23)</li>
+<li>Adding terminal monitor command group (0.0.22)</li>
+<li>Print of task should be “add-task” (0.0.21)</li>
+<li>Custom WATCHME_ENV variables added to monitoring decorator/task (0.0.20)</li>
+<li>Adding decorator for system (psutils) monitoring (0.0.19)</li>
+<li>Reorganizing task functions to belong with TaskBase (0.0.17)</li>
+<li>Adding option for regular expression for URL wachers, user agent header (0.0.16)</li>
+<li>requests is missing from install dependencies (0.0.15)</li>
+<li>small bug fixes (0.0.14)</li>
+<li>added headers, params, and json args for post and get urls. (0.0.13)</li>
+<li>added ability to specify URL params for Get and Get with selector functions (0.0.12)</li>
+<li>first beta release of watchme, all commands and docs (0.0.11)</li>
+<li>adding changelog, and original skeleton for client  (0.0.1)</li>
 </ul>
 </div>
 </div>
@@ -193,7 +203,7 @@ Critical items to know are:</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="source/watchme.watchers.urls.html" class="btn btn-neutral" title="watchme.watchers.urls package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="source/watchme.watchers.urls.html" class="btn btn-neutral float-left" title="watchme.watchers.urls package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -202,7 +212,7 @@ Critical items to know are:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -219,33 +229,16 @@ Critical items to know are:</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="assets/jquery.js"></script>
-      <script type="text/javascript" src="assets/underscore.js"></script>
-      <script type="text/javascript" src="assets/doctools.js"></script>
-      <script type="text/javascript" src="assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

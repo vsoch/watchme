@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -308,6 +310,39 @@
                      <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list watchers available&quot;</span><span class="p">,</span> 
                      <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
 
+
+    <span class="c1"># monitor</span>
+
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;monitor&quot;</span><span class="p">,</span>
+                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;terminal process monitor (akin to time)&quot;</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;watcher&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the watcher to run (if save desired)&#39;</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--name&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a custom name for the output folder (decorator-&lt;name&gt;)&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--skip&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;keys in result to skip&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--only&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;only&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;only include these values&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--include&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;include&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;keys in result to add back in (environ)&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--seconds&#39;</span><span class="p">,</span> <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;interval (seconds) to monitor at&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--test&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run monitor in test mode (for a decorator, no save)&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
     <span class="c1"># protect and freeze</span>
 
     <span class="n">protect</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;protect&quot;</span><span class="p">,</span>
@@ -399,23 +434,6 @@
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
-<div class="viewcode-block" id="get_subparsers"><a class="viewcode-back" href="../../source/watchme.client.html#watchme.client.get_subparsers">[docs]</a><span class="k">def</span> <span class="nf">get_subparsers</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;get_subparser will get a dictionary of subparsers, to help with printing help</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">action</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">_actions</span> 
-               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">)]</span>
-
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
-        <span class="c1"># get all subparsers and print help</span>
-        <span class="k">for</span> <span class="n">choice</span><span class="p">,</span> <span class="n">subparser</span> <span class="ow">in</span> <span class="n">action</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">subparsers</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span> <span class="o">=</span> <span class="n">subparser</span>
-
-    <span class="k">return</span> <span class="n">subparsers</span></div>
-
-
-
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../source/watchme.client.html#watchme.client.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;the main entry point for the WatchMe Command line application.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -423,7 +441,6 @@
     <span class="c1"># Customize parser</span>
 
     <span class="n">parser</span> <span class="o">=</span> <span class="n">get_parser</span><span class="p">()</span>
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">get_subparsers</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="n">return_code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;print help, including the software version and active client </span>
@@ -471,6 +488,7 @@
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;init&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.init</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;inspect&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.inspect</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.ls</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;monitor&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.monitor</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;protect&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.protect</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;remove&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.remove</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">.run</span> <span class="k">import</span> <span class="n">main</span>
@@ -501,7 +519,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Vanessa Sochat.
+        &copy; Copyright 2018, Vanessa Sochat
 
     </p>
   </div>
@@ -518,33 +536,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'11',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
