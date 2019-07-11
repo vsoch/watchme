@@ -89,7 +89,7 @@ within Python or the command line. First, let's take a look at running from
 within Python. We are going to use a `TerminalRunner` to run the command:
 
 ```python
-from watchme.watchers.psutils.decorators import TerminalRunner
+from watchme.tasks.decorators import TerminalRunner
 runner = TerminalRunner('sleep 5')
 runner.run()
 timepoints = runner.wait()
@@ -328,7 +328,7 @@ but with a different invocation.
 
 
 ```python
-from watchme.watchers.psutils.decorators import monitor_resources
+from watchme.tasks.decorators import monitor_resources
 from time import sleep
 
 @monitor_resources('system', seconds=3)

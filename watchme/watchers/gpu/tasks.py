@@ -141,6 +141,7 @@ def gpu_task(**kwargs):
     # nvmlDeviceSetAccountingMode(handle, mode):
     # nvmlDeviceClearAccountingPids(handle):
 
+    print(results)
     device_count = results['nvml_deviceCount']
 
     devices = {}
