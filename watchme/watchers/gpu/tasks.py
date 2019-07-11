@@ -197,7 +197,7 @@ def _filter_result(results, skip):
     results.update(environ)
 
     for key in skip:
-        if key in result:
-            del result[key]
+        if key in results:
+            del results[key]
 
-    return result
+    return results
