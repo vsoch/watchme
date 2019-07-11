@@ -14,7 +14,7 @@ from .pynvml import (
     nvmlInit, 
     nvmlShutdown
 )
-import .pynvml
+import pynvml
 
 def gpu_task(**kwargs):
     '''Get variables about the gpu of the host. No parameters are required.
