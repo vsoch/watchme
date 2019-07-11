@@ -29,10 +29,10 @@ class TestDecorators(unittest.TestCase):
     def test_psutils_monitor(self):
         '''test creation function, and basic watcher config'''
         print("Testing psutilsc.decorators.TerminalRunner")
-        from watchme.watchers.psutils.decorators import TerminalRunner
+        from watchme.tasks.decorators import TerminalRunner
         runner = TerminalRunner('sleep 2')
         runner.run()
-        timepoints = runner.wait()
+        timepoints = runner.wait("monitor_pid_task")
         self.assertTrue(len(timepoints)==1)
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from watchme.command import get_watchers
 from watchme import get_watcher
-from watchme.watchers.psutils.decorators import TerminalRunner
+from watchme.tasks.decorators import TerminalRunner
 import json
 
 def main(args, extra):
@@ -38,7 +38,12 @@ def main(args, extra):
                             only=args.only,
                             seconds=args.seconds)
     runner.run()
-    timepoints = runner.wait()
+    timepoints = runner.wait(args.func)
+
+    # The output folder depends on the watcher func
+    prefix = "decorator-psutils"
+    if args.func == "gpu_task":
+        prefix = "decorator-gpu"
 
     # If we don't have a watcher, print to terminal
     if watcher is None or args.test is True:
@@ -49,5 +54,5 @@ def main(args, extra):
         name = args.name
         if name is None:
             name = command.replace(' ', '-')
-        name = 'decorator-psutils-%s' % name
+        name = '%s-%s' % (prefix, name)
         watcher.finish_runs({name: timepoints})

@@ -14,11 +14,11 @@ from watchme.tasks.decorators import ProcessRunner
 from watchme import get_watcher
 
 
-def monitor_resources(*args, **kwargs):
+def monitor_gpu(*args, **kwargs):
     '''a decorator to monitor a function every 3 (or user specified) seconds. 
        We include one or more task names that include data we want to extract.
        we get the pid of the running function, and then use the
-       monitor_pid_task from psutils to watch it. The functools "wraps"
+       gpu_task from gpu to watch it. The functools "wraps"
        ensures that the (fargs, fkwargs) are passed from the calling function
        despite the wrapper. The following parameters can be provided to
        "monitor resources"
@@ -33,7 +33,7 @@ def monitor_resources(*args, **kwargs):
        include: Fields in the result to include back in (list).
        create: whether to create the watcher on the fly (default False, must
                exist)
-       name: the suffix of the decorator-psutils-<name> folder. If not provided,
+       name: the suffix of the decorator-gpu-<name> folder. If not provided,
              defaults to the function name
     '''
     def inner(func):
@@ -47,7 +47,7 @@ def monitor_resources(*args, **kwargs):
 
             # The watcher is required, first keyword argument
             if not args:
-                bot.error("A watcher name is required for the psutils decorator.")
+                bot.error("A watcher name is required for the gpu decorator.")
                 return result
 
             # Get a watcher to save results to
@@ -60,11 +60,11 @@ def monitor_resources(*args, **kwargs):
                                    only=kwargs.get('only', []))
 
             runner.run(func, *fargs, **fkwargs)
-            result = runner.wait('monitor_pid_task')
+            result = runner.wait(func.__name__)
 
             # Save results (finishing runs) - key is folder created
             name = kwargs.get('name', func.__name__)
-            key = 'decorator-psutils-%s' % name
+            key = 'decorator-gpu-%s' % name
             results = {key: runner.timepoints}
             watcher.finish_runs(results)
             

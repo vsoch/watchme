@@ -168,6 +168,10 @@ def get_parser():
                          help="a custom name for the output folder (decorator-<name>)", 
                          default=None, type=str)
 
+    monitor.add_argument('--func', dest="func", choices=["monitor_pid_task", "gpu_task"],
+                         help="the function to run (defualts to psutils monitor_pid_task", 
+                         default="monitor_pid_task", type=str)
+
     monitor.add_argument('--skip', dest="skip", 
                          help="keys in result to skip", 
                          default=None, type=str)
