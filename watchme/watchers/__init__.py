@@ -271,6 +271,9 @@ class Watcher(object):
         elif task_type == 'results':
             from .results import Task
 
+        elif task_type == 'gpu':
+            from .gpu import Task
+
         else:
             bot.exit('task_type %s not properly added to Watcher' % task_type)
 
@@ -559,12 +562,13 @@ class Watcher(object):
 
         task = None
 
-        # Only psutils has decorators
+        # Only psutils and gpu have decorators
         if name.startswith('decorator-psutils'):
             from .psutils import Task
-
+        elif name.startswith('decorator-gpu'):
+            from .gpu import Task
         else:
-            bot.exit('Type %s is not recognized in get_decorator' % name)
+            bot.exit('Type %s is not recognized in watchers.get_decorator' % name)
 
         task = Task(name)
         return task
@@ -613,6 +617,9 @@ class Watcher(object):
 
             elif task_type == 'results':
                 from .results import Task
+
+            elif task_type == 'gpu':
+                from .gpu import Task
 
             else:
                 bot.exit('Type %s not properly set up in get_task' % task_type)

@@ -109,7 +109,6 @@ class Workers(object):
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-
 def multi_wrapper(func_args):
     function, kwargs = func_args
     return function(**kwargs)
