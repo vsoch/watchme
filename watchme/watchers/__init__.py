@@ -562,9 +562,10 @@ class Watcher(object):
         # Only psutils has decorators
         if name.startswith('decorator-psutils'):
             from .psutils import Task
-
+        elif name.startswith('decorator-gpu'):
+            from .gpu import Task
         else:
-            bot.exit('Type %s is not recognized in get_decorator' % name)
+            bot.exit('Type %s is not recognized in watchers.get_decorator' % name)
 
         task = Task(name)
         return task

@@ -45,7 +45,6 @@ def gpu_task(**kwargs):
         try:
             results[name] = func()
         except:
-            bot.error('Issue with %s' % name)
             nvmlInit()
 
     # Look at individual devices
@@ -173,7 +172,6 @@ def gpu_task(**kwargs):
 
                 devices[name][key] = result
             except:
-                bot.error('Issue with %s' % name)
                 nvmlInit()
    
     nvmlShutdown()
