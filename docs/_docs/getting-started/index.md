@@ -215,7 +215,7 @@ $ watchme add-task watcher task-singularity-release url@https://github.com/sylab
 The reason we save these parameters in the repo is that if you put it under version
 control on GitHub (or similar), others will be able to reproduce your protocol.
 
-### How do I add tasks?
+### How do I edit tasks?
 
 After you've added a task, you can easily update parameters. The format is:
 
