@@ -22,7 +22,7 @@ repo: vsoch/watchme
 reponame: watchme
 
 # The current Docker container
-docker: vanessa/watchme
+docker: quay.io/vanessa/watchme
 
 # -----
 # Build

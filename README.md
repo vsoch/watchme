@@ -23,7 +23,8 @@ in to allow for monitoring of system resources. Importantly, it is a tool that
 implements *reproducible monitoring*, as all your watches, are stored in a 
 configuration file that can easily be shared with others
 to reproduce your watching protocol. For more information, see the
-[documentation](https://vsoch.github.io/watchme). [Docker bases](https://hub.docker.com/r/vanessa/watchme) are
+[documentation](https://vsoch.github.io/watchme). 
+[Docker bases](https://quay.io/repository/vanessa/watchme?tab=tags) are
 also available for monitoring processes inside containers.
 
 ## Licenses
