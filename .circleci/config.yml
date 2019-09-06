@@ -14,6 +14,7 @@ workflows:
 
       - docker-publish/publish:
           image: vanessa/watchme
+          registry: quay.io
           dockerfile: docker/Dockerfile
           deploy: false
           tag: latest
@@ -31,13 +32,14 @@ workflows:
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
                    echo "This build will deploy the following containers:"
-                   echo "vanessa/watchme:latest"
-                   echo "vanessa/watchme:py3"
-                   echo "vanessa/watchme:v${DOCKER_TAG}"
-                   echo "vanessa/watchme:py3-v${DOCKER_TAG}"
+                   echo "quay.io/vanessa/watchme:latest"
+                   echo "quay.io/vanessa/watchme:py3"
+                   echo "quay.io/vanessa/watchme:v${DOCKER_TAG}"
+                   echo "quay.io/vanessa/watchme:py3-v${DOCKER_TAG}"
 
       - docker-publish/publish:
           image: vanessa/watchme
+          registry: quay.io
           dockerfile: docker/Dockerfile.py2
           deploy: false
           tag: py2
@@ -55,8 +57,8 @@ workflows:
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
                    echo "This build will deploy the following containers:"
-                   echo "vanessa/watchme:py2"
-                   echo "vanessa/watchme:py2-${DOCKER_TAG}"
+                   echo "quay.io/vanessa/watchme:py2"
+                   echo "quay.io/vanessa/watchme:py2-${DOCKER_TAG}"
 
 
   # This workflow will deploy images on merge to master only
@@ -65,6 +67,7 @@ workflows:
 
       - docker-publish/publish:
           image: vanessa/watchme
+          registry: quay.io
           dockerfile: docker/Dockerfile
           tag: latest
           filters:
@@ -79,12 +82,13 @@ workflows:
                           DOCKER_TAG="${string//\"}"
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
-                   docker tag vanessa/watchme:latest vanessa/watchme:v${DOCKER_TAG}
-                   docker tag vanessa/watchme:latest vanessa/watchme:py3-v${DOCKER_TAG}
-                   docker tag vanessa/watchme:latest vanessa/watchme:py3
+                   docker tag quay.io/vanessa/watchme:latest quay.io/vanessa/watchme:v${DOCKER_TAG}
+                   docker tag quay.io/vanessa/watchme:latest quay.io/vanessa/watchme:py3-v${DOCKER_TAG}
+                   docker tag quay.io/vanessa/watchme:latest quay.io/vanessa/watchme:py3
 
       - docker-publish/publish:
           image: vanessa/watchme
+          registry: quay.io
           dockerfile: docker/Dockerfile.py2
           tag: py2
           filters:
@@ -99,7 +103,7 @@ workflows:
                           DOCKER_TAG="${string//\"}"
                    done
                    echo "Version for Docker tag is ${DOCKER_TAG}"
-                   docker tag vanessa/watchme:py2 vanessa/watchme:py2-v${DOCKER_TAG}
+                   docker tag quay.io/vanessa/watchme:py2 quay.io/vanessa/watchme:py2-v${DOCKER_TAG}
 
   test:
     jobs:
