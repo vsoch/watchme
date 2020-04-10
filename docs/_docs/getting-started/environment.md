@@ -75,7 +75,7 @@ use the default urls watcher to post to some endpoint, and save the result as
 json with a custom file name:
 
 ```bash
-$ watchme add watcher task-api-post url@https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/ file_name@manifest-latest.json save_as@json func@post_task
+$ watchme add-task watcher task-api-post url@https://singularityhub.github.io/registry/vanessa/fortune/manifests/latest/ file_name@manifest-latest.json save_as@json func@post_task
 ```
 
 "save_as" is custom for the urls watcher (so json is returned) but for any watcher

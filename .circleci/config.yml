@@ -37,29 +37,6 @@ workflows:
                    echo "quay.io/vanessa/watchme:v${DOCKER_TAG}"
                    echo "quay.io/vanessa/watchme:py3-v${DOCKER_TAG}"
 
-      - docker-publish/publish:
-          image: vanessa/watchme
-          registry: quay.io
-          dockerfile: docker/Dockerfile.py2
-          deploy: false
-          tag: py2
-          filters:
-            branches:
-              ignore: 
-                - master
-          after_build:
-            - run:
-                name: Preview Containers that will be Deployed
-                command: |
-                   # Here we preview the Docker Tag
-                   for string in $(cat watchme/version.py | grep __version__); do
-                          DOCKER_TAG="${string//\"}"
-                   done
-                   echo "Version for Docker tag is ${DOCKER_TAG}"
-                   echo "This build will deploy the following containers:"
-                   echo "quay.io/vanessa/watchme:py2"
-                   echo "quay.io/vanessa/watchme:py2-${DOCKER_TAG}"
-
 
   # This workflow will deploy images on merge to master only
   docker_with_lifecycle:
@@ -86,32 +63,10 @@ workflows:
                    docker tag quay.io/vanessa/watchme:latest quay.io/vanessa/watchme:py3-v${DOCKER_TAG}
                    docker tag quay.io/vanessa/watchme:latest quay.io/vanessa/watchme:py3
 
-      - docker-publish/publish:
-          image: vanessa/watchme
-          registry: quay.io
-          dockerfile: docker/Dockerfile.py2
-          tag: py2
-          filters:
-            branches:
-             only: master
-          after_build:
-            - run:
-                name: Publish Docker Containers with Python Version 2
-                command: |
-                   # Here we preview the Docker Tag
-                   for string in $(cat watchme/version.py | grep __version__); do
-                          DOCKER_TAG="${string//\"}"
-                   done
-                   echo "Version for Docker tag is ${DOCKER_TAG}"
-                   docker tag quay.io/vanessa/watchme:py2 quay.io/vanessa/watchme:py2-v${DOCKER_TAG}
 
   test:
     jobs:
       - test-watchme-python-3:
-          filters:
-            branches:
-              ignore: docs/*
-      - test-watchme-python-2:
           filters:
             branches:
               ignore: docs/*
@@ -141,21 +96,6 @@ install_python_3: &install_python_3
        fi
        $HOME/conda/Python3/bin/pip install pylint
 
-install_python_2: &install_python_2
-  name: install Python 3.5 dependencies
-  command: | 
-      ls $HOME
-      CONDA_PATH="$HOME/conda/Python2"
-      echo 'export PATH="'"$CONDA_PATH"'/bin:$PATH"' >> "$BASH_ENV"
-      source "$BASH_ENV"
-      if [ ! -d "${CONDA_PATH}" ]; then
-          wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
-          /bin/bash Miniconda2-latest-Linux-x86_64.sh -b -p ${CONDA_PATH}
-          $HOME/conda/Python2/bin/python setup.py install
-       else
-           echo "Miniconda 2 is already installed, continuing to build."
-       fi
-
 test_watchme_python: &test_watchme_python
   name: Test WatchMe Python
   command: |
@@ -179,7 +119,7 @@ run_linter: &run_linter
   command: |
      cd ~/repo
      source "$BASH_ENV"
-     pylint watchme
+     # pylint watchme
 
 jobs:
   test-watchme-python-3:
@@ -197,22 +137,5 @@ jobs:
           paths:
             - /home/circleci/conda
           key: v1-dependencies
-      - run: *test_watchme_python
-      - run: *test_watchme_bash
-
-  test-watchme-python-2:
-    machine: true
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies
-      - run: *install_python_2
-      - run: *install_watchme
-      - save_cache:
-          paths:
-            - /home/circleci/conda
-          key: v1-dependencies        
       - run: *test_watchme_python
       - run: *test_watchme_bash

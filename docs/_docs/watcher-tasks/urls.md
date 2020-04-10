@@ -124,7 +124,7 @@ Thus, the following custom parameters can be added:
 
 | Name | Required | Default | Example | Notes|
 |------|----------|---------|---------|-----------|
-| save_as | No | unset |save_as@json| default saves to text, or can be specified as json/jsons. |
+| save_as | No | unset |save_as@json| default saves to json, set as text for raw text. |
 | file_name | No | unset |file_name@image.png| the filename to save, only for download_task |
 | url_param_<name>| No | unset| url_param_name@V,V,V,V,V,V,V | use commas to separate separate url calls |
 | header_* | No | unset | header_Accept@json | Define 1 or headers |
@@ -291,7 +291,7 @@ If for some reason you want to overwrite a task, you need to use force. Here is
 what it looks like when you don't, and the task already exists:
 
 ```bash
-$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc
+$ watchme add-task watcher task-reddit-hpc url@https://www.reddit.com/r/hpc
 ERROR task-reddit-hpc exists, use --force to overwrite.
 ```
 
@@ -302,7 +302,7 @@ tasks added to watchers are active. Here is what the same command above would ha
 looked like setting active to false:
 
 ```bash
-$ watchme add watcher task-reddit-hpc url@https://www.reddit.com/r/hpc --active false
+$ watchme add-task watcher task-reddit-hpc url@https://www.reddit.com/r/hpc --active false
 [task-reddit-hpc]
 url  = https://www.reddit.com/r/hpc
 active  = false

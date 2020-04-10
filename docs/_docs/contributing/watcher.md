@@ -192,7 +192,7 @@ In the example above, params looks like this:
 The user generated this task at the command line only providing a url:
 
 ```bash
-$ watchme add task-reddit-hpc url@https://www.reddit.com/r/hpc
+$ watchme add-task [watcher] task-reddit-hpc url@https://www.reddit.com/r/hpc
 ```
 
 And the variables for active, the unique resource identifier (uri) and the
@@ -201,7 +201,7 @@ set by the watcher (active and uri). If your watcher were called something
 different (e.g., network) then the command would have looked like this:
 
 ```bash
-$ watchme add task-reddit-hpc url@https://www.reddit.com/r/hpc --type network
+$ watchme add-task [watcher] task-reddit-hpc url@https://www.reddit.com/r/hpc --type network
 ```
 
 It follows that in the instantiation of your class, it must return a task object.
@@ -336,7 +336,7 @@ to disable ssl checking when downloading an object. I would tell them to set
 `disable_ssl_check` when they create the task:
 
 ```bash
-$ watchme add task-dangerous url@https://www.download/big/thing disable_ssl_check@true
+$ watchme add-task [watcher] task-dangerous url@https://www.download/big/thing disable_ssl_check@true
 ```
 
 And then my function could check for it, and set a default.
@@ -358,7 +358,7 @@ write_format = kwargs.get('write_format', 'w')
 It would always default to "w" unless otherwise specified:
 
 ```bash
-$ watchme add task-download-binary url@https://www.download/big/thing write_format@wb
+$ watchme add-task [watcher] task-download-binary url@https://www.download/big/thing write_format@wb
 ```
 
 ### 5. Write Documentation

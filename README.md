@@ -6,7 +6,6 @@
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01388/status.svg)](https://doi.org/10.21105/joss.01388)
 [![CircleCI](https://circleci.com/gh/vsoch/watchme.svg?style=svg)](https://circleci.com/gh/vsoch/watchme)
 
-
 Reproducible watching of web changes. Good for:
 
  1. Monitoring system resources (battery, network, memory, cpu, etc.)
@@ -26,6 +25,15 @@ to reproduce your watching protocol. For more information, see the
 [documentation](https://vsoch.github.io/watchme). 
 [Docker bases](https://quay.io/repository/vanessa/watchme?tab=tags) are
 also available for monitoring processes inside containers.
+
+## Limitations
+
+Watchme uses [cron](http://man7.org/linux/man-pages/man5/crontab.5.html) for scheduling jobs. This means that watchme will run 
+on server restarts only if you have the cron service automatically restarting
+on your host or server. See [this post](https://www.cyberciti.biz/faq/linux-execute-cron-job-after-system-reboot/)
+for different strategies to start cron automatically at boot time. If you
+have other ideas for how to schedule jobs that you want added to the library,
+please [open an issue](https://github.com/vsoch/watchme).
 
 ## Licenses
 
