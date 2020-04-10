@@ -94,7 +94,7 @@ install_python_3: &install_python_3
        else
            echo "Miniconda 3 is already installed, continuing to build."
        fi
-       $HOME/conda/Python3/bin/pip install pylint
+       $HOME/conda/Python3/bin/pip install black
 
 test_watchme_python: &test_watchme_python
   name: Test WatchMe Python
@@ -119,7 +119,7 @@ run_linter: &run_linter
   command: |
      cd ~/repo
      source "$BASH_ENV"
-     # pylint watchme
+     black --check watchme
 
 jobs:
   test-watchme-python-3:

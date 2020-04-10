@@ -426,6 +426,9 @@
         <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;results&#39;</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Task</span>
 
+        <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;gpu&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.gpu</span> <span class="k">import</span> <span class="n">Task</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;task_type </span><span class="si">%s</span><span class="s1"> not properly added to Watcher&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>
 
@@ -714,12 +717,13 @@
 
         <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Only psutils has decorators</span>
+        <span class="c1"># Only psutils and gpu have decorators</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;decorator-psutils&#39;</span><span class="p">):</span>
             <span class="kn">from</span> <span class="nn">.psutils</span> <span class="k">import</span> <span class="n">Task</span>
-
+        <span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;decorator-gpu&#39;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">.gpu</span> <span class="k">import</span> <span class="n">Task</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> is not recognized in get_decorator&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> is not recognized in watchers.get_decorator&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">task</span></div>
@@ -768,6 +772,9 @@
 
             <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;results&#39;</span><span class="p">:</span>
                 <span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Task</span>
+
+            <span class="k">elif</span> <span class="n">task_type</span> <span class="o">==</span> <span class="s1">&#39;gpu&#39;</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">.gpu</span> <span class="k">import</span> <span class="n">Task</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Type </span><span class="si">%s</span><span class="s1"> not properly set up in get_task&#39;</span> <span class="o">%</span> <span class="n">task_type</span><span class="p">)</span>

@@ -190,52 +190,48 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.tasks.worker.Workers">
-<em class="property">class </em><code class="descclassname">watchme.tasks.worker.</code><code class="descname">Workers</code><span class="sig-paren">(</span><em>workers=None</em>, <em>show_progress=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">watchme.tasks.worker.</code><code class="sig-name descname">Workers</code><span class="sig-paren">(</span><em class="sig-param">workers=None</em>, <em class="sig-param">show_progress=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="watchme.tasks.worker.Workers.end">
-<code class="descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.end" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.end" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.worker.Workers.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>funcs</em>, <em>tasks</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">funcs</em>, <em class="sig-param">tasks</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>run will send a list of tasks, a tuple with arguments, through a function.
 the arguments should be ordered correctly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</li>
-<li><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>funcs</strong> (<em>the functions to run with multiprocessing.pool, a dictionary</em>) – with lookup by the task name</p></li>
+<li><p><strong>tasks</strong> (<em>a dict of tasks, each task name (key) with a</em>) – tuple of arguments to process</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.worker.Workers.start">
-<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.start" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#Workers.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.Workers.start" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.tasks.worker.init_worker">
-<code class="descclassname">watchme.tasks.worker.</code><code class="descname">init_worker</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#init_worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.init_worker" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.tasks.worker.</code><code class="sig-name descname">init_worker</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#init_worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.init_worker" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="watchme.tasks.worker.multi_package">
-<code class="descclassname">watchme.tasks.worker.</code><code class="descname">multi_package</code><span class="sig-paren">(</span><em>func</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#multi_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.multi_package" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.tasks.worker.</code><code class="sig-name descname">multi_package</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#multi_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.multi_package" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="watchme.tasks.worker.multi_wrapper">
-<code class="descclassname">watchme.tasks.worker.</code><code class="descname">multi_wrapper</code><span class="sig-paren">(</span><em>func_args</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#multi_wrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.multi_wrapper" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.tasks.worker.</code><code class="sig-name descname">multi_wrapper</code><span class="sig-paren">(</span><em class="sig-param">func_args</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks/worker.html#multi_wrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.worker.multi_wrapper" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -247,45 +243,42 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.tasks.TaskBase">
-<em class="property">class </em><code class="descclassname">watchme.tasks.</code><code class="descname">TaskBase</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">watchme.tasks.</code><code class="sig-name descname">TaskBase</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.export_params">
-<code class="descname">export_params</code><span class="sig-paren">(</span><em>active='true'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.export_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.export_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_params</code><span class="sig-paren">(</span><em class="sig-param">active='true'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.export_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.export_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>export parameters, meaning returning a dictionary of the task
 parameters plus the addition of the task type and active status.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.get_type">
-<code class="descname">get_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.get_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.get_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the watcher type.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>run an isolated task, meaning no update or communication with
 the watcher. This will return the raw result.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>iterate through parameters, set into dictionary.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>a list of key&#64;value pairs to set.</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.validate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>validate the parameters set for the Task. Exit if there are any
 errors. Ensure required parameters are defined, and have correct
 values.</p>
@@ -293,22 +286,18 @@ values.</p>
 
 <dl class="method">
 <dt id="watchme.tasks.TaskBase.write_results">
-<code class="descname">write_results</code><span class="sig-paren">(</span><em>result</em>, <em>repo</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.write_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.write_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_results</code><span class="sig-paren">(</span><em class="sig-param">result</em>, <em class="sig-param">repo</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/tasks.html#TaskBase.write_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.tasks.TaskBase.write_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>an entrypoint function for a general task. By default, we parse
 results based on the result type. Any particular subclass of the
 TaskBase can modify or extend these functions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>result</strong> (<em>the result object to parse</em>)</li>
-<li><strong>repo</strong> (<em>the repo base (watcher.repo)</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>the result object to parse</em>)</p></li>
+<li><p><strong>repo</strong> (<em>the repo base (watcher.repo)</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

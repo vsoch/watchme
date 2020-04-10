@@ -323,6 +323,10 @@
                          <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a custom name for the output folder (decorator-&lt;name&gt;)&quot;</span><span class="p">,</span> 
                          <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 
+    <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--func&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;monitor_pid_task&quot;</span><span class="p">,</span> <span class="s2">&quot;gpu_task&quot;</span><span class="p">],</span>
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the function to run (defualts to psutils monitor_pid_task&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;monitor_pid_task&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
     <span class="n">monitor</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--skip&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> 
                          <span class="n">help</span><span class="o">=</span><span class="s2">&quot;keys in result to skip&quot;</span><span class="p">,</span> 
                          <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>

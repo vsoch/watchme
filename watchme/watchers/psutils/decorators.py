@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -6,7 +6,7 @@ This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-'''
+"""
 
 from functools import wraps
 from watchme.logger import bot
@@ -15,7 +15,7 @@ from watchme import get_watcher
 
 
 def monitor_resources(*args, **kwargs):
-    '''a decorator to monitor a function every 3 (or user specified) seconds. 
+    """a decorator to monitor a function every 3 (or user specified) seconds. 
        We include one or more task names that include data we want to extract.
        we get the pid of the running function, and then use the
        monitor_pid_task from psutils to watch it. The functools "wraps"
@@ -35,9 +35,9 @@ def monitor_resources(*args, **kwargs):
                exist)
        name: the suffix of the decorator-psutils-<name> folder. If not provided,
              defaults to the function name
-    '''
-    def inner(func):
+    """
 
+    def inner(func):
         @wraps(func)
         def wrapper(*fargs, **fkwargs):
 
@@ -51,24 +51,28 @@ def monitor_resources(*args, **kwargs):
                 return result
 
             # Get a watcher to save results to
-            watcher = get_watcher(args[0], create=kwargs.get('create', False))
+            watcher = get_watcher(args[0], create=kwargs.get("create", False))
 
             # Start the function
-            runner = ProcessRunner(seconds=kwargs.get('seconds', 3),
-                                   skip=kwargs.get('skip', []),
-                                   include=kwargs.get('include', []),
-                                   only=kwargs.get('only', []))
+            runner = ProcessRunner(
+                seconds=kwargs.get("seconds", 3),
+                skip=kwargs.get("skip", []),
+                include=kwargs.get("include", []),
+                only=kwargs.get("only", []),
+            )
 
             runner.run(func, *fargs, **fkwargs)
-            result = runner.wait('monitor_pid_task')
+            result = runner.wait("monitor_pid_task")
 
             # Save results (finishing runs) - key is folder created
-            name = kwargs.get('name', func.__name__)
-            key = 'decorator-psutils-%s' % name
+            name = kwargs.get("name", func.__name__)
+            key = "decorator-psutils-%s" % name
             results = {key: runner.timepoints}
             watcher.finish_runs(results)
-            
+
             # Return function result to the user
             return result
+
         return wrapper
+
     return inner

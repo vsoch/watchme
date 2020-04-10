@@ -165,7 +165,7 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="watchme.watchers.results.tasks.from_env_task">
-<code class="descclassname">watchme.watchers.results.tasks.</code><code class="descname">from_env_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results/tasks.html#from_env_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.tasks.from_env_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.results.tasks.</code><code class="sig-name descname">from_env_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results/tasks.html#from_env_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.tasks.from_env_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get some set of variables from the environment. We look for those
 defined in kwargs, but also any in the environment that start with
 the prefix <a href="#id1"><span class="problematic" id="id2">WATCHMENEV_</span></a>. They are saved to files that are equivalently
@@ -173,14 +173,11 @@ named, and the idea is that we can track a changing (single) result,
 meaning that the timestamp is meaningful, or we can track
 values for many different results, so the timestamps just serve to
 record when each was recorded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>*</strong> (<em>any number of parameters from the task configuration that will</em>) – be looked for in the environment.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*</strong> (<em>any number of parameters from the task configuration that will</em>) – be looked for in the environment.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -192,13 +189,13 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.watchers.results.Task">
-<em class="property">class </em><code class="descclassname">watchme.watchers.results.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.results.</code><code class="sig-name descname">Task</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
 <p>a results task aims to use WatchMe as a database, meaning the functions
 are optimized to collect and record results.</p>
 <dl class="method">
 <dt id="watchme.watchers.results.Task.export_func">
-<code class="descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.Task.export_func" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/results.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.results.Task.export_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>this function should return the correct task (from the tasks.py
 in the same folder) based on some logic of the params that are given
 by the user (self.params). If there is only one kind of function for
@@ -209,7 +206,7 @@ already provided in the client.</p>
 
 <dl class="attribute">
 <dt id="watchme.watchers.results.Task.required_params">
-<code class="descname">required_params</code><em class="property"> = []</em><a class="headerlink" href="#watchme.watchers.results.Task.required_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">required_params</code><em class="property"> = []</em><a class="headerlink" href="#watchme.watchers.results.Task.required_params" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

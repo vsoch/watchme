@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -10,12 +10,13 @@ The watcher is actually a connection to crontab. This is what helps to schedule
 the watched to check for changes at some frequency, and update the files.
 
 
-'''
+"""
 
 import sys
 import time
 import threading
 from random import choice
+
 
 class Spinner:
     spinning = False
@@ -23,37 +24,39 @@ class Spinner:
 
     @staticmethod
     def spinning_cursor():
-        while 1: 
-            for cursor in '|/-\\': yield cursor
+        while 1:
+            for cursor in "|/-\\":
+                yield cursor
 
     @staticmethod
     def balloons_cursor():
-        while 1: 
-            for cursor in '. o O @ *': yield cursor
+        while 1:
+            for cursor in ". o O @ *":
+                yield cursor
 
     @staticmethod
     def changing_arrows():
-        while 1: 
-            for cursor in '<^>v': yield cursor
+        while 1:
+            for cursor in "<^>v":
+                yield cursor
 
     def select_generator(self, generator):
         if generator is None:
-            generator = choice(['cursor',
-                                'arrow',
-                                'balloons'])
+            generator = choice(["cursor", "arrow", "balloons"])
 
         return generator
 
     def __init__(self, delay=None, generator=None):
         generator = self.select_generator(generator)
 
-        if generator == 'cursor':
+        if generator == "cursor":
             self.spinner_generator = self.spinning_cursor()
-        elif generator == 'arrow':
+        elif generator == "arrow":
             self.spinner_generator = self.changing_arrows()
-        elif generator == 'balloons':
+        elif generator == "balloons":
             self.spinner_generator = self.balloons_cursor()
-            if delay is None: delay = 0.2
+            if delay is None:
+                delay = 0.2
         else:
             self.spinner_generator = self.spinning_cursor()
 
@@ -65,7 +68,7 @@ class Spinner:
             sys.stdout.write(next(self.spinner_generator))
             sys.stdout.flush()
             time.sleep(self.delay)
-            sys.stdout.write('\b')
+            sys.stdout.write("\b")
             sys.stdout.flush()
 
     def start(self):

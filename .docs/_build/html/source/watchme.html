@@ -271,22 +271,18 @@ with this file, You can obtain one at <a class="reference external" href="http:/
 the watched to check for changes at some frequency, and update the files.</p>
 <dl class="function">
 <dt id="watchme.defaults.getenv">
-<code class="descclassname">watchme.defaults.</code><code class="descname">getenv</code><span class="sig-paren">(</span><em>variable_key</em>, <em>default=None</em>, <em>required=False</em>, <em>silent=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/defaults.html#getenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.defaults.getenv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.defaults.</code><code class="sig-name descname">getenv</code><span class="sig-paren">(</span><em class="sig-param">variable_key</em>, <em class="sig-param">default=None</em>, <em class="sig-param">required=False</em>, <em class="sig-param">silent=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/defaults.html#getenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.defaults.getenv" title="Permalink to this definition">¶</a></dt>
 <dd><p>attempt to get an environment variable. If the variable
 is not found, None is returned.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>variable_key</strong> (<em>the variable name</em>)</li>
-<li><strong>required</strong> (<em>exit with error if not found</em>)</li>
-<li><strong>silent</strong> (<em>Do not print debugging information for variable</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variable_key</strong> (<em>the variable name</em>)</p></li>
+<li><p><strong>required</strong> (<em>exit with error if not found</em>)</p></li>
+<li><p><strong>silent</strong> (<em>Do not print debugging information for variable</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -301,24 +297,20 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="watchme.get_watcher">
-<code class="descclassname">watchme.</code><code class="descname">get_watcher</code><span class="sig-paren">(</span><em>name='watcher'</em>, <em>base=None</em>, <em>create=False</em>, <em>quiet=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme.html#get_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.get_watcher" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.</code><code class="sig-name descname">get_watcher</code><span class="sig-paren">(</span><em class="sig-param">name='watcher'</em>, <em class="sig-param">base=None</em>, <em class="sig-param">create=False</em>, <em class="sig-param">quiet=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme.html#get_watcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.get_watcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the correct watcher depending on the environment variable
 WATCHME_WATCHER or default to “watcher”</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>the name of the watcher, will be made all lowercase</em>)</li>
-<li><strong>base</strong> (<em>the watcher base, if not defined, will use WATCHER_BASE_DIR envar</em>)</li>
-<li><strong>create</strong> (<em>if the watcher folder doesn’t exist, create it (default False)</em>) – for all interactions with a watcher other than create, we should
-exit if the watcher the user wants doesn’t exist.</li>
-<li><strong>quiet</strong> (<em>if True, suppress most output about the client (e.g. speak)</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>the name of the watcher, will be made all lowercase</em>)</p></li>
+<li><p><strong>base</strong> (<em>the watcher base, if not defined, will use WATCHER_BASE_DIR envar</em>)</p></li>
+<li><p><strong>create</strong> (<em>if the watcher folder doesn’t exist, create it (default False)</em>) – for all interactions with a watcher other than create, we should
+exit if the watcher the user wants doesn’t exist.</p></li>
+<li><p><strong>quiet</strong> (<em>if True, suppress most output about the client (e.g. speak)</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.gpu.tasks &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../assets/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+          <li><a href="../gpu.html">watchme.watchers.gpu</a> &raquo;</li>
+        
+      <li>watchme.watchers.gpu.tasks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.gpu.tasks</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">watchme.utils</span> <span class="k">import</span> <span class="n">get_watchme_env</span>
+<span class="kn">from</span> <span class="nn">.pynvml</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">nvmlInit</span><span class="p">,</span> 
+    <span class="n">nvmlShutdown</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">watchme.watchers.gpu</span> <span class="k">import</span> <span class="n">pynvml</span>
+
+<div class="viewcode-block" id="gpu_task"><a class="viewcode-back" href="../../../../source/watchme.watchers.gpu.html#watchme.watchers.gpu.tasks.gpu_task">[docs]</a><span class="k">def</span> <span class="nf">gpu_task</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get variables about the gpu of the host. No parameters are required.</span>
+<span class="sd">       We&#39;ve already instantited the Task object and have checked that</span>
+<span class="sd">       the calling host has nvml GPU</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       skip: an optional list of (comma separated) fields to skip. Can be in</span>
+<span class="sd">             net_io_counters,net_connections,net_if_address,net_if_stats</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">nvmlInit</span><span class="p">()</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># A comma separated list of parameters to not include</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Run through high level metrics</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nvml_driver_version&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlSystemGetDriverVersion</span><span class="p">,</span>
+             <span class="s1">&#39;nvml_system_nvml_version&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlSystemGetNVMLVersion</span><span class="p">,</span>
+             <span class="s1">&#39;nvml_deviceCount&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCount</span><span class="p">,</span>
+             <span class="s1">&#39;nvml_hic_version&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlSystemGetHicVersion</span><span class="p">,</span>
+             <span class="s1">&#39;nvml_unit_count&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlUnitGetCount</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">funcs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">nvmlInit</span><span class="p">()</span>
+
+    <span class="c1"># Look at individual devices</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;nvml_device_board_id&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetBoardId</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_multi_gpu_board&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetMultiGpuBoard</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_brand&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetBrand</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_serial&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetSerial</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_set_cpu_affinite&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceSetCpuAffinity</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_minor_number&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetMinorNumber</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_uuid&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetUUID</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_inforom_version&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetInforomImageVersion</span><span class="p">,</span>               
+        <span class="s1">&#39;nvml_device_inforam_checksum&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetInforomConfigurationChecksum</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_display_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetDisplayMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_display_active&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetDisplayActive</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_persistence_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPersistenceMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_supported_memory_clocks&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetSupportedMemoryClocks</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_fan_speed&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetFanSpeed</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_performance_state&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPerformanceState</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_management_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerManagementMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_power_managerment_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerManagementMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_power_management_limit&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerManagementLimit</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_power_management_limit_constraints&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerManagementLimitConstraints</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_power_management_default_limit&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerManagementDefaultLimit</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_enforced_power_limit&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetEnforcedPowerLimit</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_power_usage&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPowerUsage</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_gpu_operation_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetGpuOperationMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_current_operation_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrentGpuOperationMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_pending_gpu_operation_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPendingGpuOperationMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_memory_info&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetMemoryInfo</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_bar1_memory_info&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetBAR1MemoryInfo</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_compute_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetComputeMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_ecc_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetEccMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_current_ecc_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrentEccMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_pending_ecc_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPendingEccMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_utilization_rates&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetUtilizationRates</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_encoder_utilization&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetEncoderUtilization</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_decoder_utilization&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetDecoderUtilization</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_pci_replay_counter&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPcieReplayCounter</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_driver_model&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetDriverModel</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_current_driver_model&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrentDriverModel</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_pending_driver_model&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetPendingDriverModel</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_vbios_version&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetVbiosVersion</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_compute_running_processes&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetComputeRunningProcesses</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_grapics_running_processes&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetGraphicsRunningProcesses</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_auto_boosted_clocks_enabled&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetAutoBoostedClocksEnabled</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_supported_event_types&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetSupportedEventTypes</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_current_pcie_link_generation&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrPcieLinkGeneration</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_max_pcie_link_generation&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetMaxPcieLinkGeneration</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_curr_pcie_link_width&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrPcieLinkWidth</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_max_pcie_link_width&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetMaxPcieLinkWidth</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_supported_clocks_throttle_reasons&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetSupportedClocksThrottleReasons</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_current_clocks_throttle_reasons&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetCurrentClocksThrottleReasons</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_index&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetIndex</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_accounting_mode&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetAccountingMode</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_accounting_pids&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetAccountingPids</span><span class="p">,</span>
+        <span class="s1">&#39;nvml_device_accounting_buffer_size&#39;</span><span class="p">:</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetAccountingBufferSize</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Functions that need additional args</span>
+    <span class="c1"># nvmlDeviceGetCpuAffinity(handle, cpuSetSize):</span>
+    <span class="c1"># nvmlDeviceGetInforomVersion(handle, infoRomObject)</span>
+    <span class="c1"># nvmlDeviceGetClockInfo(handle, type)</span>
+    <span class="c1"># nvmlDeviceGetMaxClockInfo(handle, type)</span>
+    <span class="c1"># nvmlDeviceGetApplicationsClock(handle, type)</span>
+    <span class="c1"># nvmlDeviceGetDefaultApplicationsClock(handle, type)</span>
+    <span class="c1"># nvmlDeviceGetSupportedGraphicsClocks(handle, memoryClockMHz)</span>
+    <span class="c1"># nvmlDeviceGetTemperature(handle, sensor)</span>
+    <span class="c1"># nvmlDeviceGetTemperatureThreshold(handle, threshold)</span>
+    <span class="c1"># nvmlDeviceGetTotalEccErrors(handle, errorType, counterType)</span>
+    <span class="c1"># nvmlDeviceGetMemoryErrorCounter(handle, errorType, counterType, locationType)</span>
+    <span class="c1"># nvmlDeviceRegisterEvents(handle, eventTypes, eventSet):</span>
+    <span class="c1"># nvmlEventSetWait(eventSet, timeoutms):</span>
+    <span class="c1"># nvmlDeviceOnSameBoard(handle1, handle2):</span>
+    <span class="c1"># nvmlDeviceGetAccountingStats(handle, pid):</span>
+
+    <span class="c1"># Setting functions that return None</span>
+    <span class="c1"># nvmlDeviceSetCpuAffinity(handle)</span>
+    <span class="c1"># nvmlDeviceClearCpuAffinity(handle)</span>
+    <span class="c1"># nvmlDeviceValidateInforom(handle)        </span>
+    <span class="c1"># nvmlUnitSetLedState(unit, color):</span>
+    <span class="c1"># nvmlDeviceSetPersistenceMode(handle, mode):</span>
+    <span class="c1"># nvmlDeviceSetComputeMode(handle, mode):    </span>
+    <span class="c1"># nvmlDeviceSetEccMode(handle, mode):</span>
+    <span class="c1"># nvmlDeviceClearEccErrorCounts(handle, counterType):</span>
+    <span class="c1"># nvmlDeviceSetDriverModel(handle, model):    </span>
+    <span class="c1"># nvmlDeviceSetAutoBoostedClocksEnabled(handle, enabled): </span>
+    <span class="c1"># nvmlDeviceSetDefaultAutoBoostedClocksEnabled(handle, enabled, flags): </span>
+    <span class="c1"># nvmlDeviceSetApplicationsClocks(handle, maxMemClockMHz, maxGraphicsClockMHz):    </span>
+    <span class="c1"># nvmlDeviceResetApplicationsClocks(handle):</span>
+    <span class="c1"># nvmlDeviceSetPowerManagementLimit(handle, limit):</span>
+    <span class="c1"># nvmlDeviceSetGpuOperationMode(handle, mode):</span>
+    <span class="c1"># nvmlDeviceSetAccountingMode(handle, mode):</span>
+    <span class="c1"># nvmlDeviceClearAccountingPids(handle):</span>
+
+    <span class="n">device_count</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;nvml_deviceCount&#39;</span><span class="p">]</span>
+
+    <span class="n">devices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">device_count</span><span class="p">):</span>
+        <span class="n">handle</span> <span class="o">=</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetHandleByIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">pynvml</span><span class="o">.</span><span class="n">nvmlDeviceGetName</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+        <span class="n">devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">funcs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+
+                <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+                <span class="c1"># Special parsing of the result depending on the type</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;nvml_device_bar1_memory_info&#39;</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bar1Free&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">bar1Free</span><span class="p">,</span>
+                              <span class="s2">&quot;bar1Total&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">bar1Total</span><span class="p">,</span>
+                              <span class="s2">&quot;bar1Used&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">bar1Used</span><span class="p">}</span>
+
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;nvml_device_utilization_rates&#39;</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;gpu&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">gpu</span><span class="p">,</span>
+                              <span class="s2">&quot;memory&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">memory</span><span class="p">}</span>
+
+                <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;nvml_device_memory_info&#39;</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;free&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">free</span><span class="p">,</span>
+                              <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+                              <span class="s2">&quot;used&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">used</span><span class="p">}</span>
+
+                <span class="n">devices</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">nvmlInit</span><span class="p">()</span>
+   
+    <span class="n">nvmlShutdown</span><span class="p">()</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;devices&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">devices</span>
+    <span class="k">return</span> <span class="n">_filter_result</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_filter_result</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;a helper function to filter a dictionary based on a list of keys to </span>
+<span class="sd">       skip. We also add variables from the environment.</span>
+<span class="sd">    </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       results: a dictionary of results</span>
+<span class="sd">       skip: a list of keys to remove/filter from the result.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Add any environment variables prefixed wit WATCHMEENV_</span>
+    <span class="n">environ</span> <span class="o">=</span> <span class="n">get_watchme_env</span><span class="p">()</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
