@@ -157,17 +157,1369 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="watchme-watchers-gpu-decorators-module">
-<h2>watchme.watchers.gpu.decorators module<a class="headerlink" href="#watchme-watchers-gpu-decorators-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-watchme.watchers.gpu.decorators">
+<span id="watchme-watchers-gpu-decorators-module"></span><h2>watchme.watchers.gpu.decorators module<a class="headerlink" href="#module-watchme.watchers.gpu.decorators" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.watchers.gpu.decorators.monitor_gpu">
+<code class="sig-prename descclassname">watchme.watchers.gpu.decorators.</code><code class="sig-name descname">monitor_gpu</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/decorators.html#monitor_gpu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.decorators.monitor_gpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>a decorator to monitor a function every 3 (or user specified) seconds.
+We include one or more task names that include data we want to extract.
+we get the pid of the running function, and then use the
+gpu_task from gpu to watch it. The functools “wraps”
+ensures that the (fargs, fkwargs) are passed from the calling function
+despite the wrapper. The following parameters can be provided to
+“monitor resources”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>watcher</strong> (<em>the watcher instance to use, used to save data to a “task”</em>) – folder that starts with “decorator-&lt;name&lt;”</p></li>
+<li><p><strong>seconds</strong> (<em>how often to collect data during the run.</em>)</p></li>
+<li><p><strong>only</strong> (<em>ignore skip and include, only include this custom subset</em>)</p></li>
+<li><p><strong>skip</strong> (<em>Fields in the result to skip (list).</em>)</p></li>
+<li><p><strong>include</strong> (<em>Fields in the result to include back in (list).</em>)</p></li>
+<li><p><strong>create</strong> (<em>whether to create the watcher on the fly (default False, must</em>) – exist)</p></li>
+<li><p><strong>name</strong> (<em>the suffix of the decorator-gpu-&lt;name&gt; folder. If not provided,</em>) – defaults to the function name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="watchme-watchers-gpu-pynvml-module">
-<h2>watchme.watchers.gpu.pynvml module<a class="headerlink" href="#watchme-watchers-gpu-pynvml-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-watchme.watchers.gpu.pynvml">
+<span id="watchme-watchers-gpu-pynvml-module"></span><h2>watchme.watchers.gpu.pynvml module<a class="headerlink" href="#module-watchme.watchers.gpu.pynvml" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<p>The original license (2011-2015) is included below.</p>
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#NVMLError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_AlreadyInitialized">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_AlreadyInitialized</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_AlreadyInitialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_CorruptedInforom">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_CorruptedInforom</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_CorruptedInforom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_DriverNotLoaded">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_DriverNotLoaded</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_DriverNotLoaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_FunctionNotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_FunctionNotFound</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_FunctionNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_GpuIsLost">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_GpuIsLost</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_GpuIsLost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_InsufficientPower">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_InsufficientPower</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_InsufficientPower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_InsufficientSize">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_InsufficientSize</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_InsufficientSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_InvalidArgument">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_InvalidArgument</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_InvalidArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_IrqIssue">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_IrqIssue</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_IrqIssue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_LibRmVersionMismatch">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_LibRmVersionMismatch</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_LibRmVersionMismatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_LibraryNotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_LibraryNotFound</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_LibraryNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_NoPermission">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_NoPermission</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_NoPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_NotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_NotFound</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_NotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_NotSupported">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_NotSupported</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_NotSupported" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_OperatingSystem">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_OperatingSystem</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_OperatingSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_ResetRequired">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_ResetRequired</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_ResetRequired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_Timeout">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_Timeout</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_Timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_Uninitialized">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_Uninitialized</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_Uninitialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="watchme.watchers.gpu.pynvml.NVMLError_Unknown">
+<em class="property">exception </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">NVMLError_Unknown</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.NVMLError_Unknown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#watchme.watchers.gpu.pynvml.NVMLError" title="watchme.watchers.gpu.pynvml.NVMLError"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.NVMLError</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlAccountingStats_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlAccountingStats_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.gpuUtilization">
+<code class="sig-name descname">gpuUtilization</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.gpuUtilization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.isRunning">
+<code class="sig-name descname">isRunning</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.isRunning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.maxMemoryUsage">
+<code class="sig-name descname">maxMemoryUsage</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.maxMemoryUsage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.memoryUtilization">
+<code class="sig-name descname">memoryUtilization</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.memoryUtilization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.reserved">
+<code class="sig-name descname">reserved</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.reserved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.startTime">
+<code class="sig-name descname">startTime</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.startTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlAccountingStats_t.time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlBAR1Memory_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlBAR1Memory_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Free">
+<code class="sig-name descname">bar1Free</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Total">
+<code class="sig-name descname">bar1Total</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Used">
+<code class="sig-name descname">bar1Used</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBAR1Memory_t.bar1Used" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlBridgeChipHierarchy_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlBridgeChipHierarchy_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t.bridgeChipInfo">
+<code class="sig-name descname">bridgeChipInfo</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t.bridgeChipInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t.bridgeCount">
+<code class="sig-name descname">bridgeCount</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipHierarchy_t.bridgeCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlBridgeChipInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlBridgeChipInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t.fwVersion">
+<code class="sig-name descname">fwVersion</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t.fwVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t.type">
+<code class="sig-name descname">type</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlBridgeChipInfo_t.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlDevice_t">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlDevice_t</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlDevice_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.LP_struct_c_nvmlDevice_t</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlEccErrorCounts_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlEccErrorCounts_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.deviceMemory">
+<code class="sig-name descname">deviceMemory</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.deviceMemory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.l1Cache">
+<code class="sig-name descname">l1Cache</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.l1Cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.l2Cache">
+<code class="sig-name descname">l2Cache</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.l2Cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.registerFile">
+<code class="sig-name descname">registerFile</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEccErrorCounts_t.registerFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEventData_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlEventData_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlEventData_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEventData_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEventData_t.device">
+<code class="sig-name descname">device</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEventData_t.device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEventData_t.eventData">
+<code class="sig-name descname">eventData</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEventData_t.eventData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEventData_t.eventType">
+<code class="sig-name descname">eventType</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEventData_t.eventType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlEventSet_t">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlEventSet_t</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlEventSet_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.LP_struct_c_nvmlEventSet_t</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlHwbcEntry_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlHwbcEntry_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t.firmwareVersion">
+<code class="sig-name descname">firmwareVersion</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t.firmwareVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t.hwbcId">
+<code class="sig-name descname">hwbcId</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlHwbcEntry_t.hwbcId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlLedState_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlLedState_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlLedState_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlLedState_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlLedState_t.cause">
+<code class="sig-name descname">cause</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlLedState_t.cause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlLedState_t.color">
+<code class="sig-name descname">color</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlLedState_t.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlMemory_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlMemory_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlMemory_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlMemory_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlMemory_t.free">
+<code class="sig-name descname">free</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlMemory_t.free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlMemory_t.total">
+<code class="sig-name descname">total</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlMemory_t.total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlMemory_t.used">
+<code class="sig-name descname">used</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlMemory_t.used" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlPSUInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlPSUInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.current">
+<code class="sig-name descname">current</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.power">
+<code class="sig-name descname">power</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.voltage">
+<code class="sig-name descname">voltage</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlPSUInfo_t.voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlProcessInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlProcessInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t.pid">
+<code class="sig-name descname">pid</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t.pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t.usedGpuMemory">
+<code class="sig-name descname">usedGpuMemory</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlProcessInfo_t.usedGpuMemory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlSample_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlSample_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlSample_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlSample_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlSample_t.sampleValue">
+<code class="sig-name descname">sampleValue</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlSample_t.sampleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlSample_t.timeStamp">
+<code class="sig-name descname">timeStamp</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlSample_t.timeStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlUnitFanInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlUnitFanInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t.speed">
+<code class="sig-name descname">speed</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t.speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t.state">
+<code class="sig-name descname">state</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanInfo_t.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlUnitFanSpeeds_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlUnitFanSpeeds_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t.count">
+<code class="sig-name descname">count</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t.fans">
+<code class="sig-name descname">fans</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitFanSpeeds_t.fans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlUnitInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlUnitInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.firmwareVersion">
+<code class="sig-name descname">firmwareVersion</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.firmwareVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.serial">
+<code class="sig-name descname">serial</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnitInfo_t.serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUnit_t">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlUnit_t</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUnit_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml.LP_struct_c_nvmlUnit_t</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUtilization_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlUtilization_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlUtilization_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUtilization_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUtilization_t.gpu">
+<code class="sig-name descname">gpu</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUtilization_t.gpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlUtilization_t.memory">
+<code class="sig-name descname">memory</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlUtilization_t.memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlValue_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlValue_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlValue_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlValue_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ctypes.Union</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlValue_t.dVal">
+<code class="sig-name descname">dVal</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlValue_t.dVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlValue_t.uiVal">
+<code class="sig-name descname">uiVal</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlValue_t.uiVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlValue_t.ulVal">
+<code class="sig-name descname">ulVal</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlValue_t.ulVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlValue_t.ullVal">
+<code class="sig-name descname">ullVal</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlValue_t.ullVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">c_nvmlViolationTime_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#c_nvmlViolationTime_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t.referenceTime">
+<code class="sig-name descname">referenceTime</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t.referenceTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t.violationTime">
+<code class="sig-name descname">violationTime</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.c_nvmlViolationTime_t.violationTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.ensureUtfEncoding">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">ensureUtfEncoding</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#ensureUtfEncoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.ensureUtfEncoding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceClearAccountingPids">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceClearAccountingPids</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceClearAccountingPids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceClearAccountingPids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceClearCpuAffinity">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceClearCpuAffinity</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceClearCpuAffinity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceClearCpuAffinity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceClearEccErrorCounts">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceClearEccErrorCounts</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">counterType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceClearEccErrorCounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceClearEccErrorCounts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAPIRestriction">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAPIRestriction</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">apiType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAPIRestriction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAPIRestriction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingBufferSize">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAccountingBufferSize</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAccountingBufferSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingBufferSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAccountingMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAccountingMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingPids">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAccountingPids</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAccountingPids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingPids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingStats">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAccountingStats</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">pid</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAccountingStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAccountingStats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetApplicationsClock">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetApplicationsClock</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetApplicationsClock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetApplicationsClock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetAutoBoostedClocksEnabled">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetAutoBoostedClocksEnabled</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetAutoBoostedClocksEnabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetAutoBoostedClocksEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetBAR1MemoryInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetBAR1MemoryInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetBAR1MemoryInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetBAR1MemoryInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetBoardId">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetBoardId</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetBoardId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetBoardId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetBrand">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetBrand</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetBrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetBrand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetBridgeChipInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetBridgeChipInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetBridgeChipInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetBridgeChipInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetClockInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetClockInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetClockInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetClockInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetComputeMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetComputeMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetComputeMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetComputeMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetComputeRunningProcesses">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetComputeRunningProcesses</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetComputeRunningProcesses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetComputeRunningProcesses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCount">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCpuAffinity">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCpuAffinity</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">cpuSetSize</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCpuAffinity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCpuAffinity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrPcieLinkGeneration">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrPcieLinkGeneration</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrPcieLinkGeneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrPcieLinkGeneration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrPcieLinkWidth">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrPcieLinkWidth</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrPcieLinkWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrPcieLinkWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentClocksThrottleReasons">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrentClocksThrottleReasons</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrentClocksThrottleReasons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentClocksThrottleReasons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentDriverModel">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrentDriverModel</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrentDriverModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentDriverModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentEccMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrentEccMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrentEccMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentEccMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentGpuOperationMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetCurrentGpuOperationMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetCurrentGpuOperationMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetCurrentGpuOperationMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDecoderUtilization">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDecoderUtilization</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDecoderUtilization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDecoderUtilization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDefaultApplicationsClock">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDefaultApplicationsClock</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDefaultApplicationsClock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDefaultApplicationsClock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDetailedEccErrors">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDetailedEccErrors</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">errorType</em>, <em class="sig-param">counterType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDetailedEccErrors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDetailedEccErrors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDisplayActive">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDisplayActive</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDisplayActive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDisplayActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDisplayMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDisplayMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDisplayMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDisplayMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetDriverModel">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetDriverModel</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetDriverModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetDriverModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetEccMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetEccMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetEccMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetEccMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetEncoderUtilization">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetEncoderUtilization</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetEncoderUtilization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetEncoderUtilization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetEnforcedPowerLimit">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetEnforcedPowerLimit</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetEnforcedPowerLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetEnforcedPowerLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetFanSpeed">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetFanSpeed</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetFanSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetFanSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetGpuOperationMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetGpuOperationMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetGpuOperationMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetGpuOperationMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetGraphicsRunningProcesses">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetGraphicsRunningProcesses</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetGraphicsRunningProcesses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetGraphicsRunningProcesses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByIndex">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetHandleByIndex</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetHandleByIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByPciBusId">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetHandleByPciBusId</code><span class="sig-paren">(</span><em class="sig-param">pciBusId</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetHandleByPciBusId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByPciBusId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleBySerial">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetHandleBySerial</code><span class="sig-paren">(</span><em class="sig-param">serial</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetHandleBySerial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleBySerial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByUUID">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetHandleByUUID</code><span class="sig-paren">(</span><em class="sig-param">uuid</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetHandleByUUID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetHandleByUUID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetIndex">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetIndex</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomConfigurationChecksum">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetInforomConfigurationChecksum</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetInforomConfigurationChecksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomConfigurationChecksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomImageVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetInforomImageVersion</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetInforomImageVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomImageVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetInforomVersion</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">infoRomObject</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetInforomVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetInforomVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxClockInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMaxClockInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMaxClockInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxClockInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxPcieLinkGeneration">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMaxPcieLinkGeneration</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMaxPcieLinkGeneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxPcieLinkGeneration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxPcieLinkWidth">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMaxPcieLinkWidth</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMaxPcieLinkWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMaxPcieLinkWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMemoryErrorCounter">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMemoryErrorCounter</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">errorType</em>, <em class="sig-param">counterType</em>, <em class="sig-param">locationType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMemoryErrorCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMemoryErrorCounter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMemoryInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMemoryInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMemoryInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMemoryInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMinorNumber">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMinorNumber</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMinorNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMinorNumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetMultiGpuBoard">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetMultiGpuBoard</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetMultiGpuBoard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetMultiGpuBoard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetName">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetName</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPciInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPciInfo</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPciInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPciInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPcieReplayCounter">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPcieReplayCounter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPcieReplayCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPcieReplayCounter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPcieThroughput">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPcieThroughput</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">counter</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPcieThroughput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPcieThroughput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingDriverModel">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPendingDriverModel</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPendingDriverModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingDriverModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingEccMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPendingEccMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPendingEccMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingEccMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingGpuOperationMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPendingGpuOperationMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPendingGpuOperationMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPendingGpuOperationMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPerformanceState">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPerformanceState</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPerformanceState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPerformanceState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPersistenceMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPersistenceMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPersistenceMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPersistenceMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementDefaultLimit">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerManagementDefaultLimit</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerManagementDefaultLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementDefaultLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementLimit">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerManagementLimit</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerManagementLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementLimitConstraints">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerManagementLimitConstraints</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerManagementLimitConstraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementLimitConstraints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerManagementMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerManagementMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerManagementMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerState">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerState</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerUsage">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetPowerUsage</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetPowerUsage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetPowerUsage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetRetiredPages">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetRetiredPages</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">sourceFilter</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetRetiredPages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetRetiredPages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetRetiredPagesPendingStatus">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetRetiredPagesPendingStatus</code><span class="sig-paren">(</span><em class="sig-param">device</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetRetiredPagesPendingStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetRetiredPagesPendingStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSamples">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSamples</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">sampling_type</em>, <em class="sig-param">timeStamp</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSerial">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSerial</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSerial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSerial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedClocksThrottleReasons">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSupportedClocksThrottleReasons</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSupportedClocksThrottleReasons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedClocksThrottleReasons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedEventTypes">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSupportedEventTypes</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSupportedEventTypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedEventTypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedGraphicsClocks">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSupportedGraphicsClocks</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">memoryClockMHz</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSupportedGraphicsClocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedGraphicsClocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedMemoryClocks">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetSupportedMemoryClocks</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetSupportedMemoryClocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetSupportedMemoryClocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetTemperature">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetTemperature</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">sensor</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetTemperature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetTemperatureThreshold">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetTemperatureThreshold</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetTemperatureThreshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetTemperatureThreshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetTopologyCommonAncestor">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetTopologyCommonAncestor</code><span class="sig-paren">(</span><em class="sig-param">device1</em>, <em class="sig-param">device2</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetTopologyCommonAncestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetTopologyCommonAncestor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetTopologyNearestGpus">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetTopologyNearestGpus</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">level</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetTopologyNearestGpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetTopologyNearestGpus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetTotalEccErrors">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetTotalEccErrors</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">errorType</em>, <em class="sig-param">counterType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetTotalEccErrors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetTotalEccErrors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetUUID">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetUUID</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetUUID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetUUID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetUtilizationRates">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetUtilizationRates</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetUtilizationRates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetUtilizationRates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetVbiosVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetVbiosVersion</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetVbiosVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetVbiosVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceGetViolationStatus">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceGetViolationStatus</code><span class="sig-paren">(</span><em class="sig-param">device</em>, <em class="sig-param">perfPolicyType</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceGetViolationStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceGetViolationStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceOnSameBoard">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceOnSameBoard</code><span class="sig-paren">(</span><em class="sig-param">handle1</em>, <em class="sig-param">handle2</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceOnSameBoard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceOnSameBoard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceRegisterEvents">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceRegisterEvents</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">eventTypes</em>, <em class="sig-param">eventSet</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceRegisterEvents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceRegisterEvents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceResetApplicationsClocks">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceResetApplicationsClocks</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceResetApplicationsClocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceResetApplicationsClocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetAPIRestriction">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetAPIRestriction</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">apiType</em>, <em class="sig-param">isRestricted</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetAPIRestriction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetAPIRestriction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetAccountingMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetAccountingMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetAccountingMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetAccountingMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetApplicationsClocks">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetApplicationsClocks</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">maxMemClockMHz</em>, <em class="sig-param">maxGraphicsClockMHz</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetApplicationsClocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetApplicationsClocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetAutoBoostedClocksEnabled">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetAutoBoostedClocksEnabled</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">enabled</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetAutoBoostedClocksEnabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetAutoBoostedClocksEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetComputeMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetComputeMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetComputeMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetComputeMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetCpuAffinity">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetCpuAffinity</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetCpuAffinity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetCpuAffinity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetDefaultAutoBoostedClocksEnabled">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetDefaultAutoBoostedClocksEnabled</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">enabled</em>, <em class="sig-param">flags</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetDefaultAutoBoostedClocksEnabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetDefaultAutoBoostedClocksEnabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetDriverModel">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetDriverModel</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">model</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetDriverModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetDriverModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetEccMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetEccMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetEccMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetEccMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetGpuOperationMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetGpuOperationMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetGpuOperationMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetGpuOperationMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetPersistenceMode">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetPersistenceMode</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetPersistenceMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetPersistenceMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceSetPowerManagementLimit">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceSetPowerManagementLimit</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">limit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceSetPowerManagementLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceSetPowerManagementLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlDeviceValidateInforom">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlDeviceValidateInforom</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlDeviceValidateInforom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlDeviceValidateInforom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlErrorString">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlErrorString</code><span class="sig-paren">(</span><em class="sig-param">result</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlErrorString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlErrorString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlEventSetCreate">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlEventSetCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlEventSetCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlEventSetCreate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlEventSetFree">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlEventSetFree</code><span class="sig-paren">(</span><em class="sig-param">eventSet</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlEventSetFree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlEventSetFree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlEventSetWait">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlEventSetWait</code><span class="sig-paren">(</span><em class="sig-param">eventSet</em>, <em class="sig-param">timeoutms</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlEventSetWait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlEventSetWait" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.nvmlFriendlyObject">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlFriendlyObject</code><span class="sig-paren">(</span><em class="sig-param">dictionary</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlFriendlyObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlFriendlyObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlFriendlyObjectToStruct">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlFriendlyObjectToStruct</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">model</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlFriendlyObjectToStruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlFriendlyObjectToStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlInit">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlInit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlPciInfo_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlPciInfo_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.watchers.gpu.pynvml._PrintableStructure</span></code></p>
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.bus">
+<code class="sig-name descname">bus</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.bus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.busId">
+<code class="sig-name descname">busId</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.busId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.device">
+<code class="sig-name descname">device</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.domain">
+<code class="sig-name descname">domain</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.pciDeviceId">
+<code class="sig-name descname">pciDeviceId</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.pciDeviceId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.pciSubSystemId">
+<code class="sig-name descname">pciSubSystemId</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.pciSubSystemId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved0">
+<code class="sig-name descname">reserved0</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved1">
+<code class="sig-name descname">reserved1</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved2">
+<code class="sig-name descname">reserved2</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved3">
+<code class="sig-name descname">reserved3</code><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlPciInfo_t.reserved3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlShutdown">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlShutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlShutdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlShutdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlStructToFriendlyObject">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlStructToFriendlyObject</code><span class="sig-paren">(</span><em class="sig-param">struct</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlStructToFriendlyObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlStructToFriendlyObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlSystemGetDriverVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlSystemGetDriverVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlSystemGetDriverVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlSystemGetDriverVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlSystemGetHicVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlSystemGetHicVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlSystemGetHicVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlSystemGetHicVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlSystemGetNVMLVersion">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlSystemGetNVMLVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlSystemGetNVMLVersion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlSystemGetNVMLVersion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlSystemGetProcessName">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlSystemGetProcessName</code><span class="sig-paren">(</span><em class="sig-param">pid</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlSystemGetProcessName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlSystemGetProcessName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlSystemGetTopologyGpuSet">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlSystemGetTopologyGpuSet</code><span class="sig-paren">(</span><em class="sig-param">cpuNumber</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlSystemGetTopologyGpuSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlSystemGetTopologyGpuSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetCount">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetDeviceCount">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetDeviceCount</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetDeviceCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetDeviceCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetDevices">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetDevices</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetDevices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetDevices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetFanSpeedInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetFanSpeedInfo</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetFanSpeedInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetFanSpeedInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetHandleByIndex">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetHandleByIndex</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetHandleByIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetHandleByIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetLedState">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetLedState</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetLedState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetLedState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetPsuInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetPsuInfo</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetPsuInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetPsuInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetTemperature">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetTemperature</code><span class="sig-paren">(</span><em class="sig-param">unit</em>, <em class="sig-param">type</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetTemperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetTemperature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitGetUnitInfo">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitGetUnitInfo</code><span class="sig-paren">(</span><em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitGetUnitInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitGetUnitInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="watchme.watchers.gpu.pynvml.nvmlUnitSetLedState">
+<code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">nvmlUnitSetLedState</code><span class="sig-paren">(</span><em class="sig-param">unit</em>, <em class="sig-param">color</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#nvmlUnitSetLedState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.nvmlUnitSetLedState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.struct_c_nvmlDevice_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">struct_c_nvmlDevice_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#struct_c_nvmlDevice_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.struct_c_nvmlDevice_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ctypes.Structure</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.struct_c_nvmlEventSet_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">struct_c_nvmlEventSet_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#struct_c_nvmlEventSet_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.struct_c_nvmlEventSet_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ctypes.Structure</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="watchme.watchers.gpu.pynvml.struct_c_nvmlUnit_t">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.pynvml.</code><code class="sig-name descname">struct_c_nvmlUnit_t</code><a class="reference internal" href="../modules/watchme/watchers/gpu/pynvml.html#struct_c_nvmlUnit_t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.pynvml.struct_c_nvmlUnit_t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ctypes.Structure</span></code></p>
+</dd></dl>
+
 </div>
-<div class="section" id="watchme-watchers-gpu-tasks-module">
-<h2>watchme.watchers.gpu.tasks module<a class="headerlink" href="#watchme-watchers-gpu-tasks-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-watchme.watchers.gpu.tasks">
+<span id="watchme-watchers-gpu-tasks-module"></span><h2>watchme.watchers.gpu.tasks module<a class="headerlink" href="#module-watchme.watchers.gpu.tasks" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="function">
+<dt id="watchme.watchers.gpu.tasks.gpu_task">
+<code class="sig-prename descclassname">watchme.watchers.gpu.tasks.</code><code class="sig-name descname">gpu_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu/tasks.html#gpu_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.tasks.gpu_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variables about the gpu of the host. No parameters are required.
+We’ve already instantited the Task object and have checked that
+the calling host has nvml GPU</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-watchme.watchers.gpu">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-watchme.watchers.gpu" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
+<dl class="class">
+<dt id="watchme.watchers.gpu.Task">
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.gpu.</code><code class="sig-name descname">Task</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.Task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
+<dl class="method">
+<dt id="watchme.watchers.gpu.Task.assert_gpu">
+<code class="sig-name descname">assert_gpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu.html#Task.assert_gpu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.Task.assert_gpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>has_gpu is run from the getgo to see if there are any libraries
+for the client to read from. If not, we alert the user and exit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="watchme.watchers.gpu.Task.export_func">
+<code class="sig-name descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/gpu.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.gpu.Task.export_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function should return the correct task (from the tasks.py
+in the same folder) based on some logic of the params that are given
+by the user (self.params). If there is only one kind of function for
+the task, it’s fairly easy to import and return it here. This
+function should take no arguments, but instead use the self.params
+already provided in the client.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="watchme.watchers.gpu.Task.required_params">
+<code class="sig-name descname">required_params</code><em class="property"> = []</em><a class="headerlink" href="#watchme.watchers.gpu.Task.required_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

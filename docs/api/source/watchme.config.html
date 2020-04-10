@@ -185,46 +185,43 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="watchme.config.check_exists">
-<code class="descclassname">watchme.config.</code><code class="descname">check_exists</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#check_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.check_exists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">check_exists</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#check_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.check_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>a general helper function to check for existence, and exit if not found.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.config.generate_watcher_config">
-<code class="descclassname">watchme.config.</code><code class="descname">generate_watcher_config</code><span class="sig-paren">(</span><em>path</em>, <em>watcher_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#generate_watcher_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.generate_watcher_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">generate_watcher_config</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">watcher_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#generate_watcher_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.generate_watcher_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>generate a watcher config, meaning a watcher folder in the watchme
 base folder.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>the path to the watcher repository</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>the path to the watcher repository</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.config.get_configfile">
-<code class="descclassname">watchme.config.</code><code class="descname">get_configfile</code><span class="sig-paren">(</span><em>name</em>, <em>base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">get_configfile</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>return the full path to a specific watcher configuration</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.config.get_configfile_template">
-<code class="descclassname">watchme.config.</code><code class="descname">get_configfile_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile_template" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">get_configfile_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#get_configfile_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.get_configfile_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>return the full path to the default configuration file</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.config.read_config">
-<code class="descclassname">watchme.config.</code><code class="descname">read_config</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.read_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">read_config</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.read_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>use configparser to write a config object to filename</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.config.write_config">
-<code class="descclassname">watchme.config.</code><code class="descname">write_config</code><span class="sig-paren">(</span><em>filename</em>, <em>config</em>, <em>mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#write_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.write_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.config.</code><code class="sig-name descname">write_config</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">config</em>, <em class="sig-param">mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/config.html#write_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.config.write_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>use configparser to write a config object to filename</p>
 </dd></dl>
 

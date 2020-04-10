@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>watchme.watchers.gpu.decorators &mdash; WatchMe Python 11 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../assets/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> WatchMe Python
+          
+
+          
+            
+            <img src="../../../../assets/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/watchme.html">watchme package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">WatchMe Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../watchme.html">watchme</a> &raquo;</li>
+        
+          <li><a href="../../watchers.html">watchme.watchers</a> &raquo;</li>
+        
+          <li><a href="../gpu.html">watchme.watchers.gpu</a> &raquo;</li>
+        
+      <li>watchme.watchers.gpu.decorators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for watchme.watchers.gpu.decorators</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">watchme.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">watchme.tasks.decorators</span> <span class="k">import</span> <span class="n">ProcessRunner</span>
+<span class="kn">from</span> <span class="nn">watchme</span> <span class="k">import</span> <span class="n">get_watcher</span>
+
+
+<div class="viewcode-block" id="monitor_gpu"><a class="viewcode-back" href="../../../../source/watchme.watchers.gpu.html#watchme.watchers.gpu.decorators.monitor_gpu">[docs]</a><span class="k">def</span> <span class="nf">monitor_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;a decorator to monitor a function every 3 (or user specified) seconds. </span>
+<span class="sd">       We include one or more task names that include data we want to extract.</span>
+<span class="sd">       we get the pid of the running function, and then use the</span>
+<span class="sd">       gpu_task from gpu to watch it. The functools &quot;wraps&quot;</span>
+<span class="sd">       ensures that the (fargs, fkwargs) are passed from the calling function</span>
+<span class="sd">       despite the wrapper. The following parameters can be provided to</span>
+<span class="sd">       &quot;monitor resources&quot;</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ==========</span>
+<span class="sd">       watcher: the watcher instance to use, used to save data to a &quot;task&quot;</span>
+<span class="sd">                folder that starts with &quot;decorator-&lt;name&lt;&quot;</span>
+<span class="sd">       seconds: how often to collect data during the run.</span>
+<span class="sd">       only: ignore skip and include, only include this custom subset</span>
+<span class="sd">       skip: Fields in the result to skip (list).</span>
+<span class="sd">       include: Fields in the result to include back in (list).</span>
+<span class="sd">       create: whether to create the watcher on the fly (default False, must</span>
+<span class="sd">               exist)</span>
+<span class="sd">       name: the suffix of the decorator-gpu-&lt;name&gt; folder. If not provided,</span>
+<span class="sd">             defaults to the function name</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">fargs</span><span class="p">,</span> <span class="o">**</span><span class="n">fkwargs</span><span class="p">):</span>
+
+            <span class="c1"># Typically the task folder is the index, so we will create</span>
+            <span class="c1"># indices that start with decorator-&lt;task&gt;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># The watcher is required, first keyword argument</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;A watcher name is required for the gpu decorator.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+            <span class="c1"># Get a watcher to save results to</span>
+            <span class="n">watcher</span> <span class="o">=</span> <span class="n">get_watcher</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">create</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+            <span class="c1"># Start the function</span>
+            <span class="n">runner</span> <span class="o">=</span> <span class="n">ProcessRunner</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seconds&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                                   <span class="n">skip</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="p">[]),</span>
+                                   <span class="n">include</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="p">[]),</span>
+                                   <span class="n">only</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;only&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+            <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">fargs</span><span class="p">,</span> <span class="o">**</span><span class="n">fkwargs</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="s2">&quot;gpu_task&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Save results (finishing runs) - key is folder created</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;decorator-gpu-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">runner</span><span class="o">.</span><span class="n">timepoints</span><span class="p">}</span>
+            <span class="n">watcher</span><span class="o">.</span><span class="n">finish_runs</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+            
+            <span class="c1"># Return function result to the user</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Vanessa Sochat
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

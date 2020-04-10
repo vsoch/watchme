@@ -195,113 +195,93 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.cpu_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">cpu_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#cpu_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.cpu_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">cpu_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#cpu_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.cpu_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get variables about the cpu of the host. No parameters are required.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.disk_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">disk_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#disk_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.disk_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">disk_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#disk_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.disk_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for disks on the host</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>disk_usage</strong> (<em>an optional path to get disk usage for.</em>)</li>
-<li><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>disk_usage</strong> (<em>an optional path to get disk usage for.</em>)</p></li>
+<li><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.memory_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">memory_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#memory_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.memory_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">memory_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#memory_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.memory_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for memory of the host. No parameters are required.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.monitor_pid_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">monitor_pid_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#monitor_pid_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.monitor_pid_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">monitor_pid_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#monitor_pid_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.monitor_pid_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>monitor a specific process. This function can be used as a task, or
 is (most likely used) for the psutils.decorators. A pid parameter
 is required.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</li>
-<li><strong>pid</strong> (<em>the process id or name (required)</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p></li>
+<li><p><strong>pid</strong> (<em>the process id or name (required)</em>)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.net_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">net_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#net_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.net_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">net_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#net_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.net_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for networking on the host</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.python_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">python_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#python_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.python_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">python_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#python_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.python_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get modules, version, etc. about currently running python</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.sensors_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">sensors_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#sensors_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.sensors_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">sensors_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#sensors_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.sensors_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values from system sensors like fans, temperature, battery</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.system_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">system_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#system_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.system_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">system_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#system_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.system_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get basic system info, unlikely to change.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>skip</strong> (<em>an optional list of (comma separated) fields to skip. Can be in</em>) – net_io_counters,net_connections,net_if_address,net_if_stats</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.psutils.tasks.users_task">
-<code class="descclassname">watchme.watchers.psutils.tasks.</code><code class="descname">users_task</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#users_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.users_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.psutils.tasks.</code><code class="sig-name descname">users_task</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils/tasks.html#users_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.tasks.users_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values for current users</p>
 </dd></dl>
 
@@ -314,11 +294,11 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.watchers.psutils.Task">
-<em class="property">class </em><code class="descclassname">watchme.watchers.psutils.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.psutils.</code><code class="sig-name descname">Task</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
 <dl class="method">
 <dt id="watchme.watchers.psutils.Task.export_func">
-<code class="descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task.export_func" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/psutils.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.psutils.Task.export_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>this function should return the correct task (from the tasks.py
 in the same folder) based on some logic of the params that are given
 by the user (self.params). If there is only one kind of function for
@@ -329,7 +309,7 @@ already provided in the client.</p>
 
 <dl class="attribute">
 <dt id="watchme.watchers.psutils.Task.required_params">
-<code class="descname">required_params</code><em class="property"> = []</em><a class="headerlink" href="#watchme.watchers.psutils.Task.required_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">required_params</code><em class="property"> = []</em><a class="headerlink" href="#watchme.watchers.psutils.Task.required_params" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

@@ -1,9 +1,4 @@
-from .terminal import (
-    run_command,
-    get_installdir,
-    get_watchme_env,
-    which
-)
+from .terminal import run_command, get_installdir, get_watchme_env, which
 from .fileio import (
     copyfile,
     get_userhome,
@@ -16,5 +11,5 @@ from .fileio import (
     read_file,
     read_json,
     write_file,
-    write_json
+    write_json,
 )

@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -6,20 +6,20 @@ This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-'''
+"""
 
 from watchme.logger import bot
 
 
 def remove_setting(self, section, name, save=True):
-    '''remove a setting from the configuration file
+    """remove a setting from the configuration file
 
        Parameters
        ==========
        section: the name of the section (task)
        name: the name of the variable to remove
        save: save the configuration file (default is True)
-    '''
+    """
     removed = False
     self.load_config()
 
@@ -36,13 +36,13 @@ def remove_setting(self, section, name, save=True):
 
 
 def remove_section(self, section, save=True):
-    '''remove a setting from the configuration file
+    """remove a setting from the configuration file
 
        Parameters
        ==========
        section: the name of the section (task)
        save: save the configuration file (default is True)
-    '''
+    """
     removed = False
     self.load_config()
 
@@ -57,47 +57,48 @@ def remove_section(self, section, save=True):
 
     return removed
 
+
 def print_add_task(self, task):
-    '''assemble a task section into a command that can create/add it.
+    """assemble a task section into a command that can create/add it.
 
        Parameters
        ==========
        task: the name of the task to inspect
-    '''
+    """
     self.load_config()
 
     if task in self.config:
         command = "watchme add-task %s" % task
         for key in self.config[task]:
             value = self.config[task][key]
-            command = "%s %s@%s" %(command, key, value)
+            command = "%s %s@%s" % (command, key, value)
 
         bot.info(command)
     else:
-        bot.exit('%s is not a valid task.' % task)
+        bot.exit("%s is not a valid task." % task)
 
 
 def print_section(self, section):
-    '''print a section (usually a task) from a configuration file,
+    """print a section (usually a task) from a configuration file,
        if it exists.
 
        Parameters
        ==========
        section: the name of the section (task)
-    '''
+    """
     self.load_config()
 
     if section in self.config:
-        bot.info('[%s]' % section)
+        bot.info("[%s]" % section)
         for key in self.config[section]:
             value = self.config[section][key]
             bot.custom(prefix=key, message=" = %s" % value, color="CYAN")
     else:
-        bot.exit('%s is not a valid section.' % section)
+        bot.exit("%s is not a valid section." % section)
 
 
 def get_setting(self, section, name, default=None):
-    '''return a setting from the config, if defined. Otherwise return
+    """return a setting from the config, if defined. Otherwise return
        default (None or set by user)
        
        Parameters
@@ -105,7 +106,7 @@ def get_setting(self, section, name, default=None):
        section: the section in the config, defaults to self.name
        name: they key (index) of the setting to look up
        default: (optional) if not found, return default instead.
-    ''' 
+    """
     self.load_config()
 
     setting = None
@@ -120,12 +121,12 @@ def get_setting(self, section, name, default=None):
 
 
 def has_setting(self, section, name):
-    '''return a boolean if a config has a setting (or not)
+    """return a boolean if a config has a setting (or not)
        Parameters
        ==========
        section: the section in the config, defaults to self.name
        name: they key (index) of the setting to look up
-    ''' 
+    """
     self.load_config()
 
     exists = False
@@ -137,16 +138,17 @@ def has_setting(self, section, name):
 
 
 def has_section(self, section):
-    '''return a boolean if a config has a section (e.g., a task or exporter)
+    """return a boolean if a config has a section (e.g., a task or exporter)
        Parameters
        ==========
        section: the section in the config
-    ''' 
+    """
     self.load_config()
     return section in self.config
 
+
 def set_setting(self, section, key, value):
-    '''set a key value pair in a section, if the section exists. Returns
+    """set a key value pair in a section, if the section exists. Returns
        a boolean (True or False) to indicate if added.
 
        Parameters
@@ -154,7 +156,7 @@ def set_setting(self, section, key, value):
        section: the section in the config, defaults to self.name
        key: they key (index) of the setting to set
        value: the value to set.
-    ''' 
+    """
     self.load_config()
 
     was_set = False
@@ -166,8 +168,8 @@ def set_setting(self, section, key, value):
 
 
 def get_section(self, name):
-    '''get a section from the config, if it exists
-    '''
+    """get a section from the config, if it exists
+    """
     section = None
     self.load_config()
     if name in self.config:

@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -10,7 +10,7 @@ The watcher is actually a connection to crontab. This is what helps to schedule
 the watched to check for changes at some frequency, and update the files.
 
 
-'''
+"""
 
 import errno
 import os
@@ -22,31 +22,34 @@ import sys
 import getpass
 
 
-
 from watchme.logger import bot
 
 # FOLDER OPERATIONS ############################################################
 
+
 def get_userhome():
-    '''get the user home based on the effective uid
-    '''
+    """get the user home based on the effective uid
+    """
     return os.path.expanduser("~")
 
+
 def get_user():
-    '''return the active user'''
+    """return the active user"""
     return getpass.getuser()
 
+
 def get_host():
-    '''return the hostname'''
+    """return the hostname"""
     return socket.gethostname()
 
+
 def mkdir_p(path):
-    ''' mkdir_p attempts to get the same functionality as mkdir -p
+    """ mkdir_p attempts to get the same functionality as mkdir -p
 
         Paramters
         =========
         param path: the path to create.
-    '''
+    """
     try:
         os.makedirs(path)
     except OSError as e:
@@ -59,8 +62,9 @@ def mkdir_p(path):
 
 # FILE OPERATIONS ##############################################################
 
-def generate_temporary_file(folder=None, prefix='watchme', ext=None):
-    '''write a temporary file, in base directory with a particular extension.
+
+def generate_temporary_file(folder=None, prefix="watchme", ext=None):
+    """write a temporary file, in base directory with a particular extension.
       
        Parameters
        ==========
@@ -68,21 +72,21 @@ def generate_temporary_file(folder=None, prefix='watchme', ext=None):
        prefix: the prefix to use
        ext: the extension to use.
 
-    '''        
+    """
     if folder is None:
         folder = tempfile.gettempdir()
     tmp = next(tempfile._get_candidate_names())
-    tmp = '%s/%s.%s' %(folder, prefix, tmp)
+    tmp = "%s/%s.%s" % (folder, prefix, tmp)
 
     # Does the user want an extension?
     if ext is not None:
-        tmp = "%s.%s" %(tmp, ext)
+        tmp = "%s.%s" % (tmp, ext)
 
     return tmp
 
 
 def get_tmpdir(prefix="", create=True):
-    '''get a temporary directory for an operation. If SREGISTRY_TMPDIR
+    """get a temporary directory for an operation. If SREGISTRY_TMPDIR
        is set, return that. Otherwise, return the output of tempfile.mkdtemp
 
        Parameters
@@ -90,10 +94,10 @@ def get_tmpdir(prefix="", create=True):
        prefix: Given a need for a sandbox (or similar), we will need to 
        create a subfolder *within* the SREGISTRY_TMPDIR.
        create: boolean to determine if we should create folder (True)
-    '''
+    """
     tmpdir = tempfile.gettempdir()
     prefix = prefix or "watchme-tmp"
-    prefix = "%s.%s" %(prefix, next(tempfile._get_candidate_names()))
+    prefix = "%s.%s" % (prefix, next(tempfile._get_candidate_names()))
     tmpdir = os.path.join(tmpdir, prefix)
 
     if not os.path.exists(tmpdir) and create is True:
@@ -103,8 +107,8 @@ def get_tmpdir(prefix="", create=True):
 
 
 def copyfile(source, destination, force=True):
-    '''copy a file from a source to its destination.
-    '''
+    """copy a file from a source to its destination.
+    """
     if os.path.exists(destination) and force is True:
         os.remove(destination)
     shutil.copyfile(source, destination)
@@ -112,23 +116,23 @@ def copyfile(source, destination, force=True):
 
 
 def write_file(filename, content, mode="w"):
-    '''write_file will open a file, "filename" and write content, "content"
+    """write_file will open a file, "filename" and write content, "content"
     and properly close the file
-    '''
+    """
     with open(filename, mode) as filey:
         filey.writelines(content)
     return filename
 
 
 def write_json(json_obj, filename, mode="w", print_pretty=True):
-    ''' write_json will (optionally,pretty print) a json object to file
+    """ write_json will (optionally,pretty print) a json object to file
     
         Parameters
         ==========
         json_obj: the dict to print to json
         filename: the output file to write to
         pretty_print: if True, will use nicer formatting
-    '''
+    """
     with open(filename, mode) as filey:
         if print_pretty:
             filey.writelines(print_json(json_obj))
@@ -138,20 +142,15 @@ def write_json(json_obj, filename, mode="w", print_pretty=True):
 
 
 def print_json(json_obj):
-    ''' just dump the json in a "pretty print" format
-    '''
-    return json.dumps(
-                    json_obj,
-                    indent=4,
-                    separators=(
-                        ',',
-                        ': '))
+    """ just dump the json in a "pretty print" format
+    """
+    return json.dumps(json_obj, indent=4, separators=(",", ": "))
 
 
 def read_file(filename, mode="r", readlines=True):
-    '''write_file will open a file, "filename" and write content, "content"
+    """write_file will open a file, "filename" and write content, "content"
        and properly close the file
-    '''
+    """
     with open(filename, mode) as filey:
         if readlines is True:
             content = filey.readlines()
@@ -160,10 +159,10 @@ def read_file(filename, mode="r", readlines=True):
     return content
 
 
-def read_json(filename, mode='r'):
-    '''read_json reads in a json file and returns
+def read_json(filename, mode="r"):
+    """read_json reads in a json file and returns
        the data structure as dict.
-    '''
+    """
     with open(filename, mode) as filey:
         data = json.load(filey)
     return data

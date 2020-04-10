@@ -195,70 +195,56 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.download_task">
-<code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">download_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#download_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.download_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.urls.tasks.</code><code class="sig-name descname">download_task</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#download_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.download_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to get a url. By default, we return
 the raw response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>REQUIRED</strong> – url: a url to download (stream)</li>
-<li><strong>OPTIONAL</strong> – write_format: to change from default “w”
-disable_ssl_check: set to anything to not verify (not recommended)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>REQUIRED</strong> – url: a url to download (stream)</p></li>
+<li><p><strong>OPTIONAL</strong> – write_format: to change from default “w”
+disable_ssl_check: set to anything to not verify (not recommended)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.get_task">
-<code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">get_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.urls.tasks.</code><code class="sig-name descname">get_task</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to get a url. By default, we return
 the raw response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>REQUIRED</strong> – url: a url to return the page for</li>
-<li><strong>OPTIONAL</strong> – regex: a regular expression to search the text for (not used w/ json)
-save_as: return the result to save as json</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>REQUIRED</strong> – url: a url to return the page for</p></li>
+<li><p><strong>OPTIONAL</strong> – regex: a regular expression to search the text for (not used w/ json)
+save_as: return the result to save as json</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.get_url_selection">
-<code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">get_url_selection</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_url_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_url_selection" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.urls.tasks.</code><code class="sig-name descname">get_url_selection</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#get_url_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.get_url_selection" title="Permalink to this definition">¶</a></dt>
 <dd><p>select some content from a page dynamically, using selenium.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<em>a dictionary of key, value pairs provided by the user</em>)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> (<em>a dictionary of key, value pairs provided by the user</em>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="watchme.watchers.urls.tasks.post_task">
-<code class="descclassname">watchme.watchers.urls.tasks.</code><code class="descname">post_task</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#post_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.post_task" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">watchme.watchers.urls.tasks.</code><code class="sig-name descname">post_task</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls/tasks.html#post_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.tasks.post_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>a simple task to use requests to post to. By default, we return json.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>REQUIRED</strong> – url: a url to post to</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>REQUIRED</strong> – url: a url to post to</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -270,11 +256,11 @@ Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="watchme.watchers.urls.Task">
-<em class="property">class </em><code class="descclassname">watchme.watchers.urls.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>name</em>, <em>params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">watchme.watchers.urls.</code><code class="sig-name descname">Task</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="watchme.tasks.html#watchme.tasks.TaskBase" title="watchme.tasks.TaskBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">watchme.tasks.TaskBase</span></code></a></p>
 <dl class="method">
 <dt id="watchme.watchers.urls.Task.export_func">
-<code class="descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task.export_func" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/watchme/watchers/urls.html#Task.export_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#watchme.watchers.urls.Task.export_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>this function should return the correct task (from the tasks.py
 in the same folder) based on some logic of the params that are given
 by the user (self.params). If there is only one kind of function for
@@ -285,7 +271,7 @@ already provided in the client.</p>
 
 <dl class="attribute">
 <dt id="watchme.watchers.urls.Task.required_params">
-<code class="descname">required_params</code><em class="property"> = ['url']</em><a class="headerlink" href="#watchme.watchers.urls.Task.required_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">required_params</code><em class="property"> = ['url']</em><a class="headerlink" href="#watchme.watchers.urls.Task.required_params" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

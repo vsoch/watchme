@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -6,22 +6,17 @@ This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-'''
+"""
 
 from watchme.logger import bot
-from .helpers import (
-    get_params, 
-    get_results, 
-    get_headers,
-    parse_success_response
-)
+from .helpers import get_params, get_results, get_headers, parse_success_response
 import os
 import tempfile
 import requests
 
 
 def get_task(url, **kwargs):
-    '''a simple task to use requests to get a url. By default, we return
+    """a simple task to use requests to get a url. By default, we return
        the raw response.
 
        Parameters
@@ -33,7 +28,7 @@ def get_task(url, **kwargs):
        OPTIONAL
            regex: a regular expression to search the text for (not used w/ json)
            save_as: return the result to save as json
-    '''
+    """
     results = []
     paramsets = get_params(kwargs)
     headers = get_headers(kwargs)
@@ -48,7 +43,7 @@ def get_task(url, **kwargs):
             results.append(result)
 
     results = [x for x in results if x]
- 
+
     if not results:
         results = None
 
@@ -56,18 +51,18 @@ def get_task(url, **kwargs):
 
 
 def post_task(url, **kwargs):
-    '''a simple task to use requests to post to. By default, we return json.
+    """a simple task to use requests to post to. By default, we return json.
 
        Parameters
        ==========
 
        REQUIRED:
            url: a url to post to
-    '''
+    """
     results = []
 
     # The json params can vary, but headers do not
-    jsonlist = get_params(kwargs, key='json_param_')
+    jsonlist = get_params(kwargs, key="json_param_")
     headers = get_headers(kwargs)
 
     # Loop through lists of json and headers
@@ -82,7 +77,7 @@ def post_task(url, **kwargs):
             results.append(result)
 
         else:
-            bot.error("%s: %s" %(response.status_code, response.reason))
+            bot.error("%s: %s" % (response.status_code, response.reason))
 
     results = [x for x in results if x]
 
@@ -94,7 +89,7 @@ def post_task(url, **kwargs):
 
 
 def download_task(url, **kwargs):
-    '''a simple task to use requests to get a url. By default, we return
+    """a simple task to use requests to get a url. By default, we return
        the raw response.
 
        Parameters
@@ -106,25 +101,25 @@ def download_task(url, **kwargs):
        OPTIONAL:
            write_format: to change from default "w"
            disable_ssl_check: set to anything to not verify (not recommended)
-    '''
+    """
     result = None
 
     # Update the user what we are doing
     bot.verbose("Downloading %s" % url)
 
     # Use the basename or the user set file_name to write to
-    file_name = kwargs.get('file_name', os.path.basename(url))
-    destination = os.path.join(tempfile.gettempdir(), file_name)    
+    file_name = kwargs.get("file_name", os.path.basename(url))
+    destination = os.path.join(tempfile.gettempdir(), file_name)
     verify = True
 
     # Does the user want to disable ssl?
     if "disable_ssl_check" in kwargs:
-        if kwargs['disable_ssl_check']:
-            bot.warning('Verify of certificates disabled! ::TESTING USE ONLY::')
+        if kwargs["disable_ssl_check"]:
+            bot.warning("Verify of certificates disabled! ::TESTING USE ONLY::")
             verify = False
 
     # If the user doesn't want to write, but maybe write binary
-    fmt = kwargs.get('write_format', 'wb')
+    fmt = kwargs.get("write_format", "wb")
     headers = get_headers(kwargs)
 
     # Does the url being requested exist?
@@ -151,33 +146,33 @@ def download_task(url, **kwargs):
 
 
 def get_url_selection(url, **kwargs):
-    '''select some content from a page dynamically, using selenium.
+    """select some content from a page dynamically, using selenium.
 
        Parameters
        ==========
        kwargs: a dictionary of key, value pairs provided by the user
-    '''
-    
+    """
+
     results = None
-    selector = kwargs.get('selection', None)
+    selector = kwargs.get("selection", None)
     headers = get_headers(kwargs)
 
     if selector is None:
-        bot.error('You must define the selection (e.g., selection@.main')
+        bot.error("You must define the selection (e.g., selection@.main")
         return results
 
     # Does the user want to get text?
     get_text = False
-    if kwargs.get('get_text') is not None:
+    if kwargs.get("get_text") is not None:
         get_text = True
 
     # Are we searching for a regular expression in the result?
-    regex = kwargs.get('regex')
+    regex = kwargs.get("regex")
 
     # Does the user want to get one or more attributes?
-    attributes = kwargs.get('attributes', None)
+    attributes = kwargs.get("attributes", None)
     if attributes is not None:
-        attributes = attributes.split(',') 
+        attributes = attributes.split(",")
 
     # User can pass a parameter like url_param_<name>
     # url_param_page=1,2,3,4,5,6,7,8,9
@@ -186,15 +181,17 @@ def get_url_selection(url, **kwargs):
     # Each is a dictionary of values
     results = []
     for params in paramsets:
- 
+
         # Get the page
-        results += get_results(url=url,
-                               selector=selector,
-                               headers=headers,
-                               attributes=attributes,
-                               params=params,
-                               get_text=get_text,
-                               regex=regex)
+        results += get_results(
+            url=url,
+            selector=selector,
+            headers=headers,
+            attributes=attributes,
+            params=params,
+            get_text=get_text,
+            regex=regex,
+        )
 
     # No results
     if not results:

@@ -1,4 +1,4 @@
-'''
+"""
 
 Copyright (C) 2019-2020 Vanessa Sochat.
 
@@ -6,18 +6,16 @@ This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-'''
+"""
 
-from subprocess import (
-    check_output, 
-    CalledProcessError
-)
+from subprocess import check_output, CalledProcessError
 from watchme.utils import get_watchme_env
 from watchme.logger import bot
 import psutil
 
+
 def monitor_pid_task(**kwargs):
-    '''monitor a specific process. This function can be used as a task, or
+    """monitor a specific process. This function can be used as a task, or
        is (most likely used) for the psutils.decorators. A pid parameter
        is required.
 
@@ -26,24 +24,26 @@ def monitor_pid_task(**kwargs):
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
        pid: the process id or name (required)
-    '''
-    pid = kwargs.get('pid', None)
+    """
+    pid = kwargs.get("pid", None)
 
     bot.debug(kwargs)
 
     # Helper function to get list from one,two,three
     def get_list(name):
-        csv_list = kwargs.get(name, '')
-        return [x for x in csv_list.split(',') if x]
+        csv_list = kwargs.get(name, "")
+        return [x for x in csv_list.split(",") if x]
 
     # A comma separated list of parameters to skip
-    skip = get_list('skip')
-    include = get_list('include')
-    only = get_list('only')
+    skip = get_list("skip")
+    include = get_list("include")
+    only = get_list("only")
 
     # Only continue given that argument is provided
-    if pid is None:   
-        bot.warning("A 'pid' parameter is required to use the monitor_pid_task function.")
+    if pid is None:
+        bot.warning(
+            "A 'pid' parameter is required to use the monitor_pid_task function."
+        )
         return pid
 
     # The user is allowed to provide a process name, or a number
@@ -63,35 +63,37 @@ def monitor_pid_task(**kwargs):
     results = {}
 
     for key, val in ps.as_dict().items():
- 
+
         # If val is None, don't include
         if val is None:
-            bot.debug('skipping %s, None' % key)
+            bot.debug("skipping %s, None" % key)
             continue
 
         if key == "connections":
             connections = []
             for net in val:
-                entry = {'fd': net.fd,
-                         'family': str(net.family),
-                         'type': str(net.type),
-                         'laddr_ip': net.laddr.ip,
-                         'laddr_port': net.laddr.port,
-                         'raddr': net.raddr,
-                         'status': net.status}
+                entry = {
+                    "fd": net.fd,
+                    "family": str(net.family),
+                    "type": str(net.type),
+                    "laddr_ip": net.laddr.ip,
+                    "laddr_port": net.laddr.port,
+                    "raddr": net.raddr,
+                    "status": net.status,
+                }
                 connections.append(entry)
-            val = connections       
+            val = connections
 
         # First priority goes to a custom set
         if len(only) > 0:
             if key in only:
                 results[key] = val
             else:
-                bot.debug('skipping %s' % key)
-            continue 
+                bot.debug("skipping %s" % key)
+            continue
 
         # The user requested to skip
-        elif key in skip or key in ['threads']:
+        elif key in skip or key in ["threads"]:
             continue
 
         # Keep count of openfiles
@@ -104,42 +106,49 @@ def monitor_pid_task(**kwargs):
                 results[key] = val
 
         # Skip over ones that are too detailed
-        elif key in ['memory_maps']:
+        elif key in ["memory_maps"]:
             continue
 
         # I assume this included all that are in pmem too
         elif isinstance(val, psutil._pslinux.pfullmem):
-            results[key] = {"rss": val.rss,
-                            "vms": val.vms,
-                            "shared": val.shared,
-                            "text": val.text,
-                            "lib": val.lib,
-                            "data": val.data,
-                            "dirty": val.dirty,
-                            "uss": val.uss,
-                            "pss": val.pss,
-                            "swap": val.swap}
+            results[key] = {
+                "rss": val.rss,
+                "vms": val.vms,
+                "shared": val.shared,
+                "text": val.text,
+                "lib": val.lib,
+                "data": val.data,
+                "dirty": val.dirty,
+                "uss": val.uss,
+                "pss": val.pss,
+                "swap": val.swap,
+            }
 
-        elif isinstance(val, psutil._common.pgids) or isinstance(val, psutil._common.puids):
-            results[key] = {"real": val.real,
-                            "effetive":val.effective,
-                            "saved": val.saved}
+        elif isinstance(val, psutil._common.pgids) or isinstance(
+            val, psutil._common.puids
+        ):
+            results[key] = {
+                "real": val.real,
+                "effetive": val.effective,
+                "saved": val.saved,
+            }
 
         elif isinstance(val, psutil._common.pcputimes):
-            results[key] = {"user": val.user,
-                            "system": val.system,
-                            "children_user": val.children_user,
-                            "children_system": val.children_system}
+            results[key] = {
+                "user": val.user,
+                "system": val.system,
+                "children_user": val.children_user,
+                "children_system": val.children_system,
+            }
 
         elif isinstance(val, psutil._common.pctxsw):
-            results[key] = {"voluntary": val.voluntary,
-                            "involuntary":val.involuntary}
+            results[key] = {"voluntary": val.voluntary, "involuntary": val.involuntary}
 
         elif isinstance(val, psutil._common.pionice):
             results[key] = {"value": val.value}
 
             # Older Python version (2) doesn't have attribute
-            if hasattr(val.ioclass, 'name'):
+            if hasattr(val.ioclass, "name"):
                 results[key]["ioclass"] = val.ioclass.name
 
         # pfullmem (first above) should cover this
@@ -147,12 +156,14 @@ def monitor_pid_task(**kwargs):
             continue
 
         elif isinstance(val, psutil._pslinux.pio):
-            results[key] = {"read_count": val.read_count,
-                            "write_count": val.write_count,
-                            "read_bytes": val.read_bytes,
-                            "write_bytes": val.write_bytes,
-                            "read_chars": val.read_chars,
-                            "write_chars": val.write_chars}
+            results[key] = {
+                "read_count": val.read_count,
+                "write_count": val.write_count,
+                "read_bytes": val.read_bytes,
+                "write_bytes": val.write_bytes,
+                "read_chars": val.read_chars,
+                "write_chars": val.write_chars,
+            }
         else:
             results[key] = val
 
@@ -162,104 +173,111 @@ def monitor_pid_task(**kwargs):
 
     return results
 
+
 def cpu_task(**kwargs):
-    '''Get variables about the cpu of the host. No parameters are required.
+    """Get variables about the cpu of the host. No parameters are required.
 
        Parameters
        ==========
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
-    '''
+    """
     result = {}
 
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
 
-    result['cpu_freq'] = dict(psutil.cpu_freq()._asdict())
-    result['cpu_percent'] = psutil.cpu_percent()
-    result['cpu_count'] = psutil.cpu_count()
-    result['cpu_stats'] = dict(psutil.cpu_stats()._asdict())
-    result['cpu_times'] = dict(psutil.cpu_times()._asdict())
-    result['cpu_times_percent'] = dict(psutil.cpu_times_percent()._asdict())
+    result["cpu_freq"] = dict(psutil.cpu_freq()._asdict())
+    result["cpu_percent"] = psutil.cpu_percent()
+    result["cpu_count"] = psutil.cpu_count()
+    result["cpu_stats"] = dict(psutil.cpu_stats()._asdict())
+    result["cpu_times"] = dict(psutil.cpu_times()._asdict())
+    result["cpu_times_percent"] = dict(psutil.cpu_times_percent()._asdict())
     return _filter_result(result, skip)
 
 
 def python_task(**kwargs):
-    '''Get modules, version, etc. about currently running python
+    """Get modules, version, etc. about currently running python
 
        Parameters
        ==========
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
-    '''
+    """
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
 
-    result = {'modules': list(psutil.os.sys.modules),
-              'version': psutil.os.sys.version,
-              'path': psutil.os.sys.path,
-              'prefix': psutil.os.sys.prefix,
-              'executable': psutil.os.sys.executable,
-              'copyright': psutil.os.sys.copyright }
+    result = {
+        "modules": list(psutil.os.sys.modules),
+        "version": psutil.os.sys.version,
+        "path": psutil.os.sys.path,
+        "prefix": psutil.os.sys.prefix,
+        "executable": psutil.os.sys.executable,
+        "copyright": psutil.os.sys.copyright,
+    }
 
     return _filter_result(result, skip)
 
 
 def system_task(**kwargs):
-    '''Get basic system info, unlikely to change.
+    """Get basic system info, unlikely to change.
 
        Parameters
        ==========
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
-    '''
+    """
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
 
     result = {}
-    result['platform'] = psutil.os.sys.platform
-    result['api_version'] = psutil.os.sys.api_version
-    result['maxsize'] = psutil.os.sys.maxsize
+    result["platform"] = psutil.os.sys.platform
+    result["api_version"] = psutil.os.sys.api_version
+    result["maxsize"] = psutil.os.sys.maxsize
 
     # Python 2 doesn't have these fields
-    if hasattr(psutil.os.sys, 'int_info'):
-        result['bits_per_digit'] = psutil.os.sys.int_info.bits_per_digit
-        result['sizeof_digit'] = psutil.os.sys.int_info.sizeof_digit
- 
-    vinfo = psutil.os.sys.version_info
-    result['version_info'] = {'major': vinfo.major,
-                              'minor': vinfo.minor,
-                              'micro': vinfo.micro,
-                              'releaselevel': vinfo.releaselevel,
-                              'serial': vinfo.serial}
+    if hasattr(psutil.os.sys, "int_info"):
+        result["bits_per_digit"] = psutil.os.sys.int_info.bits_per_digit
+        result["sizeof_digit"] = psutil.os.sys.int_info.sizeof_digit
 
-    result['sep'] = psutil.os.sep
+    vinfo = psutil.os.sys.version_info
+    result["version_info"] = {
+        "major": vinfo.major,
+        "minor": vinfo.minor,
+        "micro": vinfo.micro,
+        "releaselevel": vinfo.releaselevel,
+        "serial": vinfo.serial,
+    }
+
+    result["sep"] = psutil.os.sep
     uname = psutil.os.uname()
-    
-    # Python 2 returns a tuple 
-    if not hasattr(uname, 'sysname'):
-        result['uname'] = uname
+
+    # Python 2 returns a tuple
+    if not hasattr(uname, "sysname"):
+        result["uname"] = uname
     else:
-        result['uname'] = {'sysname': uname.sysname,
-                           'nodename': uname.nodename,
-                           'version': uname.version,
-                           'release': uname.release,
-                           'machine': uname.machine}
+        result["uname"] = {
+            "sysname": uname.sysname,
+            "nodename": uname.nodename,
+            "version": uname.version,
+            "release": uname.release,
+            "machine": uname.machine,
+        }
 
     return _filter_result(result, skip)
 
 
 def memory_task(**kwargs):
-    '''Get values for memory of the host. No parameters are required.
-    '''
+    """Get values for memory of the host. No parameters are required.
+    """
 
     result = {}
 
     # gives an object with many fields
-    result['virtual_memory'] = dict(psutil.virtual_memory()._asdict())
+    result["virtual_memory"] = dict(psutil.virtual_memory()._asdict())
 
     # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
@@ -269,12 +287,12 @@ def memory_task(**kwargs):
 
 
 def users_task(**kwargs):
-    '''Get values for current users
-    '''
+    """Get values for current users
+    """
 
-    result = {'users': []}
+    result = {"users": []}
     for user in psutil.users():
-        result['users'].append(dict(user._asdict()))
+        result["users"].append(dict(user._asdict()))
 
     # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
@@ -284,111 +302,121 @@ def users_task(**kwargs):
 
 
 def sensors_task(**kwargs):
-    '''Get values from system sensors like fans, temperature, battery
-    '''
+    """Get values from system sensors like fans, temperature, battery
+    """
 
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
 
     result = {}
-    result['sensors_temperatures'] = {}
-    result['sensors_fans'] = {}
+    result["sensors_temperatures"] = {}
+    result["sensors_fans"] = {}
 
     # battery
     battery = psutil.sensors_battery()
     if battery is not None:
-        result['sensors_battery'] = {'percent': battery.percent,
-                                     'secsleft': str(battery.secsleft),
-                                     'power_plugged': battery.power_plugged}
+        result["sensors_battery"] = {
+            "percent": battery.percent,
+            "secsleft": str(battery.secsleft),
+            "power_plugged": battery.power_plugged,
+        }
 
     # fans
     for name, entry in psutil.sensors_fans().items():
         entries = []
         for e in entry:
-            item = {'label': e.label,
-                    'current': e.current}
+            item = {"label": e.label, "current": e.current}
             entries.append(item)
-        result['sensors_fans'][name] = entries
+        result["sensors_fans"][name] = entries
 
     # temperature
     for name, entry in psutil.sensors_temperatures().items():
         entries = []
         for e in entry:
-            temp = {'label': e.label,
-                    'current': e.current,
-                    'high': e.high,
-                    'critical': e.critical}
+            temp = {
+                "label": e.label,
+                "current": e.current,
+                "high": e.high,
+                "critical": e.critical,
+            }
             entries.append(temp)
-        result['sensors_temperatures'][name] = entries
+        result["sensors_temperatures"][name] = entries
 
     return _filter_result(result, skip)
 
 
-
 def net_task(**kwargs):
-    '''Get values for networking on the host
+    """Get values for networking on the host
 
        Parameters
        ==========
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
-    '''
+    """
     result = {}
 
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
 
-    result['net_connections'] = []
-    result['net_if_address'] = {}
-    result['net_if_stats'] = {}
+    result["net_connections"] = []
+    result["net_if_address"] = {}
+    result["net_if_stats"] = {}
 
     for net in psutil.net_connections():
-        net_result = {'fd': net.fd,
-                      'family': str(net.family),
-                      'type': str(net.type),
-                      'laddr_ip': net.laddr.ip,
-                      'laddr_port': net.laddr.port,
-                      'raddr': net.raddr,
-                      'status': net.status,
-                      'pid': net.pid}
-        result['net_connections'].append(net_result)
+        net_result = {
+            "fd": net.fd,
+            "family": str(net.family),
+            "type": str(net.type),
+            "laddr_ip": net.laddr.ip,
+            "laddr_port": net.laddr.port,
+            "raddr": net.raddr,
+            "status": net.status,
+            "pid": net.pid,
+        }
+        result["net_connections"].append(net_result)
 
     for name, entry in psutil.net_if_addrs().items():
         entries = []
         for e in entry:
-            item = {'family': str(e.family),
-                    'address': e.address,
-                    'netmask': e.netmask,
-                    'broadcast': e.broadcast,
-                    'ptp': e.ptp}
+            item = {
+                "family": str(e.family),
+                "address": e.address,
+                "netmask": e.netmask,
+                "broadcast": e.broadcast,
+                "ptp": e.ptp,
+            }
             entries.append(item)
-        result['net_if_address'][name] = entries
+        result["net_if_address"][name] = entries
 
     for name, entry in psutil.net_if_stats().items():
-        item = {'isup': entry.isup,
-                'duplex': str(entry.duplex),
-                'speed': entry.speed,
-                'mtu': entry.mtu}
-        result['net_if_stats'][name] = item
+        item = {
+            "isup": entry.isup,
+            "duplex": str(entry.duplex),
+            "speed": entry.speed,
+            "mtu": entry.mtu,
+        }
+        result["net_if_stats"][name] = item
 
     netio = psutil.net_io_counters()
-    result['net_io_counters'] = {'bytes_sent': netio.bytes_sent,
-                                 'bytes_recv': netio.bytes_recv,
-                                 'packets_sent': netio.packets_sent,
-                                 'packets_recv': netio.packets_recv,
-                                 'errin': netio.errin,
-                                 'errout': netio.errout,
-                                 'dropin': netio.dropin,
-                                 'dropout': netio.dropout}
+    result["net_io_counters"] = {
+        "bytes_sent": netio.bytes_sent,
+        "bytes_recv": netio.bytes_recv,
+        "packets_sent": netio.packets_sent,
+        "packets_recv": netio.packets_recv,
+        "errin": netio.errin,
+        "errout": netio.errout,
+        "dropin": netio.dropin,
+        "dropout": netio.dropout,
+    }
 
     # Remove those not wanted
     return _filter_result(result, skip)
 
 
 def disk_task(**kwargs):
-    '''Get values for disks on the host
+    """Get values for disks on the host
 
        Parameters
        ==========
@@ -396,36 +424,38 @@ def disk_task(**kwargs):
        skip: an optional list of (comma separated) fields to skip. Can be in
              net_io_counters,net_connections,net_if_address,net_if_stats
 
-    '''
+    """
     # A comma separated list of parameters to not include
-    skip = kwargs.get('skip', '')
-    skip = skip.split(',')
-    path = kwargs.get('disk_usage', '/')
+    skip = kwargs.get("skip", "")
+    skip = skip.split(",")
+    path = kwargs.get("disk_usage", "/")
 
     result = {}
-    result['disk_to_counters'] = dict(psutil.disk_io_counters()._asdict())
-    result['disk_partitions'] = []
+    result["disk_to_counters"] = dict(psutil.disk_io_counters()._asdict())
+    result["disk_partitions"] = []
     for disk in psutil.disk_partitions():
-        disk_result = {'device': disk.device,
-                       'mountpoint': disk.mountpoint,
-                       'fstype': disk.fstype,
-                       'opts': disk.opts}
-        result['disk_partitions'].append(disk_result)
-    result['disk_usage'] = dict(psutil.disk_usage(path)._asdict())
+        disk_result = {
+            "device": disk.device,
+            "mountpoint": disk.mountpoint,
+            "fstype": disk.fstype,
+            "opts": disk.opts,
+        }
+        result["disk_partitions"].append(disk_result)
+    result["disk_usage"] = dict(psutil.disk_usage(path)._asdict())
 
     # Remove those not wanted
     return _filter_result(result, skip)
 
 
 def _filter_result(result, skip):
-    '''a helper function to filter a dictionary based on a list of keys to 
+    """a helper function to filter a dictionary based on a list of keys to 
        skip. We also add variables from the environment.
     
        Parameters
        ==========
        result: a dictionary of results
        skip: a list of keys to remove/filter from the result.
-    '''
+    """
 
     # Add any environment variables prefixed wit WATCHMEENV_
     environ = get_watchme_env()
@@ -439,15 +469,15 @@ def _filter_result(result, skip):
 
 
 def _get_pid(name):
-    '''used to get the pid of a process, by name
+    """used to get the pid of a process, by name
        
        Parameters
        ==========
        name: the name of the process to get.
-    '''
+    """
     try:
         pid = check_output(["pidof", name])
-        pid = pid.decode('utf-8').strip('\n').split(' ') 
+        pid = pid.decode("utf-8").strip("\n").split(" ")
         if len(pid) > 1:
             bot.warning("More than one pid found for %s, using first." % name)
         pid = int(pid[0])
