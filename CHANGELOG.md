@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - updating documentation to match library, more notes (0.0.28)
  - addition of GPU task, including terminal and process monitor (0.0.27)
  - adding linting, cleaning up an error for psutils watcher (0.0.26)
  - loop values should be checked for None first (0.0.25)

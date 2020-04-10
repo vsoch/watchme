@@ -299,7 +299,7 @@ and more importantly, we want to not expose sensitive information. If you want
 to add this back in, you can do that:
 
 ```bash
-$ watchme add system task-monitor-slack --type psutils func@monitor_pid_task pid@slack include@environ
+$ watchme add-task system task-monitor-slack --type psutils func@monitor_pid_task pid@slack include@environ
 ```
 
 We don't show threads because it would make the data too big, but we do include `num_threads`.
