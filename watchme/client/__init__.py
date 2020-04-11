@@ -292,7 +292,7 @@ def get_parser():
     run.add_argument(
         "--serial",
         dest="serial",
-        help="run tasks in serial",
+        help="run task without multiprocessing",
         default=False,
         action="store_true",
     )
