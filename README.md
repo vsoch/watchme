@@ -28,11 +28,10 @@ also available for monitoring processes inside containers.
 
 ## Limitations
 
-Watchme uses [cron](http://man7.org/linux/man-pages/man5/crontab.5.html) for scheduling jobs. This means that watchme will run 
-on server restarts only if you have the cron service automatically restarting
-on your host or server. See [this post](https://www.cyberciti.biz/faq/linux-execute-cron-job-after-system-reboot/)
-for different strategies to start cron automatically at boot time. If you
-have other ideas for how to schedule jobs that you want added to the library,
+Watchme uses [cron](http://man7.org/linux/man-pages/man5/crontab.5.html) for
+scheduling jobs. This means that if a system was shutdown and then started again
+after some time, watchme will not recover missing jobs during that period. If
+you have ideas for how to better schedule jobs that you want added to the library,
 please [open an issue](https://github.com/vsoch/watchme).
 
 ## Licenses
