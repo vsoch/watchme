@@ -46,6 +46,7 @@ or read about the following:
  - [Variables and Environment]({{ site.baseurl }}/getting-started/environment/) change defaults and settings via environmnet variables, or set variables that work across watcher tasks.
  - [Interactive Python]({{ site.baseurl }}/getting-started/python/) specifically, interaction from within Python.
 
+<a id="what-is-a-watcher">
 ### What is a Watcher?
 
 A watcher is a configuration to check a resource like a website at some frequency.
@@ -68,7 +69,7 @@ to track changes for pages. We do this instead of saving duplicates of
 the pages, and if you are doing research, you have a GitHub repository
 that updates with each. 
 
-
+<a id="setup-watchme">
 ### Setup WatchMe
 
 The first thing you need to do is an initial setup of WatchMe, which will generate
@@ -120,6 +121,7 @@ export `WATCHME_BASE_DIR` in your bash profile for a permanent setting.
 For the reminder of this tutorial, we will assume that you ran init without
 `--empty`, and interact with a watcher named "watcher."
 
+<a id="how-do-i-create-a-watcher">
 ### How do I create a watcher?
 
 If you didn't create a watcher above (meaning you ran the init command with `--empty`)
@@ -158,6 +160,7 @@ and what you can't see is that there is a Git repo (a .git folder) in the
 watcher directory too. Good job! The watcher is set up, and ready to add
 tasks to it. 
 
+<a id="how-do-i-rename-a-watcher">
 ### How do I rename a watcher?
 
 The watcher name coincides with the folder name. For example, if you created
@@ -166,7 +169,7 @@ the folder. For the remainder of this getting started guide, we will be using
 a watcher named "watcher," so if you didn't create this watcher, you can 
 either create it or rename an existing folder.
 
-
+<a id="how-do-i-add-tasks">
 ### How do I add tasks?
 
 After creation, the watcher is empty. You need to add tasks for it to run. 
@@ -215,6 +218,7 @@ $ watchme add-task watcher task-singularity-release url@https://github.com/sylab
 The reason we save these parameters in the repo is that if you put it under version
 control on GitHub (or similar), others will be able to reproduce your protocol.
 
+<a id="how-do-i-edit-tasks">
 ### How do I edit tasks?
 
 After you've added a task, you can easily update parameters. The format is:
@@ -252,14 +256,14 @@ $ watchme edit watcher remove task-harvard-hpc file_name
 Removing file_name
 ```
 
-
+<a id="what-are-parameters-for-each-task">
 ### What are the parameters for each task?
 
 The parameters will vary based on the task type. When you are ready,
 take a look at the [watchers]({{ site.baseurl }}/watchers/) page to choose a
 task type that you want to configure.
 
-
+<a id="how-do-i-inspect-my-watcher">
 ### How do I inspect my watcher?
 
 If you don't want to directly inspect the watcher configuration file, there
@@ -293,7 +297,7 @@ If the task doesn't exist, it will tell you:
 task-doesnt-exist
 ERROR task-doesnt-exist is not a valid section.
 ```
-
+<a id="how-do-i-list-my-watchers">
 ### How do I list my watchers?
 
 You can quickly see the watchers installed to your watcher home with:
@@ -334,6 +338,7 @@ TIMESTAMP
 If you are interested in the configurations in watchme.cfg, then you can 
 inspect further with [inspect](#how-do-i-inspect-my-watchers).
 
+<a id="how-do-i-freeze-or-protect-my-watcher">
 ### How do I protect or freeze my watcher?
 
 If you want to prevent deletion of your folder, you can protect it.
@@ -371,6 +376,7 @@ active  = false
 
 Frozen takes preference to protected, if the settings don't agree.
 
+<a id="how-do-i-activate-my-watcher">
 ### How do I activate my watcher?
 
 By default, when you add a watcher, it isn't active. You can see this
@@ -399,6 +405,7 @@ $ watchme deactivate watcher task-singularity-release
 
 By default, when a task is added, it is active.
 
+<a id="how-do-i-run-a-watcher">
 ### How do I run a watcher?
 
 Typically, you would schedule your watcher with a cron job, and then forget about it.
@@ -467,6 +474,7 @@ Date:   Mon Apr 1 13:07:47 2019 -0400
 
 We can see results were added for both.
 
+<a id="how-do-i-schedule-my-watcher">
 ### How do I schedule my watcher?
 
 Now that you've configured your watcher, you simply need to schedule it to run.
@@ -512,6 +520,7 @@ $ service cron status
 $ service crond status
 ```
 
+<a id="how-do-i-remove-a-task-from-my-watcher">
 ### How do I remove a task from a watcher?
 
 To remove a task, just specify it:
@@ -535,6 +544,7 @@ $ watchme remove watcher task-reddit-hpc
 ERROR watcher is frozen, unfreeze first.
 ```
 
+<a id="how-do-i-delete-a-watcher">
 ### How do I delete a watcher?
 
 To remove an entire watcher, specify `--delete`:
@@ -560,6 +570,7 @@ The entire folder is now removed.
 $ ls /home/vanessa/.watchme/
 ```
 
+<a id="how-do-i-get-a-watcher">
 ### How do I get a watcher?
 
 Not only can you share your watcher (configuration and data output) on a service
@@ -613,6 +624,7 @@ Added watcher special-name
 You will still need to schedule the water to run (and update the .git folder cloned 
 there) and activate it, in the case that it wasn't active in the repository.
 
+<a id="how-do-i-export-data">
 ### How do I export data?
 
 The core reason you would want to use WatchMe in the first place is to collect data
@@ -643,6 +655,7 @@ We only have one commit for the task file, but we can see that it has an associa
 and the content of the file. For more than one commit, each of the entries in the output
 dictionary would be a list.
 
+<a id="exporting-json">
 ### Exporting Json
 
 If your results files have json, you will get a funny looking unparsed json inside json.
