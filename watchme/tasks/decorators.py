@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from multiprocessing import Process, Queue
 from watchme.logger import bot
@@ -36,13 +30,13 @@ class DecoratorBase(object):
         self.include = self._parse_custom(include)
 
     def _parse_custom(self, listy):
-        """parse an actual list (['one','two','three']) into 
-           a csv list. If we don't have a list, ignore and assume already
-           parsed that way.
- 
-           Parameters
-           ==========
-           listy: the actual list
+        """parse an actual list (['one','two','three']) into
+        a csv list. If we don't have a list, ignore and assume already
+        parsed that way.
+
+        Parameters
+        ==========
+        listy: the actual list
         """
         if listy is None:
             listy = []
@@ -52,7 +46,7 @@ class DecoratorBase(object):
 
     def run(self, *args, **kwargs):
         """run should be implemented by the subclass to run the function or
-           process being monitored
+        process being monitored
         """
         bot.exit("run function must be implemented by subclass.")
 
@@ -70,8 +64,7 @@ class TerminalRunner(DecoratorBase):
         super(TerminalRunner, self).__init__(**kwargs)
 
     def run(self):
-        """run the user provided function
-        """
+        """run the user provided function"""
         try:
             self.process = subprocess.Popen(
                 self.cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE
@@ -85,11 +78,11 @@ class TerminalRunner(DecoratorBase):
     def wait(self, task_name):
         """wait should monitor the running task. run should be called first.
 
-           Parameters
-           ==========
-           task_name: should correspond with the task func (e.g., 
-                      monitor_pid_task for psutils, or
-                      monitor_gpu for gpu tasks.
+        Parameters
+        ==========
+        task_name: should correspond with the task func (e.g.,
+                   monitor_pid_task for psutils, or
+                   monitor_gpu for gpu tasks.
         """
 
         # Parameters for the pid, and to skip sections of results
@@ -134,7 +127,7 @@ class ProcessRunner(DecoratorBase):
 
     def run(self, func, *args, **kwargs):
         """run the user provided function. When we run, we save the function
-           run to self.func, where we can derive the name in self.wait.
+        run to self.func, where we can derive the name in self.wait.
         """
         self.func = func
         args2 = [func, self.queue, args, kwargs]
@@ -145,11 +138,11 @@ class ProcessRunner(DecoratorBase):
     def wait(self, task_name):
         """watch should monitor the running task. run should be called first.
 
-           Parameters
-           ==========
-           task_name: should correspond with the task func (e.g., 
-                      monitor_pid_task for psutils, or
-                      monitor_gpu for gpu tasks.
+        Parameters
+        ==========
+        task_name: should correspond with the task func (e.g.,
+                   monitor_pid_task for psutils, or
+                   monitor_gpu for gpu tasks.
         """
 
         # Parameters for the pid, and to skip sections of results
@@ -183,12 +176,12 @@ class ProcessRunner(DecoratorBase):
 
 def get_task(task_name, params):
     """a helper function to return an instantiated task object, depending
-       on the function name.
+    on the function name.
 
-       Parameters
-       ==========
-       task_name: the name of the task to return
-       params: parameters for the task
+    Parameters
+    ==========
+    task_name: the name of the task to return
+    params: parameters for the task
     """
     if task_name == "monitor_pid_task":
         from watchme.watchers.psutils import Task
@@ -200,8 +193,7 @@ def get_task(task_name, params):
 
 
 def none_to_list(value):
-    """a helper so that function args can be None, and updated to a list.
-    """
+    """a helper so that function args can be None, and updated to a list."""
     if not value:
         value = []
     return value

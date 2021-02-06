@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot, RobotNamer
 from watchme.version import __version__
@@ -68,14 +62,14 @@ class Watcher(object):
 
     def __init__(self, name=None, base=None, create=False, **kwargs):
         """the watcher base loads configuration files for the user (in $HOME)
-           and module, and then stores any arguments given from the caller
+        and module, and then stores any arguments given from the caller
 
-           Parameters
-           ==========
-           name: the watcher name, defaults to github
-           base: the watcher base, will default to $HOME/.watchme
-           create: boolean to create the watcher if doesn't exist (default False)
-           kwargs: should include command line arguments from the client.
+        Parameters
+        ==========
+        name: the watcher name, defaults to github
+        base: the watcher base, will default to $HOME/.watchme
+        create: boolean to create the watcher if doesn't exist (default False)
+        kwargs: should include command line arguments from the client.
 
         """
         # Set the watcher base
@@ -86,12 +80,12 @@ class Watcher(object):
         self.load_config()
 
     def _set_base(self, base=None, create=False):
-        """ set the base for the watcher, ensuring that it exists.
+        """set the base for the watcher, ensuring that it exists.
 
-            Parameters
-            ==========
-            base: the base folder of watcher repos. Uses $HOME/.watchme default
-            create: create the watcher if it doesn't exist (default is False)
+        Parameters
+        ==========
+        base: the base folder of watcher repos. Uses $HOME/.watchme default
+        create: create the watcher if it doesn't exist (default is False)
         """
         if base is None:
             base = WATCHME_BASE_DIR
@@ -116,14 +110,14 @@ class Watcher(object):
 
     def edit_task(self, name, action, key, value=None):
         """edit a task, meaning doing an addition (add), update (update), or
-           "remove", All actions require a value other than remove.
+        "remove", All actions require a value other than remove.
 
-           Parameters
-           ==========
-           name: the name of the task to update
-           action: the action to take (update, add, remove) a parameter
-           key: the key to update
-           value: the value to update
+        Parameters
+        ==========
+        name: the name of the task to update
+        action: the action to take (update, add, remove) a parameter
+        key: the key to update
+        value: the value to update
         """
 
         if not self.has_task(name):
@@ -165,11 +159,11 @@ class Watcher(object):
 
     def has_section(self, name):
         """returns True or False to indicate if the watcher has a specified
-           section. To get a task, use self.has_task.
+        section. To get a task, use self.has_task.
 
-           Parameters
-           ==========
-           name: the name of the section to check for.
+        Parameters
+        ==========
+        name: the name of the section to check for.
         """
         self.load_config()
         if name in self.config._sections:
@@ -179,9 +173,9 @@ class Watcher(object):
 
     def load_config(self):
         """load a configuration file, and set the active setting for the watcher
-           if the file doesn't exist, the function will exit and prompt the user 
-           to create the watcher first. If the watcher section isn't yet defined,
-           it will be written with a default active status set to false.
+        if the file doesn't exist, the function will exit and prompt the user
+        to create the watcher first. If the watcher section isn't yet defined,
+        it will be written with a default active status set to false.
         """
         if not hasattr(self, "config"):
 
@@ -199,11 +193,11 @@ class Watcher(object):
 
     def _get_params_dict(self, pairs):
         """iterate through parameters, make keys lowercase, and ensure
-           valid format.
+        valid format.
 
-           Parameters
-           ==========
-           pairs: a list of key@value pairs to set.
+        Parameters
+        ==========
+        pairs: a list of key@value pairs to set.
         """
         params = {}
         for pair in pairs:
@@ -223,16 +217,16 @@ class Watcher(object):
 
     def add_task(self, task, task_type, params, force=False, active="true"):
         """add a task, meaning ensuring that the type is valid, and that
-           the parameters are valid for the task.
+        the parameters are valid for the task.
 
-           Parameters
-           ==========
-           task: the Task object to add, should have a name and params and
-                 be child of watchme.tasks.TaskBase
-           task_type: must be in WATCHME_TASK_TYPES, meaning a client exists
-           params: list of parameters to be validated (key@value)
-           force: if task already exists, overwrite
-           active: add the task as active (default "true")
+        Parameters
+        ==========
+        task: the Task object to add, should have a name and params and
+              be child of watchme.tasks.TaskBase
+        task_type: must be in WATCHME_TASK_TYPES, meaning a client exists
+        params: list of parameters to be validated (key@value)
+        force: if task already exists, overwrite
+        active: add the task as active (default "true")
         """
 
         # Check again, in case user calling from client
@@ -275,17 +269,17 @@ class Watcher(object):
     def _add_task(self, task, force=False, active="true"):
         """add a new task to the watcher, meaning we:
 
-           1. Check first that the task doesn't already exist (if the task
-              exists, we only add if force is set to true)
-           2. Validate the task (depends on the task)
-           3. write the task to the helper config file, if valid.
+        1. Check first that the task doesn't already exist (if the task
+           exists, we only add if force is set to true)
+        2. Validate the task (depends on the task)
+        3. write the task to the helper config file, if valid.
 
-           Parameters
-           ==========
-           task: the Task object to add, should have a name and params and
-                 be child of watchme.tasks.TaskBase
-           force: if task already exists, overwrite
-           active: add the task as active (default "true")
+        Parameters
+        ==========
+        task: the Task object to add, should have a name and params and
+              be child of watchme.tasks.TaskBase
+        force: if task already exists, overwrite
+        active: add the task as active (default "true")
         """
         self.load_config()
 
@@ -315,8 +309,7 @@ class Watcher(object):
     # Delete
 
     def delete(self):
-        """delete the entire watcher, only if not protected. Cannot be undone.
-        """
+        """delete the entire watcher, only if not protected. Cannot be undone."""
         self.load_config()
 
         # Check for protection
@@ -338,11 +331,11 @@ class Watcher(object):
 
     def remove_task(self, task):
         """remove a task from the watcher repo, if it exists, and the
-           watcher is not frozen.
+        watcher is not frozen.
 
-           Parameters
-           ==========
-           task: the name of the task to remove
+        Parameters
+        ==========
+        task: the name of the task to remove
         """
         if self.get_section(task) is not None:
             if self.is_frozen():
@@ -364,14 +357,14 @@ class Watcher(object):
 
     def inspect(self, tasks=None, create_command=False):
         """inspect a watcher, or one or more tasks belonging to it. This means
-           printing the configuration for the entire watcher (if tasks is None)
-           or just for one or more tasks.
- 
-           Parameters
-           ==========
-           tasks: one or more tasks to inspect (None will show entire file)
-           create_command: if True, given one or more tasks, print the command
-                           to create them.
+        printing the configuration for the entire watcher (if tasks is None)
+        or just for one or more tasks.
+
+        Parameters
+        ==========
+        tasks: one or more tasks to inspect (None will show entire file)
+        create_command: if True, given one or more tasks, print the command
+                        to create them.
         """
         self.load_config()
         if tasks is None:
@@ -400,24 +393,24 @@ class Watcher(object):
 
     def protect(self, status="on"):
         """protect a watcher, meaning that it cannot be deleted. This does
-           not influence removing a task. To freeze the entire watcher,
-           use the freeze() function.
+        not influence removing a task. To freeze the entire watcher,
+        use the freeze() function.
         """
         self._set_status("watcher", "protected", status)
         git_commit(self.repo, self.name, "PROTECT %s" % status)
         self.print_section("watcher")
 
     def freeze(self):
-        """freeze a watcher, meaning that it along with its tasks cannot be 
-           deleted. This does not prevent the user from manual editing.
+        """freeze a watcher, meaning that it along with its tasks cannot be
+        deleted. This does not prevent the user from manual editing.
         """
         self._set_status("watcher", "frozen", "on")
         git_commit(self.repo, self.name, "FREEZE")
         self.print_section("watcher")
 
     def unfreeze(self):
-        """freeze a watcher, meaning that it along with its tasks cannot be 
-           deleted. This does not prevent the user from manual editing.
+        """freeze a watcher, meaning that it along with its tasks cannot be
+        deleted. This does not prevent the user from manual editing.
         """
         self._set_status("watcher", "frozen", "off")
         git_commit(self.repo, self.name, "UNFREEZE")
@@ -425,12 +418,12 @@ class Watcher(object):
 
     def _set_status(self, section, setting, value):
         """a helper function to set a status, ensuring that status value
-           is in "on" or "off"
+        is in "on" or "off"
 
-           Parameters
-           ==========
-           status: one of "on" or "off"
-           name: a value to set status for.
+        Parameters
+        ==========
+        status: one of "on" or "off"
+        name: a value to set status for.
         """
         if value not in ["on", "off"]:
             bot.exit('Status must be "on" or "off"')
@@ -439,8 +432,8 @@ class Watcher(object):
 
     def is_protected(self):
         """return a boolean to indicate if the watcher is protected or frozen.
-           protected indicates no delete to the watcher, but allowed delete
-           to tasks, frozen indicates no change of anything.
+        protected indicates no delete to the watcher, but allowed delete
+        to tasks, frozen indicates no change of anything.
         """
         protected = False
         for status in ["protected", "frozen"]:
@@ -450,8 +443,8 @@ class Watcher(object):
 
     def is_frozen(self):
         """return a boolean to indicate if the watcher is frozen.
-           protected indicates no delete to the watcher, but allowed delete
-           to tasks, frozen indicates no change of anything.
+        protected indicates no delete to the watcher, but allowed delete
+        to tasks, frozen indicates no change of anything.
         """
         if self.get_setting("watcher", "frozen") == "on":
             return True
@@ -461,12 +454,12 @@ class Watcher(object):
 
     def _active_status(self, status="true", name=None):
         """a general function to change the status, used by activate and
-           deactivate.
- 
-           Parameters
-           ==========
-           status: must be one of true, false
-           name: if not None, we are deactivating a task (not the watcher)
+        deactivate.
+
+        Parameters
+        ==========
+        status: must be one of true, false
+        name: if not None, we are deactivating a task (not the watcher)
         """
         # Load the configuration, if not loaded
         self.load_config()
@@ -498,14 +491,13 @@ class Watcher(object):
         return message
 
     def activate(self, task=None):
-        """turn the active status of a watcher to True
-        """
+        """turn the active status of a watcher to True"""
         message = self._active_status("true", task)
         git_commit(self.repo, self.name, message)
 
     def deactivate(self, task=None):
         """turn the active status of a watcher to false. If a task is provided,
-           update the config value for the task to be false.
+        update the config value for the task to be false.
         """
         # If no task defined, user wants to deactiate watcher
         message = self._active_status("false", task)
@@ -513,7 +505,7 @@ class Watcher(object):
 
     def is_active(self, task=None):
         """determine if the watcher is active by reading from the config directly
-           if a task name is provided, check the active status of the task
+        if a task name is provided, check the active status of the task
         """
         if task is None:
             task = "watcher"
@@ -525,12 +517,12 @@ class Watcher(object):
 
     def get_decorator(self, name):
         """instantiate a task object for a decorator. Decorators must start
-           with "decorator-" and since they are run on the fly, we don't
-           find them in the config.
+        with "decorator-" and since they are run on the fly, we don't
+        find them in the config.
 
-           Parameters
-           ==========
-           name: the name of the task to load
+        Parameters
+        ==========
+        name: the name of the task to load
         """
 
         task = None
@@ -550,7 +542,7 @@ class Watcher(object):
 
     def has_task(self, name):
         """returns True or False to indicate if the watcher has a specified
-           task.
+        task.
         """
         self.load_config()
         if self.has_section(name) and name.startswith("task"):
@@ -559,12 +551,12 @@ class Watcher(object):
 
     def get_task(self, name):
         """get a particular task, based on the name. This is where each type
-           of class should check the "type" parameter from the config, and
-           import the correct Task class.
+        of class should check the "type" parameter from the config, and
+        import the correct Task class.
 
-           Parameters
-           ==========
-           name: the name of the task to load
+        Parameters
+        ==========
+        name: the name of the task to load
         """
         self.load_config()
 
@@ -602,13 +594,13 @@ class Watcher(object):
 
     def _task_selected(self, task, regexp=None, active=True):
         """check if a task is active and (if defined) passes user provided
-           task names or regular expressions.
+        task names or regular expressions.
 
-           Parameters
-           ==========
-           task: the task object to check
-           regexp: an optional regular expression (or name) to check
-           active: a task is selected if it's active (default True)
+        Parameters
+        ==========
+        task: the task object to check
+        regexp: an optional regular expression (or name) to check
+        active: a task is selected if it's active (default True)
         """
         selected = True
 
@@ -632,15 +624,15 @@ class Watcher(object):
 
     def get_tasks(self, regexp=None, quiet=False, active=True):
         """get the tasks for a watcher, possibly matching a regular expression.
-           A list of dictionaries is returned, each holding the parameters for
-           a task. "uri" will hold the task (folder) name, active
+        A list of dictionaries is returned, each holding the parameters for
+        a task. "uri" will hold the task (folder) name, active
 
-           Parameters
-           ==========
-           regexp: if supplied, the user wants to run only tasks that match
-                   a particular pattern
-           quiet: If quiet, don't print the number of tasks found
-           active: only return active tasks (default True)
+        Parameters
+        ==========
+        regexp: if supplied, the user wants to run only tasks that match
+                a particular pattern
+        quiet: If quiet, don't print the number of tasks found
+        active: only return active tasks (default True)
         """
         self.load_config()
 
@@ -663,22 +655,22 @@ class Watcher(object):
 
     def run_tasks(self, queue, parallel=True, show_progress=True):
         """this run_tasks function takes a list of Task objects, each
-           potentially a different kind of task, and extracts the parameters
-           with task.export_params(), and the running function with 
-           task.export_func(), and hands these over to the multiprocessing
-           worker. It's up to the Task to return some correct function
-           from it's set of task functions that correspond with the variables.
+        potentially a different kind of task, and extracts the parameters
+        with task.export_params(), and the running function with
+        task.export_func(), and hands these over to the multiprocessing
+        worker. It's up to the Task to return some correct function
+        from it's set of task functions that correspond with the variables.
 
-           Examples
-           ========
+        Examples
+        ========
 
-           funcs
-           {'task-reddit-hpc': <function watchme.watchers.urls.tasks.get_task>}
+        funcs
+        {'task-reddit-hpc': <function watchme.watchers.urls.tasks.get_task>}
 
-           tasks
-           {'task-reddit-hpc': [('url', 'https://www.reddit.com/r/hpc'),
-                                ('active', 'true'),
-                                ('type', 'urls')]}
+        tasks
+        {'task-reddit-hpc': [('url', 'https://www.reddit.com/r/hpc'),
+                             ('active', 'true'),
+                             ('type', 'urls')]}
         """
         if parallel is True:
             return self._run_parallel(queue, show_progress)
@@ -702,12 +694,12 @@ class Watcher(object):
         return results
 
     def _run_parallel(self, queue, show_progress=True):
-        """ run tasks in parallel using the Workers class. Returns a dictionary
-            (lookup) wit results, with the key being the task name
+        """run tasks in parallel using the Workers class. Returns a dictionary
+        (lookup) wit results, with the key being the task name
 
-            Parameters
-            ==========
-            queue: the list of task objects to run
+        Parameters
+        ==========
+        queue: the list of task objects to run
         """
         from watchme.tasks.worker import Workers
 
@@ -727,22 +719,22 @@ class Watcher(object):
     def run(self, regexp=None, parallel=True, test=False, show_progress=True):
         """run the watcher, which should be done via the crontab, including:
 
-             - checks: the instantiation of the client already ensures that 
-                       the watcher folder exists, and has a configuration,
-                       and it loads.
-             - parse: parse the tasks to be run
-             - start: run the tasks that are defined for the watcher.
-             - finish: after completion, commit to the repository changed files
+          - checks: the instantiation of the client already ensures that
+                    the watcher folder exists, and has a configuration,
+                    and it loads.
+          - parse: parse the tasks to be run
+          - start: run the tasks that are defined for the watcher.
+          - finish: after completion, commit to the repository changed files
 
-           Parameters
-           ==========
-           regexp: if supplied, the user wants to run only tasks that match
-                   a particular pattern         
-           parallel: if True, use multiprocessing to run tasks (True)
-                     each watcher should have this setup ready to go. 
-           test: run in test mode (no saving of results)
-           show_progress: if True, show progress bar instead of task information
-                          (defaults to True)
+        Parameters
+        ==========
+        regexp: if supplied, the user wants to run only tasks that match
+                a particular pattern
+        parallel: if True, use multiprocessing to run tasks (True)
+                  each watcher should have this setup ready to go.
+        test: run in test mode (no saving of results)
+        show_progress: if True, show progress bar instead of task information
+                       (defaults to True)
         """
 
         # Step 1: determine if the watcher is active.
@@ -765,14 +757,14 @@ class Watcher(object):
 
     def finish_runs(self, results):
         """finish runs should take a dictionary of results, with keys as the
-           folder name, and for each, depending on the result type,
-           write the result to file (or update file) and then commit
-           to git.
+        folder name, and for each, depending on the result type,
+        write the result to file (or update file) and then commit
+        to git.
 
-           Parameters
-           ==========
-           results: a dictionary of tasks, with keys as the task name, and
-                    values as the result.
+        Parameters
+        ==========
+        results: a dictionary of tasks, with keys as the task name, and
+                 values as the result.
         """
         if results is None:
             return

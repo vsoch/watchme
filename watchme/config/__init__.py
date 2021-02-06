@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.defaults import WATCHME_WATCHER, WATCHME_BASE_DIR, WATCHME_DEFAULT_TYPE
@@ -21,14 +15,12 @@ import os
 
 
 def get_configfile_template():
-    """return the full path to the default configuration file
-    """
+    """return the full path to the default configuration file"""
     return _get_config("watchme.cfg")
 
 
 def _get_config(name):
-    """shared function to return a file in the config directory
-    """
+    """shared function to return a file in the config directory"""
     return os.path.abspath(os.path.join(get_installdir(), "config", name))
 
 
@@ -36,8 +28,7 @@ def _get_config(name):
 
 
 def get_configfile(name, base=None):
-    """return the full path to a specific watcher configuration
-    """
+    """return the full path to a specific watcher configuration"""
     if base is None:
         base = WATCHME_BASE_DIR
 
@@ -50,16 +41,14 @@ def get_configfile(name, base=None):
 
 
 def write_config(filename, config, mode="w"):
-    """use configparser to write a config object to filename
-    """
+    """use configparser to write a config object to filename"""
     with open(filename, mode) as filey:
         config.write(filey)
     return filename
 
 
 def read_config(filename):
-    """use configparser to write a config object to filename
-    """
+    """use configparser to write a config object to filename"""
     check_exists(filename)
     config = configparser.ConfigParser()
     config.read(filename)
@@ -71,11 +60,11 @@ def read_config(filename):
 
 def generate_watcher_config(path, watcher_type=None):
     """generate a watcher config, meaning a watcher folder in the watchme
-       base folder.
+    base folder.
 
-       Parameters
-       ==========
-       path: the path to the watcher repository
+    Parameters
+    ==========
+    path: the path to the watcher repository
     """
     check_exists(path)
     configfile = get_configfile_template()
@@ -102,7 +91,6 @@ def generate_watcher_config(path, watcher_type=None):
 
 
 def check_exists(filename):
-    """a general helper function to check for existence, and exit if not found.
-    """
+    """a general helper function to check for existence, and exit if not found."""
     if not os.path.exists(filename):
         bot.exit("Cannot find %s" % filename)

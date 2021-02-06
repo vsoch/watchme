@@ -81,5 +81,4 @@ the above is from the urls watcher type, since it will watch web pages for chang
 
 ## Licenses
 
-This code is licensed under the Affero GPL, version 3.0 or later [LICENSE](LICENSE).
-The SIF Header format is licesed by [Sylabs](https://github.com/sylabs/sif/blob/master/pkg/sif/sif.go).
+This code is licensed under the Mozilla, version 2.0 or later [LICENSE](LICENSE).

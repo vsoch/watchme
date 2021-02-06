@@ -1,16 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-The watcher is actually a connection to crontab. This is what helps to schedule
-the watched to check for changes at some frequency, and update the files.
-
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 import sys
 import time

@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.command import get_commits, git_show, git_date
@@ -28,15 +22,15 @@ def export_dict(
 ):
     """Export a data frame of changes for a filename over time.
 
-       Parameters
-       ==========
-       task: the task folder for the watcher to look in
-       name: the name of the watcher, defaults to the client's
-       base: the base of watchme to look for the task folder
-       from_commit: the commit to start at
-       to_commit: the commit to go to
-       grep: the expression to match (not used if None)
-       filename: the filename to filter to. Includes all files if not specified.
+    Parameters
+    ==========
+    task: the task folder for the watcher to look in
+    name: the name of the watcher, defaults to the client's
+    base: the base of watchme to look for the task folder
+    from_commit: the commit to start at
+    to_commit: the commit to go to
+    grep: the expression to match (not used if None)
+    filename: the filename to filter to. Includes all files if not specified.
     """
     if name is None:
         name = self.name

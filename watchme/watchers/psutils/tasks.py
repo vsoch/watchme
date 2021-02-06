@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from subprocess import check_output, CalledProcessError
 from watchme.utils import get_watchme_env
@@ -16,14 +10,14 @@ import psutil
 
 def monitor_pid_task(**kwargs):
     """monitor a specific process. This function can be used as a task, or
-       is (most likely used) for the psutils.decorators. A pid parameter
-       is required.
+    is (most likely used) for the psutils.decorators. A pid parameter
+    is required.
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
-       pid: the process id or name (required)
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
+    pid: the process id or name (required)
     """
     pid = kwargs.get("pid", None)
 
@@ -177,10 +171,10 @@ def monitor_pid_task(**kwargs):
 def cpu_task(**kwargs):
     """Get variables about the cpu of the host. No parameters are required.
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
     """
     result = {}
 
@@ -200,10 +194,10 @@ def cpu_task(**kwargs):
 def python_task(**kwargs):
     """Get modules, version, etc. about currently running python
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
     """
     # A comma separated list of parameters to not include
     skip = kwargs.get("skip", "")
@@ -224,10 +218,10 @@ def python_task(**kwargs):
 def system_task(**kwargs):
     """Get basic system info, unlikely to change.
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
     """
     # A comma separated list of parameters to not include
     skip = kwargs.get("skip", "")
@@ -271,8 +265,7 @@ def system_task(**kwargs):
 
 
 def memory_task(**kwargs):
-    """Get values for memory of the host. No parameters are required.
-    """
+    """Get values for memory of the host. No parameters are required."""
 
     result = {}
 
@@ -287,8 +280,7 @@ def memory_task(**kwargs):
 
 
 def users_task(**kwargs):
-    """Get values for current users
-    """
+    """Get values for current users"""
 
     result = {"users": []}
     for user in psutil.users():
@@ -302,8 +294,7 @@ def users_task(**kwargs):
 
 
 def sensors_task(**kwargs):
-    """Get values from system sensors like fans, temperature, battery
-    """
+    """Get values from system sensors like fans, temperature, battery"""
 
     # A comma separated list of parameters to not include
     skip = kwargs.get("skip", "")
@@ -349,10 +340,10 @@ def sensors_task(**kwargs):
 def net_task(**kwargs):
     """Get values for networking on the host
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
     """
     result = {}
 
@@ -418,11 +409,11 @@ def net_task(**kwargs):
 def disk_task(**kwargs):
     """Get values for disks on the host
 
-       Parameters
-       ==========
-       disk_usage: an optional path to get disk usage for.
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    disk_usage: an optional path to get disk usage for.
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
 
     """
     # A comma separated list of parameters to not include
@@ -448,13 +439,13 @@ def disk_task(**kwargs):
 
 
 def _filter_result(result, skip):
-    """a helper function to filter a dictionary based on a list of keys to 
-       skip. We also add variables from the environment.
-    
-       Parameters
-       ==========
-       result: a dictionary of results
-       skip: a list of keys to remove/filter from the result.
+    """a helper function to filter a dictionary based on a list of keys to
+    skip. We also add variables from the environment.
+
+    Parameters
+    ==========
+    result: a dictionary of results
+    skip: a list of keys to remove/filter from the result.
     """
 
     # Add any environment variables prefixed wit WATCHMEENV_
@@ -470,10 +461,10 @@ def _filter_result(result, skip):
 
 def _get_pid(name):
     """used to get the pid of a process, by name
-       
-       Parameters
-       ==========
-       name: the name of the process to get.
+
+    Parameters
+    ==========
+    name: the name of the process to get.
     """
     try:
         pid = check_output(["pidof", name])

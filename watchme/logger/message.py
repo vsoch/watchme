@@ -1,15 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-The watcher is actually a connection to crontab. This is what helps to schedule
-the watched to check for changes at some frequency, and update the files.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 import os
 import sys
@@ -107,8 +98,7 @@ class WatchMeMessage:
         return False
 
     def isEnabledFor(self, messageLevel):
-        """check if a messageLevel is enabled to emit a level
-        """
+        """check if a messageLevel is enabled to emit a level"""
         if messageLevel <= self.level:
             return True
         return False
@@ -259,8 +249,7 @@ class WatchMeMessage:
         self.emit(DEBUG, message, "DEBUG")
 
     def is_quiet(self):
-        """is_quiet returns true if the level is under 1
-        """
+        """is_quiet returns true if the level is under 1"""
         if self.level < 1:
             return False
         return True
@@ -268,7 +257,7 @@ class WatchMeMessage:
     # Terminal ------------------------------------------
 
     def table(self, rows, col_width=2):
-        """table will print a table of entries. If the rows is 
+        """table will print a table of entries. If the rows is
         a dictionary, the keys are interpreted as column names. if
         not, a numbered list is used.
         """

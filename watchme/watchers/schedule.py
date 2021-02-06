@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.utils import which
@@ -17,8 +11,8 @@ from crontab import CronTab
 
 def remove_schedule(self, name=None, quiet=False):
     """remove a scheduled item from crontab, this is based on the watcher
-       name. By default, we use the watcher instance name, however you
-       can specify a custom name if desired.
+    name. By default, we use the watcher instance name, however you
+    can specify a custom name if desired.
     """
     if name is None:
         name = self.name
@@ -38,16 +32,14 @@ def remove_schedule(self, name=None, quiet=False):
 
 
 def has_schedule(self, must_exist=False):
-    """determine if a watcher already has a schedule, as a warning to the user.
-    """
+    """determine if a watcher already has a schedule, as a warning to the user."""
     if self.get_job(must_exist=False) is None:
         return False
     return True
 
 
 def get_job(self, must_exist=True):
-    """return the job to the user, or None
-    """
+    """return the job to the user, or None"""
     # Find the job based on a standard of comment
     cron = self.get_crontab()
     comment = "watchme-%s" % self.name
@@ -62,18 +54,17 @@ def get_job(self, must_exist=True):
 
 
 def get_crontab(self):
-    """get an instance of the user's crontab. We use the running user.
-    """
+    """get an instance of the user's crontab. We use the running user."""
     # Create an instance of the user's crontab
     return CronTab(user=True)
 
 
 def update_schedule(self, minute=12, hour="*", month="*", day="*"):
     """update a scheduled item from the crontab, with a new entry. This
-       first looks for the entry (and removes it) and then clls the new_
-       schedule function to write a new one. This function is intended
-       to be used by a client from within Python, and isn't exposed from
-       the command line.
+    first looks for the entry (and removes it) and then clls the new_
+    schedule function to write a new one. This function is intended
+    to be used by a client from within Python, and isn't exposed from
+    the command line.
     """
     job = self.get_job(must_exist=True)
 
@@ -88,7 +79,7 @@ def update_schedule(self, minute=12, hour="*", month="*", day="*"):
 
 def clear_schedule(self):
     """clear all cron jobs associated with the watcher. To remove jobs
-       associated with a single watcher, use remove_schedule
+    associated with a single watcher, use remove_schedule
     """
     cron = self.get_crontab()
     bot.info("Clearing jobs associated with all watchers")
@@ -103,24 +94,24 @@ def schedule(
     self, minute=12, hour=0, month="*", day="*", weekday="*", job=None, force=False
 ):
     """schedule the watcher to run at some frequency to update record of pages.
-       By default, the task will run at 12 minutes passed midnight, daily.
-       You can change the variables to change the frequency. See
-       https://crontab.guru/ to get a setting that works for you.
+    By default, the task will run at 12 minutes passed midnight, daily.
+    You can change the variables to change the frequency. See
+    https://crontab.guru/ to get a setting that works for you.
 
-            Hourly:	0 * * * *
-            Daily:	0 0 * * *    (midnight) default
-            weekly	0 0 * * 0
-            monthly	0 0 1 * *
-            yearly	0 0 1 1 *
+    Hourly:  0 * * * *
+    Daily:   0 0 * * *    (midnight) default
+    weekly:  0 0 * * 0
+    monthly: 0 0 1 * *
+    yearly:  0 0 1 1 *
 
-       Parameters
-       ==========
-       minute: must be within 1 and 60, or set to "*" for every minute
-       hour: must be within 0 through 23 or set to *
-       month: must be within 1 and 12, or *
-       day: must be between 1 and 31, or *
-       weekday: must be between 0 and 6 or *
-       job: if provided, assumes we are updated an existing entry.
+    Parameters
+    ==========
+    minute: must be within 1 and 60, or set to "*" for every minute
+    hour: must be within 0 through 23 or set to *
+    month: must be within 1 and 12, or *
+    day: must be between 1 and 31, or *
+    weekday: must be between 0 and 6 or *
+    job: if provided, assumes we are updated an existing entry.
     """
     cron = self.get_crontab()
 

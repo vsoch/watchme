@@ -182,13 +182,15 @@ $ watchme add-task watcher task-singularity-release url@https://github.com/sylab
 url  = https://github.com/sylabs/singularity/releases
 active  = true
 type  = urls
+save_as = text
 ```
 
 In the example above, we added a task called "task-singularity-release" to the default
 watcher "watcher." The only required variable is the url, and we provided it
 in the format `<key>@<value>`. This is how you will add any parameter to a task,
-and the parameters allowed will vary based on the task type. In the above, we didn't
-define a `--type` variable. By default, the setting is `--type url`. After
+and the parameters allowed will vary based on the task type. We also specified that the page
+we are going to retrieve is `save_as` text, meaning that it's not json (default).
+In the above, we didn't define a `--type` variable. By default, the setting is `--type url`. After
 you add a task, you can quickly verify it was added by looking at the configuration file
 directly:
 
@@ -203,6 +205,7 @@ active = false
 url = https://github.com/sylabs/singularity/releases
 active = true
 type = urls
+save_as = text
 ```
 
 While you don't need to manually edit this file, there isn't any reason that you can't if you wanted to. 

@@ -1,15 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-The original license (2011-2015) is included below.
-
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 #####
 # Copyright (c) 2011-2015, NVIDIA Corporation.  All rights reserved.
@@ -424,19 +415,19 @@ c_nvmlUnit_t = POINTER(struct_c_nvmlUnit_t)
 
 class _PrintableStructure(Structure):
     """Abstract class that produces nicer __str__ output than ctypes.Structure.
-       e.g. instead of:
-          >>> print(str(obj))
-             <class_name object at 0x7fdf82fef9e0>
-       this class will print
-         class_name(field_name: formatted_value, field_name: formatted_value)
-         _fmt_ dictionary of <str _field_ name> -> <str format>
-        e.g. class that has _field_ 'hex_value', c_uint could be formatted with
-       _fmt_ = {"hex_value" : "%08X"}
-       to produce nicer output.
-       Default fomratting string for all fields can be set with key "<default>" like:
-       _fmt_ = {"<default>" : "%d MHz"} # e.g all values are numbers in MHz.
-       If not set it's assumed to be just "%s"
-      Exact format of returned str from this class is subject to change in the future.
+     e.g. instead of:
+        >>> print(str(obj))
+           <class_name object at 0x7fdf82fef9e0>
+     this class will print
+       class_name(field_name: formatted_value, field_name: formatted_value)
+       _fmt_ dictionary of <str _field_ name> -> <str format>
+      e.g. class that has _field_ 'hex_value', c_uint could be formatted with
+     _fmt_ = {"hex_value" : "%08X"}
+     to produce nicer output.
+     Default fomratting string for all fields can be set with key "<default>" like:
+     _fmt_ = {"<default>" : "%d MHz"} # e.g all values are numbers in MHz.
+     If not set it's assumed to be just "%s"
+    Exact format of returned str from this class is subject to change in the future.
     """
 
     _fmt_ = {}
