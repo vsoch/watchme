@@ -1,10 +1,8 @@
 #!/usr/bin/python
 
-# Copyright (C) 2019-2020 Vanessa Sochat.
-
-# This Source Code Form is subject to the terms of the
-# Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-# with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 import unittest
 import tempfile
@@ -25,8 +23,7 @@ class TestUtils(unittest.TestCase):
         shutil.rmtree(self.tmpdir)
 
     def test_write_read_files(self):
-        """test_write_read_files will test the functions write_file and read_file
-        """
+        """test_write_read_files will test the functions write_file and read_file"""
         print("Testing utils.write_file")
         from watchme.utils import write_file
 

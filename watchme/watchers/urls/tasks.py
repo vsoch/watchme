@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from .helpers import get_params, get_results, get_headers, parse_success_response
@@ -17,17 +11,17 @@ import requests
 
 def get_task(url, **kwargs):
     """a simple task to use requests to get a url. By default, we return
-       the raw response.
+    the raw response.
 
-       Parameters
-       ==========
+    Parameters
+    ==========
 
-       REQUIRED:
-           url: a url to return the page for
+    REQUIRED:
+        url: a url to return the page for
 
-       OPTIONAL
-           regex: a regular expression to search the text for (not used w/ json)
-           save_as: return the result to save as json
+    OPTIONAL
+        regex: a regular expression to search the text for (not used w/ json)
+        save_as: return the result to save as json
     """
     results = []
     paramsets = get_params(kwargs)
@@ -53,11 +47,11 @@ def get_task(url, **kwargs):
 def post_task(url, **kwargs):
     """a simple task to use requests to post to. By default, we return json.
 
-       Parameters
-       ==========
+    Parameters
+    ==========
 
-       REQUIRED:
-           url: a url to post to
+    REQUIRED:
+        url: a url to post to
     """
     results = []
 
@@ -90,17 +84,17 @@ def post_task(url, **kwargs):
 
 def download_task(url, **kwargs):
     """a simple task to use requests to get a url. By default, we return
-       the raw response.
+    the raw response.
 
-       Parameters
-       ==========
+    Parameters
+    ==========
 
-       REQUIRED:
-           url: a url to download (stream)
+    REQUIRED:
+        url: a url to download (stream)
 
-       OPTIONAL:
-           write_format: to change from default "w"
-           disable_ssl_check: set to anything to not verify (not recommended)
+    OPTIONAL:
+        write_format: to change from default "w"
+        disable_ssl_check: set to anything to not verify (not recommended)
     """
     result = None
 
@@ -148,9 +142,9 @@ def download_task(url, **kwargs):
 def get_url_selection(url, **kwargs):
     """select some content from a page dynamically, using selenium.
 
-       Parameters
-       ==========
-       kwargs: a dictionary of key, value pairs provided by the user
+    Parameters
+    ==========
+    kwargs: a dictionary of key, value pairs provided by the user
     """
 
     results = None

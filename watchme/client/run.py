@@ -1,19 +1,13 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme import get_watcher
 
 
 def main(args, extra):
     """run a watcher, optionally supplying one or more regular expressions to
-       check for.
+    check for.
     """
     # Required - will print help if not provided
     name = args.watcher[0]

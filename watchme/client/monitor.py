@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.command import get_watchers
 from watchme import get_watcher
@@ -16,8 +10,8 @@ import json
 
 def main(args, extra):
     """monitor a task (from the command line), meaning wrapping it with
-       multiprocessing, getting the id, and returning a result (command line 
-       or written to file)
+    multiprocessing, getting the id, and returning a result (command line
+    or written to file)
     """
     # The first argument will either be part of a command, or a watcher
     watcher = args.watcher

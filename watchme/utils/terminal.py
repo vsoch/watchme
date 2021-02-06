@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 
 from subprocess import Popen, PIPE, STDOUT
@@ -18,8 +12,7 @@ import shlex
 
 
 def which(software, strip_newline=True):
-    """get_install will return the path to where an executable is installed.
-    """
+    """get_install will return the path to where an executable is installed."""
     if software is None:
         software = "watchme"
     cmd = "which %s" % software
@@ -36,8 +29,7 @@ def which(software, strip_newline=True):
 
 
 def get_installdir():
-    """get_installdir returns the installation directory of the application
-    """
+    """get_installdir returns the installation directory of the application"""
     return os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
@@ -88,7 +80,7 @@ def convert2boolean(arg):
 
 def get_watchme_env(prefix="WATCHMEENV_"):
     """get any environment variables that start with WATCMEENV_, return the
-       dictionary to the user.
+    dictionary to the user.
     """
     environ = {}
 

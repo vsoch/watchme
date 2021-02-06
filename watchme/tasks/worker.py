@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.defaults import WATCHME_WORKERS
@@ -37,14 +31,14 @@ class Workers(object):
 
     def run(self, funcs, tasks):
         """run will send a list of tasks, a tuple with arguments, through a function.
-           the arguments should be ordered correctly.
-        
-           Parameters
-           ==========
-           funcs: the functions to run with multiprocessing.pool, a dictionary
-                  with lookup by the task name
-           tasks: a dict of tasks, each task name (key) with a 
-                  tuple of arguments to process
+        the arguments should be ordered correctly.
+
+        Parameters
+        ==========
+        funcs: the functions to run with multiprocessing.pool, a dictionary
+               with lookup by the task name
+        tasks: a dict of tasks, each task name (key) with a
+               tuple of arguments to process
         """
         # Number of tasks must == number of functions
         assert len(funcs) == len(tasks)

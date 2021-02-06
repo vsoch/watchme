@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.utils import write_file, write_json
@@ -34,8 +28,7 @@ class TaskBase(object):
         self.validate()
 
     def get_type(self):
-        """get the watcher type.
-        """
+        """get the watcher type."""
         return self.type
 
     # Identification
@@ -51,9 +44,9 @@ class TaskBase(object):
     def set_params(self, params):
         """iterate through parameters, set into dictionary.
 
-           Parameters
-           ==========
-           params: a list of key@value pairs to set.
+        Parameters
+        ==========
+        params: a list of key@value pairs to set.
         """
         for key, value in params.items():
             key = key.lower()
@@ -61,7 +54,7 @@ class TaskBase(object):
 
     def export_params(self, active="true"):
         """export parameters, meaning returning a dictionary of the task
-           parameters plus the addition of the task type and active status.
+        parameters plus the addition of the task type and active status.
         """
         params = self.params.copy()
         params["active"] = active
@@ -72,8 +65,8 @@ class TaskBase(object):
 
     def validate(self):
         """validate the parameters set for the Task. Exit if there are any
-           errors. Ensure required parameters are defined, and have correct
-           values.
+        errors. Ensure required parameters are defined, and have correct
+        values.
         """
         self.valid = True
 
@@ -86,15 +79,14 @@ class TaskBase(object):
         self._validate()
 
     def _validate(self):
-        """validation function intended to be implemented by subclass.
-        """
+        """validation function intended to be implemented by subclass."""
         return
 
     # Run Single Task
 
     def run(self):
         """run an isolated task, meaning no update or communication with
-           the watcher. This will return the raw result.
+        the watcher. This will return the raw result.
         """
         params = self.export_params()
         func = self.export_func()
@@ -106,13 +98,13 @@ class TaskBase(object):
 
     def write_results(self, result, repo):
         """an entrypoint function for a general task. By default, we parse
-           results based on the result type. Any particular subclass of the
-           TaskBase can modify or extend these functions.
+        results based on the result type. Any particular subclass of the
+        TaskBase can modify or extend these functions.
 
-           Parameters
-           ==========
-           result: the result object to parse
-           repo: the repo base (watcher.repo)
+        Parameters
+        ==========
+        result: the result object to parse
+        repo: the repo base (watcher.repo)
         """
         files = []
 
@@ -176,13 +168,13 @@ class TaskBase(object):
 
     def _save_str_result(self, files, result, repo):
         """a helper function to return a list of files with added string
-           results. We do this twice in the saving function.
+        results. We do this twice in the saving function.
 
-           Parameters
-           ==========
-           files: the list of files to save (returned at the end)
-           result: the result object to parse, should be string
-           repo: the repo to write it to.
+        Parameters
+        ==========
+        files: the list of files to save (returned at the end)
+        result: the result object to parse, should be string
+        repo: the repo to write it to.
         """
         # if it's a path to a file, just save to repository
         if os.path.exists(result):
@@ -196,15 +188,15 @@ class TaskBase(object):
 
     def _save_list(self, results, repo, func, file_name):
         """general function to perform saving a list of content to json,
-           text, or moving paths. Used by save_file_list, save_json_list,
-           and save_text_list.
+        text, or moving paths. Used by save_file_list, save_json_list,
+        and save_text_list.
 
-           Parameters
-           ==========
-           results: list of results, assumed to be the correct type
-           repo: the repository base with the task folder
-           func: the function to call.
-           file_name: the base file name to use.
+        Parameters
+        ==========
+        results: list of results, assumed to be the correct type
+        repo: the repository base with the task folder
+        func: the function to call.
+        file_name: the base file name to use.
         """
         file_name, ext = os.path.splitext(file_name)
         files = []
@@ -218,11 +210,11 @@ class TaskBase(object):
 
     def _save_text(self, result, repo, file_name=None):
         """save a general text object to file.
- 
-           Parameters
-           ==========
-           result: the result object to save, should be path to a file
-           repo: the repository base with the task folder
+
+        Parameters
+        ==========
+        result: the result object to save, should be path to a file
+        repo: the repository base with the task folder
         """
         file_name = self.params.get("file_name", file_name) or "result.txt"
         task_folder = os.path.join(repo, self.name)
@@ -232,11 +224,11 @@ class TaskBase(object):
 
     def _save_file(self, result, repo, file_name=None):
         """for a result that exists, move the file to final destination.
- 
-           Parameters
-           ==========
-           result: the result object to save, should be path to a file
-           repo: the repository base with the task folder
+
+        Parameters
+        ==========
+        result: the result object to save, should be path to a file
+        repo: the repository base with the task folder
         """
         if os.path.exists(result):
             name = os.path.basename(result)
@@ -254,10 +246,10 @@ class TaskBase(object):
 
     def _save_json(self, result, repo, file_name=None):
         """for a result that is a dictionary or list, save as json
- 
-           Parameters
-           ==========
-           result: the result object to save, should be dict or list
+
+        Parameters
+        ==========
+        result: the result object to save, should be dict or list
         """
         file_name = self.params.get("file_name", file_name) or "result.json"
         destination = os.path.join(repo, self.name, file_name)
@@ -266,11 +258,11 @@ class TaskBase(object):
 
     def _save_files_list(self, results, repo):
         """If the user provides already existing files, we simply move them
-           into the task folder in the repository.
- 
-           Parameters
-           ==========
-           results: the results to save, should a list of files
+        into the task folder in the repository.
+
+        Parameters
+        ==========
+        results: the results to save, should a list of files
         """
         files = []
         for result in results:
@@ -283,33 +275,33 @@ class TaskBase(object):
 
     def _save_json_list(self, results, repo):
         """A wrapper around save json for a list, handles file naming.
- 
-           Parameters
-           ==========
-           results: the results to save, should a list
+
+        Parameters
+        ==========
+        results: the results to save, should a list
         """
         file_name = self.params.get("file_name", "result.json")
         return self._save_list(results, repo, self._save_json, file_name)
 
     def _save_file_list(self, results, repo):
-        """for a list of results that exist, move the files to 
-           final destination.
- 
-           Parameters
-           ==========
-           results: list of paths to a file, those not existing are skipped
-           repo: the repository base with the task folder
+        """for a list of results that exist, move the files to
+        final destination.
+
+        Parameters
+        ==========
+        results: list of paths to a file, those not existing are skipped
+        repo: the repository base with the task folder
         """
         file_name = self.params.get("file_name", os.path.basename(results))
         return self._save_list(results, repo, self._save_file, file_name)
 
     def _save_text_list(self, results, repo):
         """for a list of general text results, write them to output files.
- 
-           Parameters
-           ==========
-           results: list of string results to write to file
-           repo: the repository base with the task folder
+
+        Parameters
+        ==========
+        results: list of string results to write to file
+        repo: the repository base with the task folder
         """
         file_name = self.params.get("file_name", "result.txt")
         return self._save_list(results, repo, self._save_text, file_name)

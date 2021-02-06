@@ -20,11 +20,11 @@ import shutil
 
 def get_watchers(base=None, quiet=False):
     """list the watchers installed at a base. If base is not defined,
-       the default base is used.
+    the default base is used.
 
-       Parameters
-       ==========
-       base: the watchme base, defaults to $HOME/.watchme
+    Parameters
+    ==========
+    base: the watchme base, defaults to $HOME/.watchme
     """
     if base is None:
         base = WATCHME_BASE_DIR
@@ -41,9 +41,9 @@ def get_watchers(base=None, quiet=False):
 def list_watcher(watcher, base=None):
     """list the contents (tasks) of a single watcher.
 
-       Parameters
-       ==========
-       base: the watchme base, defaults to $HOME/.watchme
+    Parameters
+    ==========
+    base: the watchme base, defaults to $HOME/.watchme
     """
     if base is None:
         base = WATCHME_BASE_DIR
@@ -55,11 +55,11 @@ def list_watcher(watcher, base=None):
 def list_task(watcher, task, base=None):
     """list the contents (result files) of a task folder beloning to a watcher.
 
-       Parameters
-       ==========
-       watcher: the watcher folder to use
-       task: the task folder within
-       base: the watchme base, defaults to $HOME/.watchme
+    Parameters
+    ==========
+    watcher: the watcher folder to use
+    task: the task folder within
+    base: the watchme base, defaults to $HOME/.watchme
     """
     if base is None:
         base = WATCHME_BASE_DIR
@@ -71,11 +71,11 @@ def list_task(watcher, task, base=None):
 def _general_list(path, prefix="path", base=None):
     """a shared function for listing (and returning) files.
 
-       Parameters
-       ==========
-       path: the full path to list, if it exists
-       prefix: a prefix to print for the type
-       base: the watchme base, defaults to $HOME/.watchme
+    Parameters
+    ==========
+    path: the full path to list, if it exists
+    prefix: a prefix to print for the type
+    base: the watchme base, defaults to $HOME/.watchme
     """
     if base is None:
         base = WATCHME_BASE_DIR
@@ -89,24 +89,23 @@ def _general_list(path, prefix="path", base=None):
 
 
 def list_watcher_types():
-    """list the exporter options provided by watchme
-    """
+    """list the exporter options provided by watchme"""
     bot.custom(prefix="watchme:", message="watcher task types", color="CYAN")
     bot.info("\n  ".join(WATCHME_TASK_TYPES))
 
 
 def clone_watcher(repo, base=None, name=None):
     """clone a watcher from Github (or other version control with git)
-       meaning that we clone to a temporary folder, and then move
-       to a new folder. By default, the user gets all tasks associated
-       with the watcher, along with the git folder so that removing
-       is also done with version control.
+    meaning that we clone to a temporary folder, and then move
+    to a new folder. By default, the user gets all tasks associated
+    with the watcher, along with the git folder so that removing
+    is also done with version control.
 
-       Parameters
-       ==========
-       repo: the repository to clone
-       base: the watchme base, defaults to $HOME/.watchme
-       name: a new name for the watcher, if a rename is desired.
+    Parameters
+    ==========
+    repo: the repository to clone
+    base: the watchme base, defaults to $HOME/.watchme
+    name: a new name for the watcher, if a rename is desired.
     """
     if base is None:
         base = WATCHME_BASE_DIR

@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 import requests
 import re
@@ -15,14 +9,14 @@ import re
 
 
 def get_params(kwargs, key="url_param_"):
-    """a general function to get parameter sets based on a user input. 
-       Returns a list of dictionaries, one per set.
+    """a general function to get parameter sets based on a user input.
+    Returns a list of dictionaries, one per set.
 
-       Parameters
-       ==========
-       kwargs: the dictionary of keyword arguments that may contain url
-               parameters (format is url_param_<name>
-       key: the string that the parameters start with (defaults to url_param)
+    Parameters
+    ==========
+    kwargs: the dictionary of keyword arguments that may contain url
+            parameters (format is url_param_<name>
+    key: the string that the parameters start with (defaults to url_param)
     """
     # Keey dictionary based on index of param
     params = {}
@@ -58,14 +52,14 @@ def get_params(kwargs, key="url_param_"):
 
 def parse_success_response(response, kwargs):
     """parse a successful response of 200, meaning we honor the user
-       request to return json, search for a regular expression, or return
-       raw text. This is used by the basic GET/POST functions. For parsing
-       with beautiful soup, see "get_results" and "get_url_selection"
+    request to return json, search for a regular expression, or return
+    raw text. This is used by the basic GET/POST functions. For parsing
+    with beautiful soup, see "get_results" and "get_url_selection"
 
-       Parameters
-       ==========
-       response: the requests (200) response
-       kwargs: dictionary of keyword arguments provided to function
+    Parameters
+    ==========
+    response: the requests (200) response
+    kwargs: dictionary of keyword arguments provided to function
     """
     result = None
     save_as = kwargs.get("save_as", "json")
@@ -88,12 +82,12 @@ def parse_success_response(response, kwargs):
 
 def get_headers(kwargs):
     """Get a single set of headers from the kwargs dict. A user agent is added
-       as it is helpful in most cases.
+    as it is helpful in most cases.
 
-       Parameters
-       ==========
-       kwargs: the dictionary of keyword arguments that may contain url
-               parameters (format is url_param_<name>
+    Parameters
+    ==========
+    kwargs: the dictionary of keyword arguments that may contain url
+            parameters (format is url_param_<name>
     """
     headers = {"User-Agent": "Mozilla/5.0"}
 
@@ -123,19 +117,19 @@ def get_results(
     regex=None,
 ):
 
-    """given a url, a function, an optional selector, optional attributes, 
-       and a set (dict) of parameters, perform a request. This function is
-       used if the calling function needs special parsing of the html with
-       beautiful soup. If only a post/get is needed, this is not necessary.
+    """given a url, a function, an optional selector, optional attributes,
+    and a set (dict) of parameters, perform a request. This function is
+    used if the calling function needs special parsing of the html with
+    beautiful soup. If only a post/get is needed, this is not necessary.
 
-       Parameters
-       ==========
-       url: the url to get (required)
-       func: the function to use, defaults to requests.get
-       selector:  selection for the html response
-       attributes: optional, a list of attributes
-       params: a dictionary of parameters
-       headers: a dictionary of header key value pairs
+    Parameters
+    ==========
+    url: the url to get (required)
+    func: the function to use, defaults to requests.get
+    selector:  selection for the html response
+    attributes: optional, a list of attributes
+    params: a dictionary of parameters
+    headers: a dictionary of header key value pairs
     """
     from bs4 import BeautifulSoup
 

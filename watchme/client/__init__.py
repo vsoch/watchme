@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.defaults import WATCHME_WATCHER, WATCHME_TASK_TYPES, WATCHME_DEFAULT_TYPE
@@ -362,16 +356,15 @@ def get_parser():
 
 
 def main():
-    """the main entry point for the WatchMe Command line application.
-    """
+    """the main entry point for the WatchMe Command line application."""
 
     # Customize parser
 
     parser = get_parser()
 
     def help(return_code=0):
-        """print help, including the software version and active client 
-           and exit with return code.
+        """print help, including the software version and active client
+        and exit with return code.
         """
 
         version = watchme.__version__

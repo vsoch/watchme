@@ -1,16 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-The watcher is actually a connection to crontab. This is what helps to schedule
-the watched to check for changes at some frequency, and update the files.
-
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 from watchme.utils import get_userhome
@@ -24,14 +14,14 @@ import sys
 
 
 def getenv(variable_key, default=None, required=False, silent=True):
-    """ attempt to get an environment variable. If the variable
-        is not found, None is returned.
+    """attempt to get an environment variable. If the variable
+    is not found, None is returned.
 
-        Parameters
-        ==========
-        variable_key: the variable name
-        required: exit with error if not found
-        silent: Do not print debugging information for variable
+    Parameters
+    ==========
+    variable_key: the variable name
+    required: exit with error if not found
+    silent: Do not print debugging information for variable
     """
     variable = os.environ.get(variable_key, default)
     if variable is None and required:

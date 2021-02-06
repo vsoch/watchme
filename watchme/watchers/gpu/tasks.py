@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.utils import get_watchme_env
 from .pynvml import nvmlInit, nvmlShutdown
@@ -15,13 +9,13 @@ from watchme.watchers.gpu import pynvml
 
 def gpu_task(**kwargs):
     """Get variables about the gpu of the host. No parameters are required.
-       We've already instantited the Task object and have checked that
-       the calling host has nvml GPU
+    We've already instantited the Task object and have checked that
+    the calling host has nvml GPU
 
-       Parameters
-       ==========
-       skip: an optional list of (comma separated) fields to skip. Can be in
-             net_io_counters,net_connections,net_if_address,net_if_stats
+    Parameters
+    ==========
+    skip: an optional list of (comma separated) fields to skip. Can be in
+          net_io_counters,net_connections,net_if_address,net_if_stats
     """
     nvmlInit()
 
@@ -183,13 +177,13 @@ def gpu_task(**kwargs):
 
 
 def _filter_result(results, skip):
-    """a helper function to filter a dictionary based on a list of keys to 
-       skip. We also add variables from the environment.
-    
-       Parameters
-       ==========
-       results: a dictionary of results
-       skip: a list of keys to remove/filter from the result.
+    """a helper function to filter a dictionary based on a list of keys to
+    skip. We also add variables from the environment.
+
+    Parameters
+    ==========
+    results: a dictionary of results
+    skip: a list of keys to remove/filter from the result.
     """
 
     # Add any environment variables prefixed wit WATCHMEENV_

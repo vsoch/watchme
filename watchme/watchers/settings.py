@@ -1,12 +1,6 @@
-"""
-
-Copyright (C) 2019-2020 Vanessa Sochat.
-
-This Source Code Form is subject to the terms of the
-Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
-with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-"""
+__author__ = "Vanessa Sochat"
+__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__license__ = "MPL 2.0"
 
 from watchme.logger import bot
 
@@ -14,11 +8,11 @@ from watchme.logger import bot
 def remove_setting(self, section, name, save=True):
     """remove a setting from the configuration file
 
-       Parameters
-       ==========
-       section: the name of the section (task)
-       name: the name of the variable to remove
-       save: save the configuration file (default is True)
+    Parameters
+    ==========
+    section: the name of the section (task)
+    name: the name of the variable to remove
+    save: save the configuration file (default is True)
     """
     removed = False
     self.load_config()
@@ -38,10 +32,10 @@ def remove_setting(self, section, name, save=True):
 def remove_section(self, section, save=True):
     """remove a setting from the configuration file
 
-       Parameters
-       ==========
-       section: the name of the section (task)
-       save: save the configuration file (default is True)
+    Parameters
+    ==========
+    section: the name of the section (task)
+    save: save the configuration file (default is True)
     """
     removed = False
     self.load_config()
@@ -61,9 +55,9 @@ def remove_section(self, section, save=True):
 def print_add_task(self, task):
     """assemble a task section into a command that can create/add it.
 
-       Parameters
-       ==========
-       task: the name of the task to inspect
+    Parameters
+    ==========
+    task: the name of the task to inspect
     """
     self.load_config()
 
@@ -80,11 +74,11 @@ def print_add_task(self, task):
 
 def print_section(self, section):
     """print a section (usually a task) from a configuration file,
-       if it exists.
+    if it exists.
 
-       Parameters
-       ==========
-       section: the name of the section (task)
+    Parameters
+    ==========
+    section: the name of the section (task)
     """
     self.load_config()
 
@@ -99,13 +93,13 @@ def print_section(self, section):
 
 def get_setting(self, section, name, default=None):
     """return a setting from the config, if defined. Otherwise return
-       default (None or set by user)
-       
-       Parameters
-       ==========
-       section: the section in the config, defaults to self.name
-       name: they key (index) of the setting to look up
-       default: (optional) if not found, return default instead.
+    default (None or set by user)
+
+    Parameters
+    ==========
+    section: the section in the config, defaults to self.name
+    name: they key (index) of the setting to look up
+    default: (optional) if not found, return default instead.
     """
     self.load_config()
 
@@ -122,10 +116,10 @@ def get_setting(self, section, name, default=None):
 
 def has_setting(self, section, name):
     """return a boolean if a config has a setting (or not)
-       Parameters
-       ==========
-       section: the section in the config, defaults to self.name
-       name: they key (index) of the setting to look up
+    Parameters
+    ==========
+    section: the section in the config, defaults to self.name
+    name: they key (index) of the setting to look up
     """
     self.load_config()
 
@@ -139,9 +133,9 @@ def has_setting(self, section, name):
 
 def has_section(self, section):
     """return a boolean if a config has a section (e.g., a task or exporter)
-       Parameters
-       ==========
-       section: the section in the config
+    Parameters
+    ==========
+    section: the section in the config
     """
     self.load_config()
     return section in self.config
@@ -149,13 +143,13 @@ def has_section(self, section):
 
 def set_setting(self, section, key, value):
     """set a key value pair in a section, if the section exists. Returns
-       a boolean (True or False) to indicate if added.
+    a boolean (True or False) to indicate if added.
 
-       Parameters
-       ==========
-       section: the section in the config, defaults to self.name
-       key: they key (index) of the setting to set
-       value: the value to set.
+    Parameters
+    ==========
+    section: the section in the config, defaults to self.name
+    key: they key (index) of the setting to set
+    value: the value to set.
     """
     self.load_config()
 
@@ -168,8 +162,7 @@ def set_setting(self, section, key, value):
 
 
 def get_section(self, name):
-    """get a section from the config, if it exists
-    """
+    """get a section from the config, if it exists"""
     section = None
     self.load_config()
     if name in self.config:

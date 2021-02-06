@@ -17,14 +17,14 @@ import os
 
 def create_watcher(name=None, watcher_type=None, base=None):
     """create a watcher, meaning a folder with a configuration and
-       initialized git repo.
+    initialized git repo.
 
-       Parameters
-       ==========
-       name: the watcher to create, uses default or WATCHME_WATCHER
-       watcher_type: the type of watcher to create. defaults to 
-                     WATCHER_DEFAULT_TYPE
-        base: The watcher base to use (defaults to $HOME/.watchme)
+    Parameters
+    ==========
+    name: the watcher to create, uses default or WATCHME_WATCHER
+    watcher_type: the type of watcher to create. defaults to
+                  WATCHER_DEFAULT_TYPE
+     base: The watcher base to use (defaults to $HOME/.watchme)
     """
     if name is None:
         name = WATCHME_WATCHER
@@ -56,10 +56,10 @@ def create_watcher(name=None, watcher_type=None, base=None):
 def create_watcher_base(name=None, base=None):
     """create a watch base and default repo, if it doesn't already exist.
 
-       Parameters
-       ==========
-       name: the watcher to create, uses default or WATCHME_WATCHER
-       base: the watcher base, defaults to WATCHME_BASE_DIR
+    Parameters
+    ==========
+    name: the watcher to create, uses default or WATCHME_WATCHER
+    base: the watcher base, defaults to WATCHME_BASE_DIR
     """
     if base is None:
         base = WATCHME_BASE_DIR

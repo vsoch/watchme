@@ -12,8 +12,7 @@ from watchme.command import create_watcher
 
 
 def main(args, extra):
-    """create means creating one or more watchers.
-    """
+    """create means creating one or more watchers."""
 
     watchers = args.watchers
     if len(watchers) == 0:
