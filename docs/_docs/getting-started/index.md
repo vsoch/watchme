@@ -20,6 +20,10 @@ page.
  - [Create a Watcher](#how-do-i-create-a-watcher): Create your first watcher to monitor one or more things
  - [Rename a Watcher](#how-do-i-rename-a-watcher): Rename a watching by changing the folder name
 
+## Monitoring
+
+ - [Monitor](#monitor-tasks-command-line) from the command line, on the fly.
+
 ## Tasks
 
  - [Add tasks](#how-do-i-add-tasks): to your watcher, such as monitoring a url or a data endpoint.
@@ -168,6 +172,27 @@ the "weather" watcher and want to change the name at a later point, just rename
 the folder. For the remainder of this getting started guide, we will be using
 a watcher named "watcher," so if you didn't create this watcher, you can 
 either create it or rename an existing folder.
+
+
+<a id="monitor-tasks-command-line">
+### Monitor Tasks on The Fly
+
+If you dont' want to use WatchMe for tasks, you can use it to monitor on the fly!
+This could be a simple wrapper to any command:
+
+```bash
+$ watchme monitor singularity pull docker://busybox
+[{"status": "running", "username": "sochat1", "cmdline": ["singularity", "pull", "docker://busybox"], "cpu_num": 29, "num_fds": 6, "create_time": 1659736689.01, "open_files": 0, "ionice": {"value": 4, "ioclass": "IOPRIO_CLASS_NONE"}, "name": "singularity", "cpu_affinity": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], "exe": "/usr/bin/singularity", "cpu_percent": 0.0, "num_threads": 11, "io_counters": {"read_count": 21, "write_count": 0, "read_bytes": 0, "write_bytes": 0, "read_chars": 8671, "write_chars": 0}, "memory_full_info": {"rss": 24010752, "vms": 1356939264, "shared": 11788288, "text": 26202112, "lib": 0, "data": 1300967424, "dirty": 0, "uss": 23040000, "pss": 23040000, "swap": 0}, "num_ctx_switches": {"voluntary": 84, "involuntary": 1}, "terminal": "/dev/pts/53", "uids": {"real": 13754, "effetive": 13754, "saved": 13754}, "ppid": 848657, "pid": 848682, "memory_percent": 0.011313591754217435, "cpu_times": [0.01, 0.01, 0.0, 0.0, 0.0], "gids": {"real": 5782, "effetive": 5782, "saved": 5782}, "nice": 0, "connections": [], "cwd": "/home/sochat1", "SECONDS": "3"}]
+```
+Or an entire analysis (e.g., running a container) and taking samples
+every second:
+
+```bash
+$ watchme monitor --seconds 1 singularity run watchme-mnist_latest.sif plots.png > mnist-external.json
+```
+
+For the interested reader, there is an [entire write-up here](https://vsoch.github.io/2019/watchme-monitor/).
+
 
 <a id="how-do-i-add-tasks">
 ### How do I add tasks?

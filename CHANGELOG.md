@@ -13,6 +13,7 @@ Critical items to know are:
  - changed behaviour
 
 ## [master](https://github.com/vsoch/watchme/tree/master)
+ - ensuring a better error message is given when watchme config missing (0.0.29)
  - updating documentation to match library, more notes (0.0.28)
  - addition of GPU task, including terminal and process monitor (0.0.27)
  - adding linting, cleaning up an error for psutils watcher (0.0.26)

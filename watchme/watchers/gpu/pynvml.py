@@ -377,7 +377,7 @@ def _nvmlGetFunctionPointer(name):
 # Allows the object to be printed
 # Allows mismatched types to be assigned
 #  - like None when the Structure variant requires c_uint
-class nvmlFriendlyObject(object):
+class nvmlFriendlyObject:
     def __init__(self, dictionary):
         for x in dictionary:
             setattr(self, x, dictionary[x])
