@@ -87,7 +87,7 @@ class TestUtils(unittest.TestCase):
 
         print("Testing utils.which")
         result = which("echo")
-        self.assertEqual(result, "/bin/echo")
+        assert result in ["/usr/bin/echo", "/bin/echo"]
 
     def test_userhome(self):
         print("Testing utils.get_user")
