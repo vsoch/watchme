@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 __author__ = "Vanessa Sochat"
-__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__copyright__ = "Copyright 2020-2022, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
 import unittest
@@ -87,7 +87,7 @@ class TestUtils(unittest.TestCase):
 
         print("Testing utils.which")
         result = which("echo")
-        self.assertEqual(result, "/bin/echo")
+        assert result in ["/usr/bin/echo", "/bin/echo"]
 
     def test_userhome(self):
         print("Testing utils.get_user")

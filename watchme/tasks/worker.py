@@ -1,5 +1,5 @@
 __author__ = "Vanessa Sochat"
-__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__copyright__ = "Copyright 2020-2022, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
 from watchme.logger import bot
@@ -11,7 +11,7 @@ import signal
 import sys
 
 
-class Workers(object):
+class Workers:
     def __init__(self, workers=None, show_progress=False):
 
         if workers is None:

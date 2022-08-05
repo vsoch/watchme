@@ -1,5 +1,5 @@
 __author__ = "Vanessa Sochat"
-__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__copyright__ = "Copyright 2020-2022, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
 from multiprocessing import Process, Queue
@@ -10,7 +10,7 @@ import subprocess
 import os
 
 
-class DecoratorBase(object):
+class DecoratorBase:
     def __init__(self, seconds=3, skip=None, include=None, only=None):
 
         # Replace Nones with lists

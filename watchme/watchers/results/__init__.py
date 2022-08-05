@@ -3,10 +3,6 @@ __copyright__ = "Copyright 2020-2021, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
 from watchme.tasks import TaskBase
-from watchme.logger import bot
-from watchme.utils import get_user, get_host
-import os
-import sys
 
 
 class Task(TaskBase):

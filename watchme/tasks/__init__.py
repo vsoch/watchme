@@ -1,5 +1,5 @@
 __author__ = "Vanessa Sochat"
-__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__copyright__ = "Copyright 2020-2022, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
 from watchme.logger import bot
@@ -9,7 +9,7 @@ import shutil
 import os
 
 
-class TaskBase(object):
+class TaskBase:
     def __init__(self, name, params=None, **kwargs):
 
         # If params not defined, create as dict

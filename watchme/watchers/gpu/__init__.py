@@ -6,8 +6,6 @@ from .pynvml import nvmlInit
 from watchme.tasks import TaskBase
 from watchme.logger import bot
 from watchme.utils import get_user, get_host
-import os
-import sys
 
 
 class Task(TaskBase):

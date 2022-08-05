@@ -4,8 +4,6 @@ __license__ = "MPL 2.0"
 
 from watchme.tasks import TaskBase
 from watchme.logger import bot
-import os
-import sys
 
 
 class Task(TaskBase):

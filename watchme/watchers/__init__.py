@@ -1,8 +1,8 @@
 __author__ = "Vanessa Sochat"
-__copyright__ = "Copyright 2020-2021, Vanessa Sochat"
+__copyright__ = "Copyright 2020-2022, Vanessa Sochat"
 __license__ = "MPL 2.0"
 
-from watchme.logger import bot, RobotNamer
+from watchme.logger import bot
 from watchme.version import __version__
 from watchme.defaults import (
     WATCHME_BASE_DIR,
@@ -17,8 +17,6 @@ from watchme.command import (
     git_commit,
     git_add,
 )
-
-from configparser import NoOptionError
 
 from .data import export_dict
 
@@ -46,16 +44,15 @@ from .schedule import (
 
 from watchme.config import read_config, write_config
 
-from watchme.utils import mkdir_p, write_file, write_json
+from watchme.utils import mkdir_p
 
 import os
 import re
 import shutil
 import json
-import sys
 
 
-class Watcher(object):
+class Watcher:
 
     repo = None
     configfile = None
