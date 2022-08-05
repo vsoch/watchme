@@ -32,7 +32,7 @@ Watchme uses [cron](http://man7.org/linux/man-pages/man5/crontab.5.html) for
 scheduling jobs. This means that if a system was shutdown and then started again
 after some time, watchme will not recover missing jobs during that period. If
 you have ideas for how to better schedule jobs that you want added to the library,
-please [open an issue](https://github.com/vsoch/watchme).
+please [open an issue](https://github.com/vsoch/watchme)!
 
 ## Licenses
 
